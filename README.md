@@ -1,11 +1,12 @@
 ![](http://i.imgur.com/dLeJmw6.png)
 
-__JSON Server__
+# JSON Server
 
-> Give it a JSON or JS seed file and it will serve it through REST routes.
+Give it a JSON or JS seed file and it will serve it through REST routes.
 
-_Created with :heart: for front-end developers who need a flexible back-end for quick prototyping and mocking._
+Created with :heart: for front-end developers who need a flexible back-end for quick prototyping and mocking.
 
+[![Build Status](https://travis-ci.org/typicode/json-server.png)](https://travis-ci.org/typicode/json-server)
 
 ## Examples
 
