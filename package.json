@@ -18,7 +18,8 @@
   },
   "devDependencies": {
     "superagent": "~0.15.7",
-    "supertest": "~0.8.1"
+    "supertest": "~0.8.1",
+    "mocha": "~1.14.0"
   },
   "scripts": {
     "test": "mocha -R spec test",
