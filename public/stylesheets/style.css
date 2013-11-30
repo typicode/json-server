@@ -1,0 +1,43 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  font-weight: lighter;
+}
+
+a {
+  /*color: #00B7FF;*/
+  color: #3D72D1;
+}
+
+hr {
+  border: 1px #EEE solid;
+}
+
+a.logo {
+  display: block;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.alert-success {
+  font-size: 18px;
+}
+
+/*.logo {
+  background: #00B7FF;
+  color: white;
+  font-size: 48px;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 90px;
+  border-radius: 100px;
+  transform:rotate(90deg);
+  -ms-transform:rotate(90deg);
+  -webkit-transform:rotate(90deg);
+  margin-bottom: 50px;
+}*/

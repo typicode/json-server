@@ -1,0 +1,52 @@
+{
+  "name": "json-server",
+  "version": "0.1.0",
+  "description": "Serves JSON file through REST routes",
+  "main": "server.js",
+  "bin": "./bin/cli.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "commander": "~2.0.0",
+    "cors": "~2.1.0",
+    "express": "~3.4.4",
+    "logan": "~0.0.2",
+    "request": "~2.27.0",
+    "underscore": "~1.5.2",
+    "underscore.inflections": "~0.2.1"
+  },
+  "devDependencies": {
+    "superagent": "~0.15.7",
+    "supertest": "~0.8.1"
+  },
+  "scripts": {
+    "test": "mocha -R spec test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/typicode/json-server.git"
+  },
+  "keywords": [
+    "JSON",
+    "server",
+    "fake",
+    "REST",
+    "API",
+    "prototyping",
+    "mock",
+    "mocking",
+    "test",
+    "testing",
+    "rest",
+    "data",
+    "dummy"
+  ],
+  "author": "Typicode <typicode@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/typicode/json-server/issues"
+  },
+  "homepage": "https://github.com/typicode/json-server"
+}

@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <title>JSON Server</title>
+    <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.2/journal/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <a href="https://github.com/typicode/json-server" class="logo">
+        <img src="images/logo.png">
+      </a>
+
+      <p class="alert alert-info">
+        Congrats! You're successfully running JSON Server.
+      </p>
+
+      <hr>
+      
+      <h2>Resources</h2>
+      <p>
+        <ul id="resources">loading, please wait...</ul>
+      </p>
+
+      <p>
+        To view database current state:
+        <ul>
+          <li>
+            <a href="db">db</a>
+          </li>
+        </ul>
+      </p>
+
+      <h2>Requests</h2>
+      <p>
+        Resources can be accessed in various ways.
+      </p>
+      <p>
+        JSON Server supports:
+        <ul>
+          <li>GET, POST, PUT, PATCH, DESTROY and OPTIONS verbs.</li>
+          <li>JSONP or CORS cross domain requests.</li>       
+        </ul>
+      </p>
+
+      <h2>Documentation</h2>
+      <p>
+        View
+        <a href="http://github.com/typicode/jsonserver">README</a>
+        on GitHub.
+      </p>
+
+      <h2>Issues</h2>
+      <p>Please go 
+        <a href="https://github.com/typicode/jsonplaceholder/issues">here</a>.
+      </p>
+
+      <hr>
+
+      <p>
+        <i>To customize this page, just create a ./public/index.html file.</i>
+      </p>
+    </div>
+
+
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script>
+      $(function() {
+        $.get('db').then(function(data) {
+          $('#resources').empty();
+          $.each(data, function(key, value) {
+            $('#resources')
+              .append('<li><a href="/'+ key + '">' + key + '</a></li>');
+          })
+        })
+      })
+    </script>
+  </body>
+</html>
