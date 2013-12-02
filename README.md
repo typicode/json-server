@@ -6,8 +6,6 @@ Give it a JSON or JS seed file and it will serve it through REST routes.
 
 Created with :heart: for front-end developers who need a flexible back-end for quick prototyping and mocking.
 
-[![Build Status](https://travis-ci.org/typicode/json-server.png)](https://travis-ci.org/typicode/json-server)
-
 ## Examples
 
 ### Command line interface
@@ -40,6 +38,7 @@ server.run(db);
 
 ## Why?
 
+* Lets you use plain JSON or simple JS file
 * Supports __GET__ but also __POST__, __PUT__, __DELETE__ and even __PATCH__ requests
 * Can be used from anywhere through __cross domain__ requests (JSONP or CORS)
 * Can load remote JSON files
