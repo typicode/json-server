@@ -35,6 +35,7 @@ var db = {
 server.run(db);
 ```
 
+You can find a running demo here: http://jsonplaceholder.typicode.com.
 
 ## Why?
 
