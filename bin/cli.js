@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 var program = require('commander'),
-    request = require('superagent'),
-    url = require('url'),
-    fs = require('fs'),
     server = require('../server'),
     logger = require('../utils/logger'),
     options = {};
