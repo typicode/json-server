@@ -38,7 +38,6 @@ function createApp(db, options) {
 
   // Use default or user public directory
   // Note: should be done before CORS and app.router setting
-  console.log(fs.existsSync(process.cwd() + '/public'), process.cwd() + '/public')
   if (fs.existsSync(process.cwd() + '/public')) {
     app.use(express.static(process.cwd() + '/public'));
   } else {
