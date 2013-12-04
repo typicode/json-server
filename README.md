@@ -91,6 +91,7 @@ $ json-server --file db.json --read-only
 Here's 2 examples showing how to format JSON or JS seed file:
 
 * __db.json__
+
 ```javascript
 {
   posts: [
@@ -105,6 +106,7 @@ Here's 2 examples showing how to format JSON or JS seed file:
 ```
 
 * __seed.js__
+
 ```javascript
 exports.run = function() {
   var data = {};
