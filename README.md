@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/typicode/json-server.png)](https://travis-ci.org/typicode/json-server)
+
 ![](http://i.imgur.com/dLeJmw6.png)
 
 # JSON Server
