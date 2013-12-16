@@ -12,12 +12,11 @@
     "cors": "~2.1.0",
     "express": "~3.4.4",
     "logan": "~0.0.2",
-    "request": "~2.27.0",
+    "superagent": "~0.15.7",
     "underscore": "~1.5.2",
     "underscore.inflections": "~0.2.1"
   },
   "devDependencies": {
-    "superagent": "~0.15.7",
     "supertest": "~0.8.1",
     "mocha": "~1.14.0"
   },

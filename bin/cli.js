@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var program = require('commander'),
+    request = require('superagent'),
     server = require('../server'),
     logger = require('../utils/logger'),
     options = {};
@@ -22,7 +23,7 @@ function loadURL(url, cb) {
       if (error) {
         logger.error(error);
       } else {
-        cb(JSON.parse(res));
+        cb(JSON.parse(res.text));
       }
     });
 }
