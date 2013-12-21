@@ -30,16 +30,15 @@ function loadURL(url, cb) {
     });
 }
 
-function onDatabaseLoaded(db) {
-  var app = server.run(db, options);
+function saveDbOnCommand(app) {
+  console.assert(app, 'expected app object');
 
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', function (userInput) {
-    console.log(userInput);
     if (userInput.trim().toLowerCase() == 's') {
       var liveDB = app.db();
-      var now = moment().format('YYYY-MM-DD:HH-MM-SS')
+      var now = moment().format('YYYY-MM-DD:HH-mm-ss')
       var filename = 'json-server.' + now + '.json';
       console.assert(liveDB, 'expected live db object');
       fs.writeFileSync(filename,
@@ -48,7 +47,11 @@ function onDatabaseLoaded(db) {
       console.log('saved db to', filename);
     }
   });
+}
 
+function onDatabaseLoaded(db) {
+  var app = server.run(db, options);
+  saveDbOnCommand(app);
   return app;
 }
 
