@@ -5,6 +5,7 @@ var program = require('commander'),
     logger = require('../utils/logger'),
     moment = require('moment'),
     fs = require('fs'),
+    pkg = require('../package.json'),
     options = {};
 
 function loadFile(file, cb) {
@@ -56,7 +57,7 @@ function onDatabaseLoaded(db) {
 }
 
 program
-  .version('0.1.0')
+  .version(pkg.version)
   .option('-f --file <file>', 'load db from a js or json file')
   .option('-u --url <url>', 'load db from a URL')
   .option('-p --port [port]', 'server port')
