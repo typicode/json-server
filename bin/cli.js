@@ -61,8 +61,13 @@ program
   .option('-f --file <file>', 'load db from a js or json file')
   .option('-u --url <url>', 'load db from a URL')
   .option('-p --port [port]', 'server port')
-  .option('--read-only', 'read only mode')
-  .parse(process.argv);
+  .option('--read-only', 'read only mode');
+
+program.on('--help', function () {
+  console.log(pkg.name, '[options] filename.json or filename.js or json ULR');
+});
+
+program.parse(process.argv);
 
 if (program.port) options.port = program.port;
 if (program.readOnly) options.readOnly = true;
