@@ -15,7 +15,7 @@ Created with :heart: for front-end developers who need a flexible back-end for q
 
 ```bash
 $ cat db.json
-{ 
+{
   posts: [
     { id: 1, body: 'foo' }
   ]
@@ -23,6 +23,9 @@ $ cat db.json
 $ json-server --file db.json
 $ curl -i http://localhost:3000/posts/1
 ```
+
+You can type 's' at any moment to save the current live JSON object to timestamped
+file.
 
 ### Node module
 
@@ -52,7 +55,7 @@ You can find a running demo here: http://jsonplaceholder.typicode.com.
 ## Installation
 
 ```bash
-$ npm install -g json-server 
+$ npm install -g json-server
 ```
 
 
@@ -113,7 +116,7 @@ Here's 2 examples showing how to format JSON or JS seed file:
 ```javascript
 exports.run = function() {
   var data = {};
-  
+
   data.posts = [];
   data.posts.push({id: 1, body: 'foo'});
   //...
@@ -180,6 +183,6 @@ For project updates or to get in touch, [@typicode](http://twitter.com/typicde).
 ## Test
 
 ```bash
-$ npm install 
+$ npm install
 $ npm test
 ```
