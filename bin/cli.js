@@ -3,6 +3,8 @@ var program = require('commander'),
     request = require('superagent'),
     server = require('../server'),
     logger = require('../utils/logger'),
+    moment = require('moment'),
+    fs = require('fs'),
     options = {};
 
 function loadFile(file, cb) {
@@ -13,15 +15,6 @@ function loadFile(file, cb) {
   if (/\.js$/.test(file)) db = require(path).run();
 
   cb(db);
-
-  process.stdin.resume();
-  process.stdin.setEncoding('utf8');
-  process.stdin.on('data', function (userInput) {
-    console.log(userInput);
-    if (userInput.trim().toLowerCase() == 's') {
-      console.log('saving db');
-    }
-  });
 }
 
 function loadURL(url, cb) {
@@ -38,7 +31,25 @@ function loadURL(url, cb) {
 }
 
 function onDatabaseLoaded(db) {
-  server.run(db, options);
+  var app = server.run(db, options);
+
+  process.stdin.resume();
+  process.stdin.setEncoding('utf8');
+  process.stdin.on('data', function (userInput) {
+    console.log(userInput);
+    if (userInput.trim().toLowerCase() == 's') {
+      var liveDB = app.db();
+      var now = moment().format('YYYY-MM-DD:HH-MM-SS')
+      var filename = 'json-server.' + now + '.json';
+      console.assert(liveDB, 'expected live db object');
+      fs.writeFileSync(filename,
+        JSON.stringify(liveDB, null, 2),
+        'utf-8');
+      console.log('saved db to', filename);
+    }
+  });
+
+  return app;
 }
 
 program

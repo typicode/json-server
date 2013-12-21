@@ -12,6 +12,10 @@ exports.database = function(req, res) {
   res.jsonp(db)
 }
 
+exports.db = function() {
+  return db;
+}
+
 // GET /:resource?attr=&attr=
 exports.list = function(req, res) {
   var collection = db[req.params.resource],
@@ -22,7 +26,7 @@ exports.list = function(req, res) {
     var value = req.query[key];
     properties[key] = utils.toNative(value);
   });
-    
+
   if (_(properties).isEmpty()) {
     result = collection;
   } else {
@@ -36,20 +40,20 @@ exports.list = function(req, res) {
 exports.nestedList = function(req, res) {
   var properties = {},
       resource;
-  
+
   // Set parentID
   properties[req.params.parent.slice(0, - 1) + 'Id'] = +req.params.parentId;
-  
+
   // Filter using parentID
   resource = _.where(db[req.params.resource], properties);
-  
+
   res.jsonp(resource);
 }
 
 // GET /:resource/:id
 exports.show = function(req, res) {
   var resource = _.get(db, req.params.resource, +req.params.id);
-  
+
   res.jsonp(resource);
 }
 
