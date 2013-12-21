@@ -13,6 +13,15 @@ function loadFile(file, cb) {
   if (/\.js$/.test(file)) db = require(path).run();
 
   cb(db);
+
+  process.stdin.resume();
+  process.stdin.setEncoding('utf8');
+  process.stdin.on('data', function (userInput) {
+    console.log(userInput);
+    if (userInput.trim().toLowerCase() == 's') {
+      console.log('saving db');
+    }
+  });
 }
 
 function loadURL(url, cb) {
