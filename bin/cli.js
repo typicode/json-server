@@ -36,6 +36,8 @@ function saveDbOnCommand(app) {
 
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
+  console.log('type "s then ENTER" to save live database at any moment');
+
   process.stdin.on('data', function (userInput) {
     if (userInput.trim().toLowerCase() == 's') {
       var liveDB = app.db();
