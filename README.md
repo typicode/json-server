@@ -15,9 +15,9 @@ Created with :heart: for front-end developers who need a flexible back-end for q
 
 ```bash
 $ cat db.json
-{
-  posts: [
-    { id: 1, body: 'foo' }
+{ 
+  "posts": [
+    { "id": 1, "body": "foo" }
   ]
 }
 $ json-server --file db.json
@@ -32,9 +32,9 @@ file.
 ```javascript
 var server = require('json-server');
 
-var db = {
+var db = { 
   posts: [
-    {id: 1, body: 'foo'}
+    { id: 1, body: 'foo' }
   ]
 }
 
@@ -100,13 +100,13 @@ Here's 2 examples showing how to format JSON or JS seed file:
 
 ```javascript
 {
-  posts: [
-    { id: 1, body: 'foo'},
-    { id: 2, body: 'bar'}
+  "posts": [
+    { "id": 1, "body": "foo" },
+    { "id": 2, "body": "bar" }
   ],
-  comments: [
-    { id: 1, body: 'baz', postId: 1}
-    { id: 2, body: 'qux', postId: 2}
+  "comments": [
+    { "id": 1, "body": "baz", "postId": 1 }
+    { "id": 2, "body": "qux", "postId": 2 }
   ]
 }
 ```
@@ -118,7 +118,7 @@ exports.run = function() {
   var data = {};
 
   data.posts = [];
-  data.posts.push({id: 1, body: 'foo'});
+  data.posts.push({ id: 1, body: 'foo' });
   //...
 
   return data;
