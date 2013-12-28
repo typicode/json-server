@@ -47,7 +47,7 @@ function createApp(db, options) {
   // Enable CORS for everything
   app.use(cors());
   app.options('*', cors());
-  
+
   // Set app.router
   app.use(app.router);
 
@@ -63,6 +63,7 @@ function createApp(db, options) {
 
   // Set database
   routes.setDatabase(db);
+  app.db = routes.db;
 
   // And done! Ready to serve JSON!
   return app;
@@ -88,6 +89,7 @@ function run(db, options) {
       logger.success('Express server listening on port ' + options.port);
       logger.success('Congrats! Open http://localhost:' + options.port);
     });
+  return app;
 }
 
 exports.createApp = createApp;

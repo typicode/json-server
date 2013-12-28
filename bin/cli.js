@@ -3,6 +3,9 @@ var program = require('commander'),
     request = require('superagent'),
     server = require('../server'),
     logger = require('../utils/logger'),
+    moment = require('moment'),
+    fs = require('fs'),
+    pkg = require('../package.json'),
     options = {};
 
 function loadFile(file, cb) {
@@ -28,17 +31,45 @@ function loadURL(url, cb) {
     });
 }
 
+function saveDbOnCommand(app) {
+  console.assert(app, 'expected app object');
+
+  process.stdin.resume();
+  process.stdin.setEncoding('utf8');
+  console.log('type "s then ENTER" to save live database at any moment');
+
+  process.stdin.on('data', function (userInput) {
+    if (userInput.trim().toLowerCase() == 's') {
+      var liveDB = app.db();
+      var now = moment().format('YYYY-MM-DD:HH-mm-ss')
+      var filename = 'json-server.' + now + '.json';
+      console.assert(liveDB, 'expected live db object');
+      fs.writeFileSync(filename,
+        JSON.stringify(liveDB, null, 2),
+        'utf-8');
+      console.log('saved db to', filename);
+    }
+  });
+}
+
 function onDatabaseLoaded(db) {
-  server.run(db, options);
+  var app = server.run(db, options);
+  saveDbOnCommand(app);
+  return app;
 }
 
 program
-  .version('0.1.0')
+  .version(pkg.version)
   .option('-f --file <file>', 'load db from a js or json file')
   .option('-u --url <url>', 'load db from a URL')
   .option('-p --port [port]', 'server port')
-  .option('--read-only', 'read only mode')
-  .parse(process.argv);
+  .option('--read-only', 'read only mode');
+
+program.on('--help', function () {
+  console.log(pkg.name, '[options] filename.json or filename.js or json ULR');
+});
+
+program.parse(process.argv);
 
 if (program.port) options.port = program.port;
 if (program.readOnly) options.readOnly = true;
