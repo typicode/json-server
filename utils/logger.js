@@ -4,6 +4,7 @@ logan.set({
   error: ['%', 'red'],
   success: ['%', 'green'],
   info: ['%', 'grey'],
+  notice: ['%', 'yellow'],
   url: ['  http://localhost:%/'.grey + '%'.cyan, '.']
 })
 

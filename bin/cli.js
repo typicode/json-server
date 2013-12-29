@@ -36,12 +36,12 @@ function saveDbOnCommand(app) {
 
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
-  console.log('type "s then ENTER" to save live database at any moment');
+  logger.notice('To save live database at any moment, enter `s`');
 
   process.stdin.on('data', function (userInput) {
     if (userInput.trim().toLowerCase() == 's') {
       var liveDB = app.db();
-      var now = moment().format('YYYY-MM-DD:HH-mm-ss')
+      var now = moment().format('YYYY-MM-DD-HH:mm:ss')
       var filename = 'json-server.' + now + '.json';
       console.assert(liveDB, 'expected live db object');
       fs.writeFileSync(filename,
@@ -66,7 +66,12 @@ program
   .option('--read-only', 'read only mode');
 
 program.on('--help', function () {
-  console.log(pkg.name, '[options] filename.json or filename.js or json ULR');
+  var examples =
+    '  Examples:\n\n' +
+    '    json-server --file db.json\n' +
+    '    json-server --file seed.js\n' +
+    '    json-server --url http://example.com/db.json\n'
+  console.log(examples);
 });
 
 program.parse(process.argv);
