@@ -70,7 +70,7 @@ function createApp(db, options) {
 }
 
 function run(db, options) {
-  options = _.defaults(options, defaultOptions);
+  options = _.defaults(options || {}, defaultOptions);
 
   var app = createApp(db, options);
 
