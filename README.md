@@ -178,7 +178,7 @@ Returns default index file or content of ./public/index.html (useful if you need
 
 If you like the project, please tell your friends about it, star it or give feedback :) It's very much appreciated!
 
-For project updates or to get in touch, [@typicode](http://twitter.com/typicde). You can also send me a mail.
+For project updates or to get in touch, [@typicode](http://twitter.com/typicode). You can also send me a mail.
 
 ## Test
 
