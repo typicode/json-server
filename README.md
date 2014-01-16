@@ -186,3 +186,7 @@ For project updates or to get in touch, [@typicode](http://twitter.com/typicode)
 $ npm install
 $ npm test
 ```
+
+## Articles
+
+[Fast prototyping using Restangular and Json-server](http://bahmutov.calepin.co/fast-prototyping-using-restangular-and-json-server.html)
