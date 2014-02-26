@@ -38,8 +38,8 @@ exports.list = function(req, res) {
 
 // GET /:resource/range/:from/:to
 exports.range = function(req, res) {
-  var startIndex = req.params.from;
-  var endIndex = req.params.to;
+  var startIndex = +req.params.from;
+  var endIndex = +req.params.to;
   if (startIndex >= endIndex) {
     console.error('invalid start ' + startIndex + ' and end ' + endIndex + ' indices');
     return res.send(500);
