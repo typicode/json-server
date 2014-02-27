@@ -152,7 +152,7 @@ GET   /:resource
 GET   /:resource?attr=&attr=&
 GET   /:parent/:parentId/:resource
 GET   /:resource/:id
-GET   /:resource/range/:from/:to
+GET   /:resource/slice/:from/:to
 POST  /:resource
 PUT   /:resource/:id
 PATCH /:resource/:id
@@ -176,11 +176,12 @@ Returns default index file or content of ./public/index.html (useful if you need
 
 
 ```
-GET /:resource/range/:from/:to
+GET /:resource/slice/:from/:to
 ```
 
 Assumes the `resource` is an array and returns its slice from `from` index to `to`, for example
-`/posts/range/5/10`
+`/posts/slice/5/10`. Same semantices as
+[Array.prototype.slice](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
 
 ## Support
 

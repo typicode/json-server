@@ -36,8 +36,8 @@ exports.list = function(req, res) {
   res.jsonp(result);
 }
 
-// GET /:resource/range/:from/:to
-exports.range = function(req, res) {
+// GET /:resource/slice/:from/:to
+exports.slice = function(req, res) {
   var startIndex = +req.params.from;
   var endIndex = +req.params.to;
   if (startIndex >= endIndex) {

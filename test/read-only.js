@@ -63,11 +63,11 @@ describe('Read only routes', function() {
     });
   });
 
-  describe('GET range', function () {
-    describe('GET 1 item /:resource/range/:from/:to', function() {
+  describe('GET slice', function () {
+    describe('GET 1 item /:resource/slice/:from/:to', function() {
       it('should respond with array with 1 item [:from, :to]', function(done) {
         request(app)
-          .get('/posts/range/0/1')
+          .get('/posts/slice/0/1')
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function (err, res) {
@@ -80,10 +80,10 @@ describe('Read only routes', function() {
       });
     });
 
-    describe('GET 1 last item /:resource/range/:from/:to', function() {
+    describe('GET 1 last item /:resource/slice/:from/:to', function() {
       it('should respond with last item', function(done) {
         request(app)
-          .get('/posts/range/1/2')
+          .get('/posts/slice/1/2')
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function (err, res) {
@@ -96,10 +96,10 @@ describe('Read only routes', function() {
       });
     });
 
-    describe('GET items /:resource/range/:from/:to', function() {
+    describe('GET items /:resource/slice/:from/:to', function() {
       it('should respond with array with all items [:from, :to]', function(done) {
         request(app)
-          .get('/posts/range/0/' + db.posts.length)
+          .get('/posts/slice/0/' + db.posts.length)
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function (err, res) {
@@ -112,10 +112,10 @@ describe('Read only routes', function() {
       });
     });
 
-    describe('GET no items /:resource/range/:from/:to invalid range', function() {
+    describe('GET no items /:resource/slice/:from/:to invalid slice', function() {
       it('should respond with empty array', function(done) {
         request(app)
-          .get('/posts/range/1000/2000')
+          .get('/posts/slice/1000/2000')
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function (err, res) {
@@ -127,10 +127,10 @@ describe('Read only routes', function() {
       });
     });
 
-    describe('GET /:resource/range/:from/:to invalid range indices', function() {
+    describe('GET /:resource/slice/:from/:to invalid slice indices', function() {
       it('should respond with server error', function(done) {
         request(app)
-          .get('/posts/range/1000/100')
+          .get('/posts/slice/1000/100')
           .expect(500, done);
       });
     });

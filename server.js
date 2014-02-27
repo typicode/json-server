@@ -56,7 +56,7 @@ function createApp(db, options) {
   app.get('/:resource', routes.list);
   app.get('/:parent/:parentId/:resource', routes.nestedList);
   app.get('/:resource/:id', routes.show);
-  app.get('/:resource/range/:from/:to', routes.range);
+  app.get('/:resource/slice/:from/:to', routes.slice);
   app.post('/:resource', routes.create);
   app.put('/:resource/:id', routes.update);
   app.patch('/:resource/:id', routes.update);
