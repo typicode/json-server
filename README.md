@@ -15,7 +15,7 @@ Created with :heart: for front-end developers who need a flexible back-end for q
 
 ```bash
 $ cat db.json
-{ 
+{
   "posts": [
     { "id": 1, "body": "foo" }
   ]
@@ -32,7 +32,7 @@ file.
 ```javascript
 var server = require('json-server');
 
-var db = { 
+var db = {
   posts: [
     { id: 1, body: 'foo' }
   ]
@@ -152,6 +152,7 @@ GET   /:resource
 GET   /:resource?attr=&attr=&
 GET   /:parent/:parentId/:resource
 GET   /:resource/:id
+GET   /:resource/slice/:from/:to
 POST  /:resource
 PUT   /:resource/:id
 PATCH /:resource/:id
@@ -173,6 +174,14 @@ GET /
 
 Returns default index file or content of ./public/index.html (useful if you need to set a custom home page).
 
+
+```
+GET /:resource/slice/:from/:to
+```
+
+Assumes the `resource` is an array and returns its slice from `from` index to `to`, for example
+`/posts/slice/5/10`. Same semantices as
+[Array.prototype.slice](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
 
 ## Support
 

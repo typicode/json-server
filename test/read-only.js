@@ -63,6 +63,79 @@ describe('Read only routes', function() {
     });
   });
 
+  describe('GET slice', function () {
+    describe('GET 1 item /:resource/slice/:from/:to', function() {
+      it('should respond with array with 1 item [:from, :to]', function(done) {
+        request(app)
+          .get('/posts/slice/0/1')
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function (err, res) {
+            if (err) return done(err);
+            assert(Array.isArray(res.body), 'returns an array');
+            assert.equal(res.body.length, 1, 'returns single item');
+            assert.equal(res.body[0].id, db.posts[0].id, 'returns first item');
+            done();
+          });
+      });
+    });
+
+    describe('GET 1 last item /:resource/slice/:from/:to', function() {
+      it('should respond with last item', function(done) {
+        request(app)
+          .get('/posts/slice/1/2')
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function (err, res) {
+            if (err) return done(err);
+            assert(Array.isArray(res.body), 'returns an array');
+            assert.equal(res.body.length, 1, 'returns single item');
+            assert.equal(res.body[0].id, db.posts[1].id, 'returns first item');
+            done();
+          });
+      });
+    });
+
+    describe('GET items /:resource/slice/:from/:to', function() {
+      it('should respond with array with all items [:from, :to]', function(done) {
+        request(app)
+          .get('/posts/slice/0/' + db.posts.length)
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function (err, res) {
+            if (err) return done(err);
+            assert(Array.isArray(res.body), 'returns an array');
+            assert.equal(res.body.length, db.posts.length, 'returns all items');
+            assert.equal(res.body[0].id, db.posts[0].id, 'returns first item');
+            done();
+          });
+      });
+    });
+
+    describe('GET no items /:resource/slice/:from/:to invalid slice', function() {
+      it('should respond with empty array', function(done) {
+        request(app)
+          .get('/posts/slice/1000/2000')
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function (err, res) {
+            if (err) return done(err);
+            assert(Array.isArray(res.body), 'returns an array');
+            assert.equal(res.body.length, 0, 'empty array');
+            done();
+          });
+      });
+    });
+
+    describe('GET /:resource/slice/:from/:to invalid slice indices', function() {
+      it('should respond with server error', function(done) {
+        request(app)
+          .get('/posts/slice/1000/100')
+          .expect(500, done);
+      });
+    });
+  });
+
   describe('POST /:resource', function() {
     it('should respond with fake json and not create a resource', function(done) {
       request(app)

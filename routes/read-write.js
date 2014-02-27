@@ -36,6 +36,23 @@ exports.list = function(req, res) {
   res.jsonp(result);
 }
 
+// GET /:resource/slice/:from/:to
+exports.slice = function(req, res) {
+  var startIndex = +req.params.from;
+  var endIndex = +req.params.to;
+  if (startIndex >= endIndex) {
+    console.error('invalid start ' + startIndex + ' and end ' + endIndex + ' indices');
+    return res.send(500);
+  }
+  var collection = db[req.params.resource],
+      properties = {},
+      result;
+
+  result = collection;
+  console.assert(Array.isArray(result), 'result for ' + req.params.resource + ' is not an Array');
+  res.jsonp(result.slice(startIndex, endIndex));
+}
+
 // GET /:parent/:parentId/:resource
 exports.nestedList = function(req, res) {
   var properties = {},

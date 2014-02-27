@@ -52,10 +52,11 @@ function createApp(db, options) {
   app.use(app.router);
 
   // Set API entry points
-  app.get('/db', routes.database)
+  app.get('/db', routes.database);
   app.get('/:resource', routes.list);
   app.get('/:parent/:parentId/:resource', routes.nestedList);
   app.get('/:resource/:id', routes.show);
+  app.get('/:resource/slice/:from/:to', routes.slice);
   app.post('/:resource', routes.create);
   app.put('/:resource/:id', routes.update);
   app.patch('/:resource/:id', routes.update);
