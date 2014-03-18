@@ -15,7 +15,9 @@
     "superagent": "~0.15.7",
     "underscore": "~1.5.2",
     "underscore.inflections": "~0.2.1",
-    "moment": "~2.4.0"
+    "moment": "~2.4.0",
+    "low": "^0.4.2",
+    "restify": "^2.6.3"
   },
   "devDependencies": {
     "supertest": "~0.8.1",

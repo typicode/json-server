@@ -1,18 +1,12 @@
-var request = require('supertest'),
-    assert = require('assert'),
-    server = require('../server'),
-    routes = require('../routes/read-write'),
-    app;
+var request = require('supertest')
+var assert = require('assert')
+var server = require('../src/server')
 
 describe('Static routes', function() {
 
-  beforeEach(function() {
-    app = server.createApp({}, routes);
-  });
-
   describe('GET /', function() {
     it('should respond with html', function(done) {
-      request(app)
+      request(server)
         .get('/')
         .expect('Content-Type', /html/)
         .expect(200, done);
@@ -21,7 +15,7 @@ describe('Static routes', function() {
 
   describe('GET /stylesheets/style.css', function() {
     it('should respond with css', function(done) {
-      request(app)
+      request(server)
         .get('/stylesheets/style.css')
         .expect('Content-Type', /css/)
         .expect(200, done);
