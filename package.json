@@ -17,7 +17,9 @@
     "underscore.inflections": "~0.2.1",
     "moment": "~2.4.0",
     "low": "^0.4.2",
-    "restify": "^2.6.3"
+    "restify": "^2.6.3",
+    "yargs": "^1.2.1",
+    "ecstatic": "^0.4.13"
   },
   "devDependencies": {
     "supertest": "~0.8.1",

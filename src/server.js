@@ -1,11 +1,14 @@
-var _ = require('underscore')
-var low = require('low')
-var restify = require('restify')
-var utils = require('./utils')
+var _        = require('underscore')
+var low      = require('low')
+var ecstatic = require('ecstatic')
+var restify  = require('restify')
+var utils    = require('./utils')
 
 low._.createId = utils.createId
 
-var server = restify.createServer()
+var server = restify.createServer({
+  name: 'JSON Server'
+})
 
 server.use(restify.acceptParser(server.acceptable))
 server.use(restify.queryParser())
@@ -15,6 +18,11 @@ server.use(restify.jsonp())
 server.use(restify.gzipResponse())
 
 routes = {}
+
+server.get(/^\/$|.*(.css)/, restify.serveStatic({
+  'directory': __dirname + '/../public',
+  'default': 'index.html'
+}))
 
 // GET /db
 routes.db = function(req, res, next) {
@@ -111,11 +119,6 @@ server.post('/:resource', routes.create)
 server.put('/:resource/:id', routes.update)
 server.patch('/:resource/:id', routes.update)
 server.del('/:resource/:id', routes.destroy)
-
-server.get('/', restify.serveStatic({
-  directory: './public',
-  default: 'index.html'
-}));
 
 server.on('after',  function (req, res, route, err) {
   var latency = Date.now() - req.time()
