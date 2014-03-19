@@ -8,18 +8,14 @@
     "test": "test"
   },
   "dependencies": {
-    "commander": "~2.0.0",
     "cors": "~2.1.0",
-    "express": "~3.4.4",
-    "logan": "~0.0.2",
+    "express": "^3.4.8",
     "superagent": "~0.15.7",
     "underscore": "~1.5.2",
     "underscore.inflections": "~0.2.1",
-    "moment": "~2.4.0",
-    "low": "^0.4.2",
-    "restify": "^2.6.3",
+    "low": "^0.5.0",
     "yargs": "^1.2.1",
-    "ecstatic": "^0.4.13"
+    "chalk": "^0.4.0"
   },
   "devDependencies": {
     "supertest": "~0.8.1",

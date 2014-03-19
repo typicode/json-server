@@ -1,40 +1,40 @@
-var yargv   = require('yargs')
+
+var chalk   = require('chalk')
 var request = require('request')
 var low     = require('low')
 var server  = require('./server')
 
-function show() {
-  for (var prop in low.db) {
-    console.log(server.url + '/' + prop)
-  }
+function hello() {
+  console.log(
+    chalk.green('\n{^ ^} Heya!\n')
+  )
 }
 
 function start(port) {
-  server.listen(port, function() {
-    console.log('%s listening at %s', server.name, server.url);
-  })
+  for (var prop in low.db) {
+    console.log('http://localhost:' + port + '/' + chalk.green(prop))
+  }
+
+  server.listen(port)
 }
 
-function run() {
-  var argv = yargv.usage('Usage: $0 <source>')
-    .demand(1)
-    .default('port', 3000)
-    .argv
+function run(argv) {
+  hello();
 
   var source = argv._[0]
+
+  console.log('Loading database from ' + source + '\n')
 
   if (/\.json$/.test(source)) {
     var path = process.cwd() + '/' + source
     low.path = path
     low.db   = require(path);
-    show()
-    start()
+    start(argv.port)
   }
 
   if (/\.js$/.test(source)) {
     var path = process.cwd() + '/' + source
     low.db   = require(path).run();
-    show()
     start(argv.port)
   }
 
@@ -47,10 +47,12 @@ function run() {
           low.db = JSON.parse(res.text)
         }
       })
-    show()
-    start()
+    start(argv.port)
   }
 
+  console.log(
+    '\nEnter ' + chalk.green('`s`') + ' at any time to create a snapshot of the db\n'
+  )
   process.stdin.resume()
   process.stdin.setEncoding('utf8')
 

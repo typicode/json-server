@@ -1,33 +1,31 @@
-var _        = require('underscore')
-var low      = require('low')
-var ecstatic = require('ecstatic')
-var restify  = require('restify')
-var utils    = require('./utils')
+var express = require('express')
+var http    = require('http')
+var path    = require('path')
+var _       = require('underscore')
+var low     = require('low')
+var utils   = require('./utils')
 
 low._.createId = utils.createId
 
-var server = restify.createServer({
-  name: 'JSON Server'
-})
+var server = express()
 
-server.use(restify.acceptParser(server.acceptable))
-server.use(restify.queryParser())
-server.use(restify.bodyParser())
-server.use(restify.CORS())
-server.use(restify.jsonp())
-server.use(restify.gzipResponse())
+server.set('port', process.env.PORT || 3000)
+server.use(express.logger('dev'))
+server.use(express.json())
+server.use(express.urlencoded())
+server.use(express.methodOverride())
+server.use(express.static(path.join(__dirname, '../public')))
+server.use(server.router)
+
+if ('development' == server.get('env')) {
+  server.use(express.errorHandler());
+}
 
 routes = {}
 
-server.get(/^\/$|.*(.css)/, restify.serveStatic({
-  'directory': __dirname + '/../public',
-  'default': 'index.html'
-}))
-
 // GET /db
 routes.db = function(req, res, next) {
-  res.send(low.db)
-  next()
+  res.jsonp(low.db)
 }
 
 // GET /:resource?attr=&attr=
@@ -46,8 +44,7 @@ routes.list = function(req, res, next) {
     query = low(req.params.resource).where(properties)
   }
 
-  res.send(query.value())
-  next()
+  res.jsonp(query.value())
 }
 
 // GET /:parent/:parentId/:resource
@@ -63,8 +60,7 @@ routes.nestedList = function(req, res, next) {
     .where(properties)
     .value()
 
-  res.send(resource)
-  next()
+  res.jsonp(resource)
 }
 
 // GET /:resource/:id
@@ -73,8 +69,7 @@ routes.show = function(req, res, next) {
     .get(+req.params.id)
     .value()
 
-  res.send(resource)
-  next()
+  res.jsonp(resource)
 }
 
 // POST /:resource
@@ -83,8 +78,7 @@ routes.create = function(req, res, next) {
     .insert(req.body)
     .value()
 
-  res.send(resource)
-  next()
+  res.jsonp(resource)
 }
 
 // PUT /:resource/:id
@@ -94,21 +88,15 @@ routes.update = function(req, res, next) {
     .update(+req.params.id, req.body)
     .value()
   
-  res.send(resource)
-  next()
+  res.jsonp(resource)
 }
 
 // DELETE /:resource/:id
 routes.destroy = function(req, res, next) {
-  try {
-    low(req.params.resource).remove(+req.params.id)
-    utils.clean()
+  low(req.params.resource).remove(+req.params.id)
+  utils.clean()
 
-    res.send(204)
-    next()
-  } catch(e) {
-    console.trace(e)
-  }
+  res.send(204)
 }
 
 server.get('/db', routes.db)
