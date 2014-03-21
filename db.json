@@ -1,0 +1,20 @@
+{
+  "posts": [
+    {
+      "id": 2,
+      "body": "bar"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "published": true,
+      "postId": 1
+    },
+    {
+      "id": 2,
+      "published": false,
+      "postId": 1
+    }
+  ]
+}

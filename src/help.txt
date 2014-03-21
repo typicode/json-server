@@ -1,0 +1,14 @@
+
+  Usage: json-server <source> [options]
+
+  Options:
+
+    --version      output version
+    --port <port>  set port
+
+  Exemples:
+
+    json-server db.json
+    json-server seed.js
+    json-server http://example.com/db.json
+    

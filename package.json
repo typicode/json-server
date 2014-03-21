@@ -2,8 +2,8 @@
   "name": "json-server",
   "version": "0.2.0",
   "description": "Serves JSON files through REST routes.",
-  "main": "server.js",
-  "bin": "./bin/cli.js",
+  "main": "./src/server.js",
+  "bin": "./bin/index.js",
   "directories": {
     "test": "test"
   },
@@ -15,7 +15,9 @@
     "underscore.inflections": "~0.2.1",
     "low": "^0.4.2",
     "yargs": "^1.2.1",
-    "chalk": "^0.4.0"
+    "chalk": "^0.4.0",
+    "minimist": "0.0.8",
+    "update-notifier": "^0.1.8"
   },
   "devDependencies": {
     "supertest": "~0.8.1",

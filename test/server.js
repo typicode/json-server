@@ -52,6 +52,16 @@ describe('Server', function() {
     })
   })
 
+  describe.only('GET /:resource?_start=&_end=', function() {
+    it('should respond with sliced array', function(done) {
+      request(server)
+        .get('/comments?_start=1&_end=2')
+        .expect('Content-Type', /json/)
+        .expect(low.db.comments.slice(1, 2))
+        .expect(200, done)
+    })
+  })
+
   describe('GET /:parent/:parentId/:resource', function() {
     it('should respond with json and corresponding nested resources', function(done) {
       request(server)
