@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/typicode/json-server.png)](https://travis-ci.org/typicode/json-server)
 [![NPM version](https://badge.fury.io/js/json-server.png)](http://badge.fury.io/js/json-server)
 
-![](http://i.imgur.com/dLeJmw6.png)
+![](https://raw.githubusercontent.com/typicode/json-server/master/public/images/logo.png)
 
 # JSON Server
 

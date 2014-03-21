@@ -1,15 +1,25 @@
 var request = require('supertest')
-var assert = require('assert')
-var low = require('low')
-var server = require('../src/server')
-var fixture = require('./fixture')
+var assert  = require('assert')
+var low     = require('low')
+var server  = require('../src/server')
 var db
 
 describe('Server', function() {
 
   beforeEach(function() {
-    low.db = fixture()
-    server
+    low.db = {}
+
+    low.db.posts = [
+      {id: 1, body: 'foo'},
+      {id: 2, body: 'bar'}
+    ]
+
+    low.db.comments = [
+      {id: 1, published: true,  postId: 1},
+      {id: 2, published: false, postId: 1},
+      {id: 3, published: false, postId: 2},
+      {id: 4, published: false, postId: 2},
+    ]
   })
 
   describe('GET /db', function() {
@@ -125,5 +135,27 @@ describe('Server', function() {
           done()
         })
     })
+  })
+
+  describe('Static routes', function() {
+
+    describe('GET /', function() {
+      it('should respond with html', function(done) {
+        request(server)
+          .get('/')
+          .expect('Content-Type', /html/)
+          .expect(200, done);
+      });
+    });
+
+    describe('GET /stylesheets/style.css', function() {
+      it('should respond with css', function(done) {
+        request(server)
+          .get('/stylesheets/style.css')
+          .expect('Content-Type', /css/)
+          .expect(200, done);
+      });
+    });
+
   })
 })
