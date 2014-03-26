@@ -1,6 +1,6 @@
 {
   "name": "json-server",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Serves JSON files through REST routes.",
   "main": "./src/server.js",
   "bin": "./bin/index.js",
@@ -44,7 +44,8 @@
     "testing",
     "rest",
     "data",
-    "dummy"
+    "dummy",
+    "sandbox"
   ],
   "author": "Typicode <typicode@gmail.com>",
   "license": "MIT",
