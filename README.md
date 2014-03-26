@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="56" width="64" src="http://i.imgur.com/JCxrqRw.png"/>
+  <img height="56" width="64" src="http://i.imgur.com/dLeJmw6.png"/>
 </p>
 
 # JSON Server
@@ -15,11 +15,6 @@ Created with :heart: for front-end developers who need a flexible back-end for q
 
 ### Command line interface
 
-```bash
-$ json-server --file db.json
-$ curl -i http://localhost:3000/posts/1
-```
-
 ```javascript
 // db.json
 { 
@@ -29,16 +24,21 @@ $ curl -i http://localhost:3000/posts/1
 }
 ```
 
+```bash
+$ json-server --file db.json
+$ curl -i http://localhost:3000/posts/1
+```
+
 ### Node module
 
 ```javascript
 var server = require('json-server');
 
-server.low.db = { 
+server.setDB({ 
   posts: [
     { id: 1, body: 'foo' }
   ]
-}
+});
 
 server.get('/another/route', function(req, res, next) {
   // ...
@@ -150,6 +150,8 @@ PATCH /:resource/:id
 DEL   /:resource/:id
 ```
 
+To slice resources, add `_start` and `_end` query parameters to route.
+
 For routes usage information, have a look at [JSONPlaceholder](https://github.com/typicode/jsonplaceholder) code examples.
 
 ```
@@ -158,26 +160,11 @@ GET /db
 
 Returns database state.
 
-
 ```
 GET /
 ```
 
 Returns default index file or content of ./public/index.html (useful if you need to set a custom home page).
-
-
-## Support
-
-If you like the project, please tell your friends about it, star it or give feedback :) It's very much appreciated!
-
-For project updates or to get in touch, [@typicode](http://twitter.com/typicode). You can also send me a mail.
-
-## Test
-
-```bash
-$ npm install
-$ npm test
-```
 
 ## Articles
 
