@@ -15,7 +15,13 @@ server.use(express.logger('dev'))
 server.use(express.json())
 server.use(express.urlencoded())
 server.use(express.methodOverride())
-server.use(express.static(path.join(__dirname, '../public')))
+
+if (fs.existsSync(process.cwd() + '/public')) {
+  app.use(express.static(process.cwd() + '/public'));
+} else {
+  app.use(express.static(path.join(__dirname, './public')));
+}
+
 server.use(cors())
 server.use(server.router)
 
