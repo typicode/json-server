@@ -52,7 +52,7 @@ describe('Server', function() {
     })
   })
 
-  describe.only('GET /:resource?_start=&_end=', function() {
+  describe('GET /:resource?_start=&_end=', function() {
     it('should respond with sliced array', function(done) {
       request(server)
         .get('/comments?_start=1&_end=2')

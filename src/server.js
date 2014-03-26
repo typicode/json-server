@@ -1,3 +1,4 @@
+var fs      = require('fs')
 var express = require('express')
 var cors    = require('cors')
 var http    = require('http')
@@ -17,9 +18,9 @@ server.use(express.urlencoded())
 server.use(express.methodOverride())
 
 if (fs.existsSync(process.cwd() + '/public')) {
-  app.use(express.static(process.cwd() + '/public'));
+  server.use(express.static(process.cwd() + '/public'));
 } else {
-  app.use(express.static(path.join(__dirname, './public')));
+  server.use(express.static(path.join(__dirname, './public')));
 }
 
 server.use(cors())
