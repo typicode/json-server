@@ -34,11 +34,11 @@ $ curl -i http://localhost:3000/posts/1
 ```javascript
 var server = require('json-server');
 
-server.setDB({ 
+server.low.db = { 
   posts: [
     { id: 1, body: 'foo' }
   ]
-});
+}
 
 server.get('/another/route', function(req, res, next) {
   // ...
