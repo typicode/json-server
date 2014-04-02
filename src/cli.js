@@ -2,7 +2,7 @@ var fs      = require('fs')
 var chalk   = require('chalk')
 var minimist = require('minimist')
 var request = require('superagent')
-var low     = require('low')
+var low     = require('lowdb')
 var server  = require('./server')
 
 // Output version
