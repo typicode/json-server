@@ -13,7 +13,7 @@
     "superagent": "~0.15.7",
     "underscore": "~1.5.2",
     "underscore.inflections": "~0.2.1",
-    "low": "^0.4.2",
+    "lowdb": "^0.1.0",
     "yargs": "^1.2.1",
     "chalk": "^0.4.0",
     "minimist": "0.0.8",
