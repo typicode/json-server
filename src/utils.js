@@ -1,4 +1,4 @@
-var low = require('low') 
+var low = require('lowdb') 
 var _ = require('underscore')
 _.mixin(require('underscore.inflections'))
 

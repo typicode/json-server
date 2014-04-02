@@ -3,7 +3,7 @@ var express = require('express')
 var cors    = require('cors')
 var http    = require('http')
 var path    = require('path')
-var low     = require('low')
+var low     = require('lowdb')
 var utils   = require('./utils')
 var routes  = require('./routes')
 

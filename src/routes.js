@@ -1,6 +1,6 @@
-var _   = require('underscore')
-var low = require('low')
-var utils   = require('./utils')
+var _     = require('underscore')
+var low   = require('lowdb')
+var utils = require('./utils')
 
 var routes = {}
 

@@ -1,6 +1,6 @@
 var request = require('supertest')
 var assert  = require('assert')
-var low     = require('low')
+var low     = require('lowdb')
 var server  = require('../src/server')
 var db
 
