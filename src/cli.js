@@ -1,9 +1,9 @@
-var fs      = require('fs')
-var chalk   = require('chalk')
+var fs       = require('fs')
+var chalk    = require('chalk')
 var minimist = require('minimist')
-var request = require('superagent')
-var low     = require('low')
-var server  = require('./server')
+var request  = require('superagent')
+var low      = require('lowdb')
+var server   = require('./server')
 
 // Output version
 function version() {
