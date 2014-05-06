@@ -8,16 +8,16 @@
     "test": "test"
   },
   "dependencies": {
-    "cors": "~2.1.0",
+    "chalk": "^0.4.0",
+    "cors": "^2.3.0",
     "express": "^3.4.8",
+    "lowdb": "^0.1.0",
+    "minimist": "0.0.8",
     "superagent": "~0.15.7",
     "underscore": "~1.5.2",
     "underscore.inflections": "~0.2.1",
-    "lowdb": "^0.1.0",
-    "yargs": "^1.2.1",
-    "chalk": "^0.4.0",
-    "minimist": "0.0.8",
-    "update-notifier": "^0.1.8"
+    "update-notifier": "^0.1.8",
+    "yargs": "^1.2.1"
   },
   "devDependencies": {
     "supertest": "~0.8.1",
