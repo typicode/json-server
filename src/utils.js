@@ -28,33 +28,31 @@ function createId(coll) {
   }
 }
 
-// Removes empty relations
-function clean() {
-  var toBeRemoved = []
 
-  _(low.db).each(function(coll, collName) {
+// Returns document that are have unsatisfied relations
+// Example: comment that references a post that doesn't exist
+function getRemovable(db) {
+  var removable = []
+
+  _(db).each(function(coll, collName) {
     _(coll).each(function(doc) {
       _(doc).each(function(value, key) {
         if (/Id$/.test(key)) {
-          var reference = _.pluralize(key.slice(0, - 2))
-          if (!_.isUndefined(low(reference).get(doc[key]).value())) {
-            toBeRemoved.push({
-              collName: collName,
-              id: doc.id
-            })
+          var refName = _.pluralize(key.slice(0, - 2))
+          var ref     = _.findWhere(db[refName], {id: value})
+          if (_.isUndefined(ref)) {
+            removable.push([collName, doc.id])
           }
         }
       })
     })
   })
 
-  _(toBeRemoved).each(function(item) {
-    low(item.collName).remove(item.id);
-  })
+  return removable
 }
 
 module.exports = {
   toNative: toNative,
   createId: createId,
-  clean: clean
+  getRemovable: getRemovable
 }

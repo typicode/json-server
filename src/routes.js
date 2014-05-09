@@ -73,7 +73,13 @@ routes.update = function(req, res, next) {
 // DELETE /:resource/:id
 routes.destroy = function(req, res, next) {
   low(req.params.resource).remove(+req.params.id)
-  utils.clean()
+  
+  // Remove dependents documents
+  var removable = utils.getRemovable(low.db)
+
+  _(removable).each(function(item) {
+    low(item[0]).remove(item[1]);
+  })
 
   res.send(204)
 }

@@ -2,7 +2,6 @@ var request = require('supertest')
 var assert  = require('assert')
 var low     = require('lowdb')
 var server  = require('../src/server')
-var db
 
 describe('Server', function() {
 
@@ -19,6 +18,7 @@ describe('Server', function() {
       {id: 2, published: false, postId: 1},
       {id: 3, published: false, postId: 2},
       {id: 4, published: false, postId: 2},
+      {id: 5, published: false, postId: 2},
     ]
   })
 
@@ -141,7 +141,7 @@ describe('Server', function() {
         .end(function(err, res){
           if (err) return done(err)
           assert.equal(low.db.posts.length, 1)
-          assert.equal(low.db.comments.length, 2)
+          assert.equal(low.db.comments.length, 3)
           done()
         })
     })
