@@ -30,17 +30,17 @@ if ('development' == server.get('env')) {
   server.use(express.errorHandler());
 }
 
-server.get(  '/db'                          , routes.db)
-server.get(  '/:resource'                   , routes.list)
-server.get(  '/:parent/:parentId/:resource' , routes.list)
-server.get(  '/:resource/:id'               , routes.show)
+server.get(   '/db'                          , routes.db)
+server.get(   '/:resource'                   , routes.list)
+server.get(   '/:parent/:parentId/:resource' , routes.list)
+server.get(   '/:resource/:id'               , routes.show)
 
-server.post( '/:resource'                   , routes.create)
+server.post(  '/:resource'                   , routes.create)
 
-server.put(  '/:resource/:id'               , routes.update)
-server.patch('/:resource/:id'               , routes.update)
+server.put(   '/:resource/:id'               , routes.update)
+server.patch( '/:resource/:id'               , routes.update)
 
-server.del(  '/:resource/:id'               , routes.destroy)
+server.delete('/:resource/:id'               , routes.destroy)
 
 server.low = low
 
