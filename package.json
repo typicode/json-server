@@ -1,6 +1,6 @@
 {
   "name": "json-server",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Serves JSON files through REST routes.",
   "main": "./src/server.js",
   "bin": "./bin/index.js",
