@@ -8,8 +8,8 @@ Give it a JSON or JS seed file and it will serve it through REST routes.
 
 Created with :heart: for front-end developers who need a flexible back-end for quick prototyping and mocking.
 
-[![Build Status](https://travis-ci.org/typicode/json-server.png)](https://travis-ci.org/typicode/json-server)
-[![NPM version](https://badge.fury.io/js/json-server.png)](http://badge.fury.io/js/json-server)
+[![Build Status](https://travis-ci.org/typicode/json-server.svg)](https://travis-ci.org/typicode/json-server)
+[![NPM version](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server)
 
 ## Examples
 
