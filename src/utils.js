@@ -29,8 +29,8 @@ function createId(coll) {
 }
 
 
-// Returns document that are have unsatisfied relations
-// Example: comment that references a post that doesn't exist
+// Returns document ids that have unsatisfied relations
+// Example: a comment that references a post that doesn't exist
 function getRemovable(db) {
   var removable = []
 
