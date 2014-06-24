@@ -26,7 +26,7 @@ routes.list = function(req, res, next) {
   }
 
   for (var key in req.query) {
-    props[key] = utils.toNative(req.query[key])
+    if (key !== 'callback') props[key] = utils.toNative(req.query[key])
   }
 
   if (_(props).isEmpty()) {
