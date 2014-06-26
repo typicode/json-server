@@ -40,10 +40,6 @@ server.low.db = {
   ]
 }
 
-server.get('/another/route', function(req, res, next) {
-  // ...
-})
-
 server.listen(3000);
 ```
 
@@ -64,9 +60,7 @@ You can find a running demo here: http://jsonplaceholder.typicode.com.
 $ npm install -g json-server
 ```
 
-## Usage
-
-### Command line interface
+## CLI usage
 
 ```bash
 
@@ -121,21 +115,6 @@ exports.run = function() {
 JSON Server expects JS files to export a ```run``` method that returns an object.
 
 Seed files are useful if you need to programmaticaly create a lot of data.
-
-### Node module
-
-#### run(db, [options])
-
-```javascript
-var server = require('json-server'),
-    db = require('./seed').run();
-
-var options = { port: 4000, readOnly: true };
-
-server.run(db, options);
-```
-
-By default, ```port``` is set to 3000 and ```readOnly``` to false.
 
 ## Routes
 
