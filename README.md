@@ -70,12 +70,14 @@ $ npm install -g json-server
 
     --version      output version
     --port <port>  set port
+    --corsoptions <stringified json object with options that are passed to cors> 
 
   Exemples:
 
     json-server db.json
     json-server seed.js
     json-server http://example.com/db.json
+    json-server db.json --port 3030 --corsoptions "{\"origin\":\"http://localhost:63342\",\"credentials\":true}"
     
 ```
 
