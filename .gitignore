@@ -1,2 +1,5 @@
+*.iml
 node_modules
 db.json
+.idea/
+scratch/
