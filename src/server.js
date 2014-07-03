@@ -1,47 +1,58 @@
-var fs      = require('fs')
-var express = require('express')
-var cors    = require('cors')
-var http    = require('http')
-var path    = require('path')
-var low     = require('lowdb')
-var utils   = require('./utils')
-var routes  = require('./routes')
+var fs      = require('fs');
+var express = require('express');
+var cors    = require('cors');
+var http    = require('http');
+var path    = require('path');
+var low     = require('lowdb');
+var utils   = require('./utils');
+var routes  = require('./routes');
+var methodOverride = require('method-override');
 
-low._.createId = utils.createId
+low._.createId = utils.createId;
 
-var server = express()
+//Export server with setup functions that can be called separately.
+var expserver = {};
 
-server.set('port', process.env.PORT || 3000)
-server.use(express.logger('dev'))
-server.use(express.json())
-server.use(express.urlencoded())
-server.use(express.methodOverride())
+expserver.server = express();
+expserver.server.set('port', process.env.PORT || 3000);
 
-if (fs.existsSync(process.cwd() + '/public')) {
-  server.use(express.static(process.cwd() + '/public'));
-} else {
-  server.use(express.static(path.join(__dirname, './public')));
-}
+expserver.setupMiddleware = function(corsOptions) {
+  this.server.use(express.logger('dev'));
+  this.server.use(express.json());
+  this.server.use(express.urlencoded());
+  this.server.use(methodOverride());
 
-server.use(cors())
-server.use(server.router)
+  if (fs.existsSync(process.cwd() + '/public')) {
+    this.server.use(express.static(process.cwd() + '/public'));
+  } else {
+    this.server.use(express.static(path.join(__dirname, './public')));
+  }
+  this.server.use(cors(corsOptions));
+  this.server.use(expserver.server.router);
 
-if ('development' == server.get('env')) {
-  server.use(express.errorHandler());
-}
+  if ('development' == this.server.get('env')) {
+    this.server.use(express.errorHandler());
+  }
+};
 
-server.get(   '/db'                          , routes.db)
-server.get(   '/:resource'                   , routes.list)
-server.get(   '/:parent/:parentId/:resource' , routes.list)
-server.get(   '/:resource/:id'               , routes.show)
+expserver.setupRoutes = function() {
+  this.server.get(   '/db'                          , routes.db);
+  this.server.get(   '/:resource'                   , routes.list);
+  this.server.get(   '/:parent/:parentId/:resource' , routes.list);
+  this.server.get(   '/:resource/:id'               , routes.show);
+  this.server.post(  '/:resource'                   , routes.create);
+  this.server.put(   '/:resource/:id'               , routes.update);
+  this.server.patch( '/:resource/:id'               , routes.update);
+  this.server.delete('/:resource/:id'               , routes.destroy);
+};
 
-server.post(  '/:resource'                   , routes.create)
+expserver.listen = function(port) {
+  this.server.listen(port);
+};
 
-server.put(   '/:resource/:id'               , routes.update)
-server.patch( '/:resource/:id'               , routes.update)
 
-server.delete('/:resource/:id'               , routes.destroy)
 
-server.low = low
 
-module.exports = server
+expserver.server.low = low;
+
+module.exports = expserver;
