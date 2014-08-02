@@ -25,7 +25,7 @@ Created with :heart: for front-end developers who need a flexible back-end for q
 ```
 
 ```bash
-$ json-server --file db.json
+$ json-server db.json
 $ curl -i http://localhost:3000/posts/1
 ```
 
