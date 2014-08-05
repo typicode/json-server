@@ -12,6 +12,7 @@
     "cors": "^2.3.0",
     "express": "^3.4.8",
     "lowdb": "^0.3.0",
+    "method-override": "^2.0.2",
     "minimist": "0.0.8",
     "superagent": "~0.15.7",
     "underscore": "~1.5.2",
