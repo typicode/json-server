@@ -1,11 +1,12 @@
-var fs      = require('fs')
-var express = require('express')
-var cors    = require('cors')
-var http    = require('http')
-var path    = require('path')
-var low     = require('lowdb')
-var utils   = require('./utils')
-var routes  = require('./routes')
+var fs             = require('fs')
+var express        = require('express')
+var cors           = require('cors')
+var http           = require('http')
+var path           = require('path')
+var methodOverride = require('method-override')
+var low            = require('lowdb')
+var utils          = require('./utils')
+var routes         = require('./routes')
 
 low._.createId = utils.createId
 
@@ -15,7 +16,7 @@ server.set('port', process.env.PORT || 3000)
 server.use(express.logger('dev'))
 server.use(express.json())
 server.use(express.urlencoded())
-server.use(express.methodOverride())
+server.use(methodOverride())
 
 if (fs.existsSync(process.cwd() + '/public')) {
   server.use(express.static(process.cwd() + '/public'));
