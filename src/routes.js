@@ -53,6 +53,10 @@ routes.show = function(req, res, next) {
 
 // POST /:resource
 routes.create = function(req, res, next) {
+  for (var key in req.body) {
+    req.body[key] = utils.toNative(req.body[key])
+  }
+  
   var resource = low(req.params.resource)
     .insert(req.body)
     .value()
@@ -63,6 +67,10 @@ routes.create = function(req, res, next) {
 // PUT /:resource/:id
 // PATCH /:resource/:id
 routes.update = function(req, res, next) {
+  for (var key in req.body) {
+    req.body[key] = utils.toNative(req.body[key])
+  }
+
   var resource = low(req.params.resource)
     .update(+req.params.id, req.body)
     .value()

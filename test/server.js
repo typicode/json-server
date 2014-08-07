@@ -92,9 +92,9 @@ describe('Server', function() {
     it('should respond with json and create a resource', function(done) {
       request(server)
         .post('/posts')
-        .send({body: 'foo'})
+        .send({body: 'foo', booleanValue: 'true', integerValue: '1'})
         .expect('Content-Type', /json/)
-        .expect({id: 3, body: 'foo'})
+        .expect({id: 3, body: 'foo', booleanValue: true, integerValue: 1})
         .expect(200)
         .end(function(err, res){
           if (err) return done(err)
@@ -108,13 +108,13 @@ describe('Server', function() {
     it('should respond with json and update resource', function(done) {
       request(server)
         .put('/posts/1')
-        .send({id: 1, body: 'foo'})
+        .send({id: 1, body: 'bar', booleanValue: 'true', integerValue: '1'})
         .expect('Content-Type', /json/)
-        .expect({id: 1, body: 'foo'})
+        .expect({id: 1, body: 'bar', booleanValue: true, integerValue: 1})
         .expect(200)
         .end(function(err, res){
           if (err) return done(err)
-          assert.deepEqual(low.db.posts[0], {id: 1, body: 'foo'})
+          assert.deepEqual(low.db.posts[0], {id: 1, body: 'bar', booleanValue: true, integerValue: 1})
           done()
         })
     })
