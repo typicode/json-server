@@ -1,5 +1,5 @@
 <p align="center">
-  <img height="56" width="64" src="http://i.imgur.com/dLeJmw6.png"/>
+  <img height="56" width="64" src="http://i.imgur.com/QRlAg0b.png"/>
 </p>
 
 # JSON Server
@@ -50,7 +50,7 @@ You can find a running demo here: http://jsonplaceholder.typicode.com.
 * Lets you use plain JSON or simple JS file
 * Supports __GET__ but also __POST__, __PUT__, __DELETE__ and even __PATCH__ requests
 * Can be used from anywhere through __cross domain__ requests (JSONP or CORS)
-* Can load remote JSON files
+* Can load remote JSON files ([JSON Generator](http://www.json-generator.com/))
 * Can be deployed on Nodejitsu, Heroku, ...
 
 
@@ -145,6 +145,6 @@ GET /
 
 Returns default index file or content of ./public/index.html (useful if you need to set a custom home page).
 
-## Articles
+## Links
 
 * [Fast prototyping using Restangular and Json-server](http://bahmutov.calepin.co/fast-prototyping-using-restangular-and-json-server.html)
