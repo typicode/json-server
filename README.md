@@ -50,7 +50,7 @@ You can find a running demo here: http://jsonplaceholder.typicode.com.
 * Lets you use plain JSON or simple JS file
 * Supports __GET__ but also __POST__, __PUT__, __DELETE__ and even __PATCH__ requests
 * Can be used from anywhere through __cross domain__ requests (JSONP or CORS)
-* Can load remote JSON files ([JSON Generator](http://www.json-generator.com/))
+* Can load remote JSON files ([JSON Generator](http://www.json-generator.com/), ...)
 * Can be deployed on Nodejitsu, Heroku, ...
 
 
