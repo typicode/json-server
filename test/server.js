@@ -36,7 +36,10 @@ describe('Server', function() {
     it('should respond with json and corresponding resources', function(done) {
       request(server)
         .get('/posts')
+        .set('Origin', 'http://example.com')
         .expect('Content-Type', /json/)
+        .expect('Access-Control-Allow-Credentials', 'true')
+        .expect('Access-Control-Allow-Origin', 'http://example.com')
         .expect(low.db.posts)
         .expect(200, done)
     })

@@ -23,7 +23,7 @@ if (fs.existsSync(process.cwd() + '/public')) {
   server.use(express.static(path.join(__dirname, './public')));
 }
 
-server.use(cors())
+server.use(cors({ origin: true, credentials: true }))
 server.use(server.router)
 
 if ('development' == server.get('env')) {
