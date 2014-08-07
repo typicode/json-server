@@ -2,14 +2,11 @@
   <img height="56" width="64" src="http://i.imgur.com/QRlAg0b.png"/>
 </p>
 
-# JSON Server
+# JSON Server [![Build Status](https://travis-ci.org/typicode/json-server.svg)](https://travis-ci.org/typicode/json-server) [![NPM version](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server)
 
 Give it a JSON or JS seed file and it will serve it through REST routes.
 
-Created with :heart: for front-end developers who need a flexible back-end for quick prototyping and mocking.
-
-[![Build Status](https://travis-ci.org/typicode/json-server.svg)](https://travis-ci.org/typicode/json-server)
-[![NPM version](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server)
+Created with <3 for front-end developers who need a flexible back-end for quick prototyping and mocking.
 
 ## Examples
 
