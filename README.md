@@ -89,7 +89,7 @@ Here's 2 examples showing how to format JSON or JS seed file:
     { "id": 2, "body": "bar" }
   ],
   "comments": [
-    { "id": 1, "body": "baz", "postId": 1 }
+    { "id": 1, "body": "baz", "postId": 1 },
     { "id": 2, "body": "qux", "postId": 2 }
   ]
 }
