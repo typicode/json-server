@@ -145,3 +145,4 @@ Returns default index file or content of ./public/index.html (useful if you need
 ## Links
 
 * [Fast prototyping using Restangular and Json-server](http://bahmutov.calepin.co/fast-prototyping-using-restangular-and-json-server.html)
+* [Grunt plugin](https://github.com/tfiwm/grunt-json-server)
