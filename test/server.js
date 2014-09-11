@@ -13,6 +13,12 @@ describe('Server', function() {
       {id: 2, body: 'bar'}
     ]
 
+    low.db.tags = [
+      {id: 1, body: 'Technology'},
+      {id: 2, body: 'Photography'},
+      {id: 3, body: 'photo'}
+    ]
+
     low.db.comments = [
       {id: 1, published: true,  postId: 1},
       {id: 2, published: false, postId: 1},
@@ -52,6 +58,32 @@ describe('Server', function() {
         .expect('Content-Type', /json/)
         .expect([low.db.comments[0]])
         .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource?q=value', function() {
+    it('should respond with json and filter all begin of fields of resources', function(done) {
+      request(server)
+        .get('/tags?q=photo')
+        .expect('Content-Type', /json/)
+        .expect([low.db.tags[1], low.db.tags[2]])
+        .expect(200, done)
+    })
+
+    it('should respond with json and filter everywhere of all fields of resources', function(done) {
+        request(server)
+            .get('/tags?q=t')
+            .expect('Content-Type', /json/)
+            .expect(low.db.tags)
+            .expect(200, done)
+    })
+
+    it('should not respond anything when the query does not many any data', function(done) {
+        request(server)
+            .get('/tags?q=nope')
+            .expect('Content-Type', /json/)
+            .expect([])
+            .expect(200, done)
     })
   })
 

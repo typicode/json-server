@@ -26,10 +26,26 @@ routes.list = function(req, res, next) {
   }
 
   for (var key in req.query) {
-    if (key !== 'callback') props[key] = utils.toNative(req.query[key])
+    if (key !== 'callback' && key != 'q') props[key] = utils.toNative(req.query[key])
   }
 
-  if (_(props).isEmpty()) {
+  if(req.query.q !== undefined) {
+    var q = req.query.q.toLowerCase(),
+        keys = _.keys(low(req.params.resource).first()),
+        callback = function(element) {
+            for(var i in keys) {
+                var value = element[keys[i]];
+
+                if (value === q || (_.isString(value) && value.toLowerCase().indexOf(q) !== -1)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+    resource = low(req.params.resource).where(callback).value()
+  } else if (_(props).isEmpty()) {
     resource = low(req.params.resource).value()
   } else {
     resource = low(req.params.resource).where(props).value()
