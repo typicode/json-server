@@ -52,6 +52,9 @@ routes.list = function(req, res, next) {
   }
 
   if (_start) {
+	res.setHeader('X-Count', resource.length)
+	res.setHeader('Access-Control-Expose-Headers', 'X-Count')
+
     resource = resource.slice(_start, _end)
   }
 
@@ -72,7 +75,7 @@ routes.create = function(req, res, next) {
   for (var key in req.body) {
     req.body[key] = utils.toNative(req.body[key])
   }
-  
+
   var resource = low(req.params.resource)
     .insert(req.body)
     .value()
@@ -90,14 +93,14 @@ routes.update = function(req, res, next) {
   var resource = low(req.params.resource)
     .update(+req.params.id, req.body)
     .value()
-  
+
   res.jsonp(resource)
 }
 
 // DELETE /:resource/:id
 routes.destroy = function(req, res, next) {
   low(req.params.resource).remove(+req.params.id)
-  
+
   // Remove dependents documents
   var removable = utils.getRemovable(low.db)
 

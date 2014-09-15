@@ -93,7 +93,11 @@ describe('Server', function() {
         .get('/comments?_start=1&_end=2')
         .expect('Content-Type', /json/)
         .expect(low.db.comments.slice(1, 2))
-        .expect(200, done)
+        .expect(200)
+        .end(function(err, res){
+          assert.equal(res.headers['x-count'], 5)
+          done()
+        })
     })
   })
 
