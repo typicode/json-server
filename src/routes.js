@@ -1,5 +1,5 @@
-var _     = require('underscore')
-var low   = require('lowdb')
+var _ = require('underscore')
+var low = require('lowdb')
 var utils = require('./utils')
 
 var routes = {}
@@ -9,56 +9,75 @@ routes.db = function(req, res, next) {
   res.jsonp(low.db)
 }
 
+// GET /:resource
+// GET /:resource?q=
 // GET /:resource?attr=&attr=
-// GET /:parent/:parentId/:resource
+// GET /:parent/:parentId/:resource?attr=&attr=
+// GET /*?*&limit=
+// GET /*?*&offset=&limit=
 routes.list = function(req, res, next) {
-  var props = {}
-  var resource
 
-  var _start = req.query._start
-  var _end   = req.query._end
+  // Filters list
+  var filters = {}
 
-  delete req.query._start
-  delete req.query._end
+  // Result array
+  var array
 
-  if (req.params.parent) {
-    props[req.params.parent.slice(0, - 1) + 'Id'] = +req.params.parentId
-  }
+  // Remove offset and limit from req.query to avoid filtering using those
+  // parameters
+  var offset = req.query.offset
+  var limit = req.query.limit
 
-  for (var key in req.query) {
-    if (key !== 'callback' && key != 'q') props[key] = utils.toNative(req.query[key])
-  }
+  delete req.query.offset
+  delete req.query.limit
 
-  if(req.query.q !== undefined) {
-    var q = req.query.q.toLowerCase(),
-        keys = _.keys(low(req.params.resource).first()),
-        callback = function(element) {
-            for(var i in keys) {
-                var value = element[keys[i]];
+  if (req.query.q) {
 
-                if (value === q || (_.isString(value) && value.toLowerCase().indexOf(q) !== -1)) {
-                    return true;
-                }
-            }
+    var q = req.query.q.toLowerCase()
 
-            return false;
+    array = low(req.params.resource).where(function(obj) {
+      for (var key in obj) {
+        var value = obj[key]
+        if (_.isString(value) && value.toLowerCase().indexOf(q) !== -1) {
+          return true
         }
+      }
+    }).value()
 
-    resource = low(req.params.resource).where(callback).value()
-  } else if (_(props).isEmpty()) {
-    resource = low(req.params.resource).value()
   } else {
-    resource = low(req.params.resource).where(props).value()
+
+    // Add :parentId filter in case URL is like /:parent/:parentId/:resource
+    if (req.params.parent) {
+      filters[req.params.parent.slice(0, - 1) + 'Id'] = +req.params.parentId
+    }
+
+    // Add query parameters filters
+    // Convert query parameters to their native counterparts
+    for (var key in req.query) {
+      if (key !== 'callback') {
+        filters[key] = utils.toNative(req.query[key])
+      }
+    }
+
+    // Filter
+    if (_(filters).isEmpty()) {
+      array = low(req.params.resource).value()
+    } else {
+      array = low(req.params.resource).where(filters).value()
+    }
   }
 
-  if (_start) {
-	res.setHeader('X-Count', resource.length)
-	res.setHeader('Access-Control-Expose-Headers', 'X-Count')
+  // Slicing result
+  if (limit) {
+  	res.setHeader('X-Total-Count', array.length)
+  	res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
 
-    resource = resource.slice(_start, _end)
+    offset = offset || 0
+
+    array = array.slice(offset, limit)
   }
 
-  res.jsonp(resource)
+  res.jsonp(array)
 }
 
 // GET /:resource/:id
@@ -67,7 +86,11 @@ routes.show = function(req, res, next) {
     .get(+req.params.id)
     .value()
 
-  res.jsonp(resource)
+  if (resource) {
+    res.jsonp(resource)
+  } else {
+    res.status(404).jsonp({})
+  }
 }
 
 // POST /:resource
@@ -94,7 +117,11 @@ routes.update = function(req, res, next) {
     .update(+req.params.id, req.body)
     .value()
 
-  res.jsonp(resource)
+  if (resource) {
+    res.jsonp(resource)
+  } else {
+    res.status(404).jsonp({})
+  }
 }
 
 // DELETE /:resource/:id
@@ -108,7 +135,7 @@ routes.destroy = function(req, res, next) {
     low(item[0]).remove(item[1]);
   })
 
-  res.send(204)
+  res.status(204).end()
 }
 
 module.exports = routes
