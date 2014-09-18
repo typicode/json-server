@@ -54,10 +54,11 @@ routes.list = function(req, res, next) {
     // Add query parameters filters
     // Convert query parameters to their native counterparts
     for (var key in req.query) {
-      if (key !== 'callback') {
+      if (['callback', '_sort', '_sortDir'].indexOf(key) === -1) {
         filters[key] = utils.toNative(req.query[key])
       }
     }
+
 
     // Filter
     if (_(filters).isEmpty()) {
@@ -65,6 +66,19 @@ routes.list = function(req, res, next) {
     } else {
       array = low(req.params.resource).where(filters).value()
     }
+  }
+
+  if(req.query._sort !== undefined) {
+      var sortField = req.query._sort,
+          sortDir = req.query._sortDir || 'ASC'
+
+      array = _.sortBy(array, function(element) {
+          return element[sortField];
+      })
+
+      if (sortDir === 'DESC') {
+          array.reverse();
+      }
   }
 
   // Slicing result
