@@ -13,8 +13,8 @@ routes.db = function(req, res, next) {
 // GET /:resource?q=
 // GET /:resource?attr=&attr=
 // GET /:parent/:parentId/:resource?attr=&attr=
-// GET /*?*&limit=
-// GET /*?*&offset=&limit=
+// GET /*?*&_end=
+// GET /*?*&_start=&_end=
 routes.list = function(req, res, next) {
 
   // Filters list
@@ -23,16 +23,17 @@ routes.list = function(req, res, next) {
   // Result array
   var array
 
-  // Remove offset and limit from req.query to avoid filtering using those
+  // Remove _start and _end from req.query to avoid filtering using those
   // parameters
-  var offset = req.query.offset
-  var limit = req.query.limit
+  var _start = req.query._start
+  var _end = req.query._end
 
-  delete req.query.offset
-  delete req.query.limit
+  delete req.query._start
+  delete req.query._end
 
   if (req.query.q) {
 
+    // Full-text search
     var q = req.query.q.toLowerCase()
 
     array = low(req.params.resource).where(function(obj) {
@@ -67,14 +68,14 @@ routes.list = function(req, res, next) {
     }
   }
 
-  // Slicing result
-  if (limit) {
+  // Slice result
+  if (_end) {
   	res.setHeader('X-Total-Count', array.length)
   	res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
 
-    offset = offset || 0
+    _start = _start || 0
 
-    array = array.slice(offset, limit)
+    array = array.slice(_start, _end)
   }
 
   res.jsonp(array)

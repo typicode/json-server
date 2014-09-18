@@ -128,7 +128,19 @@ PATCH /:resource/:id
 DEL   /:resource/:id
 ```
 
-To slice resources, add `_start` and `_end` to query parameters.
+To slice resources, add `_start` and `_end`.
+
+```
+GET /:resource?_start=&end=
+GET /:resource?filter=&filter=&_start=&end=
+GET /:parent/:parentId/:resource?_start=&end=
+```
+
+To make a full-text search on resources, add `q`.
+
+```
+GET /:resource?q=
+```
 
 For routes usage information, have a look at [JSONPlaceholder](https://github.com/typicode/jsonplaceholder) code examples.
 

@@ -79,10 +79,10 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:resource?limit=', function() {
+  describe('GET /:resource?_end=', function() {
     it('should respond with a sliced array', function(done) {
       request(server)
-        .get('/comments?limit=2')
+        .get('/comments?_end=2')
         .expect('Content-Type', /json/)
         .expect('x-total-count', low.db.comments.length.toString())
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
@@ -91,10 +91,10 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:resource?offset=&limit=', function() {
+  describe('GET /:resource?_start=&_end=', function() {
     it('should respond with a sliced array', function(done) {
       request(server)
-        .get('/comments?offset=1&limit=2')
+        .get('/comments?_start=1&_end=2')
         .expect('Content-Type', /json/)
         .expect('x-total-count', low.db.comments.length.toString())
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
