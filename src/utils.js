@@ -8,13 +8,14 @@ _.mixin(require('underscore.inflections'))
 //   'true' -> true
 //   '1' -> 1
 function toNative(value) {
-  if (value === 'true' || value === 'false') {
-    return value === 'true'
-  } else if (!isNaN(+value)) {
-    return +value
-  } else {
-    return value
+  if (typeof value === 'string') {
+    if (value === 'true' || value === 'false') {
+      return value === 'true'
+    } else if (!isNaN(+value)) {
+      return +value
+    }
   }
+  return value
 }
 
 // Creates incremental id.

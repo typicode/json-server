@@ -61,43 +61,45 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:resource?q=value', function() {
-    it('should respond with json and filter all begin of fields of resources', function(done) {
+  describe('GET /:resource?q=', function() {
+    it('should respond with json and make a full-text search', function(done) {
       request(server)
-        .get('/tags?q=photo')
+        .get('/tags?q=pho')
         .expect('Content-Type', /json/)
         .expect([low.db.tags[1], low.db.tags[2]])
         .expect(200, done)
     })
 
-    it('should respond with json and filter everywhere of all fields of resources', function(done) {
+    it('should return an empty array when nothing is matched', function(done) {
         request(server)
-            .get('/tags?q=t')
-            .expect('Content-Type', /json/)
-            .expect(low.db.tags)
-            .expect(200, done)
-    })
-
-    it('should not respond anything when the query does not many any data', function(done) {
-        request(server)
-            .get('/tags?q=nope')
-            .expect('Content-Type', /json/)
-            .expect([])
-            .expect(200, done)
+          .get('/tags?q=nope')
+          .expect('Content-Type', /json/)
+          .expect([])
+          .expect(200, done)
     })
   })
 
-  describe('GET /:resource?_start=&_end=', function() {
-    it('should respond with sliced array', function(done) {
+  describe('GET /:resource?limit=', function() {
+    it('should respond with a sliced array', function(done) {
       request(server)
-        .get('/comments?_start=1&_end=2')
+        .get('/comments?limit=2')
         .expect('Content-Type', /json/)
+        .expect('x-total-count', low.db.comments.length.toString())
+        .expect('Access-Control-Expose-Headers', 'X-Total-Count')
+        .expect(low.db.comments.slice(0, 2))
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource?offset=&limit=', function() {
+    it('should respond with a sliced array', function(done) {
+      request(server)
+        .get('/comments?offset=1&limit=2')
+        .expect('Content-Type', /json/)
+        .expect('x-total-count', low.db.comments.length.toString())
+        .expect('Access-Control-Expose-Headers', 'X-Total-Count')
         .expect(low.db.comments.slice(1, 2))
-        .expect(200)
-        .end(function(err, res){
-          assert.equal(res.headers['x-count'], 5)
-          done()
-        })
+        .expect(200, done)
     })
   })
 
@@ -122,7 +124,16 @@ describe('Server', function() {
         .expect(low.db.posts[0])
         .expect(200, done)
     })
+
+    it('should respond with 404 if resource is not found', function(done) {
+      request(server)
+        .get('/posts/9001')
+        .expect('Content-Type', /json/)
+        .expect({})
+        .expect(404, done)
+    })
   })
+
 
   describe('POST /:resource', function() {
     it('should respond with json and create a resource', function(done) {
@@ -150,9 +161,19 @@ describe('Server', function() {
         .expect(200)
         .end(function(err, res){
           if (err) return done(err)
+          // assert it was created in database too
           assert.deepEqual(low.db.posts[0], {id: 1, body: 'bar', booleanValue: true, integerValue: 1})
           done()
         })
+    })
+
+    it('should respond with 404 if resource is not found', function(done) {
+      request(server)
+        .put('/posts/9001')
+        .send({id: 1, body: 'bar', booleanValue: 'true', integerValue: '1'})
+        .expect('Content-Type', /json/)
+        .expect({})
+        .expect(404, done)
     })
   })
 
@@ -166,9 +187,19 @@ describe('Server', function() {
         .expect(200)
         .end(function(err, res){
           if (err) return done(err)
+          // assert it was created in database too
           assert.deepEqual(low.db.posts[0], {id: 1, body: 'bar'})
           done()
         })
+    })
+
+    it('should respond with 404 if resource is not found', function(done) {
+      request(server)
+        .patch('/posts/9001')
+        .send({body: 'bar'})
+        .expect('Content-Type', /json/)
+        .expect({})
+        .expect(404, done)
     })
   })
 
