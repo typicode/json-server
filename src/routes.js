@@ -27,9 +27,13 @@ routes.list = function(req, res, next) {
   // parameters
   var _start = req.query._start
   var _end = req.query._end
+  var _sort = req.query._sort
+  var _sortDir = req.query._sortDir
 
   delete req.query._start
   delete req.query._end
+  delete req.query._sort
+  delete req.query._sortDir
 
   if (req.query.q) {
 
@@ -66,6 +70,18 @@ routes.list = function(req, res, next) {
     } else {
       array = low(req.params.resource).where(filters).value()
     }
+  }
+
+  if(_sort) {
+      _sortDir = _sortDir || 'ASC'
+
+      array = _.sortBy(array, function(element) {
+          return element[_sort];
+      })
+
+      if (_sortDir === 'DESC') {
+          array.reverse();
+      }
   }
 
   // Slice result
