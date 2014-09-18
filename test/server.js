@@ -91,6 +91,32 @@ describe('Server', function() {
     })
   })
 
+  describe('GET /:resource?sort=', function() {
+      it('should respond with json and sort on a field', function(done) {
+          request(server)
+              .get('/tags?_sort=body')
+              .expect('Content-Type', /json/)
+              .expect([low.db.tags[1], low.db.tags[0], low.db.tags[2]])
+              .expect(200, done)
+      })
+
+      it('should reverse sorting with sortDir=DESC', function(done) {
+          request(server)
+              .get('/tags?_sort=body&_sortDir=DESC')
+              .expect('Content-Type', /json/)
+              .expect([low.db.tags[2], low.db.tags[0], low.db.tags[1]])
+              .expect(200, done)
+      })
+
+      it('should sort on numerical field', function(done) {
+          request(server)
+              .get('/posts?_sort=id&_sortDir=DESC')
+              .expect('Content-Type', /json/)
+              .expect(low.db.posts.reverse())
+              .expect(200, done)
+      })
+  })
+
   describe('GET /:resource?_start=&_end=', function() {
     it('should respond with a sliced array', function(done) {
       request(server)
