@@ -132,8 +132,8 @@ To slice resources, add `_start` and `_end`.
 
 ```
 GET /:resource?_start=&end=
-GET /:resource?filter=&filter=&_start=&end=
-GET /:parent/:parentId/:resource?_start=&end=
+GET /:resource?filter=&filter=&_start=&_end=
+GET /:parent/:parentId/:resource?_start=&_end=
 ```
 
 To make a full-text search on resources, add `q`.
