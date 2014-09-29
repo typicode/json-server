@@ -131,7 +131,7 @@ DEL   /:resource/:id
 To slice resources, add `_start` and `_end`.
 
 ```
-GET /:resource?_start=&end=
+GET /:resource?_start=&_end=
 GET /:resource?filter=&filter=&_start=&_end=
 GET /:parent/:parentId/:resource?_start=&_end=
 ```
