@@ -19,7 +19,7 @@ var server = express()
 
 server.set('port', process.env.PORT || 3000)
 
-// Don't use logger if app is mounted
+// Don't use logger if json-server is mounted
 if (!module.parent) {
   server.use(logger('dev'))
 }
