@@ -18,7 +18,12 @@ low._.createId = utils.createId
 var server = express()
 
 server.set('port', process.env.PORT || 3000)
-server.use(logger('dev'))
+
+// Don't use logger if app is mounted
+if (!module.parent) {
+  server.use(logger('dev'))
+}
+
 server.use(bodyParser.json())
 server.use(bodyParser.urlencoded({ extended: false }))
 server.use(methodOverride())
