@@ -19,29 +19,31 @@ function help() {
 }
 
 // Start server
-function start(port) {
+function start(port, silent) {
   for (var prop in low.db) {
     console.log('http://localhost:' + port + '/' + chalk.green(prop))
   }
 
-  console.log(
-    '\nEnter ' + chalk.green('`s`') + ' at any time to create a snapshot of the db\n'
-  )
-  process.stdin.resume()
-  process.stdin.setEncoding('utf8')
-  process.stdin.on('data', function (chunk) {
-    if (chunk.trim().toLowerCase() === 's') {
-      var file = 'db-' + Date.now() + '.json'
-      low.save(file)
-      console.log('\nSaved snapshot to ' + chalk.green(file) + '\n')
-    }
-  })
+  if(!silent) {
+    console.log(
+      '\nEnter ' + chalk.green('`s`') + ' at any time to create a snapshot of the db\n'
+    )
+    process.stdin.resume()
+    process.stdin.setEncoding('utf8')
+    process.stdin.on('data', function (chunk) {
+      if (chunk.trim().toLowerCase() === 's') {
+        var file = 'db-' + Date.now() + '.json'
+        low.save(file)
+        console.log('\nSaved snapshot to ' + chalk.green(file) + '\n')
+      }
+    })
+  }
 
   server.listen(port)
 }
 
 // Load source
-function load(source, port) {
+function load(source, port, silent) {
   console.log(chalk.green('\n{^ ^} Heya!\n'))
 
   console.log('Loading database from ' + source + '\n')
@@ -50,13 +52,13 @@ function load(source, port) {
     var path = process.cwd() + '/' + source
     low.path = path
     low.db   = require(path);
-    start(port)
+    start(port, silent)
   }
 
   if (/\.js$/.test(source)) {
     var path = process.cwd() + '/' + source
     low.db   = require(path).run();
-    start(port)
+    start(port, silent)
   }
 
   if (/^http/.test(source)) {
@@ -67,7 +69,7 @@ function load(source, port) {
           console.error(err)
         } else {
           low.db = JSON.parse(res.text)
-          start(port)
+          start(port, silent)
         }
       })
   }
@@ -77,9 +79,10 @@ function load(source, port) {
 function run(argv) {
   var source = argv._[0]
   var port   = argv.port || 3000
+  var silent = argv.silent
 
   if (argv.version) return version()
-  if (source)       return load(source, port)
+  if (source)       return load(source, port, silent)
 
   help()
 }
