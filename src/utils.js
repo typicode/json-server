@@ -1,7 +1,6 @@
-var low = require('lowdb') 
 var _ = require('underscore')
-_.mixin(require('underscore.inflections'))
-
+var _inflections = require('underscore.inflections')
+_.mixin(_inflections)
 
 // Turns string to native.
 // Example:
@@ -42,7 +41,7 @@ function getRemovable(db) {
           var refName = _.pluralize(key.slice(0, - 2))
           var ref     = _.findWhere(db[refName], {id: value})
           if (_.isUndefined(ref)) {
-            removable.push([collName, doc.id])
+            removable.push({ name: collName, id: doc.id })
           }
         }
       })

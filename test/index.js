@@ -1,31 +1,35 @@
 var request = require('supertest')
 var assert  = require('assert')
-var low     = require('lowdb')
-var server  = require('../src/server')
+var jsonServer  = require('../src/')
 
 describe('Server', function() {
 
-  beforeEach(function() {
-    low.db = {}
+  var server
+  var db
 
-    low.db.posts = [
+  beforeEach(function() {
+    db = {}
+
+    db.posts = [
       {id: 1, body: 'foo'},
       {id: 2, body: 'bar'}
     ]
 
-    low.db.tags = [
+    db.tags = [
       {id: 1, body: 'Technology'},
       {id: 2, body: 'Photography'},
       {id: 3, body: 'photo'}
     ]
 
-    low.db.comments = [
+    db.comments = [
       {id: 1, published: true,  postId: 1},
       {id: 2, published: false, postId: 1},
       {id: 3, published: false, postId: 2},
       {id: 4, published: false, postId: 2},
       {id: 5, published: false, postId: 2},
     ]
+
+    server = jsonServer(db)
   })
 
   describe('GET /db', function() {
@@ -33,7 +37,7 @@ describe('Server', function() {
       request(server)
         .get('/db')
         .expect('Content-Type', /json/)
-        .expect(low.db)
+        .expect(db)
         .expect(200, done)
     })
   })
@@ -46,7 +50,7 @@ describe('Server', function() {
         .expect('Content-Type', /json/)
         .expect('Access-Control-Allow-Credentials', 'true')
         .expect('Access-Control-Allow-Origin', 'http://example.com')
-        .expect(low.db.posts)
+        .expect(db.posts)
         .expect(200, done)
     })
   })
@@ -56,7 +60,7 @@ describe('Server', function() {
       request(server)
         .get('/comments?postId=1&published=true')
         .expect('Content-Type', /json/)
-        .expect([low.db.comments[0]])
+        .expect([db.comments[0]])
         .expect(200, done)
     })
   })
@@ -66,7 +70,7 @@ describe('Server', function() {
       request(server)
         .get('/tags?q=pho')
         .expect('Content-Type', /json/)
-        .expect([low.db.tags[1], low.db.tags[2]])
+        .expect([db.tags[1], db.tags[2]])
         .expect(200, done)
     })
 
@@ -84,9 +88,9 @@ describe('Server', function() {
       request(server)
         .get('/comments?_end=2')
         .expect('Content-Type', /json/)
-        .expect('x-total-count', low.db.comments.length.toString())
+        .expect('x-total-count', db.comments.length.toString())
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
-        .expect(low.db.comments.slice(0, 2))
+        .expect(db.comments.slice(0, 2))
         .expect(200, done)
     })
   })
@@ -96,7 +100,7 @@ describe('Server', function() {
           request(server)
               .get('/tags?_sort=body')
               .expect('Content-Type', /json/)
-              .expect([low.db.tags[1], low.db.tags[0], low.db.tags[2]])
+              .expect([db.tags[1], db.tags[0], db.tags[2]])
               .expect(200, done)
       })
 
@@ -104,7 +108,7 @@ describe('Server', function() {
           request(server)
               .get('/tags?_sort=body&_sortDir=DESC')
               .expect('Content-Type', /json/)
-              .expect([low.db.tags[2], low.db.tags[0], low.db.tags[1]])
+              .expect([db.tags[2], db.tags[0], db.tags[1]])
               .expect(200, done)
       })
 
@@ -112,7 +116,7 @@ describe('Server', function() {
           request(server)
               .get('/posts?_sort=id&_sortDir=DESC')
               .expect('Content-Type', /json/)
-              .expect(low.db.posts.reverse())
+              .expect(db.posts.reverse())
               .expect(200, done)
       })
   })
@@ -122,9 +126,9 @@ describe('Server', function() {
       request(server)
         .get('/comments?_start=1&_end=2')
         .expect('Content-Type', /json/)
-        .expect('x-total-count', low.db.comments.length.toString())
+        .expect('x-total-count', db.comments.length.toString())
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
-        .expect(low.db.comments.slice(1, 2))
+        .expect(db.comments.slice(1, 2))
         .expect(200, done)
     })
   })
@@ -135,8 +139,8 @@ describe('Server', function() {
         .get('/posts/1/comments')
         .expect('Content-Type', /json/)
         .expect([
-          low.db.comments[0],
-          low.db.comments[1]
+          db.comments[0],
+          db.comments[1]
         ])
         .expect(200, done)
     })
@@ -147,7 +151,7 @@ describe('Server', function() {
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
-        .expect(low.db.posts[0])
+        .expect(db.posts[0])
         .expect(200, done)
     })
 
@@ -171,7 +175,7 @@ describe('Server', function() {
         .expect(200)
         .end(function(err, res){
           if (err) return done(err)
-          assert.equal(low.db.posts.length, 3)
+          assert.equal(db.posts.length, 3)
           done()
         })
     })
@@ -188,7 +192,7 @@ describe('Server', function() {
         .end(function(err, res){
           if (err) return done(err)
           // assert it was created in database too
-          assert.deepEqual(low.db.posts[0], {id: 1, body: 'bar', booleanValue: true, integerValue: 1})
+          assert.deepEqual(db.posts[0], {id: 1, body: 'bar', booleanValue: true, integerValue: 1})
           done()
         })
     })
@@ -214,7 +218,7 @@ describe('Server', function() {
         .end(function(err, res){
           if (err) return done(err)
           // assert it was created in database too
-          assert.deepEqual(low.db.posts[0], {id: 1, body: 'bar'})
+          assert.deepEqual(db.posts[0], {id: 1, body: 'bar'})
           done()
         })
     })
@@ -236,8 +240,8 @@ describe('Server', function() {
         .expect(204)
         .end(function(err, res){
           if (err) return done(err)
-          assert.equal(low.db.posts.length, 1)
-          assert.equal(low.db.comments.length, 3)
+          assert.equal(db.posts.length, 1)
+          assert.equal(db.comments.length, 3)
           done()
         })
     })

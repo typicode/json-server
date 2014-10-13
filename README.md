@@ -16,7 +16,7 @@ _Powers http://jsonplaceholder.typicode.com_
 
 ```javascript
 // db.json
-{ 
+{
   "posts": [
     { "id": 1, "body": "foo" }
   ]
@@ -33,13 +33,11 @@ $ curl -i http://localhost:3000/posts/1
 ```javascript
 var server = require('json-server');
 
-server.low.db = { 
+server({
   posts: [
     { id: 1, body: 'foo' }
   ]
-}
-
-server.listen(3000);
+}).listen(3000);
 ```
 
 You can find a running demo here: http://jsonplaceholder.typicode.com.
@@ -62,20 +60,18 @@ $ npm install -g json-server
 ## CLI usage
 
 ```bash
+json-server <source>
 
-  Usage: json-server <source> [options]
+Examples:
+  json-server db.json
+  json-server file.js
+  json-server http://example.com/db.json
 
-  Options:
 
-    --version      output version
-    --port <port>  set port
-
-  Exemples:
-
-    json-server db.json
-    json-server seed.js
-    json-server http://example.com/db.json
-    
+Options:
+  --help, -h     Show help
+  --version, -v  Show version number
+  --port, -p     Set port             [default: 3000]
 ```
 
 #### Input
@@ -97,10 +93,10 @@ Here's 2 examples showing how to format JSON or JS seed file:
 }
 ```
 
-* __seed.js__
+* __file.js__
 
 ```javascript
-exports.run = function() {
+module.exports = function() {
   var data = {};
 
   data.posts = [];
@@ -111,7 +107,7 @@ exports.run = function() {
 }
 ```
 
-JSON Server expects JS files to export a ```run``` method that returns an object.
+JSON Server expects JS files to export a function that returns an object.
 
 Seed files are useful if you need to programmaticaly create a lot of data.
 
@@ -159,4 +155,4 @@ Returns default index file or content of ./public/index.html (useful if you need
 ## Links
 
 * [Fast prototyping using Restangular and Json-server](http://bahmutov.calepin.co/fast-prototyping-using-restangular-and-json-server.html)
-* [Grunt plugin](https://github.com/tfiwm/grunt-json-server)
+* [grunt plugin](https://github.com/tfiwm/grunt-json-server)
