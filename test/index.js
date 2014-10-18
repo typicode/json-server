@@ -104,9 +104,9 @@ describe('Server', function() {
               .expect(200, done)
       })
 
-      it('should reverse sorting with sortDir=DESC', function(done) {
+      it('should reverse sorting with order=DESC', function(done) {
           request(server)
-              .get('/tags?_sort=body&_sortDir=DESC')
+              .get('/tags?_sort=body&_order=DESC')
               .expect('Content-Type', /json/)
               .expect([db.tags[2], db.tags[0], db.tags[1]])
               .expect(200, done)
@@ -114,7 +114,7 @@ describe('Server', function() {
 
       it('should sort on numerical field', function(done) {
           request(server)
-              .get('/posts?_sort=id&_sortDir=DESC')
+              .get('/posts?_sort=id&_order=DESC')
               .expect('Content-Type', /json/)
               .expect(db.posts.reverse())
               .expect(200, done)
