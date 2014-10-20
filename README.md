@@ -144,19 +144,19 @@ To make a full-text search on resources, add `q`.
 GET /:resource?q=
 ```
 
-For routes usage information, have a look at [JSONPlaceholder](https://github.com/typicode/jsonplaceholder) code examples.
+Returns database.
 
 ```
 GET /db
 ```
 
-Returns database state.
+Returns default index file or content of ./public/index.html (useful if you need to set a custom home page).
 
 ```
 GET /
 ```
 
-Returns default index file or content of ./public/index.html (useful if you need to set a custom home page).
+For routes usage examples, have a look at [JSONPlaceholder](https://github.com/typicode/jsonplaceholder)'s README.
 
 ## Links
 
