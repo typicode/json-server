@@ -104,7 +104,7 @@ describe('Server', function() {
               .expect(200, done)
       })
 
-      it('should reverse sorting with order=DESC', function(done) {
+      it('should reverse sorting with _order=DESC', function(done) {
           request(server)
               .get('/tags?_sort=body&_order=DESC')
               .expect('Content-Type', /json/)

@@ -128,8 +128,14 @@ To slice resources, add `_start` and `_end`.
 
 ```
 GET /:resource?_start=&_end=
-GET /:resource?filter=&filter=&_start=&_end=
 GET /:parent/:parentId/:resource?_start=&_end=
+```
+
+To sort resources, add `_sort` and `_order` (ascending order by default).
+
+```
+GET /:resource?_sort=&_order=(ASC|DESC)
+GET /:parent/:parentId/:resource?_sort=&_order=(ASC|DESC)
 ```
 
 To make a full-text search on resources, add `q`.
