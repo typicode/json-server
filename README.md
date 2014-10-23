@@ -8,7 +8,7 @@ Give it a JSON or JS seed file and it will serve it through REST routes.
 
 Created with <3 for front-end developers who need a flexible back-end for quick prototyping and mocking.
 
-_Powers http://jsonplaceholder.typicode.com_
+_Powers [JSONServer](http://jsonplaceholder.typicode.com)_
 
 ## Examples
 
@@ -160,5 +160,12 @@ For routes usage examples, have a look at [JSONPlaceholder](https://github.com/t
 
 ## Links
 
+### Articles
+
 * [Fast prototyping using Restangular and Json-server](http://bahmutov.calepin.co/fast-prototyping-using-restangular-and-json-server.html)
-* [grunt plugin](https://github.com/tfiwm/grunt-json-server)
+* [ng-admin: Add an AngularJS admin GUI to any RESTful API](http://marmelab.com/blog/2014/09/15/easy-backend-for-your-restful-api.html)
+
+### Projects
+
+* [Grunt JSON Server](https://github.com/tfiwm/grunt-json-server)
+* [JSON Server GUI](https://github.com/naholyr/json-server-gui)
