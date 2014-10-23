@@ -26,12 +26,14 @@
     "yargs": "^1.3.1"
   },
   "devDependencies": {
-    "supertest": "~0.8.1",
-    "mocha": "~1.14.0"
+    "husky": "^0.6.1",
+    "mocha": "~1.14.0",
+    "supertest": "~0.8.1"
   },
   "scripts": {
     "test": "mocha -R spec test",
-    "start": "node server.js"
+    "start": "node server.js",
+    "prepush": "npm t"
   },
   "repository": {
     "type": "git",
