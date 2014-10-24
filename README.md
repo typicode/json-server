@@ -40,8 +40,6 @@ server({
 }).listen(3000);
 ```
 
-__Tip__ You can mount json-server in Express apps.
-
 ## Features
 
 * Lets you use plain JSON or simple JS file
