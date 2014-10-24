@@ -4,18 +4,19 @@
 
 # JSON Server [![Build Status](https://travis-ci.org/typicode/json-server.svg)](https://travis-ci.org/typicode/json-server) [![NPM version](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server)
 
-Give it a JSON or JS seed file and it will serve it through REST routes.
+> Give it a JSON or JS file and it will serve it through REST routes.
 
 Created with <3 for front-end developers who need a flexible back-end for quick prototyping and mocking.
 
 _Powers [JSONPlaceholder](http://jsonplaceholder.typicode.com)_
 
-## Examples
+## Usage
 
-### Command line interface
+### CLI
+
+Create a `db.json` file:
 
 ```javascript
-// db.json
 {
   "posts": [
     { "id": 1, "body": "foo" }
@@ -23,12 +24,11 @@ _Powers [JSONPlaceholder](http://jsonplaceholder.typicode.com)_
 }
 ```
 
-```bash
-$ json-server db.json
-$ curl -i http://localhost:3000/posts/1
-```
+Then run `json-server db.json` and go to `http://localhost:3000/posts/1`. 
 
-### Node module
+You should get `{ "id": 1, "body": "foo" }`.
+
+### Module
 
 ```javascript
 var server = require('json-server');
@@ -40,9 +40,9 @@ server({
 }).listen(3000);
 ```
 
-You can find a running demo here: http://jsonplaceholder.typicode.com.
+__Tip__ You can mount json-server in Express apps.
 
-## Why?
+## Features
 
 * Lets you use plain JSON or simple JS file
 * Supports __GET__ but also __POST__, __PUT__, __DELETE__ and even __PATCH__ requests
@@ -50,14 +50,13 @@ You can find a running demo here: http://jsonplaceholder.typicode.com.
 * Can load remote JSON files ([JSON Generator](http://www.json-generator.com/), ...)
 * Can be deployed on Nodejitsu, Heroku, ...
 
-
-## Installation
+## Install
 
 ```bash
 $ npm install -g json-server
 ```
 
-## CLI usage
+## CLI options
 
 ```bash
 json-server <source>
@@ -78,7 +77,7 @@ Options:
 
 Here's 2 examples showing how to format JSON or JS seed file:
 
-* __db.json__
+__JSON__
 
 ```javascript
 {
@@ -93,7 +92,7 @@ Here's 2 examples showing how to format JSON or JS seed file:
 }
 ```
 
-* __file.js__
+__JS__
 
 ```javascript
 module.exports = function() {
@@ -109,39 +108,41 @@ module.exports = function() {
 
 JSON Server expects JS files to export a function that returns an object.
 
-Seed files are useful if you need to programmaticaly create a lot of data.
+JS files are useful if you need to programmaticaly create a lot of data.
 
-## Routes
+## Available routes
+
+Let's say we have `posts`, here's the routes you can use.
 
 ```
-GET   /:resource
-GET   /:resource?filter=&filter=&
-GET   /:parent/:parentId/:resource
-GET   /:resource/:id
-POST  /:resource
-PUT   /:resource/:id
-PATCH /:resource/:id
-DEL   /:resource/:id
+GET   /posts
+GET   /posts?title=jsonserver&author=typicode
+GET   /posts/1/comments
+GET   /posts/1
+POST  /posts
+PUT   /posts/1
+PATCH /posts/1
+DEL   /posts/1
 ```
 
 To slice resources, add `_start` and `_end`.
 
 ```
-GET /:resource?_start=&_end=
-GET /:parent/:parentId/:resource?_start=&_end=
+GET /posts?_start=0&_end=10
+GET /posts/1/comments?_start=0&_end=10
 ```
 
 To sort resources, add `_sort` and `_order` (ascending order by default).
 
 ```
-GET /:resource?_sort=&_order=(ASC|DESC)
-GET /:parent/:parentId/:resource?_sort=&_order=(ASC|DESC)
+GET /posts?_sort=views&_order=DESC
+GET /posts/1/comments?_sort=votes&_order=ASC
 ```
 
 To make a full-text search on resources, add `q`.
 
 ```
-GET /:resource?q=
+GET /posts?q=internet
 ```
 
 Returns database.
@@ -150,13 +151,13 @@ Returns database.
 GET /db
 ```
 
-Returns default index file or content of ./public/index.html (useful if you need to set a custom home page).
+Returns default index file or content of `./public/index.html` (useful if you need to set a custom home page).
 
 ```
 GET /
 ```
 
-For routes usage examples, have a look at [JSONPlaceholder](https://github.com/typicode/jsonplaceholder)'s README.
+For more routes usage examples, have a look at [JSONPlaceholder](https://github.com/typicode/jsonplaceholder)'s README.
 
 ## Links
 
