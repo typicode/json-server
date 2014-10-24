@@ -8,7 +8,7 @@ Give it a JSON or JS seed file and it will serve it through REST routes.
 
 Created with <3 for front-end developers who need a flexible back-end for quick prototyping and mocking.
 
-_Powers [JSONServer](http://jsonplaceholder.typicode.com)_
+_Powers [JSONPlaceholder](http://jsonplaceholder.typicode.com)_
 
 ## Examples
 
