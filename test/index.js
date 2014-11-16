@@ -253,7 +253,7 @@ describe('Server', function() {
       it('should respond with html', function(done) {
         request(server)
           .get('/')
-          .expect('Content-Type', /html/)
+          .expect(/You're successfully running JSON Server/)
           .expect(200, done);
       });
     });

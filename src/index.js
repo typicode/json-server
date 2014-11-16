@@ -41,7 +41,7 @@ module.exports = function(object, filename) {
   if (fs.existsSync(process.cwd() + '/public')) {
     server.use(serveStatic(process.cwd() + '/public'));
   } else {
-    server.use(serveStatic(path.join(__dirname, './public')));
+    server.use(serveStatic(__dirname + '/public'));
   }
 
   server.use(cors({ origin: true, credentials: true }))
