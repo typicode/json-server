@@ -167,5 +167,5 @@ For more routes usage examples, have a look at [JSONPlaceholder](https://github.
 ### Projects
 
 * [Grunt JSON Server](https://github.com/tfiwm/grunt-json-server)
-* [docker-json-server]https://github.com/clue/docker-json-server
+* [docker-json-server](https://github.com/clue/docker-json-server)
 * [JSON Server GUI](https://github.com/naholyr/json-server-gui)
