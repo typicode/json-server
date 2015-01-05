@@ -34,7 +34,7 @@ module.exports = function(object, filename) {
     server.use(logger('dev'))
   }
 
-  server.use(bodyParser.json())
+  server.use(bodyParser.json({limit: '10mb'}))
   server.use(bodyParser.urlencoded({ extended: false }))
   server.use(methodOverride())
 
