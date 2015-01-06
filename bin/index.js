@@ -9,6 +9,7 @@ var server = require('../src')
 
 updateNotifier({packageName: pkg.name, packageVersion: pkg.version}).notify()
 
+// Parse arguments
 var argv = yargs
   .usage('$0 <source>')
   .help('help').alias('help', 'h')
@@ -26,13 +27,18 @@ var argv = yargs
   .require(1, 'Missing <source> argument')
   .argv
 
+// Start server function
 function start(object, filename) {
   for (var prop in object) {
-    console.log('http://localhost:' + port + '/' + chalk.green(prop))
+    console.log(chalk.grey('  http://localhost:' + port + '/') + chalk.cyan(prop))
   }
 
   console.log(
-    '\nEnter ' + chalk.green('`s`') + ' at any time to create a snapshot of the db\n'
+    '\nYou can now go to ' + chalk.grey('http://localhost:' + port + '/\n')
+  )
+
+  console.log(
+    'Enter ' + chalk.cyan('`s`') + ' at any time to create a snapshot of the db\n'
   )
 
   process.stdin.resume()
@@ -40,19 +46,21 @@ function start(object, filename) {
   process.stdin.on('data', function (chunk) {
     if (chunk.trim().toLowerCase() === 's') {
       var file = 'db-' + Date.now() + '.json'
-      _db.save(object, filename)
-      console.log('\nSaved snapshot to ' + chalk.green(file) + '\n')
+      _db.save(object, file)
+      console.log('\nSaved snapshot to ' + chalk.cyan(file) + '\n')
     }
   })
 
   server(object, filename).listen(port)
 }
 
+// Set file and port
 var source = argv._[0]
 var port = process.env.PORT || argv.port
 
-console.log(chalk.green('\n{^ ^} Yo!\n'))
-console.log('Loading database from ' + source + '\n')
+// Say hi, load file and start server
+console.log(chalk.cyan('{^_^} Hi!\n'))
+console.log('Loading database from ' + chalk.cyan(source))
 
 if (/\.json$/.test(source)) {
   var filename = process.cwd() + '/' + source
