@@ -8,7 +8,9 @@ _.mixin(_inflections)
 //   '1' -> 1
 function toNative(value) {
   if (typeof value === 'string') {
-    if (value === 'true' || value === 'false') {
+    if (value === '') {
+      return value
+    } else if (value === 'true' || value === 'false') {
       return value === 'true'
     } else if (!isNaN(+value)) {
       return +value
