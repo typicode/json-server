@@ -70,7 +70,9 @@ module.exports = function(object, filename) {
         // Add query parameters filters
         // Convert query parameters to their native counterparts
         for (var key in req.query) {
-          if (key !== 'callback') {
+          // don't take into account JSONP query parameters
+          // jQuery adds a '_' query parameter too
+          if (key !== 'callback' && key !== '_') {
             filters[key] = utils.toNative(req.query[key])
           }
         }
