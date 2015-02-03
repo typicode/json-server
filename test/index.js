@@ -29,6 +29,10 @@ describe('Server', function() {
       {id: 5, published: false, postId: 2},
     ]
 
+    db.refs = [
+      {id: 'abcd-1234', url: 'http://example.com', postId: 1}
+    ]
+
     server = jsonServer(db)
   })
 
@@ -166,19 +170,34 @@ describe('Server', function() {
 
 
   describe('POST /:resource', function() {
-    it('should respond with json and create a resource', function(done) {
-      request(server)
-        .post('/posts')
-        .send({body: 'foo', booleanValue: 'true', integerValue: '1'})
-        .expect('Content-Type', /json/)
-        .expect({id: 3, body: 'foo', booleanValue: true, integerValue: 1})
-        .expect(200)
-        .end(function(err, res){
-          if (err) return done(err)
-          assert.equal(db.posts.length, 3)
-          done()
-        })
-    })
+    it('should respond with json, create a resource and increment id',
+      function(done) {
+        request(server)
+          .post('/posts')
+          .send({body: 'foo', booleanValue: 'true', integerValue: '1'})
+          .expect('Content-Type', /json/)
+          .expect({id: 3, body: 'foo', booleanValue: true, integerValue: 1})
+          .expect(200)
+          .end(function(err, res){
+            if (err) return done(err)
+            assert.equal(db.posts.length, 3)
+            done()
+          })
+      })
+
+    it('should respond with json, create a resource and generate string id',
+      function(done) {
+        request(server)
+          .post('/refs')
+          .send({url: 'http://foo.com', postId: '1'})
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(err, res){
+            if (err) return done(err)
+            assert.equal(db.refs.length, 2)
+            done()
+          })
+      })
   })
 
   describe('PUT /:resource/:id', function() {

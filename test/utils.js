@@ -24,7 +24,7 @@ describe('utils', function() {
         { name: 'comments', id: 3 }
       ]
 
-      assert.deepEqual(expected, utils.getRemovable(db))
+      assert.deepEqual(utils.getRemovable(db), expected)
 
     })
   })

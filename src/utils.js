@@ -1,4 +1,5 @@
 var _ = require('underscore')
+var uuid = require('node-uuid')
 var _inflections = require('underscore.inflections')
 _.mixin(_inflections)
 
@@ -19,14 +20,22 @@ function toNative(value) {
   return value
 }
 
-// Creates incremental id.
+// Return incremented id or uuid
 function createId(coll) {
   if (_.isEmpty(coll)) {
     return 1
   } else {
-    return _.max(coll, function(doc) {
+    var id = _.max(coll, function(doc) {
       return doc.id
-    }).id + 1
+    }).id
+
+    if (_.isFinite(id)) {
+      // Increment integer id
+      return ++id
+    } else {
+      // Generate string id
+      return uuid()
+    }
   }
 }
 
