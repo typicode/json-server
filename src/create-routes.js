@@ -12,7 +12,7 @@ module.exports = function(object, filename) {
     var db = low(filename)
   } else {
     var db = low()
-    _.extend(db.object, object)
+    db.object = object
   }
 
   return {
@@ -51,14 +51,14 @@ module.exports = function(object, filename) {
         // Full-text search
         var q = req.query.q.toLowerCase()
 
-        array = db(req.params.resource).where(function(obj) {
+        array = db(req.params.resource).filter(function(obj) {
           for (var key in obj) {
             var value = obj[key]
             if (_.isString(value) && value.toLowerCase().indexOf(q) !== -1) {
               return true
             }
           }
-        }).value()
+        })
 
       } else {
 
@@ -81,7 +81,7 @@ module.exports = function(object, filename) {
         if (_(filters).isEmpty()) {
           array = db(req.params.resource).value()
         } else {
-          array = db(req.params.resource).where(filters).value()
+          array = db(req.params.resource).filter(filters)
         }
       }
 
@@ -114,7 +114,6 @@ module.exports = function(object, filename) {
     show: function(req, res, next) {
       var resource = db(req.params.resource)
         .get(+req.params.id)
-        .value()
 
       if (resource) {
         res.jsonp(resource)
@@ -131,7 +130,6 @@ module.exports = function(object, filename) {
 
       var resource = db(req.params.resource)
         .insert(req.body)
-        .value()
 
       res.jsonp(resource)
     },
@@ -145,7 +143,6 @@ module.exports = function(object, filename) {
 
       var resource = db(req.params.resource)
         .update(+req.params.id, req.body)
-        .value()
 
       if (resource) {
         res.jsonp(resource)

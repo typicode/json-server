@@ -49,14 +49,14 @@ module.exports = function(object, filename) {
   server.get('/db', routes.showDatabase)
 
   server.route('/:resource')
-      .get(routes.list)
-      .post(routes.create)
+    .get(routes.list)
+    .post(routes.create)
 
   server.route('/:resource/:id')
-      .get(routes.show)
-      .put(routes.update)
-      .patch(routes.update)
-      .delete(routes.destroy)
+    .get(routes.show)
+    .put(routes.update)
+    .patch(routes.update)
+    .delete(routes.destroy)
 
   server.get('/:parent/:parentId/:resource', routes.list)
 
