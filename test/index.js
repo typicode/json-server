@@ -273,18 +273,24 @@ describe('Server', function() {
         request(server)
           .get('/')
           .expect(/You're successfully running JSON Server/)
-          .expect(200, done);
-      });
-    });
+          .expect(200, done)
+      })
+    })
 
     describe('GET /stylesheets/style.css', function() {
       it('should respond with css', function(done) {
         request(server)
           .get('/stylesheets/style.css')
           .expect('Content-Type', /css/)
-          .expect(200, done);
-      });
-    });
+          .expect(200, done)
+      })
+    })
 
+  })
+
+  describe('Database #object', function() {
+    it('should be accessible', function() {
+      assert(server.db.object)
+    })
   })
 })

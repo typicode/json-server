@@ -1,20 +1,7 @@
 var _ = require('underscore')
-var low = require('lowdb')
-var _db = require('underscore-db')
-var _inflections = require('underscore.inflections')
 var utils = require('./utils')
 
-low.mixin(_db)
-low.mixin(_inflections)
-
-module.exports = function(object, filename) {
-  if (filename) {
-    var db = low(filename)
-  } else {
-    var db = low()
-    db.object = object
-  }
-
+module.exports = function(db) {
   return {
     // GET /db
     showDatabase: function(req, res, next) {
@@ -85,6 +72,7 @@ module.exports = function(object, filename) {
         }
       }
 
+      // Sort
       if(_sort) {
         _order = _order || 'ASC'
 
