@@ -36,7 +36,7 @@ Now if you go to [http://localhost:3000/posts/1](), you will get:
 }
 ```
 
-Also, data will be persisted to `db.json` when you make POST, PUT, PATCH and DELETE requests. So it's a fully functional fake REST server.
+Also, data is persisted to `db.json` when you make POST, PUT, PATCH and DELETE requests. So it's a fully functional fake REST server.
 
 ## Routes
 
