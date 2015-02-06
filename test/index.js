@@ -5,6 +5,7 @@ var jsonServer  = require('../src/')
 describe('Server', function() {
 
   var server
+  var router
   var db
 
   beforeEach(function() {
@@ -33,7 +34,8 @@ describe('Server', function() {
       {id: 'abcd-1234', url: 'http://example.com', postId: 1}
     ]
 
-    server = jsonServer(db)
+    router = jsonServer.router(db)
+    server = jsonServer.create().use(router)
   })
 
   describe('GET /db', function() {
@@ -290,7 +292,7 @@ describe('Server', function() {
 
   describe('Database #object', function() {
     it('should be accessible', function() {
-      assert(server.db.object)
+      assert(router.db.object)
     })
   })
 })
