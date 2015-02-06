@@ -36,17 +36,17 @@ Now if you go to [http://localhost:3000/posts/1](), you will get:
 }
 ```
 
-Also, data is saved to `db.json` when you make POST, PUT, PATCH and DELETE requests. So it's a fully functional fake REST server.
+Also, if you make POST, PUT, PATCH or DELETE requests, changes will be saved to `db.json`.
 
 ## Routes
 
-Here are all the available routes JSON Server will respond to.
+Available routes.
 
 ```
 GET   /posts
-GET   /posts?title=json-server&author=typicode
-GET   /posts/1/comments
 GET   /posts/1
+GET   /posts/1/comments
+GET   /posts?title=json-server&author=typicode
 POST  /posts
 PUT   /posts/1
 PATCH /posts/1
@@ -157,7 +157,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 ### Projects
 
 * [Grunt JSON Server](https://github.com/tfiwm/grunt-json-server)
-* [docker-json-server](https://github.com/clue/docker-json-server)
+* [Docker JSON Server](https://github.com/clue/docker-json-server)
 * [JSON Server GUI](https://github.com/naholyr/json-server-gui)
 
 ## License
