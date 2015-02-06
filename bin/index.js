@@ -5,7 +5,7 @@ var yargs = require('yargs')
 var chalk = require('chalk')
 var got = require('got')
 var pkg = require('../package.json')
-var server = require('../src')
+var jsonServer = require('../src')
 
 updateNotifier({packageName: pkg.name, packageVersion: pkg.version}).notify()
 
@@ -51,7 +51,15 @@ function start(object, filename) {
     }
   })
 
-  server(object, filename).listen(port)
+  if (filename) {
+    var router = jsonServer.router(filename)
+  } else {
+    var router = jsonServer.router(object)
+  }
+  var server = jsonServer.create()
+
+  server.use(router)
+  server.listen(port)
 }
 
 // Set file and port

@@ -1,0 +1,107 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/sonic/.nvm/v0.10.35/bin/node',
+1 verbose cli   '/home/sonic/.nvm/v0.10.35/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.35
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /home/sonic/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/home/sonic/.npm/json-server/0.6.0/package.tgz', '.' ]
+11 verbose tarball /home/sonic/.npm/json-server/0.6.0/package.tgz
+12 verbose folder .
+13 info prepublish json-server@0.6.0
+14 silly lockFile 1f1177db-tar tar://.
+15 verbose lock tar://. /home/sonic/.npm/1f1177db-tar.lock
+16 silly lockFile a26da56b-pm-json-server-0-6-0-package-tgz tar:///home/sonic/.npm/json-server/0.6.0/package.tgz
+17 verbose lock tar:///home/sonic/.npm/json-server/0.6.0/package.tgz /home/sonic/.npm/a26da56b-pm-json-server-0-6-0-package-tgz.lock
+18 silly lockFile 1f1177db-tar tar://.
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile a26da56b-pm-json-server-0-6-0-package-tgz tar:///home/sonic/.npm/json-server/0.6.0/package.tgz
+21 silly lockFile a26da56b-pm-json-server-0-6-0-package-tgz tar:///home/sonic/.npm/json-server/0.6.0/package.tgz
+22 silly lockFile cc6cdab6-ic-npm-json-server-0-6-0-package /home/sonic/.npm/json-server/0.6.0/package
+23 verbose lock /home/sonic/.npm/json-server/0.6.0/package /home/sonic/.npm/cc6cdab6-ic-npm-json-server-0-6-0-package.lock
+24 silly lockFile cc6cdab6-ic-npm-json-server-0-6-0-package /home/sonic/.npm/json-server/0.6.0/package
+25 silly lockFile cc6cdab6-ic-npm-json-server-0-6-0-package /home/sonic/.npm/json-server/0.6.0/package
+26 silly lockFile 3a52ce78- .
+27 silly lockFile 3a52ce78- .
+28 silly publish { name: 'json-server',
+28 silly publish   version: '0.6.0',
+28 silly publish   description: 'Serves JSON files through REST routes.',
+28 silly publish   main: './src/index.js',
+28 silly publish   bin: { 'json-server': './bin/index.js' },
+28 silly publish   directories: { test: 'test' },
+28 silly publish   dependencies:
+28 silly publish    { 'body-parser': '^1.8.1',
+28 silly publish      chalk: '^0.4.0',
+28 silly publish      cors: '^2.3.0',
+28 silly publish      errorhandler: '^1.2.0',
+28 silly publish      express: '^4.9.5',
+28 silly publish      got: '^1.2.2',
+28 silly publish      lowdb: '^0.7.1',
+28 silly publish      'method-override': '^2.1.2',
+28 silly publish      morgan: '^1.3.1',
+28 silly publish      'node-uuid': '^1.4.2',
+28 silly publish      'serve-static': '^1.6.1',
+28 silly publish      superagent: '^0.15.7',
+28 silly publish      underscore: '^1.5.2',
+28 silly publish      'underscore-db': '^0.8.0',
+28 silly publish      'underscore.inflections': '~0.2.1',
+28 silly publish      'update-notifier': '^0.2.2',
+28 silly publish      yargs: '^1.3.1' },
+28 silly publish   devDependencies: { husky: '^0.6.1', mocha: '~1.14.0', supertest: '~0.8.1' },
+28 silly publish   scripts:
+28 silly publish    { test: 'mocha -R spec test',
+28 silly publish      start: 'node server.js',
+28 silly publish      prepush: 'npm t' },
+28 silly publish   repository:
+28 silly publish    { type: 'git',
+28 silly publish      url: 'git://github.com/typicode/json-server.git' },
+28 silly publish   keywords:
+28 silly publish    [ 'JSON',
+28 silly publish      'server',
+28 silly publish      'fake',
+28 silly publish      'REST',
+28 silly publish      'API',
+28 silly publish      'prototyping',
+28 silly publish      'mock',
+28 silly publish      'mocking',
+28 silly publish      'test',
+28 silly publish      'testing',
+28 silly publish      'rest',
+28 silly publish      'data',
+28 silly publish      'dummy',
+28 silly publish      'sandbox' ],
+28 silly publish   author: { name: 'Typicode', email: 'typicode@gmail.com' },
+28 silly publish   license: 'MIT',
+28 silly publish   bugs: { url: 'https://github.com/typicode/json-server/issues' },
+28 silly publish   homepage: 'https://github.com/typicode/json-server',
+28 silly publish   readme: '# JSON Server [![Build Status](https://travis-ci.org/typicode/json-server.svg)](https://travis-ci.org/typicode/json-server) [![NPM version](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server)\n\n> Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)\n\nCreated with <3 for front-end developers who need a quick back-end for prototyping and mocking.\n\nPowers [JSONPlaceholder](http://jsonplaceholder.typicode.com)\n\n## Example\n\nCreate a `db.json` file\n\n```javascript\n{\n  "posts": [\n    { "id": 1, "title": "json-server", "author": "typicode" }\n  ],\n  "comments": [\n    { "id": 1, "body": "some comment", "postId": 1 }\n  ]\n}\n```\n\nStart JSON Server\n\n```bash\n$ json-server db.json\n```\n\nNow if you go to [http://localhost:3000/posts/1](), you\'ll get\n\n```javascript\n{ \n  "id": 1,\n  "body": "foo"\n}\n```\n\nAlso, if you make POST, PUT, PATCH or DELETE requests, changes will be saved to `db.json`\n\n## Routes\n\nHere are all the available routes.\n\n```\nGET   /posts\nGET   /posts/1\nGET   /posts/1/comments\nGET   /posts?title=json-server&author=typicode\nPOST  /posts\nPUT   /posts/1\nPATCH /posts/1\nDEL   /posts/1\n```\n\nTo slice resources, add `_start` and `_end`.\n\n```\nGET /posts?_start=0&_end=10\nGET /posts/1/comments?_start=0&_end=10\n```\n\nTo sort resources, add `_sort` and `_order` (ascending order by default).\n\n```\nGET /posts?_sort=views&_order=DESC\nGET /posts/1/comments?_sort=votes&_order=ASC\n```\n\nTo make a full-text search on resources, add `q`.\n\n```\nGET /posts?q=internet\n```\n\nReturns database.\n\n```\nGET /db\n```\n\nReturns default index file or serves `./public` directory.\n\n```\nGET /\n```\n\n## Install\n\n```bash\n$ npm install -g json-server\n```\n\n## Extras\n\n### Static file server\n\nYou can use JSON Server to serve your HTML, JS and CSS, simply create a `./public` directory.\n\n### Access from anywhere\n\nYou can access your fake API from anywhere using CORS and JSONP.\n\n### Remote schema\n\nYou can load remote schemas:\n\n```bash\n$ json-server http://example.com/file.json\n$ json-server http://jsonplaceholder.typicode.com/db\n```\n\n### JS file support\n\nYou can use JS to programmatically create data:\n\n```javascript\nmodule.exports = function() {\n  data = { users: [] }\n  // Create 1000 users\n  for (var i = 0; i < 1000; i++) {\n    data.users.push({ name: \'user\' + i })\n  }\n  return data\n}\n```\n\n```bash\n$ json-server index.js\n```\n\n### Module\n\nYou can use JSON Server as a module:\n\n```javascript\nvar jsonServer = require(\'json-server\')\n\nvar object = {\n  posts: [\n    { id: 1, body: \'foo\' }\n  ]\n}\n\nvar router = jsonServer.router(object) // Express router\nvar server = jsonServer.create()       // Express server\n\nserver.use(router)\nserver.listen(3000)\n```\n\n### Deployment\n\nYou can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholder.typicode.com) is an online fake API powered by JSON Server and running on Heroku.\n\n## Links\n\n### Articles\n\n* [Fast prototyping using Restangular and Json-server](http://bahmutov.calepin.co/fast-prototyping-using-restangular-and-json-server.html)\n* [ng-admin: Add an AngularJS admin GUI to any RESTful API](http://marmelab.com/blog/2014/09/15/easy-backend-for-your-restful-api.html)\n\n### Projects\n\n* [Grunt JSON Server](https://github.com/tfiwm/grunt-json-server)\n* [Docker JSON Server](https://github.com/clue/docker-json-server)\n* [JSON Server GUI](https://github.com/naholyr/json-server-gui)\n\n## License\n\nMIT - [Typicode](https://github.com/typicode)\n',
+28 silly publish   readmeFilename: 'README.md',
+28 silly publish   gitHead: '57504d99a8ec63dad58f6bca3534ce53299b46c5',
+28 silly publish   _id: 'json-server@0.6.0',
+28 silly publish   _shasum: 'e56250ef6c29b2eb314ff3094e4180286ca5e9eb',
+28 silly publish   _from: '.' }
+29 error need auth auth and email required for publishing
+29 error need auth You need to authorize this machine using `npm adduser`
+30 error System Linux 3.17.8-300.fc21.x86_64
+31 error command "/home/sonic/.nvm/v0.10.35/bin/node" "/home/sonic/.nvm/v0.10.35/bin/npm" "publish"
+32 error cwd /home/sonic/d/json-server
+33 error node -v v0.10.35
+34 error npm -v 1.4.28
+35 error code ENEEDAUTH
+36 verbose exit [ 1, true ]

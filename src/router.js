@@ -16,7 +16,7 @@ module.exports = function(source) {
     var db = low()
     db.object = source
   } else {
-    var db = low(filename)
+    var db = low(source)
   }
 
   // Expose database
