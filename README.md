@@ -134,13 +134,19 @@ $ json-server index.js
 You can use JSON Server as a module:
 
 ```javascript
-var server = require('json-server')
+var jsonServer = require('json-server')
 
-server({
+var object = {
   posts: [
     { id: 1, body: 'foo' }
   ]
-}).listen(3000)
+}
+
+var router = jsonServer.router(object) // Express router
+var server = jsonServer.create()       // Express server
+
+server.use(router)
+server.listen(3000)
 ```
 
 ### Deployment
