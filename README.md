@@ -27,7 +27,7 @@ Start JSON Server
 $ json-server db.json
 ```
 
-Now if you go to [http://localhost:3000/posts/1](), you will get:
+Now if you go to [http://localhost:3000/posts/1](), you'll get
 
 ```javascript
 { 
@@ -36,11 +36,11 @@ Now if you go to [http://localhost:3000/posts/1](), you will get:
 }
 ```
 
-Also, if you make POST, PUT, PATCH or DELETE requests, changes will be saved to `db.json`.
+Also, if you make POST, PUT, PATCH or DELETE requests, changes will be saved to `db.json`
 
 ## Routes
 
-Available routes.
+Here are all the available routes.
 
 ```
 GET   /posts
