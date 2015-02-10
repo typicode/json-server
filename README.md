@@ -30,10 +30,7 @@ $ json-server db.json
 Now if you go to [http://localhost:3000/posts/1](), you'll get
 
 ```javascript
-{ 
-  "id": 1,
-  "body": "foo"
-}
+{ "id": 1, "title": "json-server", "author": "typicode" }
 ```
 
 Also, if you make POST, PUT, PATCH or DELETE requests, changes will be saved to `db.json`
