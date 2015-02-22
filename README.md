@@ -154,7 +154,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 
 ### Articles
 
-* [Fast prototyping using Restangular and Json-server](http://bahmutov.calepin.co/fast-prototyping-using-restangular-and-json-server.html)
+* [Fast prototyping using Restangular and Json-server](http://glebbahmutov.com/blog/fast-prototyping-restangular-and-json-server/)
 * [ng-admin: Add an AngularJS admin GUI to any RESTful API](http://marmelab.com/blog/2014/09/15/easy-backend-for-your-restful-api.html)
 
 ### Projects
