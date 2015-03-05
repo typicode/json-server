@@ -8,12 +8,16 @@ var bodyParser = require('body-parser')
 var serveStatic = require('serve-static')
 var errorhandler = require('errorhandler')
 
-module.exports = function() {
+module.exports = function(options) {
+  options = options || {}
+  if (typeof options.logger === 'undefined') {
+    options.logger = 'dev'
+  }
   var server = express()
 
   // Don't use logger if json-server is mounted
-  if (!module.parent) {
-    server.use(logger('dev'))
+  if (!module.parent || options.logger) {
+    server.use(logger(options.logger))
   }
 
   server.set('json spaces', 2)
@@ -36,5 +40,5 @@ module.exports = function() {
     server.use(errorhandler())
   }
 
-  return server 
+  return server
 }
