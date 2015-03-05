@@ -1,7 +1,7 @@
 <p align="center">
   <img height="56" width="64" src="http://i.imgur.com/QRlAg0b.png"/>
 </p>
-
+#v3.1.1 revision
 # JSON Server [![Build Status](https://travis-ci.org/typicode/json-server.svg)](https://travis-ci.org/typicode/json-server) [![NPM version](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server)
 
 Give it a JSON or JS seed file and it will serve it through REST routes.

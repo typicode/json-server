@@ -22,7 +22,7 @@ routes.list = function(req, res, next) {
   delete req.query._end
 
   if (req.params.parent) {
-    props[req.params.parent.slice(0, - 1) + 'Id'] = +req.params.parentId
+    props[req.params.parent.slice(0, - 1) + '_id'] = +req.params.parentId
   }
 
   for (var key in req.query) {
