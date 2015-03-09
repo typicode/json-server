@@ -17,9 +17,10 @@ routes.list = function(req, res, next) {
 
   var _start = req.query._start
   var _end   = req.query._end
-
+  var _with  = req.query._with
   delete req.query._start
   delete req.query._end
+  delete req.query._with
 
   if (req.params.parent) {
     props[req.params.parent.slice(0, - 1) + '_id'] = +req.params.parentId
@@ -39,6 +40,9 @@ routes.list = function(req, res, next) {
     resource = resource.slice(_start, _end)
   }
 
+  if(_with) {
+      resource = utils.withChild(resource, req.params.resource, _with)
+  }
   res.jsonp(resource)
 }
 
