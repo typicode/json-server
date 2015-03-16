@@ -19,6 +19,11 @@ var argv = yargs
       alias: 'p',
       description: 'Set port',
       default: 3000
+    },
+    logger: {
+      alias: 'l',
+      description: 'Logger middleware name (like dev)',
+      default: null
     }
   })
   .example('$0 db.json', '')
@@ -56,7 +61,9 @@ function start(object, filename) {
   } else {
     var router = jsonServer.router(object)
   }
-  var server = jsonServer.create()
+  var server = jsonServer.create({
+    logger: argv.logger
+  })
 
   server.use(router)
   server.listen(port)

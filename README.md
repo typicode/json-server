@@ -150,6 +150,15 @@ server.listen(3000)
 
 You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholder.typicode.com) is an online fake API powered by JSON Server and running on Heroku.
 
+### Logger
+
+json-server is implemented on top of [express](https://www.npmjs.com/package/express) server. You can
+pass logger name to be used as a middleware.
+
+```bash
+json-server -l dev db.json
+```
+
 ## Links
 
 ### Articles
