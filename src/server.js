@@ -3,8 +3,6 @@ var http = require('http')
 var express = require('express')
 var logger = require('morgan')
 var cors = require('cors')
-var methodOverride = require('method-override')
-var bodyParser = require('body-parser')
 var serveStatic = require('serve-static')
 var errorhandler = require('errorhandler')
 
@@ -17,9 +15,6 @@ module.exports = function() {
   }
 
   server.set('json spaces', 2)
-  server.use(bodyParser.json({limit: '10mb'}))
-  server.use(bodyParser.urlencoded({ extended: false }))
-  server.use(methodOverride())
 
   // Serve static files
   if (fs.existsSync(process.cwd() + '/public')) {

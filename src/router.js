@@ -1,7 +1,9 @@
 var express = require('express')
+var methodOverride = require('method-override')
+var bodyParser = require('body-parser')
 var _ = require('underscore')
-var utils = require('./utils')
 var low = require('lowdb')
+var utils = require('./utils')
 
 low.mixin(require('underscore-db'))
 low.mixin(require('underscore.inflections'))
@@ -11,6 +13,11 @@ module.exports = function(source) {
   // Create router
   var router = express.Router()
   
+  // Add middlewares
+  router.use(bodyParser.json({limit: '10mb'}))
+  router.use(bodyParser.urlencoded({ extended: false }))
+  router.use(methodOverride())
+
   // Create database
   if (_.isObject(source)) {
     var db = low()
