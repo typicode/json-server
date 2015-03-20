@@ -19,6 +19,11 @@ var argv = yargs
       alias: 'p',
       description: 'Set port',
       default: 3000
+    },
+    host: {
+      alias: 'H',
+      description: 'Set host',
+      default: 'localhost'
     }
   })
   .example('$0 db.json', '')
@@ -30,11 +35,11 @@ var argv = yargs
 // Start server function
 function start(object, filename) {
   for (var prop in object) {
-    console.log(chalk.grey('  http://localhost:' + port + '/') + chalk.cyan(prop))
+    console.log(chalk.grey('  http://' + host +  ':' + port + '/') + chalk.cyan(prop))
   }
 
   console.log(
-    '\nYou can now go to ' + chalk.grey('http://localhost:' + port + '/\n')
+    '\nYou can now go to ' + chalk.grey('http://' + host + ':' + port + '/\n')
   )
 
   console.log(
@@ -65,6 +70,7 @@ function start(object, filename) {
 // Set file and port
 var source = argv._[0]
 var port = process.env.PORT || argv.port
+var host = process.env.HOST || argv.host
 
 // Say hi, load file and start server
 console.log(chalk.cyan('{^_^} Hi!\n'))
