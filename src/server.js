@@ -9,11 +9,9 @@ var errorhandler = require('errorhandler')
 module.exports = function() {
   var server = express()
 
-  // Don't use logger if json-server is mounted
-  if (!module.parent) {
-    server.use(logger('dev'))
-  }
-
+  server.use(logger('dev', {
+    skip: function(req, res) { return req.path === '/favicon.ico' }
+  }))
   server.set('json spaces', 2)
 
   // Serve static files
