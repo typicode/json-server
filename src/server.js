@@ -9,9 +9,12 @@ var errorhandler = require('errorhandler')
 module.exports = function() {
   var server = express()
 
+  // Logger
   server.use(logger('dev', {
     skip: function(req, res) { return req.path === '/favicon.ico' }
   }))
+
+  // Beautify JSON
   server.set('json spaces', 2)
 
   // Serve static files
