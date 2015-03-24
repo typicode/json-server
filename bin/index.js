@@ -19,13 +19,12 @@ var argv = yargs
       alias: 'p',
       description: 'Set port',
       default: 3000
+    },
+    host: {
+      alias: 'H',
+      description: 'Set host',
+      default: '0.0.0.0'
     }
-    // Disable for the moment...
-    // host: {
-    //   alias: 'H',
-    //   description: 'Set host',
-    //   default: 'localhost'
-    // }
   })
   .example('$0 db.json', '')
   .example('$0 file.js', '')
@@ -35,12 +34,15 @@ var argv = yargs
 
 // Start server function
 function start(object, filename) {
+  var port = process.env.PORT || argv.port
+  var hostname = argv.host === '0.0.0.0' ? 'localhost' : argv.host
+
   for (var prop in object) {
-    console.log(chalk.grey('  http://' + host +  ':' + port + '/') + chalk.cyan(prop))
+    console.log(chalk.grey('  http://' + hostname +  ':' + port + '/') + chalk.cyan(prop))
   }
 
   console.log(
-    '\nYou can now go to ' + chalk.grey('http://' + host + ':' + port + '/\n')
+    '\nYou can now go to ' + chalk.grey('http://' + hostname + ':' + port + '/\n')
   )
 
   console.log(
@@ -65,13 +67,11 @@ function start(object, filename) {
   var server = jsonServer.create()
 
   server.use(router)
-  server.listen(port)
+  server.listen(port, argv.host)
 }
 
 // Set file and port
 var source = argv._[0]
-var port = process.env.PORT || argv.port
-var host = 'localhost' //process.env.HOST || argv.host
 
 // Say hi, load file and start server
 console.log(chalk.cyan('{^_^} Hi!\n'))
