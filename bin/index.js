@@ -38,11 +38,11 @@ function start(object, filename) {
   var hostname = argv.host === '0.0.0.0' ? 'localhost' : argv.host
 
   for (var prop in object) {
-    console.log(chalk.grey('  http://' + hostname +  ':' + port + '/') + chalk.cyan(prop))
+    console.log(chalk.gray('  http://' + hostname +  ':' + port + '/') + chalk.cyan(prop))
   }
 
   console.log(
-    '\nYou can now go to ' + chalk.grey('http://' + hostname + ':' + port + '/\n')
+    '\nYou can now go to ' + chalk.gray('http://' + hostname + ':' + port + '/\n')
   )
 
   console.log(
