@@ -12,7 +12,7 @@ low.mixin({ createId: utils.createId })
 module.exports = function(source) {
   // Create router
   var router = express.Router()
-  
+
   // Add middlewares
   router.use(bodyParser.json({limit: '10mb'}))
   router.use(bodyParser.urlencoded({ extended: false }))
@@ -41,6 +41,11 @@ module.exports = function(source) {
   // GET /*?*&_end=
   // GET /*?*&_start=&_end=
   function list(req, res, next) {
+    // Test if resource exists
+    if (!db.object.hasOwnProperty(req.params.resource)) {
+      return res.sendStatus(404)
+    }
+
     // Filters list
     var filters = {}
 

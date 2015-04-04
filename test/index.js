@@ -59,6 +59,12 @@ describe('Server', function() {
         .expect(db.posts)
         .expect(200, done)
     })
+
+    it('should respond with 404 if resource is not found', function(done) {
+      request(server)
+        .get('/undefined')
+        .expect(404, done)
+    })
   })
 
   describe('GET /:resource?attr=&attr=', function() {
