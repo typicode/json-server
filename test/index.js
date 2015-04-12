@@ -167,6 +167,14 @@ describe('Server', function() {
         .expect(200, done)
     })
 
+    it('should support string id, respond with json and corresponding resource', function(done) {
+      request(server)
+        .get('/refs/abcd-1234')
+        .expect('Content-Type', /json/)
+        .expect(db.refs[0])
+        .expect(200, done)
+    })
+
     it('should respond with 404 if resource is not found', function(done) {
       request(server)
         .get('/posts/9001')

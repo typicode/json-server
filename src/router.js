@@ -132,7 +132,7 @@ module.exports = function(source) {
   // GET /:resource/:id
   function show(req, res, next) {
     var resource = db(req.params.resource)
-      .get(+req.params.id)
+      .get(utils.toNative(req.params.id))
 
     if (resource) {
       res.jsonp(resource)
@@ -161,7 +161,7 @@ module.exports = function(source) {
     }
 
     var resource = db(req.params.resource)
-      .update(+req.params.id, req.body)
+      .update(utils.toNative(req.params.id), req.body)
 
     if (resource) {
       res.jsonp(resource)
@@ -172,7 +172,7 @@ module.exports = function(source) {
 
   // DELETE /:resource/:id
   function destroy(req, res, next) {
-    db(req.params.resource).remove(+req.params.id)
+    db(req.params.resource).remove(utils.toNative(req.params.id))
 
     // Remove dependents documents
     var removable = utils.getRemovable(db.object)
