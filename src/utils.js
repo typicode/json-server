@@ -50,9 +50,13 @@ function getRemovable(db) {
       _(doc).each(function(value, key) {
         if (/Id$/.test(key)) {
           var refName = _.pluralize(key.slice(0, - 2))
-          var ref     = _.findWhere(db[refName], {id: value})
-          if (_.isUndefined(ref)) {
-            removable.push({ name: collName, id: doc.id })
+          // Test if table exists
+          if (db[refName]) {
+            // Test if references is defined in table
+            var ref = _.findWhere(db[refName], {id: value})
+            if (_.isUndefined(ref)) {
+              removable.push({ name: collName, id: doc.id })
+            }
           }
         }
       })
