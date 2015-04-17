@@ -64,8 +64,9 @@ function start(object, filename) {
   } else {
     var router = jsonServer.router(object)
   }
-  var server = jsonServer.create()
 
+  var server = jsonServer.create()
+  server.use(jsonServer.defaults)
   server.use(router)
   server.listen(port, argv.host)
 }

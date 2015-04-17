@@ -34,8 +34,10 @@ describe('Server', function() {
       {id: 'abcd-1234', url: 'http://example.com', postId: 1}
     ]
 
+    server = jsonServer.create()
     router = jsonServer.router(db)
-    server = jsonServer.create().use(router)
+    server.use(jsonServer.defaults)
+    server.use(router)
   })
 
   describe('GET /db', function() {

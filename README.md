@@ -139,10 +139,11 @@ var object = {
   ]
 }
 
-var router = jsonServer.router(object) // Express router
-var server = jsonServer.create()       // Express server
+var server = jsonServer.create()      // Express server
 
-server.use(router)
+server.use(jsonServer.defaults)       // Default middlewares (logger, public, cors)
+server.use(jsonServer.router(object)) // Express router
+
 server.listen(3000)
 ```
 
