@@ -181,7 +181,7 @@ module.exports = function(source) {
       db(item.name).remove(item.id)
     })
 
-    res.status(204).end()
+    res.status(200).jsonp({})
   }
 
   router.get('/db', showDatabase)
