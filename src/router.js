@@ -176,7 +176,6 @@ module.exports = function(source) {
 
     // Remove dependents documents
     var removable = utils.getRemovable(db.object)
-    console.log(removable)
 
     _(removable).each(function(item) {
       db(item.name).remove(item.id)

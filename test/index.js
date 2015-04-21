@@ -274,6 +274,7 @@ describe('Server', function() {
     it('should respond with empty data, destroy resource and dependent resources', function(done) {
       request(server)
         .del('/posts/1')
+        .expect({})
         .expect(204)
         .end(function(err, res){
           if (err) return done(err)
