@@ -4,7 +4,7 @@
 
 Created with <3 for front-end developers who need a quick back-end for prototyping and mocking.
 
-Powers [JSONPlaceholder](http://jsonplaceholder.typicode.com)
+For a live running version, see [JSONPlaceholder](http://jsonplaceholder.typicode.com).
 
 ## Example
 
