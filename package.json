@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "husky": "^0.6.1",
-    "mocha": "~1.14.0",
+    "mocha": "^2.2.4",
     "supertest": "~0.8.1"
   },
   "scripts": {
