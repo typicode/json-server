@@ -133,19 +133,14 @@ You can use JSON Server as a module:
 ```javascript
 var jsonServer = require('json-server')
 
-var object = {
-  posts: [
-    { id: 1, body: 'foo' }
-  ]
-}
-
-var server = jsonServer.create()      // Express server
-
-server.use(jsonServer.defaults)       // Default middlewares (logger, public, cors)
-server.use(jsonServer.router(object)) // Express router
+var server = jsonServer.create()         // Express server
+server.use(jsonServer.defaults)          // Default middlewares (logger, public, cors)
+server.use(jsonServer.router('db.json')) // Express router
 
 server.listen(3000)
 ```
+
+For an in-memory database, you can pass an object to `jsonServer.route()`.
 
 ### Deployment
 
