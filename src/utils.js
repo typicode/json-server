@@ -49,13 +49,13 @@ function getRemovable(db) {
     _(coll).each(function(doc) {
       _(doc).each(function(value, key) {
         if (/Id$/.test(key)) {
-          var refName = _.pluralize(key.slice(0, - 2))
+          var refName = _.pluralize(key.slice(0, -2))
           // Test if table exists
           if (db[refName]) {
             // Test if references is defined in table
             var ref = _.findWhere(db[refName], {id: value})
             if (_.isUndefined(ref)) {
-              removable.push({ name: collName, id: doc.id })
+              removable.push({name: collName, id: doc.id})
             }
           }
         }
@@ -66,8 +66,15 @@ function getRemovable(db) {
   return removable
 }
 
+//Returns limited array
+function limitArray(array, start, limit) {
+  var end = parseInt(start) + parseInt(limit)
+  return array.slice(start, end)
+}
+
 module.exports = {
   toNative: toNative,
   createId: createId,
-  getRemovable: getRemovable
+  getRemovable: getRemovable,
+  limitArray: limitArray
 }
