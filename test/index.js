@@ -1,7 +1,7 @@
 var request = require('supertest')
-var assert  = require('assert')
-var jsonServer  = require('../src/')
-
+var assert = require('assert')
+var jsonServer = require('../src/')
+var utils = require('../src/utils')
 describe('Server', function() {
 
   var server
@@ -23,11 +23,17 @@ describe('Server', function() {
     ]
 
     db.comments = [
-      {id: 1, published: true,  postId: 1},
+      {id: 1, published: true, postId: 1},
       {id: 2, published: false, postId: 1},
       {id: 3, published: false, postId: 2},
       {id: 4, published: false, postId: 2},
       {id: 5, published: false, postId: 2},
+      {id: 6, published: false, postId: 2},
+      {id: 7, published: false, postId: 2},
+      {id: 8, published: false, postId: 2},
+      {id: 9, published: false, postId: 2},
+      {id: 10, published: false, postId: 2},
+      {id: 11, published: false, postId: 2}
     ]
 
     db.refs = [
@@ -89,11 +95,11 @@ describe('Server', function() {
     })
 
     it('should return an empty array when nothing is matched', function(done) {
-        request(server)
-          .get('/tags?q=nope')
-          .expect('Content-Type', /json/)
-          .expect([])
-          .expect(200, done)
+      request(server)
+        .get('/tags?q=nope')
+        .expect('Content-Type', /json/)
+        .expect([])
+        .expect(200, done)
     })
   })
 
@@ -110,29 +116,29 @@ describe('Server', function() {
   })
 
   describe('GET /:resource?sort=', function() {
-      it('should respond with json and sort on a field', function(done) {
-          request(server)
-              .get('/tags?_sort=body')
-              .expect('Content-Type', /json/)
-              .expect([db.tags[1], db.tags[0], db.tags[2]])
-              .expect(200, done)
-      })
+    it('should respond with json and sort on a field', function(done) {
+      request(server)
+        .get('/tags?_sort=body')
+        .expect('Content-Type', /json/)
+        .expect([db.tags[1], db.tags[0], db.tags[2]])
+        .expect(200, done)
+    })
 
-      it('should reverse sorting with _order=DESC', function(done) {
-          request(server)
-              .get('/tags?_sort=body&_order=DESC')
-              .expect('Content-Type', /json/)
-              .expect([db.tags[2], db.tags[0], db.tags[1]])
-              .expect(200, done)
-      })
+    it('should reverse sorting with _order=DESC', function(done) {
+      request(server)
+        .get('/tags?_sort=body&_order=DESC')
+        .expect('Content-Type', /json/)
+        .expect([db.tags[2], db.tags[0], db.tags[1]])
+        .expect(200, done)
+    })
 
-      it('should sort on numerical field', function(done) {
-          request(server)
-              .get('/posts?_sort=id&_order=DESC')
-              .expect('Content-Type', /json/)
-              .expect(db.posts.reverse())
-              .expect(200, done)
-      })
+    it('should sort on numerical field', function(done) {
+      request(server)
+        .get('/posts?_sort=id&_order=DESC')
+        .expect('Content-Type', /json/)
+        .expect(db.posts.reverse())
+        .expect(200, done)
+    })
   })
 
   describe('GET /:resource?_start=&_end=', function() {
@@ -147,6 +153,18 @@ describe('Server', function() {
     })
   })
 
+  describe('GET /:resource?_start=&_limit=', function() {
+    it('should respond with a limited array', function(done) {
+      request(server)
+        .get('/comments?_start=5&_limit=3')
+        .expect('Content-Type', /json/)
+        .expect('x-total-count', db.comments.length.toString())
+        .expect('Access-Control-Expose-Headers', 'X-Total-Count')
+        .expect(utils.limitArray(db.comments, 5, 3))
+        .expect(200, done)
+    })
+  })
+
   describe('GET /:parent/:parentId/:resource', function() {
     it('should respond with json and corresponding nested resources', function(done) {
       request(server)
@@ -154,7 +172,8 @@ describe('Server', function() {
         .expect('Content-Type', /json/)
         .expect([
           db.comments[0],
-          db.comments[1]
+          db.comments[1],
+
         ])
         .expect(200, done)
     })
@@ -196,7 +215,7 @@ describe('Server', function() {
           .expect('Content-Type', /json/)
           .expect({id: 3, body: 'foo', booleanValue: true, integerValue: 1})
           .expect(200)
-          .end(function(err, res){
+          .end(function(err, res) {
             if (err) return done(err)
             assert.equal(db.posts.length, 3)
             done()
@@ -210,7 +229,7 @@ describe('Server', function() {
           .send({url: 'http://foo.com', postId: '1'})
           .expect('Content-Type', /json/)
           .expect(200)
-          .end(function(err, res){
+          .end(function(err, res) {
             if (err) return done(err)
             assert.equal(db.refs.length, 2)
             done()
@@ -226,7 +245,7 @@ describe('Server', function() {
         .expect('Content-Type', /json/)
         .expect({id: 1, body: 'bar', booleanValue: true, integerValue: 1})
         .expect(200)
-        .end(function(err, res){
+        .end(function(err, res) {
           if (err) return done(err)
           // assert it was created in database too
           assert.deepEqual(db.posts[0], {id: 1, body: 'bar', booleanValue: true, integerValue: 1})
@@ -252,7 +271,7 @@ describe('Server', function() {
         .expect('Content-Type', /json/)
         .expect({id: 1, body: 'bar'})
         .expect(200)
-        .end(function(err, res){
+        .end(function(err, res) {
           if (err) return done(err)
           // assert it was created in database too
           assert.deepEqual(db.posts[0], {id: 1, body: 'bar'})
@@ -276,10 +295,10 @@ describe('Server', function() {
         .del('/posts/1')
         .expect({})
         .expect(200)
-        .end(function(err, res){
+        .end(function(err, res) {
           if (err) return done(err)
           assert.equal(db.posts.length, 1)
-          assert.equal(db.comments.length, 3)
+          assert.equal(db.comments.length, 9)
           done()
         })
     })

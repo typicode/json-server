@@ -7,7 +7,7 @@ var utils = require('./utils')
 
 low.mixin(require('underscore-db'))
 low.mixin(require('underscore.inflections'))
-low.mixin({ createId: utils.createId })
+low.mixin({createId: utils.createId})
 
 module.exports = function(source) {
   // Create router
@@ -15,7 +15,7 @@ module.exports = function(source) {
 
   // Add middlewares
   router.use(bodyParser.json({limit: '10mb'}))
-  router.use(bodyParser.urlencoded({ extended: false }))
+  router.use(bodyParser.urlencoded({extended: false}))
   router.use(methodOverride())
 
   // Create database
@@ -58,11 +58,12 @@ module.exports = function(source) {
     var _end = req.query._end
     var _sort = req.query._sort
     var _order = req.query._order
-
+    var _limit = req.query._limit
     delete req.query._start
     delete req.query._end
     delete req.query._sort
     delete req.query._order
+    delete req.query._limit
 
     if (req.query.q) {
 
@@ -82,7 +83,7 @@ module.exports = function(source) {
 
       // Add :parentId filter in case URL is like /:parent/:parentId/:resource
       if (req.params.parent) {
-        filters[req.params.parent.slice(0, - 1) + 'Id'] = +req.params.parentId
+        filters[req.params.parent.slice(0, -1) + 'Id'] = +req.params.parentId
       }
 
       // Add query parameters filters
@@ -104,7 +105,7 @@ module.exports = function(source) {
     }
 
     // Sort
-    if(_sort) {
+    if (_sort) {
       _order = _order || 'ASC'
 
       array = _.sortBy(array, function(element) {
@@ -117,13 +118,13 @@ module.exports = function(source) {
     }
 
     // Slice result
+    _start = _start || 0
+    res.setHeader('X-Total-Count', array.length)
+    res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
     if (_end) {
-      res.setHeader('X-Total-Count', array.length)
-      res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
-
-      _start = _start || 0
-
       array = array.slice(_start, _end)
+    } else if (_limit) {
+      array = utils.limitArray(array, _start, _limit)
     }
 
     res.jsonp(array)
