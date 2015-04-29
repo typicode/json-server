@@ -39,9 +39,11 @@ describe('Server', function() {
     db.refs = [
       {id: 'abcd-1234', url: 'http://example.com', postId: 1}
     ]
-
+    var args = {
+      headers: 'enable'
+    }
     server = jsonServer.create()
-    router = jsonServer.router(db)
+    router = jsonServer.router(db, args)
     server.use(jsonServer.defaults)
     server.use(router)
   })
