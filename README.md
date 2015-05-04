@@ -50,11 +50,12 @@ PATCH /posts/1
 DEL   /posts/1
 ```
 
-To slice resources, add `_start` and `_end`. An `X-Total-Count` header is included in the response.
+To slice resources, add `_start` and `_end` or `_limit`. An `X-Total-Count` header is included in the response.
 
 ```
-GET /posts?_start=0&_end=10
-GET /posts/1/comments?_start=0&_end=10
+GET /posts?_start=20&_end=30
+GET /posts?_start=20&_limit=10
+GET /posts/1/comments?_start=20&_end=30
 ```
 
 To sort resources, add `_sort` and `_order` (ascending order by default).
