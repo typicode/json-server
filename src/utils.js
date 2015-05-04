@@ -66,15 +66,8 @@ function getRemovable(db) {
   return removable
 }
 
-//Returns limited array
-function limitArray(array, start, limit) {
-  var end = parseInt(start) + parseInt(limit)
-  return array.slice(start, end)
-}
-
 module.exports = {
   toNative: toNative,
   createId: createId,
-  getRemovable: getRemovable,
-  limitArray: limitArray
+  getRemovable: getRemovable
 }

@@ -52,7 +52,7 @@ module.exports = function(source) {
     // Result array
     var array
 
-    // Remove _start and _end from req.query to avoid filtering using those
+    // Remove _start, _end and _limit from req.query to avoid filtering using those
     // parameters
     var _start = req.query._start
     var _end = req.query._end
@@ -118,13 +118,18 @@ module.exports = function(source) {
     }
 
     // Slice result
-    _start = _start || 0
-    res.setHeader('X-Total-Count', array.length)
-    res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
+    if (_end || _limit) {
+      res.setHeader('X-Total-Count', array.length)
+      res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
+    }
+
+    _start = parseInt(_start) || 0
+
     if (_end) {
-      array = array.slice(_start, _end)
+      array = array.slice(_start, parseInt(_end))
     } else if (_limit) {
-      array = utils.limitArray(array, _start, _limit)
+      // Convert strings to int and sum to get end value
+      array = array.slice(_start, parseInt(_start) + parseInt(_limit))
     }
 
     res.jsonp(array)

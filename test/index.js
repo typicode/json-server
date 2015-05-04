@@ -27,13 +27,7 @@ describe('Server', function() {
       {id: 2, published: false, postId: 1},
       {id: 3, published: false, postId: 2},
       {id: 4, published: false, postId: 2},
-      {id: 5, published: false, postId: 2},
-      {id: 6, published: false, postId: 2},
-      {id: 7, published: false, postId: 2},
-      {id: 8, published: false, postId: 2},
-      {id: 9, published: false, postId: 2},
-      {id: 10, published: false, postId: 2},
-      {id: 11, published: false, postId: 2}
+      {id: 5, published: false, postId: 2}
     ]
 
     db.refs = [
@@ -156,11 +150,11 @@ describe('Server', function() {
   describe('GET /:resource?_start=&_limit=', function() {
     it('should respond with a limited array', function(done) {
       request(server)
-        .get('/comments?_start=5&_limit=3')
+        .get('/comments?_start=1&_limit=1')
         .expect('Content-Type', /json/)
         .expect('x-total-count', db.comments.length.toString())
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
-        .expect(utils.limitArray(db.comments, 5, 3))
+        .expect(db.comments.slice(1, 2))
         .expect(200, done)
     })
   })
@@ -298,7 +292,7 @@ describe('Server', function() {
         .end(function(err, res) {
           if (err) return done(err)
           assert.equal(db.posts.length, 1)
-          assert.equal(db.comments.length, 9)
+          assert.equal(db.comments.length, 3)
           done()
         })
     })
