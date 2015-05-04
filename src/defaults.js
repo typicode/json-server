@@ -1,7 +1,7 @@
 var fs = require('fs')
+var express = require('express')
 var logger = require('morgan')
 var cors = require('cors')
-var serveStatic = require('serve-static')
 var errorhandler = require('errorhandler')
 
 var arr = []
@@ -13,9 +13,9 @@ arr.push(logger('dev', {
 
 // Serve static files
 if (fs.existsSync(process.cwd() + '/public')) {
-  arr.push(serveStatic(process.cwd() + '/public'));
+  arr.push(express.static(process.cwd() + '/public'));
 } else {
-  arr.push(serveStatic(__dirname + '/public'));
+  arr.push(express.static(__dirname + '/public'));
 }
 
 // CORS
