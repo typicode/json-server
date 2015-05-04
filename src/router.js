@@ -9,7 +9,7 @@ low.mixin(require('underscore-db'))
 low.mixin(require('underscore.inflections'))
 low.mixin({createId: utils.createId})
 
-module.exports = function(source) {
+module.exports = function(source, args) {
   // Create router
   var router = express.Router()
 
@@ -28,7 +28,8 @@ module.exports = function(source) {
 
   // Expose database
   router.db = db
-
+  //Expose args
+  router.args = args
   // GET /db
   function showDatabase(req, res, next) {
     res.jsonp(db.object)
@@ -119,15 +120,27 @@ module.exports = function(source) {
 
     // Slice result
     _start = _start || 0
-    res.setHeader('X-Total-Count', array.length)
-    res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
+    var arrayLength = array.length
     if (_end) {
       array = array.slice(_start, _end)
     } else if (_limit) {
       array = utils.limitArray(array, _start, _limit)
     }
-
-    res.jsonp(array)
+    var response;
+    switch (args.headers) {
+      case 'disable':
+        response = {
+          totalCount: arrayLength,
+          data: array
+        }
+        break;
+      default:
+        res.setHeader('X-Total-Count', arrayLength)
+        res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
+        response = array;
+        break;
+    }
+    res.jsonp(response)
   }
 
   // GET /:resource/:id

@@ -24,11 +24,16 @@ var argv = yargs
       alias: 'H',
       description: 'Set host',
       default: '0.0.0.0'
+    },
+    headers: {
+      description: 'Enable/disable info in response headers',
+      default: 'enable'
     }
   })
   .example('$0 db.json', '')
   .example('$0 file.js', '')
   .example('$0 http://example.com/db.json', '')
+  .example('$0 --headers disable db.json','')
   .require(1, 'Missing <source> argument')
   .argv
 
@@ -60,9 +65,9 @@ function start(object, filename) {
   })
 
   if (filename) {
-    var router = jsonServer.router(filename)
+    var router = jsonServer.router(filename, argv)
   } else {
-    var router = jsonServer.router(object)
+    var router = jsonServer.router(object, argv)
   }
 
   var server = jsonServer.create()
