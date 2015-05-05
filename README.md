@@ -113,11 +113,11 @@ $ json-server http://jsonplaceholder.typicode.com/db
 You can use JS to programmatically create data:
 
 ```javascript
-module.exports = function() {
+module.exports = function () {
   data = { users: [] }
   // Create 1000 users
   for (var i = 0; i < 1000; i++) {
-    data.users.push({ name: 'user' + i })
+    data.users.push({ id: i, name: 'user' + i })
   }
   return data
 }
