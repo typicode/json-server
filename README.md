@@ -83,6 +83,10 @@ Returns default index file or serves `./public` directory.
 GET /
 ```
 
+### Nested calls
+
+Any nested objects need to be available in the root of the object, and reference its parent using `<parent-key>Id: <parent-id-value>`. In the above example, to return any `comments` objects for `post`s that have and `id` of `1` would be `/posts/1/comments`, so long as each `comments` object has a `postId` value.
+
 ## Install
 
 ```bash
