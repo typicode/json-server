@@ -33,7 +33,7 @@ Now if you go to [http://localhost:3000/posts/1](), you'll get
 { "id": 1, "title": "json-server", "author": "typicode" }
 ```
 
-Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically saved to `db.json`
+Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically saved to `db.json` using [lowdb](https://github.com/typicode/lowdb)
 
 ## Routes
 
