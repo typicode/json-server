@@ -1,4 +1,5 @@
 var request = require('supertest')
+var request2 = require('superagent')
 var assert = require('assert')
 var jsonServer = require('../src/')
 var utils = require('../src/utils')
@@ -29,7 +30,20 @@ describe('Server', function() {
       {id: 4, published: false, postId: 2},
       {id: 5, published: false, postId: 2}
     ]
-
+    db.subComments = [
+      {id: 1, moderated: true, commentId: 1},
+      {id: 2, moderated: false, commentId: 1},
+      {id: 3, moderated: true, commentId: 2},
+      {id: 4, moderated: false, commentId: 3},
+      {id: 5, moderated: false, commentId: 2}
+    ]
+    db.subSubComments = [
+      {id: 1, active: true, subCommentId: 1},
+      {id: 2, active: false, subCommentId: 1},
+      {id: 3, active: true, subCommentId: 2},
+      {id: 4, active: false, subCommentId: 3},
+      {id: 5, active: false, subCommentId: 2}
+    ]
     db.refs = [
       {id: 'abcd-1234', url: 'http://example.com', postId: 1}
     ]
@@ -159,16 +173,42 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:parent/:parentId/:resource', function() {
-    it('should respond with json and corresponding nested resources', function(done) {
+  describe('GET /:parent/:parentId/:resource/(:id)', function() {
+    it('should respond with json and corresponding nested resources (1 level - no id)', function(done) {
       request(server)
         .get('/posts/1/comments')
         .expect('Content-Type', /json/)
         .expect([
           db.comments[0],
-          db.comments[1],
-
+          db.comments[1]
         ])
+        .expect(200, done)
+    })
+    it('should respond with json and corresponding nested resource (1 level - with id)', function(done) {
+      request(server)
+        .get('/posts/1/comments/2')
+        .expect('Content-Type', /json/)
+        .expect(db.comments[1])
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:parent/:parentId/:resource/:id/:subResource/(:subId)', function() {
+    it('should respond with json and corresponding nested resources (2 levels - no id)', function(done) {
+      request(server)
+        .get('/posts/1/comments/2/subComments')
+        .expect('Content-Type', /json/)
+        .expect([
+          db.subComments[2],
+          db.subComments[4]
+        ])
+        .expect(200, done)
+    })
+    it('should respond with json and corresponding nested resource (2 levels - with id)', function(done) {
+      request(server)
+        .get('/posts/1/comments/2/subComments/3')
+        .expect('Content-Type', /json/)
+        .expect(db.subComments[2])
         .expect(200, done)
     })
   })
