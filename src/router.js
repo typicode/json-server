@@ -189,10 +189,10 @@ module.exports = function (source) {
     if (req._internal._sort) {
       req._internal._order = req._internal._order || 'ASC'
       req._internal.resource = _.sortBy(req._internal.resource, function (element) {
-        return element[req._internal._sort];
+        return element[req._internal._sort]
       })
       if (req._internal._order === 'DESC') {
-        req._internal.resource.reverse();
+        req._internal.resource.reverse()
       }
     }
 
