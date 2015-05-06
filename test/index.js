@@ -1,5 +1,4 @@
 var request = require('supertest')
-var request2 = require('superagent')
 var assert = require('assert')
 var jsonServer = require('../src/')
 var utils = require('../src/utils')

@@ -75,7 +75,7 @@ function start(object, filename) {
 var source = argv._[0]
 
 // Say hi, load file and start server
-console.log(chalk.cyan('{^_^} Hi!\n'),chalk.gray('therebelrobot variant\n'))
+console.log(chalk.cyan('{^_^} Hi!\n'))
 console.log('Loading database from ' + chalk.cyan(source))
 
 if (/\.json$/.test(source)) {
