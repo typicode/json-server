@@ -149,13 +149,13 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 
 ## Links
 
-### Video
+### Video tutorial
 
 * [Creating Demo APIs with json-server on egghead.io](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
 
 ### Articles
 
-* [Fast prototyping using Restangular and Json-server](http://glebbahmutov.com/blog/fast-prototyping-restangular-and-json-server/)
+* [Fast prototyping using Restangular and Json-server](http://glebbahmutov.com/blog/fast-prototyping-using-restangular-and-json-server/)
 * [ng-admin: Add an AngularJS admin GUI to any RESTful API](http://marmelab.com/blog/2014/09/15/easy-backend-for-your-restful-api.html)
 * [how to build quick json REST APIs for development](http://outloudthinking.me/how-to-build-quick-json-rest-apis/)
 
