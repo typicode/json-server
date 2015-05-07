@@ -1,4 +1,4 @@
-# JSON Server [![](https://travis-ci.org/typicode/json-server.svg)](https://travis-ci.org/typicode/json-server) [![](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server) [![Join the chat at https://gitter.im/typicode/json-server](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/typicode/json-server?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# JSON Server [![](https://travis-ci.org/typicode/json-server.svg)](https://travis-ci.org/typicode/json-server) [![](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server)
 
 > Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)
 
@@ -33,11 +33,11 @@ Now if you go to [http://localhost:3000/posts/1](), you'll get
 { "id": 1, "title": "json-server", "author": "typicode" }
 ```
 
-Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically saved to `db.json` using [lowdb](https://github.com/typicode/lowdb)
+Also, if you make POST, PUT, PATCH or DELETE requests, changes will be saved to `db.json`
 
 ## Routes
 
-Here are all the available routes.
+Based on the previous `db.json`, here are all the available routes.
 
 ```
 GET   /posts
@@ -113,11 +113,11 @@ $ json-server http://jsonplaceholder.typicode.com/db
 You can use JS to programmatically create data:
 
 ```javascript
-module.exports = function () {
+module.exports = function() {
   data = { users: [] }
   // Create 1000 users
   for (var i = 0; i < 1000; i++) {
-    data.users.push({ id: i, name: 'user' + i })
+    data.users.push({ name: 'user' + i })
   }
   return data
 }
@@ -149,13 +149,13 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 
 ## Links
 
-### Video tutorial
+### Video
 
 * [Creating Demo APIs with json-server on egghead.io](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
 
 ### Articles
 
-* [Fast prototyping using Restangular and Json-server](http://glebbahmutov.com/blog/fast-prototyping-using-restangular-and-json-server/)
+* [Fast prototyping using Restangular and Json-server](http://glebbahmutov.com/blog/fast-prototyping-restangular-and-json-server/)
 * [ng-admin: Add an AngularJS admin GUI to any RESTful API](http://marmelab.com/blog/2014/09/15/easy-backend-for-your-restful-api.html)
 * [how to build quick json REST APIs for development](http://outloudthinking.me/how-to-build-quick-json-rest-apis/)
 
