@@ -156,7 +156,7 @@ module.exports = function(source) {
     var resource = db(req.params.resource)
       .insert(req.body)
 
-    res.jsonp(resource)
+    res.status(201).jsonp(resource)
   }
 
   // PUT /:resource/:id
