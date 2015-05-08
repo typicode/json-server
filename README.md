@@ -4,9 +4,10 @@
 
 Created with <3 for front-end developers who need a quick back-end for prototyping and mocking.
 
-Live running version: [JSONPlaceholder](http://jsonplaceholder.typicode.com).
+Links:
+  * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
+  * [Online video tutorial - Creating Demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
 
-Video tutorial: [Creating Demo APIs with json-server on egghead.io](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
 
 
 ## Example
