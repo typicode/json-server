@@ -1,5 +1,7 @@
 var express = require('express')
 
+var test = test
+
 module.exports = {
   create: function () {
     var server = express()
