@@ -5,11 +5,13 @@ var _ = require('underscore')
 var low = require('lowdb')
 var utils = require('./utils')
 
+// Add methods to lowdb
 low.mixin(require('underscore-db'))
 low.mixin(require('underscore.inflections'))
-low.mixin({
-  createId: utils.createId
-})
+
+// Override underscore-db's createId with utils.createId
+// utils.createId can generate incremental id or uuid
+low.mixin({createId: utils.createId})
 
 module.exports = function (source) {
 
@@ -219,7 +221,12 @@ module.exports = function (source) {
     }
     var resource = db(req.params.resource)
       .insert(req.body)
+<<<<<<< HEAD
     res.jsonp(resource)
+=======
+
+    res.status(201).jsonp(resource)
+>>>>>>> master
   }
 
   // PUT /:resource/:id

@@ -4,7 +4,8 @@
 
 Created with <3 for front-end developers who need a quick back-end for prototyping and mocking.
 
-For a live running version, see [JSONPlaceholder](http://jsonplaceholder.typicode.com).
+  * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
+  * [Online video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
 
 ## Example
 
@@ -33,11 +34,11 @@ Now if you go to [http://localhost:3000/posts/1](), you'll get
 { "id": 1, "title": "json-server", "author": "typicode" }
 ```
 
-Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically saved to `db.json`
+Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically saved to `db.json` using [lowdb](https://github.com/typicode/lowdb)
 
 ## Routes
 
-Here are all the available routes.
+Based on the previous `db.json`, here are all the available routes.
 
 ```
 GET   /posts
@@ -113,7 +114,7 @@ $ json-server http://jsonplaceholder.typicode.com/db
 You can use JS to programmatically create data:
 
 ```javascript
-module.exports = function () {
+module.exports = function() {
   data = { users: [] }
   // Create 1000 users
   for (var i = 0; i < 1000; i++) {
@@ -155,7 +156,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 
 ### Articles
 
-* [Fast prototyping using Restangular and Json-server](http://glebbahmutov.com/blog/fast-prototyping-restangular-and-json-server/)
+* [Fast prototyping using Restangular and Json-server](http://glebbahmutov.com/blog/fast-prototyping-using-restangular-and-json-server/)
 * [ng-admin: Add an AngularJS admin GUI to any RESTful API](http://marmelab.com/blog/2014/09/15/easy-backend-for-your-restful-api.html)
 * [how to build quick json REST APIs for development](http://outloudthinking.me/how-to-build-quick-json-rest-apis/)
 
