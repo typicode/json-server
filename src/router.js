@@ -221,12 +221,8 @@ module.exports = function (source) {
     }
     var resource = db(req.params.resource)
       .insert(req.body)
-<<<<<<< HEAD
-    res.jsonp(resource)
-=======
 
     res.status(201).jsonp(resource)
->>>>>>> master
   }
 
   // PUT /:resource/:id
