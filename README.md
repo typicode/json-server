@@ -126,7 +126,7 @@ You can use JS to programmatically create data:
 
 ```javascript
 module.exports = function() {
-  data = { users: [] }
+  var data = { users: [] }
   // Create 1000 users
   for (var i = 0; i < 1000; i++) {
     data.users.push({ id: i, name: 'user' + i })
