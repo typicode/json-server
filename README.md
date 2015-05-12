@@ -14,10 +14,18 @@ Create a `db.json` file
 ```javascript
 {
   "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
+    {
+     "id": 1,
+     "title": "json-server",
+     "author": "typicode"
+    }
   ],
   "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
+    {
+     "id": 1,
+     "body": "some comment",
+     "postId": 1
+    }
   ]
 }
 ```
@@ -31,31 +39,34 @@ $ json-server db.json
 Now if you go to [http://localhost:3000/posts/1](), you'll get
 
 ```javascript
-{ "id": 1, "title": "json-server", "author": "typicode" }
+{
+ "id": 1,
+ "title": "json-server",
+ "author": "typicode"
+}
 ```
 
 Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically saved to `db.json` using [lowdb](https://github.com/typicode/lowdb)
 
 ## Routes
 
-Based on the previous `db.json`, here are all the available routes.
+Based on the previous `db.json` file, here are all the available routes. If you need more customization, you can use the project as a [module](https://github.com/typicode/json-server#module).
 
 ```
-GET   /posts
-GET   /posts/1
-GET   /posts/1/comments
-GET   /posts?title=json-server&author=typicode
-POST  /posts
-PUT   /posts/1
-PATCH /posts/1
-DEL   /posts/1
+GET    /posts
+GET    /posts/1
+GET    /posts/1/comments
+GET    /posts?title=json-server&author=typicode
+POST   /posts
+PUT    /posts/1
+PATCH  /posts/1
+DELETE /posts/1
 ```
 
-To slice resources, add `_start` and `_end` or `_limit`. An `X-Total-Count` header is included in the response.
+To slice resources, add `_start` and `_end` or `_limit` (an `X-Total-Count` header is included in the response).
 
 ```
 GET /posts?_start=20&_end=30
-GET /posts?_start=20&_limit=10
 GET /posts/1/comments?_start=20&_end=30
 ```
 
@@ -130,19 +141,26 @@ $ json-server index.js
 
 ### Module
 
-You can use JSON Server as a module:
-
 ```javascript
 var jsonServer = require('json-server')
 
-var server = jsonServer.create()         // Express server
-server.use(jsonServer.defaults)          // Default middlewares (logger, public, cors)
-server.use(jsonServer.router('db.json')) // Express router
+// Express server
+var server = jsonServer.create()
+
+// Default middlewares (logger, public, cors)
+server.use(jsonServer.defaults)
+
+// Add other Express middlewares if needed (authentication, redirections, ...)
+// ...
+
+ // Express router
+server.use(jsonServer.router('db.json'))
 
 server.listen(3000)
 ```
 
 For an in-memory database, you can pass an object to `jsonServer.route()`.
+Please note also that you can use the `jsonServer.router()` in existing Express servers.
 
 ### Deployment
 
