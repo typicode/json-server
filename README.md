@@ -11,10 +11,10 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 
 Create a `db.json` file
 
-```javascript
+```json
 {
   "posts": [
-    { "id": 1, "title": "json-server" }
+    { "id": 1, "title": "json-server", "author": "typicode" }
   ],
   "comments": [
     { "id": 1, "body": "some comment", "postId": 1 }
@@ -30,8 +30,8 @@ $ json-server db.json
 
 Now if you go to [http://localhost:3000/posts/1](), you'll get
 
-```javascript
-{ "id": 1, "title": "json-server" }
+```json
+{ "id": 1, "title": "json-server", "author": "typicode" }
 ```
 
 Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
