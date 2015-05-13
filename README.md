@@ -1,6 +1,6 @@
 # JSON Server [![](https://travis-ci.org/typicode/json-server.svg)](https://travis-ci.org/typicode/json-server) [![](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server) [![](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/typicode/json-server?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-> Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)
+Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)
 
 Created with :sparkling_heart: for front-end developers who need a quick back-end for prototyping and mocking.
 
@@ -129,26 +129,22 @@ $ json-server index.js
 
 ### Module
 
+If you need to add authentication, validation, rewrite or add routes, you can use the project as a module in combination with other Express middlewares.
+
 ```javascript
 var jsonServer = require('json-server')
 
-// Express server
-var server = jsonServer.create()
+var server = jsonServer.create() // Returns an Express server
+var router = jsonServer.router('db.json') // Returns an Express router
 
-// Default middlewares (logger, public, cors)
-server.use(jsonServer.defaults)
-
-// Add other Express middlewares if needed (authentication, redirections, ...)
-// ...
-
- // Express router
-server.use(jsonServer.router('db.json'))
+server.use(jsonServer.defaults) // logger, static and cors middlewares
+server.use(router) // Mount router on '/'
 
 server.listen(3000)
 ```
 
 For an in-memory database, you can pass an object to `jsonServer.route()`.
-Please note also that you can use the `jsonServer.router()` in existing Express servers.
+Please note also that `jsonServer.router()` can be used in existing Express projects.
 
 ### Deployment
 
