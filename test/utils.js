@@ -1,11 +1,13 @@
 var assert = require('assert')
 var utils = require('../src/utils')
 
-describe('utils', function() {
+/* global describe, it */
 
-  describe('getRemovable', function() {
+describe('utils', function () {
 
-    it('should return removable documents', function() {
+  describe('getRemovable', function () {
+
+    it('should return removable documents', function () {
 
       var db = {
         posts: [
@@ -15,7 +17,7 @@ describe('utils', function() {
           {id: 1, postId: 1},
           // Comments below references a post that doesn't exist
           {id: 2, postId: 2},
-          {id: 3, postId: 2},
+          {id: 3, postId: 2}
         ]
       }
 
@@ -29,9 +31,9 @@ describe('utils', function() {
     })
   })
 
-  describe('toNative', function() {
+  describe('toNative', function () {
 
-    it('should convert string to native type', function() {
+    it('should convert string to native type', function () {
       // should convert
       assert.strictEqual(utils.toNative('1'), 1)
       assert.strictEqual(utils.toNative('true'), true)

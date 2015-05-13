@@ -33,12 +33,12 @@ var argv = yargs
   .argv
 
 // Start server function
-function start(object, filename) {
+function start (object, filename) {
   var port = process.env.PORT || argv.port
   var hostname = argv.host === '0.0.0.0' ? 'localhost' : argv.host
 
   for (var prop in object) {
-    console.log(chalk.gray('  http://' + hostname +  ':' + port + '/') + chalk.cyan(prop))
+    console.log(chalk.gray('  http://' + hostname + ':' + port + '/') + chalk.cyan(prop))
   }
 
   console.log(
@@ -59,10 +59,11 @@ function start(object, filename) {
     }
   })
 
+  var router
   if (filename) {
-    var router = jsonServer.router(filename)
+    router = jsonServer.router(filename)
   } else {
-    var router = jsonServer.router(object)
+    router = jsonServer.router(object)
   }
 
   var server = jsonServer.create()
@@ -90,7 +91,7 @@ if (/\.js$/.test(source)) {
 }
 
 if (/^http/.test(source)) {
-  got(source, function(err, data) {
+  got(source, function (err, data) {
     if (err) throw err
     var object = JSON.parse(data)
     start(object)

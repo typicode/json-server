@@ -1,14 +1,16 @@
 var request = require('supertest')
 var assert = require('assert')
 var jsonServer = require('../src/')
-var utils = require('../src/utils')
-describe('Server', function() {
+
+/* global beforeEach, describe, it */
+
+describe('Server', function () {
 
   var server
   var router
   var db
 
-  beforeEach(function() {
+  beforeEach(function () {
     db = {}
 
     db.posts = [
@@ -40,8 +42,8 @@ describe('Server', function() {
     server.use(router)
   })
 
-  describe('GET /db', function() {
-    it('should respond with json and full database', function(done) {
+  describe('GET /db', function () {
+    it('should respond with json and full database', function (done) {
       request(server)
         .get('/db')
         .expect('Content-Type', /json/)
@@ -50,8 +52,8 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:resource', function() {
-    it('should respond with json and corresponding resources', function(done) {
+  describe('GET /:resource', function () {
+    it('should respond with json and corresponding resources', function (done) {
       request(server)
         .get('/posts')
         .set('Origin', 'http://example.com')
@@ -62,15 +64,15 @@ describe('Server', function() {
         .expect(200, done)
     })
 
-    it('should respond with 404 if resource is not found', function(done) {
+    it('should respond with 404 if resource is not found', function (done) {
       request(server)
         .get('/undefined')
         .expect(404, done)
     })
   })
 
-  describe('GET /:resource?attr=&attr=', function() {
-    it('should respond with json and filter resources', function(done) {
+  describe('GET /:resource?attr=&attr=', function () {
+    it('should respond with json and filter resources', function (done) {
       request(server)
         .get('/comments?postId=1&published=true')
         .expect('Content-Type', /json/)
@@ -79,8 +81,8 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:resource?q=', function() {
-    it('should respond with json and make a full-text search', function(done) {
+  describe('GET /:resource?q=', function () {
+    it('should respond with json and make a full-text search', function (done) {
       request(server)
         .get('/tags?q=pho')
         .expect('Content-Type', /json/)
@@ -88,7 +90,7 @@ describe('Server', function() {
         .expect(200, done)
     })
 
-    it('should return an empty array when nothing is matched', function(done) {
+    it('should return an empty array when nothing is matched', function (done) {
       request(server)
         .get('/tags?q=nope')
         .expect('Content-Type', /json/)
@@ -97,8 +99,8 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:resource?_end=', function() {
-    it('should respond with a sliced array', function(done) {
+  describe('GET /:resource?_end=', function () {
+    it('should respond with a sliced array', function (done) {
       request(server)
         .get('/comments?_end=2')
         .expect('Content-Type', /json/)
@@ -109,8 +111,8 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:resource?sort=', function() {
-    it('should respond with json and sort on a field', function(done) {
+  describe('GET /:resource?sort=', function () {
+    it('should respond with json and sort on a field', function (done) {
       request(server)
         .get('/tags?_sort=body')
         .expect('Content-Type', /json/)
@@ -118,7 +120,7 @@ describe('Server', function() {
         .expect(200, done)
     })
 
-    it('should reverse sorting with _order=DESC', function(done) {
+    it('should reverse sorting with _order=DESC', function (done) {
       request(server)
         .get('/tags?_sort=body&_order=DESC')
         .expect('Content-Type', /json/)
@@ -126,7 +128,7 @@ describe('Server', function() {
         .expect(200, done)
     })
 
-    it('should sort on numerical field', function(done) {
+    it('should sort on numerical field', function (done) {
       request(server)
         .get('/posts?_sort=id&_order=DESC')
         .expect('Content-Type', /json/)
@@ -135,8 +137,8 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:resource?_start=&_end=', function() {
-    it('should respond with a sliced array', function(done) {
+  describe('GET /:resource?_start=&_end=', function () {
+    it('should respond with a sliced array', function (done) {
       request(server)
         .get('/comments?_start=1&_end=2')
         .expect('Content-Type', /json/)
@@ -147,8 +149,8 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:resource?_start=&_limit=', function() {
-    it('should respond with a limited array', function(done) {
+  describe('GET /:resource?_start=&_limit=', function () {
+    it('should respond with a limited array', function (done) {
       request(server)
         .get('/comments?_start=1&_limit=1')
         .expect('Content-Type', /json/)
@@ -159,22 +161,21 @@ describe('Server', function() {
     })
   })
 
-  describe('GET /:parent/:parentId/:resource', function() {
-    it('should respond with json and corresponding nested resources', function(done) {
+  describe('GET /:parent/:parentId/:resource', function () {
+    it('should respond with json and corresponding nested resources', function (done) {
       request(server)
         .get('/posts/1/comments')
         .expect('Content-Type', /json/)
         .expect([
           db.comments[0],
-          db.comments[1],
-
+          db.comments[1]
         ])
         .expect(200, done)
     })
   })
 
-  describe('GET /:resource/:id', function() {
-    it('should respond with json and corresponding resource', function(done) {
+  describe('GET /:resource/:id', function () {
+    it('should respond with json and corresponding resource', function (done) {
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
@@ -182,7 +183,7 @@ describe('Server', function() {
         .expect(200, done)
     })
 
-    it('should support string id, respond with json and corresponding resource', function(done) {
+    it('should support string id, respond with json and corresponding resource', function (done) {
       request(server)
         .get('/refs/abcd-1234')
         .expect('Content-Type', /json/)
@@ -190,7 +191,7 @@ describe('Server', function() {
         .expect(200, done)
     })
 
-    it('should respond with 404 if resource is not found', function(done) {
+    it('should respond with 404 if resource is not found', function (done) {
       request(server)
         .get('/posts/9001')
         .expect('Content-Type', /json/)
@@ -199,17 +200,16 @@ describe('Server', function() {
     })
   })
 
-
-  describe('POST /:resource', function() {
+  describe('POST /:resource', function () {
     it('should respond with json, create a resource and increment id',
-      function(done) {
+      function (done) {
         request(server)
           .post('/posts')
           .send({body: 'foo', booleanValue: 'true', integerValue: '1'})
           .expect('Content-Type', /json/)
           .expect({id: 3, body: 'foo', booleanValue: true, integerValue: 1})
           .expect(201)
-          .end(function(err, res) {
+          .end(function (err, res) {
             if (err) return done(err)
             assert.equal(db.posts.length, 3)
             done()
@@ -217,13 +217,13 @@ describe('Server', function() {
       })
 
     it('should respond with json, create a resource and generate string id',
-      function(done) {
+      function (done) {
         request(server)
           .post('/refs')
           .send({url: 'http://foo.com', postId: '1'})
           .expect('Content-Type', /json/)
           .expect(201)
-          .end(function(err, res) {
+          .end(function (err, res) {
             if (err) return done(err)
             assert.equal(db.refs.length, 2)
             done()
@@ -231,15 +231,15 @@ describe('Server', function() {
       })
   })
 
-  describe('PUT /:resource/:id', function() {
-    it('should respond with json and update resource', function(done) {
+  describe('PUT /:resource/:id', function () {
+    it('should respond with json and update resource', function (done) {
       request(server)
         .put('/posts/1')
         .send({id: 1, body: 'bar', booleanValue: 'true', integerValue: '1'})
         .expect('Content-Type', /json/)
         .expect({id: 1, body: 'bar', booleanValue: true, integerValue: 1})
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           // assert it was created in database too
           assert.deepEqual(db.posts[0], {id: 1, body: 'bar', booleanValue: true, integerValue: 1})
@@ -247,7 +247,7 @@ describe('Server', function() {
         })
     })
 
-    it('should respond with 404 if resource is not found', function(done) {
+    it('should respond with 404 if resource is not found', function (done) {
       request(server)
         .put('/posts/9001')
         .send({id: 1, body: 'bar', booleanValue: 'true', integerValue: '1'})
@@ -257,15 +257,15 @@ describe('Server', function() {
     })
   })
 
-  describe('PATCH /:resource/:id', function() {
-    it('should respond with json and update resource', function(done) {
+  describe('PATCH /:resource/:id', function () {
+    it('should respond with json and update resource', function (done) {
       request(server)
         .patch('/posts/1')
         .send({body: 'bar'})
         .expect('Content-Type', /json/)
         .expect({id: 1, body: 'bar'})
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           // assert it was created in database too
           assert.deepEqual(db.posts[0], {id: 1, body: 'bar'})
@@ -273,7 +273,7 @@ describe('Server', function() {
         })
     })
 
-    it('should respond with 404 if resource is not found', function(done) {
+    it('should respond with 404 if resource is not found', function (done) {
       request(server)
         .patch('/posts/9001')
         .send({body: 'bar'})
@@ -283,13 +283,13 @@ describe('Server', function() {
     })
   })
 
-  describe('DELETE /:resource/:id', function() {
-    it('should respond with empty data, destroy resource and dependent resources', function(done) {
+  describe('DELETE /:resource/:id', function () {
+    it('should respond with empty data, destroy resource and dependent resources', function (done) {
       request(server)
         .del('/posts/1')
         .expect({})
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           assert.equal(db.posts.length, 1)
           assert.equal(db.comments.length, 3)
@@ -298,10 +298,10 @@ describe('Server', function() {
     })
   })
 
-  describe('Static routes', function() {
+  describe('Static routes', function () {
 
-    describe('GET /', function() {
-      it('should respond with html', function(done) {
+    describe('GET /', function () {
+      it('should respond with html', function (done) {
         request(server)
           .get('/')
           .expect(/You're successfully running JSON Server/)
@@ -309,8 +309,8 @@ describe('Server', function() {
       })
     })
 
-    describe('GET /stylesheets/style.css', function() {
-      it('should respond with css', function(done) {
+    describe('GET /stylesheets/style.css', function () {
+      it('should respond with css', function (done) {
         request(server)
           .get('/stylesheets/style.css')
           .expect('Content-Type', /css/)
@@ -320,8 +320,8 @@ describe('Server', function() {
 
   })
 
-  describe('Database #object', function() {
-    it('should be accessible', function() {
+  describe('Database #object', function () {
+    it('should be accessible', function () {
       assert(router.db.object)
     })
   })

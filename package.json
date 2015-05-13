@@ -27,10 +27,11 @@
   "devDependencies": {
     "husky": "^0.6.1",
     "mocha": "^2.2.4",
+    "standard": "^3.8.0",
     "supertest": "~0.8.1"
   },
   "scripts": {
-    "test": "mocha -R spec test",
+    "test": "standard && mocha -R spec test",
     "start": "node bin",
     "prepush": "npm t"
   },

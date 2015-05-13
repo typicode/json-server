@@ -7,7 +7,7 @@ _.mixin(_inflections)
 // Example:
 //   'true' -> true
 //   '1' -> 1
-function toNative(value) {
+function toNative (value) {
   if (typeof value === 'string') {
     if (value === '' || value.trim() !== value) {
       return value
@@ -21,11 +21,11 @@ function toNative(value) {
 }
 
 // Return incremented id or uuid
-function createId(coll) {
+function createId (coll) {
   if (_.isEmpty(coll)) {
     return 1
   } else {
-    var id = _.max(coll, function(doc) {
+    var id = _.max(coll, function (doc) {
       return doc.id
     }).id
 
@@ -39,15 +39,14 @@ function createId(coll) {
   }
 }
 
-
 // Returns document ids that have unsatisfied relations
 // Example: a comment that references a post that doesn't exist
-function getRemovable(db) {
+function getRemovable (db) {
   var removable = []
 
-  _(db).each(function(coll, collName) {
-    _(coll).each(function(doc) {
-      _(doc).each(function(value, key) {
+  _(db).each(function (coll, collName) {
+    _(coll).each(function (doc) {
+      _(doc).each(function (value, key) {
         if (/Id$/.test(key)) {
           var refName = _.pluralize(key.slice(0, -2))
           // Test if table exists

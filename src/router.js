@@ -13,7 +13,7 @@ low.mixin(require('underscore.inflections'))
 // utils.createId can generate incremental id or uuid
 low.mixin({createId: utils.createId})
 
-module.exports = function(source) {
+module.exports = function (source) {
   // Create router
   var router = express.Router()
 
@@ -23,18 +23,19 @@ module.exports = function(source) {
   router.use(methodOverride())
 
   // Create database
+  var db
   if (_.isObject(source)) {
-    var db = low()
+    db = low()
     db.object = source
   } else {
-    var db = low(source)
+    db = low(source)
   }
 
   // Expose database
   router.db = db
 
   // GET /db
-  function showDatabase(req, res, next) {
+  function showDatabase (req, res, next) {
     res.jsonp(db.object)
   }
 
@@ -44,7 +45,7 @@ module.exports = function(source) {
   // GET /:parent/:parentId/:resource?attr=&attr=
   // GET /*?*&_end=
   // GET /*?*&_start=&_end=
-  function list(req, res, next) {
+  function list (req, res, next) {
     // Test if resource exists
     if (!db.object.hasOwnProperty(req.params.resource)) {
       return res.sendStatus(404)
@@ -74,7 +75,7 @@ module.exports = function(source) {
       // Full-text search
       var q = req.query.q.toLowerCase()
 
-      array = db(req.params.resource).filter(function(obj) {
+      array = db(req.params.resource).filter(function (obj) {
         for (var key in obj) {
           var value = obj[key]
           if (_.isString(value) && value.toLowerCase().indexOf(q) !== -1) {
@@ -112,12 +113,12 @@ module.exports = function(source) {
     if (_sort) {
       _order = _order || 'ASC'
 
-      array = _.sortBy(array, function(element) {
-        return element[_sort];
+      array = _.sortBy(array, function (element) {
+        return element[_sort]
       })
 
       if (_order === 'DESC') {
-        array.reverse();
+        array.reverse()
       }
     }
 
@@ -127,20 +128,21 @@ module.exports = function(source) {
       res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
     }
 
-    _start = parseInt(_start) || 0
+    _start = parseInt(_start, 10) || 0
 
     if (_end) {
-      array = array.slice(_start, parseInt(_end))
+      _end = parseInt(_end, 10)
+      array = array.slice(_start, _end)
     } else if (_limit) {
-      // Convert strings to int and sum to get end value
-      array = array.slice(_start, parseInt(_start) + parseInt(_limit))
+      _limit = parseInt(_limit, 10)
+      array = array.slice(_start, _start + _limit)
     }
 
     res.jsonp(array)
   }
 
   // GET /:resource/:id
-  function show(req, res, next) {
+  function show (req, res, next) {
     var resource = db(req.params.resource)
       .get(utils.toNative(req.params.id))
 
@@ -152,7 +154,7 @@ module.exports = function(source) {
   }
 
   // POST /:resource
-  function create(req, res, next) {
+  function create (req, res, next) {
     for (var key in req.body) {
       req.body[key] = utils.toNative(req.body[key])
     }
@@ -165,7 +167,7 @@ module.exports = function(source) {
 
   // PUT /:resource/:id
   // PATCH /:resource/:id
-  function update(req, res, next) {
+  function update (req, res, next) {
     for (var key in req.body) {
       req.body[key] = utils.toNative(req.body[key])
     }
@@ -181,13 +183,13 @@ module.exports = function(source) {
   }
 
   // DELETE /:resource/:id
-  function destroy(req, res, next) {
+  function destroy (req, res, next) {
     db(req.params.resource).remove(utils.toNative(req.params.id))
 
     // Remove dependents documents
     var removable = utils.getRemovable(db.object)
 
-    _(removable).each(function(item) {
+    _(removable).each(function (item) {
       db(item.name).remove(item.id)
     })
 
