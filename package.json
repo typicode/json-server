@@ -31,7 +31,7 @@
   },
   "scripts": {
     "test": "mocha -R spec test",
-    "start": "node server.js",
+    "start": "node bin",
     "prepush": "npm t"
   },
   "repository": {
