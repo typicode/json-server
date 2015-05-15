@@ -36,6 +36,7 @@ describe('utils', function () {
     it('should convert string to native type', function () {
       // should convert
       assert.strictEqual(utils.toNative('1'), 1)
+      assert.strictEqual(utils.toNative('0'), 0)
       assert.strictEqual(utils.toNative('true'), true)
       // should not convert
       assert.strictEqual(utils.toNative(''), '')
