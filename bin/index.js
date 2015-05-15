@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+var fs = require('fs')
+var path = require('path')
 var updateNotifier = require('update-notifier')
 var _db = require('underscore-db')
 var yargs = require('yargs')
@@ -11,7 +13,7 @@ updateNotifier({packageName: pkg.name, packageVersion: pkg.version}).notify()
 
 // Parse arguments
 var argv = yargs
-  .usage('$0 <source>')
+  .usage('$0 [options] <source>')
   .help('help').alias('help', 'h')
   .version(pkg.version, 'version').alias('version', 'v')
   .options({
@@ -24,30 +26,40 @@ var argv = yargs
       alias: 'H',
       description: 'Set host',
       default: '0.0.0.0'
+    },
+    watch: {
+      alias: 'w',
+      description: 'Reload database on JSON file change'
     }
   })
+  .boolean('w')
   .example('$0 db.json', '')
   .example('$0 file.js', '')
   .example('$0 http://example.com/db.json', '')
   .require(1, 'Missing <source> argument')
   .argv
 
-// Start server function
+function showResources (hostname, port, object) {
+  for (var prop in object) {
+    console.log(chalk.gray('  http://' + hostname + ':' + port + '/') + chalk.cyan(prop))
+  }
+}
+
 function start (object, filename) {
   var port = process.env.PORT || argv.port
   var hostname = argv.host === '0.0.0.0' ? 'localhost' : argv.host
 
-  for (var prop in object) {
-    console.log(chalk.gray('  http://' + hostname + ':' + port + '/') + chalk.cyan(prop))
-  }
-
+  console.log()
+  showResources(hostname, port, object)
+  console.log()
   console.log(
-    '\nYou can now go to ' + chalk.gray('http://' + hostname + ':' + port + '/\n')
+    'You can now go to ' + chalk.gray('http://' + hostname + ':' + port)
+  )
+  console.log()
+  console.log(
+    'Enter ' + chalk.cyan('s') + ' at any time to create a snapshot of the db'
   )
 
-  console.log(
-    'Enter ' + chalk.cyan('`s`') + ' at any time to create a snapshot of the db\n'
-  )
 
   process.stdin.resume()
   process.stdin.setEncoding('utf8')
@@ -55,7 +67,7 @@ function start (object, filename) {
     if (chunk.trim().toLowerCase() === 's') {
       var file = 'db-' + Date.now() + '.json'
       _db.save(object, file)
-      console.log('\nSaved snapshot to ' + chalk.cyan(file) + '\n')
+      console.log('Saved snapshot to ' + chalk.cyan(file) + '\n')
     }
   })
 
@@ -65,6 +77,35 @@ function start (object, filename) {
   } else {
     router = jsonServer.router(object)
   }
+
+  if (filename && argv.watch) {
+    console.log('Watching', chalk.cyan(source))
+
+    var db = router.db
+    var watchedDir = path.dirname(filename)
+    var watchedFile = path.basename(filename)
+
+    fs.watch(watchedDir, function (event, changedFile) {
+      // lowdb generates 'rename' event on watchedFile
+      // using it to know if file has been modified by the user
+      if (event === 'change' && changedFile === watchedFile) {
+        console.log(chalk.cyan(source), 'has changed, reloading database')
+
+        try {
+          var watchedFileObject = JSON.parse(fs.readFileSync(filename))
+          db.object = watchedFileObject
+          showResources(hostname, port, db.object)
+        } catch (e) {
+          console.log('Can\'t parse', chalk.cyan(source))
+          console.log(e.message)
+        }
+
+        console.log()
+      }
+    })
+  }
+  console.log()
+
 
   var server = jsonServer.create()
   server.use(jsonServer.defaults)
@@ -76,24 +117,26 @@ function start (object, filename) {
 var source = argv._[0]
 
 // Say hi, load file and start server
-console.log(chalk.cyan('{^_^} Hi!\n'))
+console.log(chalk.cyan('  {^_^} Hi!\n'))
 console.log('Loading database from ' + chalk.cyan(source))
 
-if (/\.json$/.test(source)) {
-  var filename = process.cwd() + '/' + source
-  var object = require(filename)
-  start(object, filename)
-}
-
-if (/\.js$/.test(source)) {
-  var object = require(process.cwd() + '/' + source)()
-  start(object)
-}
-
-if (/^http/.test(source)) {
+// Remote source
+if (/^(http|https):/.test(source)) {
   got(source, function (err, data) {
-    if (err) throw err
+    if (err) {
+      console.log('Error', err)
+      process.exit(1)
+    }
     var object = JSON.parse(data)
     start(object)
   })
+// JSON file
+} else if (/\.json$/.test(source)) {
+  var filename = process.cwd() + '/' + source
+  var object = require(filename)
+  start(object, filename)
+// JS file
+} else if (/\.js$/.test(source)) {
+  var object = require(process.cwd() + '/' + source)()
+  start(object)
 }
