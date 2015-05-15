@@ -60,7 +60,6 @@ function start (object, filename) {
     'Enter ' + chalk.cyan('s') + ' at any time to create a snapshot of the db'
   )
 
-
   process.stdin.resume()
   process.stdin.setEncoding('utf8')
   process.stdin.on('data', function (chunk) {
@@ -105,7 +104,6 @@ function start (object, filename) {
     })
   }
   console.log()
-
 
   var server = jsonServer.create()
   server.use(jsonServer.defaults)
