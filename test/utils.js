@@ -41,6 +41,7 @@ describe('utils', function () {
       assert.strictEqual(utils.toNative(''), '')
       assert.strictEqual(utils.toNative('\t\n'), '\t\n')
       assert.strictEqual(utils.toNative('1 '), '1 ')
+      assert.strictEqual(utils.toNative('01'), '01')
       assert.strictEqual(utils.toNative(' 1'), ' 1')
       assert.strictEqual(utils.toNative('string'), 'string')
       assert.strictEqual(utils.toNative(1), 1)
