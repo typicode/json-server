@@ -143,7 +143,7 @@ server.use(router) // Mount router on '/'
 server.listen(3000)
 ```
 
-For an in-memory database, you can pass an object to `jsonServer.route()`.
+For an in-memory database, you can pass an object to `jsonServer.router()`.
 Please note also that `jsonServer.router()` can be used in existing Express projects.
 
 ### Deployment
