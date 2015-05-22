@@ -1,7 +1,6 @@
 var _ = require('underscore')
 var uuid = require('node-uuid')
-var _inflections = require('underscore.inflections')
-_.mixin(_inflections)
+var pluralize = require('pluralize')
 
 // Turns string to native.
 // Example:
@@ -50,7 +49,7 @@ function getRemovable (db) {
     _(coll).each(function (doc) {
       _(doc).each(function (value, key) {
         if (/Id$/.test(key)) {
-          var refName = _.pluralize(key.slice(0, -2))
+          var refName = pluralize.plural(key.slice(0, -2))
           // Test if table exists
           if (db[refName]) {
             // Test if references is defined in table

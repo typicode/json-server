@@ -18,9 +18,9 @@
     "method-override": "^2.1.2",
     "morgan": "^1.3.1",
     "node-uuid": "^1.4.2",
+    "pluralize": "^1.1.2",
     "underscore": "^1.5.2",
     "underscore-db": "^0.8.0",
-    "underscore.inflections": "~0.2.1",
     "update-notifier": "^0.2.2",
     "yargs": "^1.3.1"
   },

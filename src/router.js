@@ -3,11 +3,11 @@ var methodOverride = require('method-override')
 var bodyParser = require('body-parser')
 var _ = require('underscore')
 var low = require('lowdb')
+var pluralize = require('pluralize')
 var utils = require('./utils')
 
-// Add methods to lowdb
+// Add underscore-db methods to lowdb
 low.mixin(require('underscore-db'))
-low.mixin(require('underscore.inflections'))
 
 // Override underscore-db's createId with utils.createId
 // utils.createId can generate incremental id or uuid
@@ -88,7 +88,8 @@ module.exports = function (source) {
 
       // Add :parentId filter in case URL is like /:parent/:parentId/:resource
       if (req.params.parent) {
-        filters[req.params.parent.slice(0, -1) + 'Id'] = +req.params.parentId
+        var parent = pluralize.singular(req.params.parent)
+        filters[parent + 'Id'] = +req.params.parentId
       }
 
       // Add query parameters filters
