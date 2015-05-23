@@ -1,7 +1,7 @@
 var express = require('express')
 var methodOverride = require('method-override')
 var bodyParser = require('body-parser')
-var _ = require('underscore')
+var _ = require('lodash')
 var low = require('lowdb')
 var pluralize = require('pluralize')
 var utils = require('./utils')
@@ -78,7 +78,7 @@ module.exports = function (source) {
       array = db(req.params.resource).filter(function (obj) {
         for (var key in obj) {
           var value = obj[key]
-          if (_.isString(value) && value.toLowerCase().indexOf(q) !== -1) {
+          if(utils.deepQuery(value, q)){
             return true
           }
         }
