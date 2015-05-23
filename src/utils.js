@@ -1,4 +1,4 @@
-var _ = require('lodash')
+var _ = require('underscore')
 var uuid = require('node-uuid')
 var pluralize = require('pluralize')
 
@@ -44,7 +44,7 @@ function createId (coll) {
 // Example: a comment that references a post that doesn't exist
 function getRemovable (db) {
   var removable = []
-
+  console.log(db)
   _(db).each(function (coll, collName) {
     _(coll).each(function (doc) {
       _(doc).each(function (value, key) {
@@ -67,14 +67,14 @@ function getRemovable (db) {
 }
 
 function deepQuery (value, q) {
-  if (value) {
+  if (value && q) {
     if (_.isArray(value)) {
       for (var i = 0; i < value.length; i++) {
         if (deepQuery(value[i], q)) {
           return true
         }
       }
-    } else if (_.isPlainObject(value)) {
+    } else if (_.isObject(value) && !_.isArray(value)) {
       for (var k in value) {
         if (deepQuery(value[k], q)) {
           return true
