@@ -78,7 +78,7 @@ module.exports = function (source) {
       array = db(req.params.resource).filter(function (obj) {
         for (var key in obj) {
           var value = obj[key]
-          if(utils.deepQuery(value, q)){
+          if (utils.deepQuery(value, q)) {
             return true
           }
         }
