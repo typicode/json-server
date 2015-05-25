@@ -44,7 +44,6 @@ function createId (coll) {
 // Example: a comment that references a post that doesn't exist
 function getRemovable (db) {
   var removable = []
-  console.log(db)
   _(db).each(function (coll, collName) {
     _(coll).each(function (doc) {
       _(doc).each(function (value, key) {

@@ -101,8 +101,7 @@ module.exports = function (source) {
           filters[key] = utils.toNative(req.query[key])
         }
       }
-      console.log(filters)
-      console.log()
+      
       // Filter
       if (_(filters).isEmpty()) {
         array = db(req.params.resource).value()
