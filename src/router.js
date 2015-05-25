@@ -78,7 +78,7 @@ module.exports = function (source) {
       array = db(req.params.resource).filter(function (obj) {
         for (var key in obj) {
           var value = obj[key]
-          if (_.isString(value) && value.toLowerCase().indexOf(q) !== -1) {
+          if (utils.deepQuery(value, q)) {
             return true
           }
         }
@@ -101,7 +101,8 @@ module.exports = function (source) {
           filters[key] = utils.toNative(req.query[key])
         }
       }
-
+      console.log(filters)
+      console.log()
       // Filter
       if (_(filters).isEmpty()) {
         array = db(req.params.resource).value()

@@ -9,8 +9,8 @@ var pluralize = require('pluralize')
 function toNative (value) {
   if (typeof value === 'string') {
     if (value === ''
-    || value.trim() !== value
-    || (value.length > 1 && value[0] === '0')) {
+       || value.trim() !== value
+       || (value.length > 1 && value[0] === '0')) {
       return value
     } else if (value === 'true' || value === 'false') {
       return value === 'true'
@@ -44,7 +44,7 @@ function createId (coll) {
 // Example: a comment that references a post that doesn't exist
 function getRemovable (db) {
   var removable = []
-
+  console.log(db)
   _(db).each(function (coll, collName) {
     _(coll).each(function (doc) {
       _(doc).each(function (value, key) {
@@ -66,8 +66,29 @@ function getRemovable (db) {
   return removable
 }
 
+function deepQuery (value, q) {
+  if (value && q) {
+    if (_.isArray(value)) {
+      for (var i = 0; i < value.length; i++) {
+        if (deepQuery(value[i], q)) {
+          return true
+        }
+      }
+    } else if (_.isObject(value) && !_.isArray(value)) {
+      for (var k in value) {
+        if (deepQuery(value[k], q)) {
+          return true
+        }
+      }
+    } else if (value.toString().toLowerCase().indexOf(q) !== -1) {
+      return true
+    }
+  }
+}
+
 module.exports = {
   toNative: toNative,
   createId: createId,
-  getRemovable: getRemovable
+  getRemovable: getRemovable,
+  deepQuery: deepQuery
 }
