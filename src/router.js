@@ -1,7 +1,7 @@
 var express = require('express')
 var methodOverride = require('method-override')
 var bodyParser = require('body-parser')
-var _ = require('underscore')
+var _ = require('lodash')
 var low = require('lowdb')
 var pluralize = require('pluralize')
 var utils = require('./utils')
@@ -202,7 +202,7 @@ module.exports = function (source) {
     // Remove dependents documents
     var removable = utils.getRemovable(db.object)
 
-    _(removable).each(function (item) {
+    _.each(removable, function (item) {
       db(item.name).remove(item.id)
     })
 

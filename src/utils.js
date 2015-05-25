@@ -1,4 +1,4 @@
-var _ = require('underscore')
+var _ = require('lodash')
 var uuid = require('node-uuid')
 var pluralize = require('pluralize')
 
@@ -44,9 +44,9 @@ function createId (coll) {
 // Example: a comment that references a post that doesn't exist
 function getRemovable (db) {
   var removable = []
-  _(db).each(function (coll, collName) {
-    _(coll).each(function (doc) {
-      _(doc).each(function (value, key) {
+  _.each(db, function (coll, collName) {
+    _.each(coll, function (doc) {
+      _.each(doc, function (value, key) {
         if (/Id$/.test(key)) {
           var refName = pluralize.plural(key.slice(0, -2))
           // Test if table exists
