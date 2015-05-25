@@ -101,7 +101,7 @@ module.exports = function (source) {
           filters[key] = utils.toNative(req.query[key])
         }
       }
-      
+
       // Filter
       if (_(filters).isEmpty()) {
         array = db(req.params.resource).value()
@@ -144,10 +144,22 @@ module.exports = function (source) {
 
   // GET /:resource/:id
   function show (req, res, next) {
+    var _embed = req.query._embed
     var resource = db(req.params.resource)
       .get(utils.toNative(req.params.id))
 
     if (resource) {
+      // Always use an array
+      _embed = _.isArray(_embed) ? _embed : [_embed]
+
+      // Embed other resources based on resource id
+      _embed.forEach(function () {
+        var query = {}
+        query[req.params.resource + 'Id'] = req.params.id
+        resource[_embed] = db(_embed).where(query)
+      })
+
+      // Return resource
       res.jsonp(resource)
     } else {
       res.status(404).jsonp({})

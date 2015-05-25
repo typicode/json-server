@@ -111,7 +111,7 @@ describe('Server', function () {
     })
   })
 
-  describe('GET /:resource?sort=', function () {
+  describe('GET /:resource?_sort=', function () {
     it('should respond with json and sort on a field', function (done) {
       request(server)
         .get('/tags?_sort=body')
@@ -197,6 +197,31 @@ describe('Server', function () {
         .expect('Content-Type', /json/)
         .expect({})
         .expect(404, done)
+    })
+  })
+
+  describe('GET /:resource/:id?_embed=', function () {
+    it('should respond with corresponding resource and embedded other resource', function (done) {
+      var posts = db.posts[0]
+      posts.comments = [db.comments[0], db.comments[1]]
+      request(server)
+        .get('/posts/1?_embed=comments')
+        .expect('Content-Type', /json/)
+        .expect(posts)
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource/:id?_embed=&_embed=', function () {
+    it('should respond with corresponding resource and embedded other resources', function (done) {
+      var posts = db.posts[0]
+      posts.comments = [db.comments[0], db.comments[1]]
+      posts.refs = [db.refs[0]]
+      request(server)
+        .get('/posts/1?_embed=comments&_embed=refs')
+        .expect('Content-Type', /json/)
+        .expect(posts)
+        .expect(200, done)
     })
   })
 
