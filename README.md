@@ -71,6 +71,12 @@ To make a full-text search on resources, add `q`.
 GET /posts?q=internet
 ```
 
+To embed other resources, add `_embed`.
+
+```
+GET /posts/1?_embed=comments
+```
+
 Returns database.
 
 ```
