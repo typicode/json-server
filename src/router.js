@@ -149,15 +149,17 @@ module.exports = function (source) {
       .get(utils.toNative(req.params.id))
 
     if (resource) {
-      // Always use an array
-      _embed = _.isArray(_embed) ? _embed : [_embed]
+      if (_embed && _embed.length > 0) {
+        // Always use an array
+        _embed = _.isArray(_embed) ? _embed : [_embed]
 
-      // Embed other resources based on resource id
-      _embed.forEach(function () {
-        var query = {}
-        query[req.params.resource + 'Id'] = req.params.id
-        resource[_embed] = db(_embed).where(query)
-      })
+        // Embed other resources based on resource id
+        _embed.forEach(function () {
+          var query = {}
+          query[req.params.resource + 'Id'] = req.params.id
+          resource[_embed] = db(_embed).where(query)
+        })
+      }
 
       // Return resource
       res.jsonp(resource)
