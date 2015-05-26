@@ -2,10 +2,10 @@
 
 Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)
 
-Created with :sparkling_heart: for front-end developers who need a quick back-end for prototyping and mocking.
+Created with <3 for front-end developers who need a quick back-end for prototyping and mocking.
 
+  * [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
   * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
-  * [Online video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
 
 ## Example
 
