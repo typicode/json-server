@@ -153,10 +153,12 @@ module.exports = function (source) {
       _embed = _.isArray(_embed) ? _embed : [_embed]
 
       // Embed other resources based on resource id
-      _embed.forEach(function () {
-        var query = {}
-        query[req.params.resource + 'Id'] = req.params.id
-        resource[_embed] = db(_embed).where(query)
+      _embed.forEach(function (otherResource) {
+        if (otherResource && otherResource.trim().length > 0) {
+          var query = {}
+          query[req.params.resource + 'Id'] = req.params.id
+          resource[otherResource] = db(otherResource).where(query)
+        }
       })
 
       // Return resource
