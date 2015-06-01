@@ -149,12 +149,16 @@ module.exports = function (source) {
       .get(utils.toNative(req.params.id))
 
     if (resource) {
+      // Clone resource to avoid making changes to the underlying object
+      resource = _.cloneDeep(resource)
       // Always use an array
       _embed = _.isArray(_embed) ? _embed : [_embed]
 
       // Embed other resources based on resource id
       _embed.forEach(function (otherResource) {
         if (otherResource && otherResource.trim().length > 0) {
+          // Skip non-existent collections
+          if (!db.object[otherResource]) return
           var query = {}
           query[req.params.resource + 'Id'] = req.params.id
           resource[otherResource] = db(otherResource).where(query)
