@@ -145,8 +145,9 @@ module.exports = function (source) {
   // GET /:resource/:id
   function show (req, res, next) {
     var _embed = req.query._embed
+    var id = utils.toNative(req.params.id)
     var resource = db(req.params.resource)
-      .get(utils.toNative(req.params.id))
+      .get(id)
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
@@ -156,12 +157,15 @@ module.exports = function (source) {
 
       // Embed other resources based on resource id
       _embed.forEach(function (otherResource) {
-        if (otherResource && otherResource.trim().length > 0) {
-          // Skip non-existent collections
-          if (!db.object[otherResource]) return
+
+        if (otherResource
+          && otherResource.trim().length > 0
+          && db.object[otherResource]) {
           var query = {}
-          query[req.params.resource + 'Id'] = req.params.id
+          var prop = pluralize.singular(req.params.resource) + 'Id'
+          query[prop] = id
           resource[otherResource] = db(otherResource).where(query)
+
         }
       })
 
