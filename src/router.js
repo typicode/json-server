@@ -39,8 +39,8 @@ module.exports = function (source) {
   function showDatabase (req, res, next) {
     res.jsonp(db.object)
   }
-  
-    // Connect to MongoDB
+
+  // Connect to MongoDB
   function connectToMongo (callback) {
     mongoClient.connect(connectToMongo.dbUrl, function (err, db) {
       if (err) {
@@ -205,9 +205,9 @@ module.exports = function (source) {
       // Embed other resources based on resource id
       _embed.forEach(function (otherResource) {
 
-        if (otherResource
-          && otherResource.trim().length > 0
-          && db.object[otherResource]) {
+        if (otherResource &&
+          otherResource.trim().length > 0 &&
+          db.object[otherResource]) {
           var query = {}
           var prop = pluralize.singular(req.params.resource) + 'Id'
           query[prop] = id
@@ -267,7 +267,7 @@ module.exports = function (source) {
   }
 
   router.get('/db', showDatabase)
-  
+
   router.route('/migrate').post(migrateDatabase)
 
   router.route('/:resource')

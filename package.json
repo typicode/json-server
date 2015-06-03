@@ -17,6 +17,7 @@
     "lodash": "^3.9.2",
     "lowdb": "^0.7.1",
     "method-override": "^2.1.2",
+    "mongodb": "^2.0.33",
     "morgan": "^1.3.1",
     "node-uuid": "^1.4.2",
     "pluralize": "^1.1.2",
