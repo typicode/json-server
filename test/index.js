@@ -226,6 +226,24 @@ describe('Server', function () {
   })
 
   describe('POST /:resource', function () {
+    it('should respond with a 400 http code',
+      function (done) {
+        request(server)
+          .post('/migrate')
+          .send({body: 'foo'})
+          .expect('Content-Type', /text/)
+          .expect(400, done)
+      })
+
+    it('should respond with a 503 http code',
+      function (done) {
+        this.timeout(3500)
+        request(server)
+          .post('/migrate')
+          .send({host: 'mongodb://localhost', port: '27017', db: 'test'})
+          .expect('Content-Type', /text/)
+          .expect(503, done)
+      })
     it('should respond with json, create a resource and increment id',
       function (done) {
         request(server)
