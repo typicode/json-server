@@ -5,6 +5,7 @@ var _ = require('lodash')
 var low = require('lowdb')
 var pluralize = require('pluralize')
 var utils = require('./utils')
+var mongoClient = require('mongodb').MongoClient
 
 // Add underscore-db methods to lowdb
 low.mixin(require('underscore-db'))
@@ -37,6 +38,52 @@ module.exports = function (source) {
   // GET /db
   function showDatabase (req, res, next) {
     res.jsonp(db.object)
+  }
+  
+    // Connect to MongoDB
+  function connectToMongo (callback) {
+    mongoClient.connect(connectToMongo.dbUrl, function (err, db) {
+      if (err) {
+        return callback(err)
+      }
+      connectToMongo.database = db
+      return callback(err)
+    })
+  }
+  // POST /migrate
+  function migrateDatabase (req, res, next) {
+    if (!req.body.host || !req.body.db ||
+        !req.body.port || req.body.port < 0 ||
+        req.body.port > 65536) {
+      res.sendStatus(400)
+      return null
+    }
+    var dburl = req.body.host + ':' + req.body.port +
+    '/' + req.body.db
+    connectToMongo.dbUrl = dburl
+    connectToMongo(function (err) {
+       if (err) {
+         res.sendStatus(503)
+         return null
+       } else {
+         var dbObject = db.object
+         delete dbObject.migrate
+         for (var key in dbObject) {
+           if (dbObject.hasOwnProperty(key)) {
+             var mongoDatabase = connectToMongo.database
+             var collection = mongoDatabase.collection(key)
+             collection.insertMany(dbObject[key],
+             {forceServerObjectId: true}, function (err, result) {
+               if (err) {
+                 return null
+               }
+             })
+           }
+         }
+         res.sendStatus(200)
+         mongoDatabase.close()
+       }
+     })
   }
 
   // GET /:resource
@@ -220,6 +267,8 @@ module.exports = function (source) {
   }
 
   router.get('/db', showDatabase)
+  
+  router.route('/migrate').post(migrateDatabase)
 
   router.route('/:resource')
     .get(list)
