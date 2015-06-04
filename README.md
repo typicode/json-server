@@ -146,11 +146,11 @@ var server = jsonServer.create()
 // Returns an Express router
 var router = jsonServer.router('db.json')
 
-// Default middlewares (logger, static and cors middlewares)
+// Default middlewares (logger, static and cors)
 server.use(jsonServer.defaults)
 
 // Add custom routes (optional)
-// You can use rewrite middlewares if you don't want HTTP redirections
+// Use rewrite middlewares if you don't want to have HTTP redirections
 server.use('/custom/route/:id', function (req, res) {
   res.redirect('/posts/' + req.params.id)
 })
