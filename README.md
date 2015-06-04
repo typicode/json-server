@@ -38,7 +38,7 @@ Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatic
 
 ## Routes
 
-Based on the previous `db.json` file, here are all the available routes. If you need more customization, you can use the project as a [module](https://github.com/typicode/json-server#module).
+Based on the previous `db.json` file, here are all the available routes. If you need to [customize](https://github.com/typicode/json-server#customize), you can use the project as a module.
 
 ```
 GET    /posts
@@ -133,18 +133,30 @@ module.exports = function() {
 $ json-server index.js
 ```
 
-### Module
+### Customize
 
 If you need to add authentication, validation, rewrite or add routes, you can use the project as a module in combination with other Express middlewares.
 
 ```javascript
 var jsonServer = require('json-server')
 
-var server = jsonServer.create() // Returns an Express server
-var router = jsonServer.router('db.json') // Returns an Express router
+// Returns an Express server
+var server = jsonServer.create()
 
-server.use(jsonServer.defaults) // logger, static and cors middlewares
-server.use(router) // Mount router on '/'
+// Returns an Express router
+var router = jsonServer.router('db.json')
+
+// Default middlewares (logger, static and cors middlewares)
+server.use(jsonServer.defaults)
+
+// Add custom routes (optional)
+// You can use rewrite middlewares if you don't want HTTP redirections
+server.use('/custom/route/:id', function (req, res) {
+  res.redirect('/posts/' + req.params.id)
+})
+
+// Mount router on '/'
+server.use(router)
 
 server.listen(3000)
 ```
