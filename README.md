@@ -7,6 +7,12 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
   * [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
   * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
 
+## Install
+
+```bash
+$ npm install -g json-server
+```
+
 ## Example
 
 Create a `db.json` file
@@ -87,12 +93,6 @@ Returns default index file or serves `./public` directory.
 
 ```
 GET /
-```
-
-## Install
-
-```bash
-$ npm install -g json-server
 ```
 
 ## Extras
