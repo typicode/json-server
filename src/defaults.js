@@ -26,4 +26,13 @@ if (process.env.NODE_ENV === 'development') {
   arr.push(errorhandler())
 }
 
+// No cache for IE
+// https://support.microsoft.com/en-us/kb/234067
+arr.push(function (req, res, next) {
+  res.header('Cache-Control', 'no-cache')
+  res.header('Pragma', 'no-cache')
+  res.header('Expires', '-1')
+  next()
+})
+
 module.exports = arr

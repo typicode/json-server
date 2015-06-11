@@ -143,19 +143,11 @@ var jsonServer = require('json-server')
 // Returns an Express server
 var server = jsonServer.create()
 
-// Returns an Express router
-var router = jsonServer.router('db.json')
-
-// Default middlewares (logger, static and cors)
+// Set default middlewares (logger, static, cors and no-cache)
 server.use(jsonServer.defaults)
 
-// Add custom routes (optional)
-// Use rewrite middlewares if you don't want to have HTTP redirections
-server.use('/custom/route/:id', function (req, res) {
-  res.redirect('/posts/' + req.params.id)
-})
-
-// Mount router on '/'
+// Returns an Express router
+var router = jsonServer.router('db.json')
 server.use(router)
 
 server.listen(3000)
@@ -163,6 +155,23 @@ server.listen(3000)
 
 For an in-memory database, you can pass an object to `jsonServer.router()`.
 Please note also that `jsonServer.router()` can be used in existing Express projects.
+
+#### Routes
+
+To add more routes, use redirections or rewrite middlewares.
+
+```javascript
+// Add this before server.use(router)
+server.use('/blog/posts/:id', function (req, res) {
+  res.redirect('/posts/' + req.params.id)
+})
+```
+
+To set a global prefix, mount the router on another point.
+
+```javascript
+server.use('/api', router)
+```
 
 ### Deployment
 

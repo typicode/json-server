@@ -350,4 +350,17 @@ describe('Server', function () {
       assert(router.db.object)
     })
   })
+
+  describe('Responses', function () {
+
+    it('should have no cache headers (for IE)', function (done) {
+      request(server)
+        .get('/db')
+        .expect('Cache-Control', 'no-cache')
+        .expect('Pragma', 'no-cache')
+        .expect('Expires', '-1')
+        .end(done)
+    })
+
+  })
 })
