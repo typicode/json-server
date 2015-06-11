@@ -162,6 +162,7 @@ To add more routes, use redirections or rewrite middlewares.
 
 ```javascript
 // Add this before server.use(router)
+// Will make /posts/1 available under /blog/posts/1
 server.use('/blog/posts/:id', function (req, res) {
   res.redirect('/posts/' + req.params.id)
 })
