@@ -27,11 +27,11 @@ var argv = yargs
     },
     watch: {
       alias: 'w',
-      description: 'Reload database on JSON file change',
+      description: 'Reload database on JSON file change'
     },
     routes: {
       alias: 'r',
-      description: 'Load routes file',
+      description: 'Load routes file'
     }
   })
   .help('help').alias('help', 'h')
