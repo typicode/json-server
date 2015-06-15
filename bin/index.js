@@ -6,6 +6,7 @@ var _db = require('underscore-db')
 var yargs = require('yargs')
 var chalk = require('chalk')
 var got = require('got')
+var _ = require('lodash')
 var pkg = require('../package.json')
 var jsonServer = require('../src')
 
@@ -48,6 +49,7 @@ function showResources (hostname, port, object) {
 function start (object, filename) {
   var port = process.env.PORT || argv.port
   var hostname = argv.host === '0.0.0.0' ? 'localhost' : argv.host
+  var snapshots = []
 
   console.log()
   showResources(hostname, port, object)
@@ -59,16 +61,7 @@ function start (object, filename) {
   console.log(
     'Enter ' + chalk.cyan('s') + ' at any time to create a snapshot of the db'
   )
-
-  process.stdin.resume()
-  process.stdin.setEncoding('utf8')
-  process.stdin.on('data', function (chunk) {
-    if (chunk.trim().toLowerCase() === 's') {
-      var file = 'db-' + Date.now() + '.json'
-      _db.save(object, file)
-      console.log('Saved snapshot to ' + chalk.cyan(file) + '\n')
-    }
-  })
+  console.log('Enter ' + chalk.cyan('r') + ' at any time to revert to the previous snapshot')
 
   var router
   if (filename) {
@@ -109,6 +102,37 @@ function start (object, filename) {
   server.use(jsonServer.defaults)
   server.use(router)
   server.listen(port, argv.host)
+
+  process.stdin.resume()
+  process.stdin.setEncoding('utf8')
+  process.stdin.on('data', function (chunk) {
+    var key = chunk.trim().toLowerCase()
+    var db = router.db
+    var file
+    if (key === 's') {
+      file = 'db-' + Date.now() + '.json'
+      _db.save(db.object, file)
+      snapshots.push(file)
+      console.log('Saved snapshot to ' + chalk.cyan(file) + '\n')
+    } else if (key === 'r') {
+      file = _.last(snapshots)
+
+      // Compare the db to the latest snapshot
+      // If it is the same go back to the previous snapshot
+      if (file && _.isEqual(db.object, _db.load(file))) {
+        snapshots.pop()
+        file = _.last(snapshots)
+      }
+
+      if (file) {
+        db.object = _db.load(file)
+        db.save()
+        console.log('Loaded snapshot from ' + chalk.cyan(file) + '\n')
+      } else {
+        console.log('No more snapshots to load')
+      }
+    }
+  })
 }
 
 // Set file and port

@@ -1,4 +1,5 @@
 **/*.log
 node_modules
 db.json
+db-*.json
 .DS_Store
