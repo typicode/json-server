@@ -22,7 +22,7 @@
     "pluralize": "^1.1.2",
     "underscore-db": "^0.9.0",
     "update-notifier": "^0.2.2",
-    "yargs": "^1.3.1"
+    "yargs": "^3.10.0"
   },
   "devDependencies": {
     "husky": "^0.6.1",

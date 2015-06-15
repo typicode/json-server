@@ -14,8 +14,6 @@ updateNotifier({packageName: pkg.name, packageVersion: pkg.version}).notify()
 // Parse arguments
 var argv = yargs
   .usage('$0 [options] <source>')
-  .help('help').alias('help', 'h')
-  .version(pkg.version, 'version').alias('version', 'v')
   .options({
     port: {
       alias: 'p',
@@ -29,17 +27,19 @@ var argv = yargs
     },
     watch: {
       alias: 'w',
-      description: 'Reload database on JSON file change'
+      description: 'Reload database on JSON file change',
     },
     routes: {
       alias: 'r',
-      description: 'Load routes file'
+      description: 'Load routes file',
     }
   })
-  .boolean('w')
+  .help('help').alias('help', 'h')
+  .version(pkg.version).alias('version', 'v')
   .example('$0 db.json', '')
   .example('$0 file.js', '')
   .example('$0 http://example.com/db.json', '')
+  .epilog('https://github.com/typicode/json-server')
   .require(1, 'Missing <source> argument')
   .argv
 
