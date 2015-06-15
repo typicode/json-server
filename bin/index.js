@@ -75,10 +75,6 @@ function start (object, filename) {
     }
   })
 
-  // Rewriter
-  var routes = JSON.parse(fs.readFileSync(process.cwd() + '/' + argv.routes))
-  var rewriter = jsonServer.rewriter(routes)
-
   // Router
   var router = jsonServer.router(filename ? filename : object)
 
@@ -113,7 +109,14 @@ function start (object, filename) {
 
   var server = jsonServer.create()
   server.use(jsonServer.defaults)
-  server.use(rewriter)
+
+  // Rewriter
+  if (argv.routes) {
+    var routes = JSON.parse(fs.readFileSync(process.cwd() + '/' + argv.routes))
+    var rewriter = jsonServer.rewriter(routes)
+    server.use(rewriter)
+  }
+
   server.use(router)
   server.listen(port, argv.host)
 }
