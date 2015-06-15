@@ -2,16 +2,10 @@ var express = require('express')
 var methodOverride = require('method-override')
 var bodyParser = require('body-parser')
 var _ = require('lodash')
+var _db = require('underscore-db')
 var low = require('lowdb')
 var pluralize = require('pluralize')
 var utils = require('./utils')
-
-// Add underscore-db methods to lowdb
-low.mixin(require('underscore-db'))
-
-// Override underscore-db's createId with utils.createId
-// utils.createId can generate incremental id or uuid
-low.mixin({createId: utils.createId})
 
 module.exports = function (source) {
   // Create router
@@ -30,6 +24,13 @@ module.exports = function (source) {
   } else {
     db = low(source)
   }
+
+  // Add underscore-db methods to db
+  db.mixin(_db)
+
+  // Override underscore-db's createId with utils.createId
+  // utils.createId can generate incremental id or uuid
+  db.mixin({createId: utils.createId})
 
   // Expose database
   router.db = db
@@ -147,7 +148,7 @@ module.exports = function (source) {
     var _embed = req.query._embed
     var id = utils.toNative(req.params.id)
     var resource = db(req.params.resource)
-      .get(id)
+      .getById(id)
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
@@ -196,7 +197,7 @@ module.exports = function (source) {
     }
 
     var resource = db(req.params.resource)
-      .update(utils.toNative(req.params.id), req.body)
+      .updateById(utils.toNative(req.params.id), req.body)
 
     if (resource) {
       res.jsonp(resource)
@@ -207,13 +208,13 @@ module.exports = function (source) {
 
   // DELETE /:resource/:id
   function destroy (req, res, next) {
-    db(req.params.resource).remove(utils.toNative(req.params.id))
+    db(req.params.resource).removeById(utils.toNative(req.params.id))
 
     // Remove dependents documents
     var removable = utils.getRemovable(db.object)
 
     _.each(removable, function (item) {
-      db(item.name).remove(item.id)
+      db(item.name).removeById(item.id)
     })
 
     res.status(200).jsonp({})
