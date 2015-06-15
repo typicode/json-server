@@ -6,6 +6,7 @@ var _db = require('underscore-db')
 var low = require('lowdb')
 var pluralize = require('pluralize')
 var utils = require('./utils')
+var mixins = require('./mixins')
 
 module.exports = function (source) {
   // Create router
@@ -26,11 +27,10 @@ module.exports = function (source) {
   }
 
   // Add underscore-db methods to db
-  db.mixin(_db)
+  db._.mixin(_db)
 
-  // Override underscore-db's createId with utils.createId
-  // utils.createId can generate incremental id or uuid
-  db.mixin({createId: utils.createId})
+  // Add specific mixins
+  db._.mixin(mixins)
 
   // Expose database
   router.db = db
@@ -86,7 +86,7 @@ module.exports = function (source) {
       array = db(req.params.resource).filter(function (obj) {
         for (var key in obj) {
           var value = obj[key]
-          if (utils.deepQuery(value, q)) {
+          if (db._.deepQuery(value, q)) {
             return true
           }
         }
@@ -226,7 +226,7 @@ module.exports = function (source) {
     db(req.params.resource).removeById(utils.toNative(req.params.id))
 
     // Remove dependents documents
-    var removable = utils.getRemovable(db.object)
+    var removable = db._.getRemovable(db.object)
 
     _.each(removable, function (item) {
       db(item.name).removeById(item.id)

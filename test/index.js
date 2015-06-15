@@ -405,4 +405,26 @@ describe('Server', function () {
     })
 
   })
+
+  describe('router.db._.id', function (done) {
+
+    beforeEach(function () {
+      router.db.object = {
+        posts: [
+          { _id: 1 }
+        ]
+      }
+
+      router.db._.id = '_id'
+    })
+
+    it('should be possible to override id property', function (done) {
+      request(server)
+        .get('/posts/1')
+        .expect('Content-Type', /json/)
+        .expect(router.db.object.posts[0])
+        .expect(200, done)
+    })
+
+  })
 })

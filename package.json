@@ -15,7 +15,7 @@
     "express": "^4.9.5",
     "got": "^1.2.2",
     "lodash": "^3.9.2",
-    "lowdb": "^0.9.0",
+    "lowdb": "^0.10.0",
     "method-override": "^2.1.2",
     "morgan": "^1.3.1",
     "node-uuid": "^1.4.2",

@@ -32,6 +32,10 @@ var argv = yargs
     routes: {
       alias: 'r',
       description: 'Load routes file'
+    },
+    id: {
+      description: 'Set database id property (e.g. _id)',
+      default: 'id'
     }
   })
   .help('help').alias('help', 'h')
@@ -118,6 +122,10 @@ function start (object, filename) {
   }
 
   server.use(router)
+
+  // Custom id
+  router.db._.id = argv.id
+
   server.listen(port, argv.host)
 }
 
