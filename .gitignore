@@ -1,4 +1,5 @@
 **/*.log
 node_modules
 db.json
-.DS_Store
+.DS_Store 
+.log/log-id
