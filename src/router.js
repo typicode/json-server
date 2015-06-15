@@ -35,9 +35,15 @@ module.exports = function (source) {
   // Expose database
   router.db = db
 
+  // Expose render
+  router.render = function (req, res) {
+    res.jsonp(res.locals.data)
+  }
+
   // GET /db
   function showDatabase (req, res, next) {
-    res.jsonp(db.object)
+    res.locals.data = db.object
+    next()
   }
 
   // GET /:resource
@@ -49,7 +55,8 @@ module.exports = function (source) {
   function list (req, res, next) {
     // Test if resource exists
     if (!db.object.hasOwnProperty(req.params.resource)) {
-      return res.sendStatus(404)
+      res.status(404)
+      return next()
     }
 
     // Filters list
@@ -140,7 +147,8 @@ module.exports = function (source) {
       array = array.slice(_start, _start + _limit)
     }
 
-    res.jsonp(array)
+    res.locals.data = array
+    next()
   }
 
   // GET /:resource/:id
@@ -170,11 +178,13 @@ module.exports = function (source) {
         }
       })
 
-      // Return resource
-      res.jsonp(resource)
+      res.locals.data = resource
     } else {
-      res.status(404).jsonp({})
+      res.status(404)
+      res.locals.data = {}
     }
+
+    next()
   }
 
   // POST /:resource
@@ -186,7 +196,9 @@ module.exports = function (source) {
     var resource = db(req.params.resource)
       .insert(req.body)
 
-    res.status(201).jsonp(resource)
+    res.status(201)
+    res.locals.data = resource
+    next()
   }
 
   // PUT /:resource/:id
@@ -200,10 +212,13 @@ module.exports = function (source) {
       .updateById(utils.toNative(req.params.id), req.body)
 
     if (resource) {
-      res.jsonp(resource)
+      res.locals.data = resource
     } else {
-      res.status(404).jsonp({})
+      res.status(404)
+      res.locals.data = {}
     }
+
+    next()
   }
 
   // DELETE /:resource/:id
@@ -217,10 +232,11 @@ module.exports = function (source) {
       db(item.name).removeById(item.id)
     })
 
-    res.status(200).jsonp({})
+    res.locals.data = {}
+    next()
   }
 
-  router.get('/db', showDatabase)
+  router.get('/db', showDatabase, router.render)
 
   router.route('/:resource')
     .get(list)
@@ -233,6 +249,10 @@ module.exports = function (source) {
     .delete(destroy)
 
   router.get('/:parent/:parentId/:resource', list)
+
+  router.all('*', function (req, res) {
+    router.render(req, res)
+  })
 
   return router
 }

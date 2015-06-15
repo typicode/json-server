@@ -385,4 +385,24 @@ describe('Server', function () {
     })
 
   })
+
+  describe('router.render', function (done) {
+
+    beforeEach(function () {
+      router.render = function (req, res) {
+        res.jsonp({
+          data: res.locals.data
+        })
+      }
+    })
+
+    it('should be possible to wrap response', function (done) {
+      request(server)
+        .get('/posts/1')
+        .expect('Content-Type', /json/)
+        .expect({ data: db.posts[0] })
+        .expect(200, done)
+    })
+
+  })
 })
