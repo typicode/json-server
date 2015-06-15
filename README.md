@@ -89,6 +89,26 @@ Returns default index file or serves `./public` directory.
 GET /
 ```
 
+### Base Route
+
+A global prefix can also be specified using the `-r` option.
+```bash
+$ json-server -r /api/v1/ --watch db.json
+```
+
+With this prefix the available routes for `db.json` file are as follows.
+
+```
+GET    /api/v1/posts
+GET    /api/v1/posts/1
+GET    /api/v1/posts/1/comments
+GET    /api/v1/posts?title=json-server&author=typicode
+POST   /api/v1/posts
+PUT    /api/v1/posts/1
+PATCH  /api/v1/posts/1
+DELETE /api/v1/posts/1
+```
+
 ## Install
 
 ```bash

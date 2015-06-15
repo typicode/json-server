@@ -30,6 +30,11 @@ var argv = yargs
     watch: {
       alias: 'w',
       description: 'Reload database on JSON file change'
+    },
+    prefix: {
+      alias: 'r',
+      description: 'Specify the global prefix for serving the database',
+      default: '/'
     }
   })
   .boolean('w')
@@ -39,18 +44,25 @@ var argv = yargs
   .require(1, 'Missing <source> argument')
   .argv
 
-function showResources (hostname, port, object) {
+function showResources (hostname, port, prefix, object) {
   for (var prop in object) {
-    console.log(chalk.gray('  http://' + hostname + ':' + port + '/') + chalk.cyan(prop))
+    console.log(chalk.gray('  http://' + hostname + ':' + port + prefix) + chalk.cyan(prop))
   }
+}
+
+function validatePrefix (prefix) {
+  if (!prefix || prefix === '') return '/'
+  if (prefix.substr(-1) !== '/') prefix += '/'
+  return prefix
 }
 
 function start (object, filename) {
   var port = process.env.PORT || argv.port
   var hostname = argv.host === '0.0.0.0' ? 'localhost' : argv.host
+  var prefix = validatePrefix(argv.prefix)
 
   console.log()
-  showResources(hostname, port, object)
+  showResources(hostname, port, prefix, object)
   console.log()
   console.log(
     'You can now go to ' + chalk.gray('http://' + hostname + ':' + port)
@@ -93,7 +105,7 @@ function start (object, filename) {
         try {
           var watchedFileObject = JSON.parse(fs.readFileSync(filename))
           db.object = watchedFileObject
-          showResources(hostname, port, db.object)
+          showResources(hostname, port, prefix, db.object)
         } catch (e) {
           console.log('Can\'t parse', chalk.cyan(source))
           console.log(e.message)
@@ -106,8 +118,8 @@ function start (object, filename) {
   console.log()
 
   var server = jsonServer.create()
-  server.use(jsonServer.defaults)
-  server.use(router)
+  server.use(prefix, jsonServer.defaults)
+  server.use(prefix, router)
   server.listen(port, argv.host)
 }
 
