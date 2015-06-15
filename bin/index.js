@@ -70,12 +70,7 @@ function start (object, filename) {
     }
   })
 
-  var router
-  if (filename) {
-    router = jsonServer.router(filename)
-  } else {
-    router = jsonServer.router(object)
-  }
+  var router = jsonServer.router(filename ? filename : object)
 
   if (filename && argv.watch) {
     console.log('Watching', chalk.cyan(source))
