@@ -38,7 +38,7 @@ Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatic
 
 ## Routes
 
-Based on the previous `db.json` file, here are all the available routes. If you need to [customize](https://github.com/typicode/json-server#customize), you can use the project as a module.
+Based on the previous `db.json` file, here are all the default routes. You can also add [other routes](#add-routes).
 
 ```
 GET    /posts
@@ -101,13 +101,19 @@ $ npm install -g json-server
 
 You can use JSON Server to serve your HTML, JS and CSS, simply create a `./public` directory.
 
+```bash
+mkdir public
+echo 'hello word' > public/index.html
+json-server db.json
+```
+
 ### Access from anywhere
 
 You can access your fake API from anywhere using CORS and JSONP.
 
 ### Remote schema
 
-You can load remote schemas:
+You can load remote schemas.
 
 ```bash
 $ json-server http://example.com/file.json
@@ -116,9 +122,12 @@ $ json-server http://jsonplaceholder.typicode.com/db
 
 ### JS file support
 
-You can use JS to programmatically create data:
+You can create data programmatically.
+
+__Tip__ use modules like [faker](https://github.com/Marak/faker.js) or [casual](https://github.com/boo1ean/casual).
 
 ```javascript
+// index.js
 module.exports = function() {
   var data = { users: [] }
   // Create 1000 users
@@ -133,9 +142,35 @@ module.exports = function() {
 $ json-server index.js
 ```
 
-### Customize
+### Add routes
 
-If you need to add authentication, validation, rewrite or add routes, you can use the project as a module in combination with other Express middlewares.
+Create a `routes.json` file.
+
+```json
+{
+  "/api/:resource": "/:resource",
+  "/api/:resource/:id": "/:resource/:id",
+  "/api/:parent/:parentId/:resource": "/:parent/:parentId/:resource",
+  "/blog/posts/:id/show": "/posts/:id"
+}
+```
+
+Start JSON Server with `--routes` option.
+
+```bash
+json-server db.json --routes routes.json
+```
+
+Now you can access resources using additional routes.
+
+```
+/api/posts/1 -> /posts/1
+/blog/posts/1/show -> /posts/1
+```
+
+### Module
+
+If you need to add authentication, validation, you can use the project as a module in combination with other Express middlewares.
 
 ```javascript
 var jsonServer = require('json-server')
@@ -156,19 +191,17 @@ server.listen(3000)
 For an in-memory database, you can pass an object to `jsonServer.router()`.
 Please note also that `jsonServer.router()` can be used in existing Express projects.
 
-#### Routes
-
-To add more routes, use redirections or rewrite middlewares.
+To add rewrite rules:
 
 ```javascript
 // Add this before server.use(router)
-// Will make /posts/1 available under /blog/posts/1
-server.use('/blog/posts/:id', function (req, res) {
-  res.redirect('/posts/' + req.params.id)
+server.use(jsonServer.rewriter({
+  '/api/:resource': '/:resource',
+  // ...
 })
 ```
 
-To set a global prefix, mount the router on another point.
+To set a global prefix:
 
 ```javascript
 server.use('/api', router)

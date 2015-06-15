@@ -7,5 +7,6 @@ module.exports = {
     return server
   },
   defaults: require('./defaults'),
-  router: require('./router')
+  router: require('./router'),
+  rewriter: require('./rewriter')
 }

@@ -30,6 +30,10 @@ var argv = yargs
     watch: {
       alias: 'w',
       description: 'Reload database on JSON file change'
+    },
+    routes: {
+      alias: 'r',
+      description: 'Load routes file'
     }
   })
   .boolean('w')
@@ -60,6 +64,7 @@ function start (object, filename) {
     'Enter ' + chalk.cyan('s') + ' at any time to create a snapshot of the db'
   )
 
+  // Snapshot
   process.stdin.resume()
   process.stdin.setEncoding('utf8')
   process.stdin.on('data', function (chunk) {
@@ -70,8 +75,14 @@ function start (object, filename) {
     }
   })
 
+  // Rewriter
+  var routes = JSON.parse(fs.readFileSync(process.cwd() + '/' + argv.routes))
+  var rewriter = jsonServer.rewriter(routes)
+
+  // Router
   var router = jsonServer.router(filename ? filename : object)
 
+  // Watcher
   if (filename && argv.watch) {
     console.log('Watching', chalk.cyan(source))
 
@@ -102,6 +113,7 @@ function start (object, filename) {
 
   var server = jsonServer.create()
   server.use(jsonServer.defaults)
+  server.use(rewriter)
   server.use(router)
   server.listen(port, argv.host)
 }

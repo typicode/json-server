@@ -39,6 +39,10 @@ describe('Server', function () {
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults)
+    server.use(jsonServer.rewriter({
+      '/api/:resource/:id': '/:resource/:id',
+      '/blog/posts/:id/show': '/posts/:id'
+    }))
     server.use(router)
   })
 
@@ -359,6 +363,24 @@ describe('Server', function () {
         .expect('Cache-Control', 'no-cache')
         .expect('Pragma', 'no-cache')
         .expect('Expires', '-1')
+        .end(done)
+    })
+
+  })
+
+  describe('Rewriter', function () {
+
+    it('should rewrite URL (1)', function (done) {
+      request(server)
+        .get('/api/posts/1')
+        .expect(db.posts[0])
+        .end(done)
+    })
+
+    it('should rewrite URL (2)', function (done) {
+      request(server)
+        .get('/blog/posts/1/show')
+        .expect(db.posts[0])
         .end(done)
     })
 
