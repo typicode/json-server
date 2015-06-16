@@ -149,7 +149,7 @@ Create a `routes.json` file.
 ```json
 {
   "/api/": "/",
-  "/blog/posts/:id/show": "/posts/:id"
+  "/blog/:resource/:id/show": "/:resource/:id"
 }
 ```
 
@@ -165,7 +165,6 @@ Now you can access resources using additional routes.
 /api/posts
 /api/posts/1
 /blog/posts/1/show
-# ...
 ```
 
 ### Module
@@ -197,7 +196,7 @@ To add rewrite rules:
 // Add this before server.use(router)
 server.use(jsonServer.rewriter({
   '/api/': '/',
-  '/blog/posts/:id': '/posts/:id'
+  '/blog/:resource/:id/show: '/:resource/:id'
 })
 ```
 
