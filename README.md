@@ -6,6 +6,8 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 
   * [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
   * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
+  
+_See also [hotel](https://github.com/typicode/hotel), a simple server manager that works with JSON Server._
 
 ## Example
 
@@ -34,11 +36,11 @@ Now if you go to [http://localhost:3000/posts/1](), you'll get
 { "id": 1, "title": "json-server", "author": "typicode" }
 ```
 
-Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
+Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
 
 ## Routes
 
-Based on the previous `db.json` file, here are all the default routes. You can also add [other routes](#add-routes).
+Based on the previous `db.json` file, here are all the default routes. You can also add [other routes](#add-routes) using `--routes`.
 
 ```
 GET    /posts
