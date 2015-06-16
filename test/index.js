@@ -40,7 +40,7 @@ describe('Server', function () {
     router = jsonServer.router(db)
     server.use(jsonServer.defaults)
     server.use(jsonServer.rewriter({
-      '/api/:resource/:id': '/:resource/:id',
+      '/api/': '/',
       '/blog/posts/:id/show': '/posts/:id'
     }))
     server.use(router)
@@ -370,14 +370,14 @@ describe('Server', function () {
 
   describe('Rewriter', function () {
 
-    it('should rewrite URL (1)', function (done) {
+    it('should rewrite using prefix', function (done) {
       request(server)
         .get('/api/posts/1')
         .expect(db.posts[0])
         .end(done)
     })
 
-    it('should rewrite URL (2)', function (done) {
+    it('should rewrite using params', function (done) {
       request(server)
         .get('/blog/posts/1/show')
         .expect(db.posts[0])
