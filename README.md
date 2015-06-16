@@ -148,9 +148,7 @@ Create a `routes.json` file.
 
 ```json
 {
-  "/api/:resource": "/:resource",
-  "/api/:resource/:id": "/:resource/:id",
-  "/api/:parent/:parentId/:resource": "/:parent/:parentId/:resource",
+  "/api/": "/",
   "/blog/posts/:id/show": "/posts/:id"
 }
 ```
@@ -163,9 +161,10 @@ json-server db.json --routes routes.json
 
 Now you can access resources using additional routes.
 
-```
-/api/posts/1 -> /posts/1
-/blog/posts/1/show -> /posts/1
+```bash
+/api/posts         # /posts/1
+/api/posts/1       # /posts/1
+/blog/posts/1/show # /posts/1
 ```
 
 ### Module
@@ -196,12 +195,12 @@ To add rewrite rules:
 ```javascript
 // Add this before server.use(router)
 server.use(jsonServer.rewriter({
-  '/api/:resource': '/:resource',
-  // ...
+  '/api/': '/',
+  '/blog/posts/:id': '/posts/:id'
 })
 ```
 
-To set a global prefix:
+Alternatively, you can also mount the router on another path.
 
 ```javascript
 server.use('/api', router)
