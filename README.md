@@ -192,7 +192,18 @@ server.listen(3000)
 For an in-memory database, you can pass an object to `jsonServer.router()`.
 Please note also that `jsonServer.router()` can be used in existing Express projects.
 
-To add rewrite rules:
+To modify responses, use `router.render()`:
+
+```javascript
+// In this example, returned resources will be wrapped in a body property
+router.render = function (req, res) {
+  res.jsonp({
+   body: res.locals.data
+  }) 
+}
+```
+
+To add rewrite rules, use `jsonServer.rewriter()`:
 
 ```javascript
 // Add this before server.use(router)
