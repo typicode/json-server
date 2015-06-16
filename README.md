@@ -162,9 +162,10 @@ json-server db.json --routes routes.json
 Now you can access resources using additional routes.
 
 ```bash
-/api/posts         # /posts/1
-/api/posts/1       # /posts/1
-/blog/posts/1/show # /posts/1
+/api/posts
+/api/posts/1
+/blog/posts/1/show
+# ...
 ```
 
 ### Module
