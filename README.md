@@ -27,7 +27,7 @@ Create a `db.json` file
 Start JSON Server
 
 ```bash
-$ json-server --watch db.json
+$ json-server db.json
 ```
 
 Now if you go to [http://localhost:3000/posts/1](), you'll get
