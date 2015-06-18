@@ -11,19 +11,19 @@ arr.push(logger('dev', {
   skip: function (req, res) { return req.path === '/favicon.ico' }
 }))
 
-// Serve static files
-if (fs.existsSync(process.cwd() + '/public')) {
-  arr.push(express.static(process.cwd() + '/public'))
-} else {
-  arr.push(express.static(__dirname + '/public'))
-}
-
-// CORS
+// Enable CORS for all the requests, including static files
 arr.push(cors({ origin: true, credentials: true }))
 
 if (process.env.NODE_ENV === 'development') {
   // only use in development
   arr.push(errorhandler())
+}
+
+// Serve static files
+if (fs.existsSync(process.cwd() + '/public')) {
+  arr.push(express.static(process.cwd() + '/public'))
+} else {
+  arr.push(express.static(__dirname + '/public'))
 }
 
 // No cache for IE
