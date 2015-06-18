@@ -36,6 +36,11 @@ describe('Server', function () {
       {id: 'abcd-1234', url: 'http://example.com', postId: 1}
     ]
 
+    db.deep = [
+      { a: { b: 1 } },
+      { a: 1 }
+    ]
+
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults)
@@ -81,6 +86,14 @@ describe('Server', function () {
         .get('/comments?postId=1&published=true')
         .expect('Content-Type', /json/)
         .expect([db.comments[0]])
+        .expect(200, done)
+    })
+
+    it('should support deep filter', function (done) {
+      request(server)
+        .get('/deep?a.b=1')
+        .expect('Content-Type', /json/)
+        .expect([db.deep[0]])
         .expect(200, done)
     })
   })

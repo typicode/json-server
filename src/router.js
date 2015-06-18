@@ -114,7 +114,12 @@ module.exports = function (source) {
       if (_(filters).isEmpty()) {
         array = db(req.params.resource).value()
       } else {
-        array = db(req.params.resource).filter(filters)
+        var chain = db(req.params.resource).chain()
+        for (var f in filters) {
+          // This syntax allow for deep filtering using lodash (i.e. a.b.c[0])
+          chain = chain.filter(f, filters[f])
+        }
+        array = chain.value()
       }
     }
 
