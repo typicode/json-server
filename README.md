@@ -79,6 +79,12 @@ To embed other resources, add `_embed`.
 GET /posts/1?_embed=comments
 ```
 
+To expand related resources, add `_expand`.
+
+```
+GET /comments/1?_expand=posts
+```
+
 Returns database.
 
 ```

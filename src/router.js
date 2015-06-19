@@ -159,6 +159,7 @@ module.exports = function (source) {
   // GET /:resource/:id
   function show (req, res, next) {
     var _embed = req.query._embed
+    var _expand = req.query._expand
     var id = utils.toNative(req.params.id)
     var resource = db(req.params.resource)
       .getById(id)
@@ -168,6 +169,7 @@ module.exports = function (source) {
       resource = _.cloneDeep(resource)
       // Always use an array
       _embed = _.isArray(_embed) ? _embed : [_embed]
+      _expand = _.isArray(_expand) ? _expand : [_expand]
 
       // Embed other resources based on resource id
       _embed.forEach(function (otherResource) {
@@ -180,6 +182,19 @@ module.exports = function (source) {
           query[prop] = id
           resource[otherResource] = db(otherResource).where(query)
 
+        }
+      })
+
+      // Expand inner resources based on id
+      _expand.forEach(function (innerResource) {
+
+        if (innerResource
+          && innerResource.trim().length > 0
+          && db.object[innerResource]) {
+          var query = {}
+          var prop = pluralize.singular(innerResource) + 'Id'
+          query.id = resource[prop]
+          resource[innerResource] = db(innerResource).where(query)
         }
       })
 
