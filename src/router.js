@@ -191,10 +191,9 @@ module.exports = function (source) {
         if (innerResource
           && innerResource.trim().length > 0
           && db.object[innerResource]) {
-          var query = {}
-          var prop = pluralize.singular(innerResource) + 'Id'
-          query.id = resource[prop]
-          resource[innerResource] = db(innerResource).where(query)
+          var singular = pluralize.singular(innerResource)
+          var prop = singular + 'Id'
+          resource[singular] = db(innerResource).getById(resource[prop])
         }
       })
 

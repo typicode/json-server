@@ -250,7 +250,7 @@ describe('Server', function () {
   describe('GET /:resource/:id?_expand=', function () {
     it('should respond with corresponding resource and expanded inner resources', function (done) {
       var comments = db.comments[0]
-      comments.posts = [db.posts[0]]
+      comments.post = db.posts[0]
       request(server)
         .get('/comments/1?_expand=posts')
         .expect('Content-Type', /json/)
@@ -262,8 +262,8 @@ describe('Server', function () {
   describe('GET /:resource/:id?_expand=&_expand=', function () {
     it('should respond with corresponding resource and expanded inner resources', function (done) {
       var comments = db.comments[0]
-      comments.posts = [db.posts[0]]
-      comments.users = [db.users[0]]
+      comments.post = db.posts[0]
+      comments.user = db.users[0]
       request(server)
         .get('/comments/1?_expand=posts&_expand=users')
         .expect('Content-Type', /json/)
