@@ -52,11 +52,17 @@ Based on the previous `db.json` file, here are all the default routes. You can a
 GET    /posts
 GET    /posts/1
 GET    /posts/1/comments
-GET    /posts?title=json-server&author=typicode
 POST   /posts
 PUT    /posts/1
 PATCH  /posts/1
 DELETE /posts/1
+```
+
+To filter resources (use `.` to access deep properties)
+
+```
+GET /posts?title=json-server&author=typicode
+GET /comments?author.name=typicode
 ```
 
 To slice resources, add `_start` and `_end` or `_limit` (an `X-Total-Count` header is included in the response).
