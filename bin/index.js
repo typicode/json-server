@@ -38,6 +38,7 @@ var argv = yargs
       default: 'id'
     }
   })
+  .boolean('watch')
   .help('help').alias('help', 'h')
   .version(pkg.version).alias('version', 'v')
   .example('$0 db.json', '')
