@@ -9,6 +9,12 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
   
 _See also [hotel](https://github.com/typicode/hotel), a simple server manager._
 
+## Install
+
+```bash
+$ npm install -g json-server
+```
+
 ## Example
 
 Create a `db.json` file
@@ -89,12 +95,6 @@ Returns default index file or serves `./public` directory.
 
 ```
 GET /
-```
-
-## Install
-
-```bash
-$ npm install -g json-server
 ```
 
 ## Extras
