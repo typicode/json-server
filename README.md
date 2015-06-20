@@ -9,12 +9,6 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
   
 _See also [hotel](https://github.com/typicode/hotel), a simple server manager._
 
-## Install
-
-```bash
-$ npm install -g json-server
-```
-
 ## Example
 
 Create a `db.json` file
@@ -43,6 +37,12 @@ Now if you go to [http://localhost:3000/posts/1](), you'll get
 ```
 
 Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
+
+## Install
+
+```bash
+$ npm install -g json-server
+```
 
 ## Routes
 
