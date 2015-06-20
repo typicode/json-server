@@ -122,11 +122,9 @@ $ json-server http://example.com/file.json
 $ json-server http://jsonplaceholder.typicode.com/db
 ```
 
-### JS file support
+### Generate random data
 
-You can create data programmatically.
-
-__Tip__ use modules like [faker](https://github.com/Marak/faker.js) or [casual](https://github.com/boo1ean/casual).
+Using JS instead of a JSON file, you can create data programmatically.
 
 ```javascript
 // index.js
@@ -143,6 +141,8 @@ module.exports = function() {
 ```bash
 $ json-server index.js
 ```
+
+__Tip__ use modules like [faker](https://github.com/Marak/faker.js), [casual](https://github.com/boo1ean/casual) or [chance](https://github.com/victorquinn/chancejs).
 
 ### Add routes
 
