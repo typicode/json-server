@@ -216,7 +216,7 @@ To add rewrite rules, use `jsonServer.rewriter()`:
 server.use(jsonServer.rewriter({
   '/api/': '/',
   '/blog/:resource/:id/show': '/:resource/:id'
-})
+}))
 ```
 
 Alternatively, you can also mount the router on another path.
