@@ -8,6 +8,7 @@ var chalk = require('chalk')
 var got = require('got')
 var pkg = require('../package.json')
 var jsonServer = require('../src')
+var low = require('lowdb')
 
 updateNotifier({packageName: pkg.name, packageVersion: pkg.version}).notify()
 
@@ -156,4 +157,11 @@ if (/^(http|https):/.test(source)) {
 } else if (/\.js$/.test(source)) {
   var object = require(process.cwd() + '/' + source)()
   start(object)
+// DIRECTORY
+} else {
+  var path = process.cwd() + '/' + source
+  if (fs.existsSync(path) && fs.statSync(path).isDirectory()) {
+    var object = low(path).object
+    start(object, path)
+  }
 }
