@@ -107,6 +107,14 @@ describe('Server', function () {
         .expect(200, done)
     })
 
+    it('should respond with json and make a deep full-text search', function (done) {
+      request(server)
+        .get('/deep?q=1')
+        .expect('Content-Type', /json/)
+        .expect(db.deep)
+        .expect(200, done)
+    })
+
     it('should return an empty array when nothing is matched', function (done) {
       request(server)
         .get('/tags?q=nope')
