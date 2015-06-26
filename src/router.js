@@ -159,6 +159,7 @@ module.exports = function (source) {
   // GET /:resource/:id
   function show (req, res, next) {
     var _embed = req.query._embed
+    var _exact = req.query._exact
     var id = utils.toNative(req.params.id)
     var resource = db(req.params.resource)
       .getById(id)
@@ -177,7 +178,12 @@ module.exports = function (source) {
           && db.object[otherResource]) {
           var query = {}
           var prop = pluralize.singular(req.params.resource) + 'Id'
-          query[prop] = id
+          if (_exact) {
+          	query[prop] = id	
+          } else {
+          	query[prop] = [id]
+          }
+          
           resource[otherResource] = db(otherResource).where(query)
 
         }
