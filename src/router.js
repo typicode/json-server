@@ -78,6 +78,9 @@ module.exports = function (source) {
     delete req.query._order
     delete req.query._limit
 
+    //Batch
+    var _ids = req.query._ids;
+
     if (req.query.q) {
 
       // Full-text search
@@ -110,11 +113,18 @@ module.exports = function (source) {
         }
       }
 
+      // Batch
+      var _dbConnection = db(req.params.resource);
+      if (!_.isEmpty(_ids)) {
+        _ids = _.isArray(_ids) ? _ids : [_ids];
+        _dbConnection = _dbConnection.where( { id: _ids} );
+      }
+      
       // Filter
       if (_(filters).isEmpty()) {
-        array = db(req.params.resource).value()
+        array = _dbConnection.value()
       } else {
-        var chain = db(req.params.resource).chain()
+        var chain = _dbConnection.chain()
         for (var f in filters) {
           // This syntax allow for deep filtering using lodash (i.e. a.b.c[0])
           chain = chain.filter(f, filters[f])
