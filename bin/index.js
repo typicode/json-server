@@ -8,45 +8,46 @@ var chalk = require('chalk')
 var got = require('got')
 var pkg = require('../package.json')
 var jsonServer = require('../src')
+var jsMockGenerator = null
 
 updateNotifier({packageName: pkg.name, packageVersion: pkg.version}).notify()
 
 // Parse arguments
 var argv = yargs
-  .usage('$0 [options] <source>')
-  .options({
-    port: {
-      alias: 'p',
-      description: 'Set port',
-      default: 3000
-    },
-    host: {
-      alias: 'H',
-      description: 'Set host',
-      default: '0.0.0.0'
-    },
-    watch: {
-      alias: 'w',
-      description: 'Reload database on JSON file change'
-    },
-    routes: {
-      alias: 'r',
-      description: 'Load routes file'
-    },
-    id: {
-      description: 'Set database id property (e.g. _id)',
-      default: 'id'
-    }
-  })
-  .boolean('watch')
-  .help('help').alias('help', 'h')
-  .version(pkg.version).alias('version', 'v')
-  .example('$0 db.json', '')
-  .example('$0 file.js', '')
-  .example('$0 http://example.com/db.json', '')
-  .epilog('https://github.com/typicode/json-server')
-  .require(1, 'Missing <source> argument')
-  .argv
+    .usage('$0 [options] <source>')
+    .options({
+      port: {
+        alias: 'p',
+        description: 'Set port',
+        default: 3000
+      },
+      host: {
+        alias: 'H',
+        description: 'Set host',
+        default: '0.0.0.0'
+      },
+      watch: {
+        alias: 'w',
+        description: 'Reload database on JSON file change'
+      },
+      routes: {
+        alias: 'r',
+        description: 'Load routes file'
+      },
+      id: {
+        description: 'Set database id property (e.g. _id)',
+        default: 'id'
+      }
+    })
+    .boolean('watch')
+    .help('help').alias('help', 'h')
+    .version(pkg.version).alias('version', 'v')
+    .example('$0 db.json', '')
+    .example('$0 file.js', '')
+    .example('$0 http://example.com/db.json', '')
+    .epilog('https://github.com/typicode/json-server')
+    .require(1, 'Missing <source> argument')
+    .argv
 
 function showResources (hostname, port, object) {
   for (var prop in object) {
@@ -62,11 +63,11 @@ function start (object, filename) {
   showResources(hostname, port, object)
   console.log()
   console.log(
-    'You can now go to ' + chalk.gray('http://' + hostname + ':' + port)
+      'You can now go to ' + chalk.gray('http://' + hostname + ':' + port)
   )
   console.log()
   console.log(
-    'Enter ' + chalk.cyan('s') + ' at any time to create a snapshot of the db'
+      'Enter ' + chalk.cyan('s') + ' at any time to create a snapshot of the db'
   )
 
   // Snapshot
@@ -84,7 +85,7 @@ function start (object, filename) {
   var router = jsonServer.router(filename ? filename : object)
 
   // Watcher
-  if (filename && argv.watch) {
+  if (argv.watch) {
     console.log('Watching', chalk.cyan(source))
 
     var db = router.db
@@ -94,12 +95,16 @@ function start (object, filename) {
     fs.watch(watchedDir, function (event, changedFile) {
       // lowdb generates 'rename' event on watchedFile
       // using it to know if file has been modified by the user
-      if (event === 'change' && changedFile === watchedFile) {
+      if ((event === 'change' || event === 'rename') && (changedFile === watchedFile || changedFile === source)) {
         console.log(chalk.cyan(source), 'has changed, reloading database')
 
         try {
-          var watchedFileObject = JSON.parse(fs.readFileSync(filename))
-          db.object = watchedFileObject
+          if (filename) {
+            db.object = JSON.parse(fs.readFileSync(filename))
+          } else {
+            require.cache[jsMockGenerator] = null
+            db.object = require(jsMockGenerator)()
+          }
           showResources(hostname, port, db.object)
         } catch (e) {
           console.log('Can\'t parse', chalk.cyan(source))
@@ -154,6 +159,7 @@ if (/^(http|https):/.test(source)) {
   start(object, filename)
 // JS file
 } else if (/\.js$/.test(source)) {
-  var object = require(process.cwd() + '/' + source)()
+  jsMockGenerator = process.cwd() + '/' + source
+  var object = require(jsMockGenerator)()
   start(object)
 }
