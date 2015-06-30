@@ -80,6 +80,7 @@ module.exports = function (source) {
 
     //Batch
     var _ids = req.query._ids;
+    delete req.query._ids;
 
     if (req.query.q) {
 
@@ -115,10 +116,6 @@ module.exports = function (source) {
 
       // Batch
       var _dbConnection = db(req.params.resource);
-      if (!_.isEmpty(_ids)) {
-        _ids = _.isArray(_ids) ? _ids : [_ids];
-        _dbConnection = _dbConnection.where( { id: _ids} );
-      }
       
       // Filter
       if (_(filters).isEmpty()) {
@@ -130,7 +127,18 @@ module.exports = function (source) {
           chain = chain.filter(f, filters[f])
         }
         array = chain.value()
+      
       }
+    }
+
+    // Batch
+    if (!_.isEmpty(_ids)) {
+      _ids = _ids.split(',');
+      _ids = _.isArray(_ids) ? _ids : [_ids];
+
+      array = _.filter(array, function(n){
+        return _.includes(_ids, n.id.toString());
+      });
     }
 
     // Sort
@@ -189,9 +197,9 @@ module.exports = function (source) {
           var query = {}
           var prop = pluralize.singular(req.params.resource) + 'Id'
           if (_exact) {
-          	query[prop] = id	
+            query[prop] = id  
           } else {
-          	query[prop] = [id]
+            query[prop] = [id]
           }
           
           resource[otherResource] = db(otherResource).where(query)
