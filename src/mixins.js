@@ -1,5 +1,5 @@
-var uuid = require('node-uuid');
-var pluralize = require('pluralize');
+var uuid = require('node-uuid')
+var pluralize = require('pluralize')
 
 module.exports = {
   getRemovable: getRemovable,
@@ -77,42 +77,42 @@ function deepQuery (value, q) {
   }
 }
 
-function deepFilter(list, address, predicate) {
-  var _ = this;
-  var parts = address.split('.');
-  var part = parts.shift();
+function deepFilter (list, address, predicate) {
+  var _ = this
+  var parts = address.split('.')
+  var part = parts.shift()
 
-  if(part == address) {
-    if(_.isArray(list)) {
-      list = _.reduce(list, function(memo, item) {
-        if(_.isArray(item)) {
-          var search = {};
-          search[address] = predicate;
+  if (part === address) {
+    if (_.isArray(list)) {
+      list = _.reduce(list, function (memo, item) {
+        if (_.isArray(item)) {
+          var search = {}
+          search[address] = predicate
 
-          Array.prototype.push.apply(memo, _.where(item, search));
-        } else if(item[address] == predicate) {
-          memo.push(item);
+          Array.prototype.push.apply(memo, _.where(item, search))
+        } else if (item[address] === predicate) {
+          memo.push(item)
         }
 
-        return memo;
+        return memo
       }, []);
 
-      return list.length && list || undefined;
-    } else if(list && list[address] == predicate) {
+      return list.length && list || undefined
+    } else if (list && list[address] == predicate) {
       return list;
     }
 
-    return undefined;
+    return undefined
   } else {
-    list = _.reduce(list, function(memo, item) {
-      item[part] = _.deepFilter(item[part], parts.join('.'), predicate);
-      if(item[part] !== undefined) {
+    list = _.reduce(list, function (memo, item) {
+      item[part] = _.deepFilter(item[part], parts.join('.'), predicate)
+      if (item[part] !== undefined) {
         memo.push(item);
       }
 
-      return memo;
-    }, []);
+      return memo
+    }, [])
   }
 
-  return list;
+  return list
 }
