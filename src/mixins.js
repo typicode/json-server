@@ -95,11 +95,11 @@ function deepFilter (list, address, predicate) {
         }
 
         return memo
-      }, []);
+      }, [])
 
       return list.length && list || undefined
-    } else if (list && list[address] == predicate) {
-      return list;
+    } else if (list && list[address] === predicate) {
+      return list
     }
 
     return undefined
@@ -107,7 +107,7 @@ function deepFilter (list, address, predicate) {
     list = _.reduce(list, function (memo, item) {
       item[part] = _.deepFilter(item[part], parts.join('.'), predicate)
       if (item[part] !== undefined) {
-        memo.push(item);
+        memo.push(item)
       }
 
       return memo
