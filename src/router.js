@@ -117,7 +117,7 @@ module.exports = function (source) {
         var chain = db(req.params.resource).chain()
         for (var f in filters) {
           // This syntax allow for deep filtering using lodash (i.e. a.b.c[0])
-          chain = chain.filter(f, filters[f])
+          chain = chain.deepFilter(f, filters[f])
         }
         array = chain.value()
       }
