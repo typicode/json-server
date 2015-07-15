@@ -1,5 +1,5 @@
 var assert = require('assert')
-var utils = require('../src/utils')
+var utils = require('../../src/server/utils')
 
 /* global describe, it */
 

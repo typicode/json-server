@@ -8,7 +8,10 @@ var arr = []
 
 // Logger
 arr.push(logger('dev', {
-  skip: function (req, res) { return req.path === '/favicon.ico' }
+  skip: function (req, res) {
+    return process.env.NODE_ENV === 'test' ||
+      req.path === '/favicon.ico'
+  }
 }))
 
 // Enable CORS for all the requests, including static files
