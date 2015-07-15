@@ -67,9 +67,9 @@ describe('cli', function () {
   describe('http://jsonplaceholder.typicode.com/db', function () {
 
     beforeEach(function (done) {
-      this.timeout(6000)
+      this.timeout(10000)
       child = cli(['http://jsonplaceholder.typicode.com/db'])
-      setTimeout(done, 5000)
+      setTimeout(done, 9000)
     })
 
     it('should support URL file', function (done) {
