@@ -62,28 +62,30 @@ module.exports = function (source) {
     // Filters list
     var filters = {}
 
-    // Result array
-    var array
+    // Resource chain
+    var chain = db(req.params.resource).chain()
 
-    // Remove _start, _end and _limit from req.query to avoid filtering using those
+    // Remove q, _start, _end, ... from req.query to avoid filtering using those
     // parameters
+    var q = req.query.q
     var _start = req.query._start
     var _end = req.query._end
     var _sort = req.query._sort
     var _order = req.query._order
     var _limit = req.query._limit
+    delete req.query.q
     delete req.query._start
     delete req.query._end
     delete req.query._sort
     delete req.query._order
     delete req.query._limit
 
-    if (req.query.q) {
+    if (q) {
 
       // Full-text search
-      var q = req.query.q.toLowerCase()
+      q = q.toLowerCase()
 
-      array = db(req.params.resource).filter(function (obj) {
+      chain = chain.filter(function (obj) {
         for (var key in obj) {
           var value = obj[key]
           if (db._.deepQuery(value, q)) {
@@ -92,34 +94,29 @@ module.exports = function (source) {
         }
       })
 
-    } else {
+    }
 
-      // Add :parentId filter in case URL is like /:parent/:parentId/:resource
-      if (req.params.parent) {
-        var parent = pluralize.singular(req.params.parent)
-        filters[parent + 'Id'] = +req.params.parentId
+    // Add :parentId filter in case URL is like /:parent/:parentId/:resource
+    if (req.params.parent) {
+      var parent = pluralize.singular(req.params.parent)
+      filters[parent + 'Id'] = +req.params.parentId
+    }
+
+    // Add query parameters filters
+    // Convert query parameters to their native counterparts
+    for (var key in req.query) {
+      // don't take into account JSONP query parameters
+      // jQuery adds a '_' query parameter too
+      if (key !== 'callback' && key !== '_') {
+        filters[key] = utils.toNative(req.query[key])
       }
+    }
 
-      // Add query parameters filters
-      // Convert query parameters to their native counterparts
-      for (var key in req.query) {
-        // don't take into account JSONP query parameters
-        // jQuery adds a '_' query parameter too
-        if (key !== 'callback' && key !== '_') {
-          filters[key] = utils.toNative(req.query[key])
-        }
-      }
-
-      // Filter
-      if (_(filters).isEmpty()) {
-        array = db(req.params.resource).value()
-      } else {
-        var chain = db(req.params.resource).chain()
-        for (var f in filters) {
-          // This syntax allow for deep filtering using lodash (i.e. a.b.c[0])
-          chain = chain.filter(f, filters[f])
-        }
-        array = chain.value()
+    // Filter
+    if (!_(filters).isEmpty()) {
+      for (var f in filters) {
+        // This syntax allow for deep filtering using lodash (i.e. a.b.c[0])
+        chain = chain.filter(f, filters[f])
       }
     }
 
@@ -127,18 +124,18 @@ module.exports = function (source) {
     if (_sort) {
       _order = _order || 'ASC'
 
-      array = _.sortBy(array, function (element) {
+      chain = chain.sortBy(function (element) {
         return element[_sort]
       })
 
       if (_order === 'DESC') {
-        array.reverse()
+        chain = chain.reverse()
       }
     }
 
     // Slice result
     if (_end || _limit) {
-      res.setHeader('X-Total-Count', array.length)
+      res.setHeader('X-Total-Count', chain.size())
       res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
     }
 
@@ -146,13 +143,13 @@ module.exports = function (source) {
 
     if (_end) {
       _end = parseInt(_end, 10)
-      array = array.slice(_start, _end)
+      chain = chain.slice(_start, _end)
     } else if (_limit) {
       _limit = parseInt(_limit, 10)
-      array = array.slice(_start, _start + _limit)
+      chain = chain.slice(_start, _start + _limit)
     }
 
-    res.locals.data = array
+    res.locals.data = chain.value()
     next()
   }
 

@@ -25,11 +25,11 @@ describe('Server', function () {
     ]
 
     db.comments = [
-      {id: 1, published: true, postId: 1},
-      {id: 2, published: false, postId: 1},
-      {id: 3, published: false, postId: 2},
-      {id: 4, published: false, postId: 2},
-      {id: 5, published: false, postId: 2}
+      {id: 1, body: 'foo', published: true, postId: 1},
+      {id: 2, body: 'bar', published: false, postId: 1},
+      {id: 3, body: 'baz', published: false, postId: 2},
+      {id: 4, body: 'qux', published: true, postId: 2},
+      {id: 5, body: 'quux', published: false, postId: 2}
     ]
 
     db.refs = [
@@ -120,6 +120,14 @@ describe('Server', function () {
         .get('/tags?q=nope')
         .expect('Content-Type', /json/)
         .expect([])
+        .expect(200, done)
+    })
+
+    it('should support other query parameters', function (done) {
+      request(server)
+        .get('/comments?q=qu&published=true')
+        .expect('Content-Type', /json/)
+        .expect([db.comments[3]])
         .expect(200, done)
     })
   })
