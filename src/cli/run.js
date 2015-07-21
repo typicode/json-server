@@ -3,6 +3,7 @@ var chalk = require('chalk')
 var is = require('./utils/is')
 var load = require('./utils/load')
 var watch = require('./watch')
+var pause = require('connect-pause')
 var jsonServer = require('../server')
 
 function prettyPrint (argv, object, rules) {
@@ -30,7 +31,7 @@ function prettyPrint (argv, object, rules) {
   console.log()
 }
 
-function createServer (source, object, routes) {
+function createServer (source, object, routes, delay) {
   var server = jsonServer.create()
 
   var router = jsonServer.router(
@@ -44,6 +45,10 @@ function createServer (source, object, routes) {
   if (routes) {
     var rewriter = jsonServer.rewriter(routes)
     server.use(rewriter)
+  }
+
+  if (delay) {
+    server.use(pause(delay))
   }
 
   server.use(router)
@@ -77,7 +82,8 @@ module.exports = function (argv) {
       console.log(chalk.gray('  Done'))
 
       // Create server and listen
-      server = createServer(source, data, routes).listen(argv.port, argv.host)
+      server = createServer(source, data, routes, argv.delay)
+        .listen(argv.port, argv.host)
 
       // Display server informations
       prettyPrint(argv, data, routes)

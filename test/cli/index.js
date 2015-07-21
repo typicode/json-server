@@ -91,6 +91,23 @@ describe('cli', function () {
 
   })
 
+  describe('db.json -d 1000', function () {
+
+    beforeEach(function (done) {
+      child = cli([dbFile, '-d', 1000])
+      setTimeout(done, 1000)
+    })
+
+    it('should delay response', function (done) {
+      var start = new Date()
+      request.get('/posts').expect(200, function (err) {
+        var end = new Date()
+        done(end - start > 1000 ? err : new Error('Request wasn\'t delayed'))
+      })
+    })
+
+  })
+
   // FIXME test fails on OS X and maybe on Windows
   // But manually updating db.json works...
   if (os.platform() === 'linux') {

@@ -31,6 +31,10 @@ module.exports = function () {
       id: {
         description: 'Set database id property (e.g. _id)',
         default: 'id'
+      },
+      delay: {
+        alias: 'd',
+        description: 'Add delay to responses (ms)'
       }
     })
     .boolean('watch')
