@@ -1,5 +1,4 @@
 var request = require('supertest')
-var assert = require('assert')
 var jsonServer = require('../../src/server')
 
 /* global beforeEach, describe, it */
