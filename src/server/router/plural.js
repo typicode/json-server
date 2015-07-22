@@ -1,69 +1,25 @@
 var express = require('express')
-var methodOverride = require('method-override')
-var bodyParser = require('body-parser')
 var _ = require('lodash')
-var _db = require('underscore-db')
-var low = require('lowdb')
 var pluralize = require('pluralize')
-var utils = require('./utils')
-var mixins = require('./mixins')
+var utils = require('../utils')
 
-module.exports = function (source) {
+module.exports = function (db, name) {
+
   // Create router
   var router = express.Router()
-
-  // Add middlewares
-  router.use(bodyParser.json({limit: '10mb'}))
-  router.use(bodyParser.urlencoded({extended: false}))
-  router.use(methodOverride())
-
-  // Create database
-  var db
-  if (_.isObject(source)) {
-    db = low()
-    db.object = source
-  } else {
-    db = low(source)
-  }
-
-  // Add underscore-db methods to db
-  db._.mixin(_db)
-
-  // Add specific mixins
-  db._.mixin(mixins)
-
-  // Expose database
-  router.db = db
-
-  // Expose render
-  router.render = function (req, res) {
-    res.jsonp(res.locals.data)
-  }
-
-  // GET /db
-  function showDatabase (req, res, next) {
-    res.locals.data = db.object
-    next()
-  }
 
   // GET /:resource
   // GET /:resource?q=
   // GET /:resource?attr=&attr=
-  // GET /:parent/:parentId/:resource?attr=&attr=
-  // GET /*?*&_end=
-  // GET /*?*&_start=&_end=
+  // GET /:resource?_end=&*
+  // GET /:resource?_start=&_end=&*
   function list (req, res, next) {
-    // Test if resource exists
-    if (!db.object.hasOwnProperty(req.params.resource)) {
-      res.status(404)
-      return next()
-    }
 
     // Filters list
     var filters = {}
 
     // Resource chain
-    var chain = db(req.params.resource).chain()
+    var chain = db(name).chain()
 
     // Remove q, _start, _end, ... from req.query to avoid filtering using those
     // parameters
@@ -94,12 +50,6 @@ module.exports = function (source) {
         }
       })
 
-    }
-
-    // Add :parentId filter in case URL is like /:parent/:parentId/:resource
-    if (req.params.parent) {
-      var parent = pluralize.singular(req.params.parent)
-      filters[parent + 'Id'] = +req.params.parentId
     }
 
     // Add query parameters filters
@@ -157,7 +107,7 @@ module.exports = function (source) {
   function show (req, res, next) {
     var _embed = req.query._embed
     var id = utils.toNative(req.params.id)
-    var resource = db(req.params.resource)
+    var resource = db(name)
       .getById(id)
 
     if (resource) {
@@ -173,7 +123,7 @@ module.exports = function (source) {
           && otherResource.trim().length > 0
           && db.object[otherResource]) {
           var query = {}
-          var prop = pluralize.singular(req.params.resource) + 'Id'
+          var prop = pluralize.singular(name) + 'Id'
           query[prop] = id
           resource[otherResource] = db(otherResource).where(query)
 
@@ -181,9 +131,6 @@ module.exports = function (source) {
       })
 
       res.locals.data = resource
-    } else {
-      res.status(404)
-      res.locals.data = {}
     }
 
     next()
@@ -195,7 +142,7 @@ module.exports = function (source) {
       req.body[key] = utils.toNative(req.body[key])
     }
 
-    var resource = db(req.params.resource)
+    var resource = db(name)
       .insert(req.body)
 
     res.status(201)
@@ -210,14 +157,11 @@ module.exports = function (source) {
       req.body[key] = utils.toNative(req.body[key])
     }
 
-    var resource = db(req.params.resource)
+    var resource = db(name)
       .updateById(utils.toNative(req.params.id), req.body)
 
     if (resource) {
       res.locals.data = resource
-    } else {
-      res.status(404)
-      res.locals.data = {}
     }
 
     next()
@@ -225,7 +169,7 @@ module.exports = function (source) {
 
   // DELETE /:resource/:id
   function destroy (req, res, next) {
-    db(req.params.resource).removeById(utils.toNative(req.params.id))
+    db(name).removeById(utils.toNative(req.params.id))
 
     // Remove dependents documents
     var removable = db._.getRemovable(db.object)
@@ -238,23 +182,15 @@ module.exports = function (source) {
     next()
   }
 
-  router.get('/db', showDatabase, router.render)
-
-  router.route('/:resource')
+  router.route('/')
     .get(list)
     .post(create)
 
-  router.route('/:resource/:id')
+  router.route('/:id')
     .get(show)
     .put(update)
     .patch(update)
     .delete(destroy)
-
-  router.get('/:parent/:parentId/:resource', list)
-
-  router.all('*', function (req, res) {
-    router.render(req, res)
-  })
 
   return router
 }
