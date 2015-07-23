@@ -28,7 +28,7 @@ describe('cli', function () {
 
   beforeEach(function () {
     fs.mkdirSync(tmpDir)
-    fs.writeFileSync(dbFile, JSON.stringify({ posts: [] }))
+    fs.writeFileSync(dbFile, JSON.stringify({ posts: [{ 'id': 1, '_id': 2 }] }))
     fs.writeFileSync(routesFile, JSON.stringify({ '/blog/': '/' }))
   })
 
@@ -78,15 +78,15 @@ describe('cli', function () {
 
   })
 
-  describe('db.json -r routes.json', function () {
+  describe('db.json -r routes.json -i _id', function () {
 
     beforeEach(function (done) {
-      child = cli([dbFile, '-r', routesFile])
+      child = cli([dbFile, '-r', routesFile, '-i', '_id'])
       setTimeout(done, 1000)
     })
 
-    it('should use routes.json', function (done) {
-      request.get('/blog/posts').expect(200, done)
+    it('should use routes.json and _id as the identifier', function (done) {
+      request.get('/blog/posts/2').expect(200, done)
     })
 
   })

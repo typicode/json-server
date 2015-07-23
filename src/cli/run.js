@@ -31,8 +31,8 @@ function prettyPrint (argv, object, rules) {
   console.log()
 }
 
-function createServer (source, object, routes, delay) {
-  var server = jsonServer.create()
+function createApp (source, object, routes, argv) {
+  var app = jsonServer.create()
 
   var router = jsonServer.router(
     is.JSON(source) ?
@@ -40,31 +40,34 @@ function createServer (source, object, routes, delay) {
     object
   )
 
-  server.use(jsonServer.defaults)
+  app.use(jsonServer.defaults)
 
   if (routes) {
     var rewriter = jsonServer.rewriter(routes)
-    server.use(rewriter)
+    app.use(rewriter)
   }
 
-  if (delay) {
-    server.use(pause(delay))
+  if (argv.delay) {
+    app.use(pause(argv.delay))
   }
 
-  server.use(router)
+  router.db._.id = argv.id
+  app.db = router.db
+  app.use(router)
 
-  return server
+  return app
 }
 
 module.exports = function (argv) {
 
   var source = argv._[0]
+  var app
   var server
 
   console.log()
   console.log(chalk.cyan('  \\{^_^}/ hi!'))
 
-  function start () {
+  function start (cb) {
     console.log()
     console.log(chalk.gray('  Loading', source))
 
@@ -81,28 +84,46 @@ module.exports = function (argv) {
 
       console.log(chalk.gray('  Done'))
 
-      // Create server and listen
-      server = createServer(source, data, routes, argv.delay)
-        .listen(argv.port, argv.host)
+      // Create app and server
+      app = createApp(source, data, routes, argv)
+      server = app.listen(argv.port, argv.host)
 
       // Display server informations
       prettyPrint(argv, data, routes)
+
+      cb && cb()
     })
   }
 
   // Start server
-  start()
+  start(function () {
 
-  // Watch files
-  if (argv.watch) {
-    console.log(chalk.gray('  Watching...'))
-    console.log()
-    watch(argv, function (file) {
-      console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
-      // Restart server
-      server && server.close()
-      start()
+    // Snapshot
+    console.log(
+      chalk.gray('  Type s + enter at any time to create a snapshot of the database')
+    )
+
+    process.stdin.resume()
+    process.stdin.setEncoding('utf8')
+    process.stdin.on('data', function (chunk) {
+      if (chunk.trim().toLowerCase() === 's') {
+        var file = 'db-' + Date.now() + '.json'
+        app.db.saveSync(file)
+        console.log('  Saved snapshot to ' + file + '\n')
+      }
     })
-  }
+
+    // Watch files
+    if (argv.watch) {
+      console.log(chalk.gray('  Watching...'))
+      console.log()
+      watch(argv, function (file) {
+        console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
+        server && server.close()
+        start()
+      })
+    }
+
+  })
 
 }

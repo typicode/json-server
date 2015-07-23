@@ -28,13 +28,14 @@ module.exports = function () {
         alias: 'r',
         description: 'Load routes file'
       },
-      id: {
-        description: 'Set database id property (e.g. _id)',
-        default: 'id'
-      },
       delay: {
         alias: 'd',
         description: 'Add delay to responses (ms)'
+      },
+      id: {
+        alias: 'i',
+        description: 'Set database id property (e.g. _id)',
+        default: 'id'
       }
     })
     .boolean('watch')

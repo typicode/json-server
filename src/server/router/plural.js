@@ -122,6 +122,7 @@ module.exports = function (db, name) {
         if (otherResource
           && otherResource.trim().length > 0
           && db.object[otherResource]) {
+
           var query = {}
           var prop = pluralize.singular(name) + 'Id'
           query[prop] = id
