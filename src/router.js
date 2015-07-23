@@ -94,6 +94,8 @@ module.exports = function (source) {
 
     } else {
 
+      array = db(req.params.resource).value()
+
       // Add :parentId filter in case URL is like /:parent/:parentId/:resource
       if (req.params.parent) {
         var parent = pluralize.singular(req.params.parent)
@@ -111,15 +113,12 @@ module.exports = function (source) {
       }
 
       // Filter
-      if (_(filters).isEmpty()) {
-        array = db(req.params.resource).value()
-      } else {
-        var chain = db(req.params.resource).chain()
+      if (!_(filters).isEmpty()) {
+        array = _.cloneDeep(array)
+
         for (var f in filters) {
-          // This syntax allow for deep filtering using lodash (i.e. a.b.c[0])
-          chain = chain.deepFilter(f, filters[f])
+          array = db._.deepFilter(array, f, filters[f])
         }
-        array = chain.value()
       }
     }
 
