@@ -1,7 +1,7 @@
 var assert = require('assert')
-var mixins = require('../src/mixins')
 var _ = require('lodash')
 var _db = require('underscore-db')
+var mixins = require('../../src/server/mixins')
 
 /* global describe, it */
 

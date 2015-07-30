@@ -1,8 +1,8 @@
 {
   "name": "json-server",
-  "version": "0.7.19",
+  "version": "0.7.23",
   "description": "Serves JSON files through REST routes.",
-  "main": "./src/index.js",
+  "main": "./src/server/index.js",
   "bin": "./bin/index.js",
   "directories": {
     "test": "test"
@@ -10,10 +10,11 @@
   "dependencies": {
     "body-parser": "^1.8.1",
     "chalk": "^0.4.0",
+    "connect-pause": "^0.1.0",
     "cors": "^2.3.0",
     "errorhandler": "^1.2.0",
     "express": "^4.9.5",
-    "got": "^1.2.2",
+    "got": "^3.3.0",
     "lodash": "^3.9.2",
     "lowdb": "^0.10.0",
     "method-override": "^2.1.2",
@@ -21,17 +22,18 @@
     "node-uuid": "^1.4.2",
     "pluralize": "^1.1.2",
     "underscore-db": "^0.9.0",
-    "update-notifier": "^0.2.2",
+    "update-notifier": "^0.5.0",
     "yargs": "^3.10.0"
   },
   "devDependencies": {
     "husky": "^0.6.1",
     "mocha": "^2.2.4",
+    "rimraf": "^2.4.1",
     "standard": "^3.8.0",
     "supertest": "~0.8.1"
   },
   "scripts": {
-    "test": "standard && mocha -R spec test",
+    "test": "NODE_ENV=test mocha -R spec test/**/*.js && standard",
     "start": "node bin",
     "prepush": "npm t"
   },
