@@ -17,8 +17,13 @@ function watchDB (file, cb) {
   })
 }
 
+// Recursively scan the directory for modification
 function watchJS (file, cb) {
-  fs.watchFile(file, cb)
+  var watchedDir = path.dirname(file)
+
+  fs.watch(watchedDir, {recursive:true}, function (event, changedFile) {
+    if (event === 'rename') cb()
+  })
 }
 
 function watchSource (source, cb) {
@@ -32,6 +37,7 @@ function watchSource (source, cb) {
 function watch (argv, cb) {
   var source = argv._[0]
 
+  console.log('!!!', source)
   watchSource(source, function () {
     cb(source)
   })
