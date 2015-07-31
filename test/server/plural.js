@@ -24,12 +24,17 @@ describe('Server', function () {
       {id: 3, body: 'photo'}
     ]
 
+    db.users = [
+      {id: 1, username: 'Jim'},
+      {id: 2, username: 'George'}
+    ]
+
     db.comments = [
-      {id: 1, body: 'foo', published: true, postId: 1},
-      {id: 2, body: 'bar', published: false, postId: 1},
-      {id: 3, body: 'baz', published: false, postId: 2},
-      {id: 4, body: 'qux', published: true, postId: 2},
-      {id: 5, body: 'quux', published: false, postId: 2}
+      {id: 1, body: 'foo', published: true, postId: 1, userId: 1},
+      {id: 2, body: 'bar', published: false, postId: 1, userId: 2},
+      {id: 3, body: 'baz', published: false, postId: 2, userId: 1},
+      {id: 4, body: 'qux', published: true, postId: 2, userId: 2},
+      {id: 5, body: 'quux', published: false, postId: 2, userId: 1}
     ]
 
     db.refs = [
@@ -254,6 +259,31 @@ describe('Server', function () {
         .get('/posts/1?_embed=comments&_embed=refs')
         .expect('Content-Type', /json/)
         .expect(posts)
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource/:id?_expand=', function () {
+    it('should respond with corresponding resource and expanded inner resources', function (done) {
+      var comments = db.comments[0]
+      comments.post = db.posts[0]
+      request(server)
+        .get('/comments/1?_expand=post')
+        .expect('Content-Type', /json/)
+        .expect(comments)
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource/:id?_expand=&_expand=', function () {
+    it('should respond with corresponding resource and expanded inner resources', function (done) {
+      var comments = db.comments[0]
+      comments.post = db.posts[0]
+      comments.user = db.users[0]
+      request(server)
+        .get('/comments/1?_expand=post&_expand=user')
+        .expect('Content-Type', /json/)
+        .expect(comments)
         .expect(200, done)
     })
   })

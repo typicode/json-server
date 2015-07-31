@@ -6,7 +6,7 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 
   * [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
   * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
-  
+
 _See also [hotel](https://github.com/typicode/hotel), a simple process manager for developers._
 
 ## Example
@@ -70,6 +70,7 @@ To slice resources, add `_start` and `_end` or `_limit` (an `X-Total-Count` head
 ```
 GET /posts?_start=20&_end=30
 GET /posts/1/comments?_start=20&_end=30
+GET /posts/1/comments?_start=20&_limit=10
 ```
 
 To sort resources, add `_sort` and `_order` (ascending order by default).
@@ -85,10 +86,16 @@ To make a full-text search on resources, add `q`.
 GET /posts?q=internet
 ```
 
-To embed other resources, add `_embed`.
+To embed resources, add `_embed`.
 
 ```
 GET /posts/1?_embed=comments
+```
+
+To expand inner resources, add `_expand`.
+
+```
+GET /comments/1?_expand=post
 ```
 
 Returns database.
@@ -205,7 +212,7 @@ To modify responses, use `router.render()`:
 router.render = function (req, res) {
   res.jsonp({
    body: res.locals.data
-  }) 
+  })
 }
 ```
 
