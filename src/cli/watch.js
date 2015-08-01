@@ -21,7 +21,7 @@ function watchDB (file, cb) {
 function watchJS (file, cb) {
   var watchedDir = path.dirname(file)
 
-  fs.watch(watchedDir, {recursive:true}, function (event, changedFile) {
+  fs.watch(watchedDir, {recursive: true}, function (event, changedFile) {
     if (event === 'rename') cb()
   })
 }
