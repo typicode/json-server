@@ -37,7 +37,6 @@ function watchSource (source, cb) {
 function watch (argv, cb) {
   var source = argv._[0]
 
-  console.log('!!!', source)
   watchSource(source, function () {
     cb(source)
   })
