@@ -57,18 +57,24 @@ module.exports = function (source) {
 
   // Create routes
   for (var prop in db.object) {
-    if (_.isPlainObject(db.object[prop])) {
+    var val = db.object[prop]
+
+    if (_.isPlainObject(val)) {
       router.use('/' + prop, singular(db, prop))
       continue
     }
 
-    if (_.isArray(db.object[prop])) {
+    if (_.isArray(val)) {
       router.use('/' + prop, plural(db, prop))
       continue
     }
 
-    throw new Error('Unsupported type')
+    var msg =
+      'Type of "' + prop + '" (' + typeof val + ') ' +
+      (_.isObject(source) ? '' : 'in ' + source) + ' is not supported. ' +
+      'Use objects or arrays of objects.'
 
+    throw new Error(msg)
   }
 
   router.use(function (req, res) {
