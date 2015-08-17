@@ -20,7 +20,8 @@ Create a `db.json` file
   ],
   "comments": [
     { "id": 1, "body": "some comment", "postId": 1 }
-  ]
+  ],
+  "profile": { "name": "typicode" }
 }
 ```
 
@@ -48,6 +49,8 @@ $ npm install -g json-server
 
 Based on the previous `db.json` file, here are all the default routes. You can also add [other routes](#add-routes) using `--routes`.
 
+Plural resources
+
 ```
 GET    /posts
 GET    /posts/1
@@ -56,6 +59,15 @@ POST   /posts
 PUT    /posts/1
 PATCH  /posts/1
 DELETE /posts/1
+```
+
+Singular resources
+
+```
+GET    /profile
+POST   /profile
+PUT    /profile
+PATCH  /profile
 ```
 
 To filter resources (use `.` to access deep properties)
