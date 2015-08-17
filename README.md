@@ -250,11 +250,12 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 * [ng-admin: Add an AngularJS admin GUI to any RESTful API](http://marmelab.com/blog/2014/09/15/easy-backend-for-your-restful-api.html)
 * [Fast prototyping using Restangular and Json-server](http://glebbahmutov.com/blog/fast-prototyping-using-restangular-and-json-server/)
 
-### Projects
+### Third-party tools
 
 * [Grunt JSON Server](https://github.com/tfiwm/grunt-json-server)
 * [Docker JSON Server](https://github.com/clue/docker-json-server)
 * [JSON Server GUI](https://github.com/naholyr/json-server-gui)
+* [JSON file generator](https://github.com/dfsq/json-server-init)
 
 ## License
 
