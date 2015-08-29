@@ -1,6 +1,5 @@
 **/*.log
 node_modules
-db.json
 tmp
 .DS_Store
 .idea
