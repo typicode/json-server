@@ -101,12 +101,14 @@ GET /posts?q=internet
 To embed resources, add `_embed`.
 
 ```
+GET /posts?_embed=comments
 GET /posts/1?_embed=comments
 ```
 
 To expand inner resources, add `_expand`.
 
 ```
+GET /comments?_expand=post
 GET /comments/1?_expand=post
 ```
 
