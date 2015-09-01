@@ -1,5 +1,6 @@
-var request = require('supertest')
 var assert = require('assert')
+var _ = require('lodash')
+var request = require('supertest')
 var jsonServer = require('../../src/server')
 
 /* global beforeEach, describe, it */
@@ -38,7 +39,7 @@ describe('Server', function () {
     ]
 
     db.refs = [
-      {id: 'abcd-1234', url: 'http://example.com', postId: 1}
+      {id: 'abcd-1234', url: 'http://example.com', postId: 1, userId: 1}
     ]
 
     db.deep = [
@@ -238,8 +239,36 @@ describe('Server', function () {
     })
   })
 
+  describe('GET /:resource?_embed=', function () {
+    it('should respond with corresponding resources and embedded resources', function (done) {
+      var posts = _.cloneDeep(db.posts)
+      posts[0].comments = [db.comments[0], db.comments[1]]
+      posts[1].comments = [db.comments[2], db.comments[3], db.comments[4]]
+      request(server)
+        .get('/posts?_embed=comments')
+        .expect('Content-Type', /json/)
+        .expect(posts)
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource?_embed&_embed=', function () {
+    it('should respond with corresponding resources and embedded resources', function (done) {
+      var posts = _.cloneDeep(db.posts)
+      posts[0].comments = [db.comments[0], db.comments[1]]
+      posts[0].refs = [db.refs[0]]
+      posts[1].comments = [db.comments[2], db.comments[3], db.comments[4]]
+      posts[1].refs = []
+      request(server)
+        .get('/posts?_embed=comments&_embed=refs')
+        .expect('Content-Type', /json/)
+        .expect(posts)
+        .expect(200, done)
+    })
+  })
+
   describe('GET /:resource/:id?_embed=', function () {
-    it('should respond with corresponding resource and embedded other resource', function (done) {
+    it('should respond with corresponding resources and embedded resources', function (done) {
       var posts = db.posts[0]
       posts.comments = [db.comments[0], db.comments[1]]
       request(server)
@@ -251,7 +280,7 @@ describe('Server', function () {
   })
 
   describe('GET /:resource/:id?_embed=&_embed=', function () {
-    it('should respond with corresponding resource and embedded other resources', function (done) {
+    it('should respond with corresponding resource and embedded resources', function (done) {
       var posts = db.posts[0]
       posts.comments = [db.comments[0], db.comments[1]]
       posts.refs = [db.refs[0]]
@@ -259,6 +288,18 @@ describe('Server', function () {
         .get('/posts/1?_embed=comments&_embed=refs')
         .expect('Content-Type', /json/)
         .expect(posts)
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource?_expand=', function () {
+    it('should respond with corresponding resource and expanded inner resources', function (done) {
+      var refs = _.cloneDeep(db.refs)
+      refs[0].post = db.posts[0]
+      request(server)
+        .get('/refs?_expand=post')
+        .expect('Content-Type', /json/)
+        .expect(refs)
         .expect(200, done)
     })
   })
@@ -271,6 +312,19 @@ describe('Server', function () {
         .get('/comments/1?_expand=post')
         .expect('Content-Type', /json/)
         .expect(comments)
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource?_expand=&_expand', function () {
+    it('should respond with corresponding resource and expanded inner resources', function (done) {
+      var refs = _.cloneDeep(db.refs)
+      refs[0].post = db.posts[0]
+      refs[0].user = db.users[0]
+      request(server)
+        .get('/refs?_expand=post&_expand=user')
+        .expect('Content-Type', /json/)
+        .expect(refs)
         .expect(200, done)
     })
   })

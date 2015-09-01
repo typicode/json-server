@@ -8,11 +8,37 @@ module.exports = function (db, name) {
   // Create router
   var router = express.Router()
 
+  // Embed function used in GET /name and GET /name/id
+  function embed (resource, e) {
+    e && [].concat(e)
+      .forEach(function (externalResource) {
+        if (db.object[externalResource]) {
+          var query = {}
+          var singularResource = pluralize.singular(name)
+          query[singularResource + 'Id'] = resource.id
+          resource[externalResource] = db(externalResource).where(query)
+        }
+      })
+  }
+
+  // Expand function used in GET /name and GET /name/id
+  function expand (resource, e) {
+    e && [].concat(e)
+      .forEach(function (innerResource) {
+        var plural = pluralize(innerResource)
+        if (db.object[plural]) {
+          var prop = innerResource + 'Id'
+          resource[innerResource] = db(plural).getById(resource[prop])
+        }
+      })
+  }
+
   // GET /name
   // GET /name?q=
   // GET /name?attr=&attr=
-  // GET /name?_end=&*
-  // GET /name?_start=&_end=&*
+  // GET /name?_end=&
+  // GET /name?_start=&_end=&
+  // GET /name?_embed=&_expand=
   function list (req, res, next) {
 
     // Filters list
@@ -29,12 +55,16 @@ module.exports = function (db, name) {
     var _sort = req.query._sort
     var _order = req.query._order
     var _limit = req.query._limit
+    var _embed = req.query._embed
+    var _expand = req.query._expand
     delete req.query.q
     delete req.query._start
     delete req.query._end
     delete req.query._sort
     delete req.query._order
     delete req.query._limit
+    delete req.query._embed
+    delete req.query._expand
 
     if (q) {
 
@@ -99,6 +129,14 @@ module.exports = function (db, name) {
       chain = chain.slice(_start, _start + _limit)
     }
 
+    // embed and expand
+    chain = chain
+      .cloneDeep()
+      .forEach(function (element) {
+        embed(element, _embed)
+        expand(element, _expand)
+      })
+
     res.locals.data = chain.value()
     next()
   }
@@ -111,43 +149,17 @@ module.exports = function (db, name) {
     var id = utils.toNative(req.params.id)
     var resource = db(name).getById(id)
 
-    // Filter empty params
-    function filter (p) {
-      return p && p.trim().length > 0
-    }
-
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
       resource = _.cloneDeep(resource)
 
-      // Always use an array
-      _embed = [].concat(_embed)
-      _expand = [].concat(_expand)
-
       // Embed other resources based on resource id
       // /posts/1?_embed=comments
-      _embed
-        .filter(filter)
-        .forEach(function (otherResource) {
-          if (db.object[otherResource]) {
-            var query = {}
-            var singularResource = pluralize.singular(name)
-            query[singularResource + 'Id'] = id
-            resource[otherResource] = db(otherResource).where(query)
-          }
-        })
+      embed(resource, _embed)
 
       // Expand inner resources based on id
       // /posts/1?_expand=user
-      _expand
-        .filter(filter)
-        .forEach(function (innerResource) {
-          var plural = pluralize(innerResource)
-          if (db.object[plural]) {
-            var prop = innerResource + 'Id'
-            resource[innerResource] = db(plural).getById(resource[prop])
-          }
-        })
+      expand(resource, _expand)
 
       res.locals.data = resource
     }
