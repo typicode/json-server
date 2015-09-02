@@ -95,11 +95,27 @@ describe('Server', function () {
         .expect(200, done)
     })
 
+    it('should support multiple filters', function (done) {
+      request(server)
+        .get('/comments?id=1&id=2')
+        .expect('Content-Type', /json/)
+        .expect([db.comments[0], db.comments[1]])
+        .expect(200, done)
+    })
+
     it('should support deep filter', function (done) {
       request(server)
         .get('/deep?a.b=1')
         .expect('Content-Type', /json/)
         .expect([db.deep[0]])
+        .expect(200, done)
+    })
+
+    it('should ignore JSONP query parameters callback and _ ', function (done) {
+      request(server)
+        .get('/comments?callback=1&_=1')
+        .expect('Content-Type', /text/)
+        .expect(new RegExp(db.comments[0].body)) // JSONP returns text
         .expect(200, done)
     })
   })

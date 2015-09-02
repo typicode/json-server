@@ -41,9 +41,6 @@ module.exports = function (db, name) {
   // GET /name?_embed=&_expand=
   function list (req, res, next) {
 
-    // Filters list
-    var filters = {}
-
     // Resource chain
     var chain = db(name).chain()
 
@@ -82,23 +79,24 @@ module.exports = function (db, name) {
 
     }
 
-    // Add query parameters filters
-    // Convert query parameters to their native counterparts
-    for (var key in req.query) {
-      // don't take into account JSONP query parameters
+    Object.keys(req.query).forEach(function (key) {
+      // Don't take into account JSONP query parameters
       // jQuery adds a '_' query parameter too
       if (key !== 'callback' && key !== '_') {
-        filters[key] = utils.toNative(req.query[key])
-      }
-    }
+        // Always use an array, in case req.query is an array
+        var arr = [].concat(req.query[key])
 
-    // Filter
-    if (!_(filters).isEmpty()) {
-      for (var f in filters) {
-        // This syntax allow for deep filtering using lodash (i.e. a.b.c[0])
-        chain = chain.filter(f, filters[f])
+        chain = chain.filter(function (element) {
+          return arr
+            .map(utils.toNative)
+            .map(function (value) {
+              return _.matchesProperty(key, value)(element)
+            }).reduce(function (a, b) {
+              return a || b
+            })
+        })
       }
-    }
+    })
 
     // Sort
     if (_sort) {

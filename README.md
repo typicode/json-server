@@ -74,10 +74,11 @@ To filter resources (use `.` to access deep properties)
 
 ```
 GET /posts?title=json-server&author=typicode
+GET /posts?id=1&id=2
 GET /comments?author.name=typicode
 ```
 
-To slice resources, add `_start` and `_end` or `_limit` (an `X-Total-Count` header is included in the response).
+To slice resources, add `_start` and `_end` or `_limit` (an `X-Total-Count` header is included in the response)
 
 ```
 GET /posts?_start=20&_end=30
@@ -92,33 +93,33 @@ GET /posts?_sort=views&_order=DESC
 GET /posts/1/comments?_sort=votes&_order=ASC
 ```
 
-To make a full-text search on resources, add `q`.
+To make a full-text search on resources, add `q`
 
 ```
 GET /posts?q=internet
 ```
 
-To embed resources, add `_embed`.
+To include children resources, add `_embed`
 
 ```
 GET /posts?_embed=comments
 GET /posts/1?_embed=comments
 ```
 
-To expand inner resources, add `_expand`.
+To include parent resource, add `_expand`.
 
 ```
 GET /comments?_expand=post
 GET /comments/1?_expand=post
 ```
 
-Returns database.
+Returns database
 
 ```
 GET /db
 ```
 
-Returns default index file or serves `./public` directory.
+Returns default index file or serves `./public` directory
 
 ```
 GET /

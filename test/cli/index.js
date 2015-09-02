@@ -6,7 +6,9 @@ var request = require('supertest')
 var rmrf = require('rimraf')
 var pkg = require('../../package.json')
 
-request = request('http://localhost:3000')
+var PORT = 3100
+
+request = request('http://localhost:' + PORT)
 
 var tmpDir = path.join(__dirname, '../../tmp')
 var dbFile = path.join(tmpDir, 'db.json')
@@ -14,7 +16,7 @@ var routesFile = path.join(tmpDir, 'routes.json')
 
 function cli (args) {
   var bin = path.join(__dirname, '../..', pkg.bin)
-  return cp.spawn('node', [bin].concat(args), {
+  return cp.spawn('node', [bin, '-p', PORT].concat(args), {
     stdio: 'inherit',
     cwd: __dirname
   })
