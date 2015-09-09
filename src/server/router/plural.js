@@ -90,7 +90,20 @@ module.exports = function (db, name) {
           return arr
             .map(utils.toNative)
             .map(function (value) {
-              return _.matchesProperty(key, value)(element)
+              var isRange = key.indexOf('_lte') !== -1 || key.indexOf('_gte') !== -1
+              if (isRange) {
+                var path = key.replace(/(_lte|_gte)$/, '')
+                var isLowerThan = key.indexOf('_gte') !== -1
+                var elementValue = _.get(element, path)
+
+                if (isLowerThan) {
+                  return value <= elementValue
+                } else {
+                  return value >= elementValue
+                }
+              } else {
+                return _.matchesProperty(key, value)(element)
+              }
             }).reduce(function (a, b) {
               return a || b
             })

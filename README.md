@@ -49,19 +49,18 @@ $ npm install -g json-server
 
 Based on the previous `db.json` file, here are all the default routes. You can also add [other routes](#add-routes) using `--routes`.
 
-Plural resources
+### Plural routes
 
 ```
 GET    /posts
 GET    /posts/1
-GET    /posts/1/comments
 POST   /posts
 PUT    /posts/1
 PATCH  /posts/1
 DELETE /posts/1
 ```
 
-Singular resources
+### Singular routes
 
 ```
 GET    /profile
@@ -70,7 +69,9 @@ PUT    /profile
 PATCH  /profile
 ```
 
-To filter resources (use `.` to access deep properties)
+### Filter
+
+Use `.` to access deep properties
 
 ```
 GET /posts?title=json-server&author=typicode
@@ -78,7 +79,9 @@ GET /posts?id=1&id=2
 GET /comments?author.name=typicode
 ```
 
-To slice resources, add `_start` and `_end` or `_limit` (an `X-Total-Count` header is included in the response)
+### Slice
+
+Add `_start` and `_end` or `_limit` (an `X-Total-Count` header is included in the response)
 
 ```
 GET /posts?_start=20&_end=30
@@ -86,18 +89,32 @@ GET /posts/1/comments?_start=20&_end=30
 GET /posts/1/comments?_start=20&_limit=10
 ```
 
-To sort resources, add `_sort` and `_order` (ascending order by default).
+### Sort
+
+Add `_sort` and `_order` (ascending order by default)
 
 ```
 GET /posts?_sort=views&_order=DESC
 GET /posts/1/comments?_sort=votes&_order=ASC
 ```
 
-To make a full-text search on resources, add `q`
+### Range
+
+Add `_gte` or `_lte`
+
+```
+GET /posts?views_gte=10&views_lte=20
+```
+
+### Full-text search
+
+Add `q`
 
 ```
 GET /posts?q=internet
 ```
+
+### Relationships
 
 To include children resources, add `_embed`
 
@@ -106,18 +123,26 @@ GET /posts?_embed=comments
 GET /posts/1?_embed=comments
 ```
 
-To include parent resource, add `_expand`.
+To include parent resource, add `_expand`
 
 ```
 GET /comments?_expand=post
 GET /comments/1?_expand=post
 ```
 
-Returns database
+To get nested resources (by default one level, [add routes](#add-routes) for more)
+
+```
+GET /posts/1/comments
+```
+
+### Database
 
 ```
 GET /db
 ```
+
+### Homepage
 
 Returns default index file or serves `./public` directory
 

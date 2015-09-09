@@ -216,6 +216,16 @@ describe('Server', function () {
     })
   })
 
+  describe('GET /:resource?attr>=&attr<=', function () {
+    it('should respond with a limited array', function (done) {
+      request(server)
+        .get('/comments?id_gte=2&id_lte=3')
+        .expect('Content-Type', /json/)
+        .expect(db.comments.slice(1, 3))
+        .expect(200, done)
+    })
+  })
+
   describe('GET /:parent/:parentId/:resource', function () {
     it('should respond with json and corresponding nested resources', function (done) {
       request(server)

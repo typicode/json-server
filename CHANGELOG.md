@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.7.28][2015-09-09]
+
+```bash
+# Support range
+GET /products?price_gte=50&price_lte=100
+```
+
 ## [0.7.27][2015-09-02]
 
 ### Added
