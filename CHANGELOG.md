@@ -1,5 +1,18 @@
 # Change Log
 
+## [Unreleased][unreleased]
+
+### Changed
+
+* Automatically ignore unknown query parameters
+
+```bash
+# Before
+GET /products?author=typicode&foo=bar # []
+# After
+GET /products?author=typicode&foo=bar # [{...}, {...}]
+```
+
 ## [0.7.28][2015-09-09]
 
 ```bash

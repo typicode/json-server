@@ -63,6 +63,23 @@ module.exports = function (db, name) {
     delete req.query._embed
     delete req.query._expand
 
+    // Automatically delete query parameters that can't be found
+    // in the database
+    Object.keys(req.query).forEach(function (query) {
+      var arr = db(name).value()
+      for (var i in arr) {
+        if (
+          _.has(arr[i], query) ||
+          query === 'callback' ||
+          query === '_' ||
+          query.indexOf('_lte') !== -1 ||
+          query.indexOf('_gte') !== -1
+        ) return
+      }
+      delete req.query[query]
+    })
+
+
     if (q) {
 
       // Full-text search

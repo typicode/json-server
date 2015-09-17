@@ -118,6 +118,14 @@ describe('Server', function () {
         .expect(new RegExp(db.comments[0].body)) // JSONP returns text
         .expect(200, done)
     })
+
+    it('should ignore unknown query parameters', function (done) {
+      request(server)
+        .get('/comments?foo=1&bar=2')
+        .expect('Content-Type', /json/)
+        .expect(db.comments)
+        .expect(200, done)
+    })
   })
 
   describe('GET /:resource?q=', function () {
