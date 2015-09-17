@@ -79,7 +79,6 @@ module.exports = function (db, name) {
       delete req.query[query]
     })
 
-
     if (q) {
 
       // Full-text search
