@@ -4,6 +4,7 @@ var path = require('path')
 var cp = require('child_process')
 var request = require('supertest')
 var rmrf = require('rimraf')
+var serverReady = require('server-ready')
 var pkg = require('../../package.json')
 
 var PORT = 3100
@@ -44,7 +45,7 @@ describe('cli', function () {
 
     beforeEach(function (done) {
       child = cli([dbFile])
-      setTimeout(done, 1000)
+      serverReady(PORT, done)
     })
 
     it('should support JSON dbFile', function (done) {
@@ -57,7 +58,7 @@ describe('cli', function () {
 
     beforeEach(function (done) {
       child = cli(['fixtures/seed.js'])
-      setTimeout(done, 1000)
+      serverReady(PORT, done)
     })
 
     it('should support JS file', function (done) {
@@ -84,7 +85,7 @@ describe('cli', function () {
 
     beforeEach(function (done) {
       child = cli([dbFile, '-r', routesFile, '-i', '_id'])
-      setTimeout(done, 1000)
+      serverReady(PORT, done)
     })
 
     it('should use routes.json and _id as the identifier', function (done) {
@@ -97,7 +98,7 @@ describe('cli', function () {
 
     beforeEach(function (done) {
       child = cli([dbFile, '-d', 1000])
-      setTimeout(done, 1000)
+      serverReady(PORT, done)
     })
 
     it('should delay response', function (done) {
@@ -117,7 +118,7 @@ describe('cli', function () {
 
       beforeEach(function (done) {
         child = cli(['--watch', dbFile, '-r', routesFile])
-        setTimeout(done, 1000)
+        serverReady(PORT, done)
       })
 
       it('should watch db file', function (done) {

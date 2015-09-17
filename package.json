@@ -29,6 +29,7 @@
     "husky": "^0.6.1",
     "mocha": "^2.2.4",
     "rimraf": "^2.4.1",
+    "server-ready": "^0.2.0",
     "standard": "^3.8.0",
     "supertest": "~0.8.1"
   },
