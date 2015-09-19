@@ -154,12 +154,17 @@ GET /
 
 ### Static file server
 
-You can use JSON Server to serve your HTML, JS and CSS, simply create a `./public` directory.
+You can use JSON Server to serve your HTML, JS and CSS, simply create a `./public` directory
+or use `--static`.
 
 ```bash
 mkdir public
 echo 'hello word' > public/index.html
 json-server db.json
+```
+
+```bash
+json-server db.json --static ./static
 ```
 
 ### Access from anywhere
@@ -233,7 +238,7 @@ var jsonServer = require('json-server')
 var server = jsonServer.create()
 
 // Set default middlewares (logger, static, cors and no-cache)
-server.use(jsonServer.defaults)
+server.use(jsonServer.defaults())
 
 // Returns an Express router
 var router = jsonServer.router('db.json')

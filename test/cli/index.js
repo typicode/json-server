@@ -70,9 +70,9 @@ describe('cli', function () {
   describe('http://jsonplaceholder.typicode.com/db', function () {
 
     beforeEach(function (done) {
-      this.timeout(10000)
       child = cli(['http://jsonplaceholder.typicode.com/db'])
-      setTimeout(done, 9000)
+      this.timeout(10000)
+      serverReady(PORT, done)
     })
 
     it('should support URL file', function (done) {
@@ -107,6 +107,19 @@ describe('cli', function () {
         var end = new Date()
         done(end - start > 1000 ? err : new Error('Request wasn\'t delayed'))
       })
+    })
+
+  })
+
+  describe('db.json -s fixtures/public', function () {
+
+    beforeEach(function (done) {
+      child = cli([dbFile, '-s', 'fixtures/public'])
+      serverReady(PORT, done)
+    })
+
+    it('should serve fixtures/public', function (done) {
+      request.get('/').expect(/Hello/, done)
     })
 
   })

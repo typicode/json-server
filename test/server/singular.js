@@ -19,6 +19,7 @@ describe('Server', function () {
 
     server = jsonServer.create()
     router = jsonServer.router(db)
+    server.use(jsonServer.defaults())
     server.use(router)
   })
 

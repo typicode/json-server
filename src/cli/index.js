@@ -28,6 +28,10 @@ module.exports = function () {
         alias: 'r',
         description: 'Load routes file'
       },
+      static: {
+        alias: 's',
+        description: 'Set static files directory'
+      },
       delay: {
         alias: 'd',
         description: 'Add delay to responses (ms)'

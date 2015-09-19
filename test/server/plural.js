@@ -49,7 +49,7 @@ describe('Server', function () {
 
     server = jsonServer.create()
     router = jsonServer.router(db)
-    server.use(jsonServer.defaults)
+    server.use(jsonServer.defaults())
     server.use(jsonServer.rewriter({
       '/api/': '/',
       '/blog/posts/:id/show': '/posts/:id'

@@ -1,4 +1,5 @@
 var fs = require('fs')
+var path = require('path')
 var chalk = require('chalk')
 var is = require('./utils/is')
 var load = require('./utils/load')
@@ -40,7 +41,16 @@ function createApp (source, object, routes, argv) {
     object
   )
 
-  app.use(jsonServer.defaults)
+  var defaults
+  if (argv.static) {
+    defaults = jsonServer.defaults({
+      static: path.join(process.cwd(), argv.static)
+    })
+  } else {
+    defaults = jsonServer.defaults()
+  }
+
+  app.use(defaults)
 
   if (routes) {
     var rewriter = jsonServer.rewriter(routes)
