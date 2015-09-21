@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased][unreleased]
+## [0.8.0][2015-09-21]
 
 ### Changed
 
