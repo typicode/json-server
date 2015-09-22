@@ -12,7 +12,7 @@ module.exports = function (opts) {
     userDir :
     defaultDir
 
-  opts = opts || { static: staticDir }
+  opts = opts || { static: [staticDir] }
 
   var arr = []
 
@@ -33,7 +33,9 @@ module.exports = function (opts) {
   }
 
   // Serve static files
-  arr.push(express.static(opts.static))
+  opts.static.forEach(function (staticPath) {
+    arr.push(express.static(staticPath))
+  })
 
   // No cache for IE
   // https://support.microsoft.com/en-us/kb/234067

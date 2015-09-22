@@ -44,7 +44,9 @@ function createApp (source, object, routes, argv) {
   var defaults
   if (argv.static) {
     defaults = jsonServer.defaults({
-      static: path.join(process.cwd(), argv.static)
+      static: [].concat(argv.static).map(function (staticPath) {
+        return path.join(process.cwd(), staticPath)
+      })
     })
   } else {
     defaults = jsonServer.defaults()

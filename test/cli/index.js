@@ -124,6 +124,22 @@ describe('cli', function () {
 
   })
 
+  describe('db.json -s fixtures/public -s fixtures/public2', function () {
+
+    beforeEach(function (done) {
+      child = cli([dbFile, '-s', 'fixtures/public', '-s', 'fixtures/public2'])
+      serverReady(PORT, done)
+    })
+
+    it('should serve fixtures/public', function (done) {
+      request.get('/').expect(/Hello/, done)
+    })
+
+    it('should serve fixtures/public2', function (done) {
+      request.get('/styles/').expect(/Hi/, done)
+    })
+  })
+
   // FIXME test fails on OS X and maybe on Windows
   // But manually updating db.json works...
   if (os.platform() === 'linux') {
