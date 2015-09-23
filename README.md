@@ -7,7 +7,7 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
   * [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
   * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
 
-_See also [hotel](https://github.com/typicode/hotel), a simple process manager for developers._
+_See also [hotel](https://github.com/typicode/hotel) :hotel:, a process manager for web developers._
 
 ## Example
 
