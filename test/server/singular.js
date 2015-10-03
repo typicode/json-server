@@ -44,18 +44,18 @@ describe('Server', function () {
   })
 
   describe('PUT /:resource', function () {
-    it('should uptade resource', function (done) {
+    it('should update resource', function (done) {
       var user = { name: 'bar' }
       request(server)
         .put('/user')
         .send(user)
-        .expect(db.user)
+        .expect(user)
         .expect(200, done)
     })
   })
 
   describe('PATCH /:resource', function () {
-    it('should uptade resource', function (done) {
+    it('should update resource', function (done) {
       request(server)
         .patch('/user')
         .send({ name: 'bar' })

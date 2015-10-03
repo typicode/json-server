@@ -215,8 +215,11 @@ module.exports = function (db, name) {
       req.body[key] = utils.toNative(req.body[key])
     }
 
-    var resource = db(name)
-      .updateById(utils.toNative(req.params.id), req.body)
+    var id = utils.toNative(req.params.id)
+
+    var resource = req.method === 'PATCH' ?
+      db(name).updateById(id, req.body) :
+      db(name).replaceById(id, req.body)
 
     if (resource) {
       res.locals.data = resource

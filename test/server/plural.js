@@ -408,17 +408,19 @@ describe('Server', function () {
   })
 
   describe('PUT /:resource/:id', function () {
-    it('should respond with json and update resource', function (done) {
+    it('should respond with json and replace resource', function (done) {
+      var post = {id: 1, booleanValue: true, integerValue: 1}
       request(server)
         .put('/posts/1')
-        .send({id: 1, body: 'bar', booleanValue: 'true', integerValue: '1'})
+        // body property omitted to test that the resource is replaced
+        .send({id: 1, booleanValue: 'true', integerValue: '1'})
         .expect('Content-Type', /json/)
-        .expect({id: 1, body: 'bar', booleanValue: true, integerValue: 1})
+        .expect(post)
         .expect(200)
         .end(function (err, res) {
           if (err) return done(err)
           // assert it was created in database too
-          assert.deepEqual(db.posts[0], {id: 1, body: 'bar', booleanValue: true, integerValue: 1})
+          assert.deepEqual(db.posts[0], post)
           done()
         })
     })

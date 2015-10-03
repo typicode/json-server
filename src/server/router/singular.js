@@ -1,5 +1,4 @@
 var express = require('express')
-var utils = require('../utils')
 
 module.exports = function (db, name) {
 
@@ -11,18 +10,19 @@ module.exports = function (db, name) {
   }
 
   function create (req, res, next) {
-    for (var prop in req.body) {
-      req.body[prop] = utils.toNative(req.body[prop])
-    }
-
     res.locals.data = db.object[name] = req.body
     res.status(201)
     next()
   }
 
   function update (req, res, next) {
+    if (req.method === 'PUT') {
+      delete db.object[name]
+      db.object[name] = {}
+    }
+
     for (var prop in req.body) {
-      db.object[name][prop] = utils.toNative(req.body[prop])
+      db.object[name][prop] = req.body[prop]
     }
 
     res.locals.data = db.object[name]
