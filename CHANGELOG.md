@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.8.1][2015-10-06]
+
+### Fixed
+
+* Fix plural resources: PUT should replace resource instead of updating properties.
+* Fix singular resources: POST, PUT, PATCH should not convert resource properties.
+
 ## [0.8.0][2015-09-21]
 
 ### Changed
