@@ -230,7 +230,7 @@ module.exports = function (db, name) {
 
   // DELETE /name/:id
   function destroy (req, res, next) {
-    db(name).removeById(utils.toNative(req.params.id))
+    var resource = db(name).removeById(utils.toNative(req.params.id))
 
     // Remove dependents documents
     var removable = db._.getRemovable(db.object)
@@ -239,7 +239,10 @@ module.exports = function (db, name) {
       db(item.name).removeById(item.id)
     })
 
-    res.locals.data = {}
+    if (resource) {
+      res.locals.data = {}
+    }
+
     next()
   }
 

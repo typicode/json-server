@@ -474,6 +474,14 @@ describe('Server', function () {
           done()
         })
     })
+
+    it('should respond with 404 if resource is not found', function (done) {
+      request(server)
+        .del('/posts/9001')
+        .expect('Content-Type', /json/)
+        .expect({})
+        .expect(404, done)
+    })
   })
 
   describe('Static routes', function () {
