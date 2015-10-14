@@ -120,7 +120,7 @@ module.exports = function (argv) {
         var filename = 'db-' + Date.now() + '.json'
         var file = path.join(argv.snapshots, filename)
         app.db.saveSync(file)
-        console.log('  Saved snapshot to ' + file + '\n')
+        console.log('  Saved snapshot to ' + path.relative(process.cwd(), file) + '\n')
       }
     })
 
