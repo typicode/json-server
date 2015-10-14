@@ -1,5 +1,15 @@
 # Change Log
 
+## [Unreleased][Unreleased]
+
+### Added
+
+* CLI option `-S/--snapshots` to set a custom snapshots directory.
+
+### Fixed
+
+* Fix plural resources: DELETE should return 404 if resource doesn't exist.
+
 ## [0.8.1][2015-10-06]
 
 ### Fixed

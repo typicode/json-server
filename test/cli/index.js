@@ -2,6 +2,7 @@ var os = require('os')
 var fs = require('fs')
 var path = require('path')
 var cp = require('child_process')
+var assert = require('assert')
 var request = require('supertest')
 var rmrf = require('rimraf')
 var serverReady = require('server-ready')
@@ -18,8 +19,8 @@ var routesFile = path.join(tmpDir, 'routes.json')
 function cli (args) {
   var bin = path.join(__dirname, '../..', pkg.bin)
   return cp.spawn('node', [bin, '-p', PORT].concat(args), {
-    stdio: 'inherit',
-    cwd: __dirname
+    cwd: __dirname,
+    stdio: ['pipe', process.stdout, process.stderr]
   })
 }
 
@@ -30,6 +31,7 @@ describe('cli', function () {
   var child
 
   beforeEach(function () {
+    rmrf.sync(tmpDir)
     fs.mkdirSync(tmpDir)
     fs.writeFileSync(dbFile, JSON.stringify({ posts: [{ 'id': 1, '_id': 2 }] }))
     fs.writeFileSync(routesFile, JSON.stringify({ '/blog/': '/' }))
@@ -111,15 +113,27 @@ describe('cli', function () {
 
   })
 
-  describe('db.json -s fixtures/public', function () {
+  describe('db.json -s fixtures/public -S ../../tmp', function () {
+
+    var snapshotsDir = path.join(tmpDir, 'snapshots')
+    var publicDir = 'fixtures/public'
 
     beforeEach(function (done) {
-      child = cli([dbFile, '-s', 'fixtures/public'])
-      serverReady(PORT, done)
+      fs.mkdirSync(snapshotsDir)
+      child = cli([dbFile, '-s', publicDir, '-S', snapshotsDir])
+      serverReady(PORT, function () {
+        child.stdin.write('s\n')
+        setTimeout(done, 100)
+      })
     })
 
     it('should serve fixtures/public', function (done) {
       request.get('/').expect(/Hello/, done)
+    })
+
+    it('should save a snapshot in ../../tmp', function () {
+      console.log(fs.readdirSync(snapshotsDir), fs.readdirSync(snapshotsDir).length)
+      assert.equal(fs.readdirSync(snapshotsDir).length, 1)
     })
 
   })

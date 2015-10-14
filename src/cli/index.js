@@ -32,6 +32,11 @@ module.exports = function () {
         alias: 's',
         description: 'Set static files directory'
       },
+      snapshots: {
+        alias: 'S',
+        description: 'Set snapshots directory',
+        default: '.'
+      },
       delay: {
         alias: 'd',
         description: 'Add delay to responses (ms)'

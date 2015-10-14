@@ -117,7 +117,8 @@ module.exports = function (argv) {
     process.stdin.setEncoding('utf8')
     process.stdin.on('data', function (chunk) {
       if (chunk.trim().toLowerCase() === 's') {
-        var file = 'db-' + Date.now() + '.json'
+        var filename = 'db-' + Date.now() + '.json'
+        var file = path.join(argv.snapshots, filename)
         app.db.saveSync(file)
         console.log('  Saved snapshot to ' + file + '\n')
       }
