@@ -132,7 +132,6 @@ describe('cli', function () {
     })
 
     it('should save a snapshot in ../../tmp', function () {
-      console.log(fs.readdirSync(snapshotsDir), fs.readdirSync(snapshotsDir).length)
       assert.equal(fs.readdirSync(snapshotsDir).length, 1)
     })
 
