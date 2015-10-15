@@ -3,15 +3,12 @@ var fs = require('fs')
 var path = require('path')
 var cp = require('child_process')
 var assert = require('assert')
-var request = require('supertest')
+var supertest = require('supertest')
 var rmrf = require('rimraf')
 var serverReady = require('server-ready')
 var pkg = require('../../package.json')
 
 var PORT = 3100
-
-request = request('http://localhost:' + PORT)
-
 var tmpDir = path.join(__dirname, '../../tmp')
 var dbFile = path.join(tmpDir, 'db.json')
 var routesFile = path.join(tmpDir, 'routes.json')
@@ -29,18 +26,20 @@ function cli (args) {
 describe('cli', function () {
 
   var child
+  var request
 
   beforeEach(function () {
     rmrf.sync(tmpDir)
     fs.mkdirSync(tmpDir)
     fs.writeFileSync(dbFile, JSON.stringify({ posts: [{ 'id': 1, '_id': 2 }] }))
     fs.writeFileSync(routesFile, JSON.stringify({ '/blog/': '/' }))
+    ++PORT
+    request = supertest('http://localhost:' + PORT)
   })
 
-  afterEach(function (done) {
+  afterEach(function () {
     rmrf.sync(tmpDir)
     child.kill()
-    setTimeout(done, 1000)
   })
 
   describe('db.json', function () {
