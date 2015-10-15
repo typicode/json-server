@@ -74,6 +74,11 @@ module.exports = function (argv) {
   var app
   var server
 
+  if (!fs.existsSync(argv.snapshots)) {
+    console.log('Error: snapshots directory ' + argv.snapshots + ' doesn\'t exist')
+    process.exit(1)
+  }
+
   console.log()
   console.log(chalk.cyan('  \\{^_^}/ hi!'))
 
