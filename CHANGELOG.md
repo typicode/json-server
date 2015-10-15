@@ -8,7 +8,7 @@
 
 ### Fixed
 
-* Fix plural resources: `DELETE` should return 404 if resource doesn't exist.
+* Fix plural resources: `DELETE` should return `404` if resource doesn't exist.
 
 ## [0.8.1][2015-10-06]
 
