@@ -37,9 +37,6 @@ module.exports = function (source) {
   // Expose database
   router.db = db
 
-  // Expose database
-  router.db = db
-
   // Expose render
   router.render = function (req, res) {
     res.jsonp(res.locals.data)
