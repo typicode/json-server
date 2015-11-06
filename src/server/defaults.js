@@ -4,6 +4,7 @@ var express = require('express')
 var logger = require('morgan')
 var cors = require('cors')
 var errorhandler = require('errorhandler')
+var objectAssign = require('object-assign')
 
 module.exports = function (opts) {
   var userDir = path.join(process.cwd(), 'public')
@@ -12,17 +13,19 @@ module.exports = function (opts) {
     userDir :
     defaultDir
 
-  opts = opts || { static: staticDir }
+  opts = objectAssign({ logger: true, static: staticDir }, opts)
 
   var arr = []
 
   // Logger
-  arr.push(logger('dev', {
-    skip: function (req, res) {
-      return process.env.NODE_ENV === 'test' ||
-        req.path === '/favicon.ico'
-    }
-  }))
+  if (opts.logger) {
+    arr.push(logger('dev', {
+      skip: function (req, res) {
+        return process.env.NODE_ENV === 'test' ||
+          req.path === '/favicon.ico'
+      }
+    }))
+  }
 
   // Enable CORS for all the requests, including static files
   arr.push(cors({ origin: true, credentials: true }))
