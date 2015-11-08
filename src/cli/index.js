@@ -45,9 +45,14 @@ module.exports = function () {
         alias: 'i',
         description: 'Set database id property (e.g. _id)',
         default: 'id'
+      },
+      quiet: {
+        alias: 'q',
+        description: 'Suppress log messages from output'
       }
     })
     .boolean('watch')
+    .boolean('quiet')
     .help('help').alias('help', 'h')
     .version(pkg.version).alias('version', 'v')
     .example('$0 db.json', '')

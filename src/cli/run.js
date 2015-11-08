@@ -44,10 +44,13 @@ function createApp (source, object, routes, argv) {
   var defaults
   if (argv.static) {
     defaults = jsonServer.defaults({
+      logger: !argv.quiet,
       static: path.join(process.cwd(), argv.static)
     })
   } else {
-    defaults = jsonServer.defaults()
+    defaults = jsonServer.defaults({
+      logger: !argv.quiet
+    })
   }
 
   app.use(defaults)
@@ -77,6 +80,11 @@ module.exports = function (argv) {
   if (!fs.existsSync(argv.snapshots)) {
     console.log('Error: snapshots directory ' + argv.snapshots + ' doesn\'t exist')
     process.exit(1)
+  }
+
+  // noop log fn
+  if (argv.quiet) {
+    console.log = function () {}
   }
 
   console.log()
