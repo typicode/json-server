@@ -48,7 +48,7 @@ describe('Server', function () {
     ]
 
     db.deepString = [
-      { a: { b: 'one' } },
+      { a: { b: '1111' } },
       { a: '1' }
     ]
 
@@ -118,7 +118,7 @@ describe('Server', function () {
 
     it('should support deep filter with string', function (done) {
       request(server)
-        .get('/deepString?a.b=1')
+        .get('/deepString?a.b=1111')
         .expect('Content-Type', /json/)
         .expect([db.deepString[0]])
         .expect(200, done)
