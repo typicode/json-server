@@ -407,6 +407,17 @@ describe('Server', function () {
       })
   })
 
+  describe('POST /:parent/:parentId/:resource', function () {
+    it('should respond with json and set parentId', function (done) {
+      request(server)
+        .post('/posts/1/comments')
+        .send({body: 'foo'})
+        .expect('Content-Type', /json/)
+        .expect({id: 6, postId: 1, body: 'foo'})
+        .expect(201, done)
+    })
+  })
+
   describe('PUT /:resource/:id', function () {
     it('should respond with json and replace resource', function (done) {
       var post = {id: 1, booleanValue: true, integerValue: 1}

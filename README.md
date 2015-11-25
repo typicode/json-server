@@ -130,10 +130,11 @@ GET /comments?_expand=post
 GET /comments/1?_expand=post
 ```
 
-To get nested resources (by default one level, [add routes](#add-routes) for more)
+To get or create nested resources (by default one level, [add routes](#add-routes) for more)
 
 ```
-GET /posts/1/comments
+GET  /posts/1/comments
+POST /posts/1/comments
 ```
 
 ### Database
