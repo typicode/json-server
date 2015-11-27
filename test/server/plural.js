@@ -47,6 +47,11 @@ describe('Server', function () {
       { a: 1 }
     ]
 
+    db.deepString = [
+      { a: { b: '1111' } },
+      { a: '1' }
+    ]
+
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults())
@@ -108,6 +113,14 @@ describe('Server', function () {
         .get('/deep?a.b=1')
         .expect('Content-Type', /json/)
         .expect([db.deep[0]])
+        .expect(200, done)
+    })
+
+    it('should support deep filter with string', function (done) {
+      request(server)
+        .get('/deepString?a.b=1111')
+        .expect('Content-Type', /json/)
+        .expect([db.deepString[0]])
         .expect(200, done)
     })
 
