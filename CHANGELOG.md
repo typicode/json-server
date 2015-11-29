@@ -6,6 +6,7 @@
 
 * CLI option `-q/--quied`
 * Nested route `POST /posts/1/comments`
+* Not equal operator `GET /posts?id_ne=1`
 
 ## [0.8.2][2015-10-15]
 

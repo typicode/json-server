@@ -98,12 +98,18 @@ GET /posts?_sort=views&_order=DESC
 GET /posts/1/comments?_sort=votes&_order=ASC
 ```
 
-### Range
+### Operators
 
-Add `_gte` or `_lte`
+Add `_gte` or `_lte` for getting a range
 
 ```
 GET /posts?views_gte=10&views_lte=20
+```
+
+Add `_ne` to exclude a value
+
+```
+GET /posts?id_ne=1
 ```
 
 ### Full-text search

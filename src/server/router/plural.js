@@ -73,7 +73,8 @@ module.exports = function (db, name) {
           query === 'callback' ||
           query === '_' ||
           query.indexOf('_lte') !== -1 ||
-          query.indexOf('_gte') !== -1
+          query.indexOf('_gte') !== -1 ||
+          query.indexOf('_ne') !== -1
         ) return
       }
       delete req.query[query]
@@ -106,17 +107,23 @@ module.exports = function (db, name) {
           return arr
             .map(utils.toNative)
             .map(function (value) {
+              var isDifferent = key.indexOf('_ne') !== -1
               var isRange = key.indexOf('_lte') !== -1 || key.indexOf('_gte') !== -1
+              var path = key.replace(/(_lte|_gte|_ne)$/, '')
+              var elementValue
+
               if (isRange) {
-                var path = key.replace(/(_lte|_gte)$/, '')
                 var isLowerThan = key.indexOf('_gte') !== -1
-                var elementValue = _.get(element, path)
+                elementValue = _.get(element, path)
 
                 if (isLowerThan) {
                   return value <= elementValue
                 } else {
                   return value >= elementValue
                 }
+              } else if (isDifferent) {
+                elementValue = _.get(element, path)
+                return value !== elementValue
               } else {
                 return _.matchesProperty(key, value)(element)
               }
