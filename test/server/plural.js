@@ -224,12 +224,22 @@ describe('Server', function () {
     })
   })
 
-  describe('GET /:resource?attr>=&attr<=', function () {
+  describe('GET /:resource?attr_gte=&attr_lte=', function () {
     it('should respond with a limited array', function (done) {
       request(server)
         .get('/comments?id_gte=2&id_lte=3')
         .expect('Content-Type', /json/)
         .expect(db.comments.slice(1, 3))
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource?attr_ne=', function () {
+    it('should respond with a limited array', function (done) {
+      request(server)
+        .get('/comments?id_ne=1')
+        .expect('Content-Type', /json/)
+        .expect(db.comments.slice(1))
         .expect(200, done)
     })
   })
@@ -405,6 +415,17 @@ describe('Server', function () {
             done()
           })
       })
+  })
+
+  describe('POST /:parent/:parentId/:resource', function () {
+    it('should respond with json and set parentId', function (done) {
+      request(server)
+        .post('/posts/1/comments')
+        .send({body: 'foo'})
+        .expect('Content-Type', /json/)
+        .expect({id: 6, postId: 1, body: 'foo'})
+        .expect(201, done)
+    })
   })
 
   describe('PUT /:resource/:id', function () {
