@@ -244,6 +244,19 @@ describe('Server', function () {
     })
   })
 
+  describe('GET /:resource?attr_like=', function () {
+    it('should respond with an array that matches the like operator', function (done) {
+      request(server)
+        .get('/tags?body_like=hoto')
+        .expect('Content-Type', /json/)
+        .expect([
+          db.tags[1],
+          db.tags[2]
+        ])
+        .expect(200, done)
+    })
+  })
+
   describe('GET /:parent/:parentId/:resource', function () {
     it('should respond with json and corresponding nested resources', function (done) {
       request(server)

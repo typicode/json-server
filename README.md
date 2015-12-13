@@ -112,6 +112,12 @@ Add `_ne` to exclude a value
 GET /posts?id_ne=1
 ```
 
+Add `_like` to filter using RegExp
+
+```
+GET /posts?title_like=server
+```
+
 ### Full-text search
 
 Add `q`

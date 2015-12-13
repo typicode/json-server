@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.8.4][2015-12-13]
+
+### Added
+
+* Like operator `GET /posts?title_like=json` (accepts RegExp)
+
 ## [0.8.3][2015-11-25]
 
 ### Added
