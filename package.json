@@ -22,6 +22,7 @@
     "node-uuid": "^1.4.2",
     "object-assign": "^4.0.1",
     "pluralize": "^1.1.2",
+    "server-destroy": "^1.0.1",
     "underscore-db": "^0.9.1",
     "update-notifier": "^0.5.0",
     "yargs": "^3.10.0"

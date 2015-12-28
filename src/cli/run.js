@@ -1,6 +1,7 @@
 var fs = require('fs')
 var path = require('path')
 var chalk = require('chalk')
+var enableDestroy = require('server-destroy')
 var is = require('./utils/is')
 var load = require('./utils/load')
 var watch = require('./watch')
@@ -111,6 +112,9 @@ module.exports = function (argv) {
       app = createApp(source, data, routes, argv)
       server = app.listen(argv.port, argv.host)
 
+      // Enhance with a destroy function
+      enableDestroy(server)
+
       // Display server informations
       prettyPrint(argv, data, routes)
 
@@ -143,7 +147,7 @@ module.exports = function (argv) {
       console.log()
       watch(argv, function (file) {
         console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
-        server && server.close()
+        server && server.destroy()
         start()
       })
     }
