@@ -3,6 +3,7 @@ var path = require('path')
 var express = require('express')
 var logger = require('morgan')
 var cors = require('cors')
+var compression = require('compression')
 var errorhandler = require('errorhandler')
 var objectAssign = require('object-assign')
 
@@ -16,6 +17,9 @@ module.exports = function (opts) {
   opts = objectAssign({ logger: true, static: staticDir }, opts)
 
   var arr = []
+
+  // Compress all requests
+  arr.push(compression())
 
   // Logger
   if (opts.logger) {

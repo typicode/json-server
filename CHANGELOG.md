@@ -1,5 +1,11 @@
 # Change Log
 
+## [unreleased][unreleased]
+
+## Added
+
+* Add `gzip` compression to improve performances
+
 ## [0.8.6][2015-01-07]
 
 ### Added

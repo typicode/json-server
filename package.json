@@ -10,6 +10,7 @@
   "dependencies": {
     "body-parser": "^1.8.1",
     "chalk": "^0.4.0",
+    "compression": "^1.6.0",
     "connect-pause": "^0.1.0",
     "cors": "^2.3.0",
     "errorhandler": "^1.2.0",
