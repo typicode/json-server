@@ -32,6 +32,10 @@ module.exports = function () {
         alias: 's',
         description: 'Set static files directory'
       },
+      'read-only': {
+        alias: 'ro',
+        description: 'Allow only GET requests'
+      },
       snapshots: {
         alias: 'S',
         description: 'Set snapshots directory',
@@ -52,6 +56,7 @@ module.exports = function () {
       }
     })
     .boolean('watch')
+    .boolean('read-only')
     .boolean('quiet')
     .help('help').alias('help', 'h')
     .version(pkg.version).alias('version', 'v')
@@ -63,5 +68,4 @@ module.exports = function () {
     .argv
 
   run(argv)
-
 }

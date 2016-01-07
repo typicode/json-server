@@ -82,15 +82,19 @@ describe('cli', function () {
 
   })
 
-  describe('db.json -r routes.json -i _id', function () {
+  describe('db.json -r routes.json -i _id --read-only', function () {
 
     beforeEach(function (done) {
-      child = cli([dbFile, '-r', routesFile, '-i', '_id'])
+      child = cli([dbFile, '-r', routesFile, '-i', '_id', '--read-only'])
       serverReady(PORT, done)
     })
 
     it('should use routes.json and _id as the identifier', function (done) {
       request.get('/blog/posts/2').expect(200, done)
+    })
+
+    it('should allow only GET requests', function (done) {
+      request.post('/blog/posts').expect(403, done)
     })
 
   })

@@ -42,18 +42,16 @@ function createApp (source, object, routes, argv) {
     object
   )
 
-  var defaults
-  if (argv.static) {
-    defaults = jsonServer.defaults({
-      logger: !argv.quiet,
-      static: path.join(process.cwd(), argv.static)
-    })
-  } else {
-    defaults = jsonServer.defaults({
-      logger: !argv.quiet
-    })
+  var defaultsOpts = {
+    logger: !argv.quiet,
+    readOnly: argv.readOnly
   }
 
+  if (argv.static) {
+    defaultsOpts.static = path.join(process.cwd(), argv.static)
+  }
+
+  var defaults = jsonServer.defaults(defaultsOpts)
   app.use(defaults)
 
   if (routes) {

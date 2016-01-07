@@ -47,5 +47,16 @@ module.exports = function (opts) {
     next()
   })
 
+  // Read-only
+  if (opts.readOnly) {
+    arr.push(function (req, res, next) {
+      if (req.method === 'GET') {
+        next() // Continue
+      } else {
+        res.sendStatus(403) // Forbidden
+      }
+    })
+  }
+
   return arr
 }

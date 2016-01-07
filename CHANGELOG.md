@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.8.6][2015-01-07]
+
+### Added
+
+* CLI option `-ro/--read-only` to allow only GET requests
+
 ## [0.8.5][2015-12-28]
 
 ### Fixed
@@ -16,7 +22,7 @@
 
 ### Added
 
-* CLI option `-q/--quied`
+* CLI option `-q/--quiet`
 * Nested route `POST /posts/1/comments`
 * Not equal operator `GET /posts?id_ne=1`
 
