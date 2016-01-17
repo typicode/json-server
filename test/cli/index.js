@@ -53,6 +53,15 @@ describe('cli', function () {
       request.get('/posts').expect(200, done)
     })
 
+    it('should send CORS headers', function (done) {
+      var origin = 'http://example.com'
+
+      request.get('/posts')
+        .set('Origin', origin)
+        .expect('access-control-allow-origin', origin)
+        .expect(200, done)
+    })
+
   })
 
   describe('seed.js', function () {
@@ -136,6 +145,33 @@ describe('cli', function () {
 
     it('should save a snapshot in ../../tmp', function () {
       assert.equal(fs.readdirSync(snapshotsDir).length, 1)
+    })
+
+  })
+
+  describe('db.json --no-cors=true', function () {
+
+    beforeEach(function (done) {
+      child = cli(['fixtures/seed.js', '--no-cors=true'])
+      serverReady(PORT, done)
+    })
+
+    it('should not send Access-Control-Allow-Origin headers', function (done) {
+      var origin = 'http://example.com'
+
+      request.get('/posts')
+        .set('Origin', origin)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) {
+            done(err)
+            return
+          } else if ('access-control-allow-origin' in res.headers) {
+            done(new Error('CORS headers were not excluded from response'))
+          } else {
+            done()
+          }
+        })
     })
 
   })
