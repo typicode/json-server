@@ -36,6 +36,10 @@ module.exports = function () {
         alias: 'ro',
         description: 'Allow only GET requests'
       },
+      'no-cors': {
+        alias: 'nc',
+        description: 'Disable Cross-Origin Resource Sharing'
+      },
       snapshots: {
         alias: 'S',
         description: 'Set snapshots directory',
@@ -58,6 +62,7 @@ module.exports = function () {
     .boolean('watch')
     .boolean('read-only')
     .boolean('quiet')
+    .boolean('no-cors')
     .help('help').alias('help', 'h')
     .version(pkg.version).alias('version', 'v')
     .example('$0 db.json', '')
