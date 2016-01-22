@@ -1,12 +1,13 @@
 # Change Log
 
-## [unreleased][unreleased]
+## [0.8.7][2016-01-22]
 
 ## Added
 
-* Add `gzip` compression to improve performances
+* `gzip` compression to improve performances
+* CLI option `-nc/--no-cors` to disable CORS
 
-## [0.8.6][2015-01-07]
+## [0.8.6][2016-01-07]
 
 ### Added
 
