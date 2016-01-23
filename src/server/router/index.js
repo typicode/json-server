@@ -50,8 +50,6 @@ module.exports = function (source) {
 
   router.get('/db', showDatabase)
 
-  router.use(nested())
-
   // Create routes
   for (var prop in db.object) {
     var val = db.object[prop]
@@ -73,6 +71,8 @@ module.exports = function (source) {
 
     throw new Error(msg)
   }
+  
+  router.use(nested())
 
   router.use(function (req, res) {
     if (!res.locals.data) {
