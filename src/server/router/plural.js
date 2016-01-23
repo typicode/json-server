@@ -205,8 +205,8 @@ module.exports = function (db, name) {
 
   // POST /name
   function create (req, res, next) {
-    if(!req.body){req.body = {};}
-    _.extend(req.body, req.query);
+    if (!req.body) {req.body = {}}
+    _.extend(req.body, req.query)
     console.log('blabla')
     for (var key in req.body) {
       req.body[key] = utils.toNative(req.body[key])
@@ -223,8 +223,8 @@ module.exports = function (db, name) {
   // PUT /name/:id
   // PATCH /name/:id
   function update (req, res, next) {
-    if(!req.body){req.body = {};}
-    _.extend(req.body, req.query);
+    if (!req.body) {req.body = {}}
+    _.extend(req.body, req.query)
 
     for (var key in req.body) {
       req.body[key] = utils.toNative(req.body[key])
@@ -268,9 +268,9 @@ module.exports = function (db, name) {
   router.route('/create')
     .get(create)
 
-  router.route("/update/:id").get(update)
-  router.route("/put/:id").get(update)
-  router.route("/destroy/:id").get(destroy)
+  router.route('/update/:id').get(update)
+  router.route('/put/:id').get(update)
+  router.route('/destroy/:id').get(destroy)
 
   router.route('/:id')
     .get(show)

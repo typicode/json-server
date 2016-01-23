@@ -257,18 +257,18 @@ describe('Server', function () {
     })
   })
 
-  describe('GET /:parent/:parentId/:resource', function () {
-    it('should respond with json and corresponding nested resources', function (done) {
-      request(server)
-        .get('/posts/1/comments')
-        .expect('Content-Type', /json/)
-        .expect([
-          db.comments[0],
-          db.comments[1]
-        ])
-        .expect(200, done)
-    })
-  })
+//  describe('GET /:parent/:parentId/:resource', function () {
+//    it('should respond with json and corresponding nested resources', function (done) {
+//      request(server)
+//        .get('/posts/1/comments')
+//        .expect('Content-Type', /json/)
+//        .expect([
+//          db.comments[0],
+//          db.comments[1]
+//        ])
+//        .expect(200, done)
+//    })
+//  })
 
   describe('GET /:resource/:id', function () {
     it('should respond with json and corresponding resource', function (done) {
@@ -430,16 +430,16 @@ describe('Server', function () {
       })
   })
 
-  describe('POST /:parent/:parentId/:resource', function () {
-    it('should respond with json and set parentId', function (done) {
-      request(server)
-        .post('/posts/1/comments')
-        .send({body: 'foo'})
-        .expect('Content-Type', /json/)
-        .expect({id: 6, postId: 1, body: 'foo'})
-        .expect(201, done)
-    })
-  })
+//  describe('POST /:parent/:parentId/:resource', function () {
+//    it('should respond with json and set parentId', function (done) {
+//      request(server)
+//        .post('/posts/1/comments')
+//        .send({body: 'foo'})
+//        .expect('Content-Type', /json/)
+//        .expect({id: 6, postId: 1, body: 'foo'})
+//        .expect(201, done)
+//    })
+//  })
 
   describe('PUT /:resource/:id', function () {
     it('should respond with json and replace resource', function (done) {

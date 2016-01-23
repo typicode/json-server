@@ -71,7 +71,7 @@ module.exports = function (source) {
 
     throw new Error(msg)
   }
-  
+
   router.use(nested())
 
   router.use(function (req, res) {
