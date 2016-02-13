@@ -5,11 +5,11 @@ module.exports = {
 }
 
 function isJSON (s) {
-  return /\.json$/.test(s)
+  return !isURL(s) && /\.json$/.test(s)
 }
 
 function isJS (s) {
-  return /\.js$/.test(s)
+  return !isURL(s) && /\.js$/.test(s)
 }
 
 function isURL (s) {
