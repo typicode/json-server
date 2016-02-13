@@ -16,7 +16,13 @@ module.exports = function (source, cb) {
 
     var filename = path.resolve(source)
     delete require.cache[filename]
-    data = require(filename)()
+    var dataFn = require(filename)
+
+    if (typeof dataFn !== 'function') {
+      throw new Error('The database is a JavaScript file but the export is not a function.')
+    }
+
+    data = dataFn()
     cb(null, data)
 
   } else if (is.JSON(source)) {
