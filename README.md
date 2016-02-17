@@ -37,7 +37,11 @@ Now if you go to [http://localhost:3000/posts/1](), you'll get
 { "id": 1, "title": "json-server", "author": "typicode" }
 ```
 
-Also, if you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
+Also when doing requests, its good to know that
+- If you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
+- Your request body JSON should be object enclosed, just like the GET output. (for example `{"name": "Foobar"}`)
+- Id values are not mutable. Any `id` value in the body of your PUT or PATCH request wil be ignored. Only a value set in a POST request wil be respected, but only if not already taken.
+- A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it wil result in a 200 OK but without changes being made to the data.
 
 ## Install
 
