@@ -184,6 +184,14 @@ json-server db.json
 json-server db.json --static ./static
 ```
 
+### Alternative port
+
+You can start JSON Server on other ports with the `--port` flag:
+
+```bash
+$ json-server --watch db.json --port 3004
+```
+
 ### Access from anywhere
 
 You can access your fake API from anywhere using CORS and JSONP.
