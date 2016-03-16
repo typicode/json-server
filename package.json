@@ -26,7 +26,7 @@
     "server-destroy": "^1.0.1",
     "underscore-db": "^0.9.1",
     "update-notifier": "^0.5.0",
-    "yargs": "^3.10.0"
+    "yargs": "^4.2.0"
   },
   "devDependencies": {
     "husky": "^0.6.1",

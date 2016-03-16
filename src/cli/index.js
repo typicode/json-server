@@ -8,6 +8,7 @@ module.exports = function () {
   updateNotifier({ pkg: pkg }).notify()
 
   var argv = yargs
+    .config('config')
     .usage('$0 [options] <source>')
     .options({
       port: {
@@ -26,7 +27,7 @@ module.exports = function () {
       },
       routes: {
         alias: 'r',
-        description: 'Load routes file'
+        description: 'Path to routes file'
       },
       static: {
         alias: 's',
@@ -57,6 +58,11 @@ module.exports = function () {
       quiet: {
         alias: 'q',
         description: 'Suppress log messages from output'
+      },
+      config: {
+        alias: 'c',
+        description: 'Path to config file',
+        default: 'json-server.json'
       }
     })
     .boolean('watch')
