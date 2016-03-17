@@ -29,7 +29,7 @@
     "yargs": "^4.2.0"
   },
   "devDependencies": {
-    "husky": "^0.6.1",
+    "husky": "^0.11.4",
     "mocha": "^2.2.4",
     "rimraf": "^2.4.1",
     "server-ready": "^0.2.0",
