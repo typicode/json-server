@@ -252,6 +252,41 @@ Now you can access resources using additional routes.
 /blog/posts/1/show
 ```
 
+### CLI usage
+
+```
+json-server [options] <source>
+
+Options:
+  --config, -c       Path to config file          [default: "json-server.json"]
+  --port, -p         Set port                                   [default: 3000]
+  --host, -H         Set host                              [default: "0.0.0.0"]
+  --watch, -w        Watch file(s)                                    [boolean]
+  --routes, -r       Path to routes file
+  --static, -s       Set static files directory
+  --read-only, --ro  Allow only GET requests                          [boolean]
+  --no-cors, --nc    Disable Cross-Origin Resource Sharing            [boolean]
+  --snapshots, -S    Set snapshots directory                     [default: "."]
+  --delay, -d        Add delay to responses (ms)
+  --id, -i           Set database id property (e.g. _id)        [default: "id"]
+  --quiet, -q        Suppress log messages from output                [boolean]
+  --help, -h         Show help                                        [boolean]
+  --version, -v      Show version number                              [boolean]
+
+Examples:
+  bin db.json
+  bin file.js
+  bin http://example.com/db.json
+```
+
+You can also set options in a `json-server.json` configuration file.
+
+```json
+{
+  "port": 3000
+}
+```
+
 ### Module
 
 If you need to add authentication, validation, you can use the project as a module in combination with other Express middlewares.

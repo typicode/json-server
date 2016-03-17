@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.8.9][2016-03-17]
+
+* CLI can now read options from `json-server.json` if present
+* CLI option `-c/--config` to point to a different configuration file
+
 ## [0.8.8][2016-02-13]
 
 ### Fixed
