@@ -47,6 +47,30 @@ describe('Server', function () {
       { a: 1 }
     ]
 
+    db.cities = [
+      {
+        'id': 1,
+        'city': 'Jeogiwe Dal',
+        'lat': -28.12785,
+        'lon': -145.96895,
+        'geohash': 344516337195371
+      },
+      {
+        'id': 2,
+        'city': 'Longhtert',
+        'lat': 5.0003,
+        'lon': -34.456,
+        'geohash': 1833928480959892
+      },
+      {
+        'id': 3,
+        'city': 'Noerum Dal',
+        'lat': 5.0313,
+        'lon': -34.455,
+        'geohash': 1833929224853848
+      }
+    ]
+
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults())
@@ -415,6 +439,21 @@ describe('Server', function () {
           })
       })
 
+    it('should respond with json, create a resource and geohash',
+      function (done) {
+        request(server)
+          .post('/cities')
+          .send({'id': 4, 'lat': 10, 'lon': 10})
+          .expect('Content-Type', /json/)
+          .expect({'id': 4, 'lat': 10, 'lon': 10, 'geohash': 3386360489042046})
+          .expect(201)
+          .end(function (err, res) {
+            if (err) return done(err)
+            assert.equal(db.cities.length, 4)
+            done()
+          })
+      })
+
     it('should respond with json, create a resource and generate string id',
       function (done) {
         request(server)
@@ -459,6 +498,36 @@ describe('Server', function () {
         })
     })
 
+    it('should respond with json, replace lat and recalculate geohash',
+      function (done) {
+        var city = {
+          'id': 1,
+          'city': 'Jeogiwe Dal',
+          'lat': -20.0,
+          'lon': -145.96895
+        }
+        var updatedCity = {
+          'id': 1,
+          'city': 'Jeogiwe Dal',
+          'lat': -20.0,
+          'lon': -145.96895,
+          'geohash': 396187746229295
+        }
+
+        request(server)
+          .put('/cities/1')
+          .send(city)
+          .expect('Content-Type', /json/)
+          .expect(updatedCity)
+          .expect(200)
+          .end(function (err, res) {
+            if (err) return done(err)
+            // assert it was created in database too
+            assert.deepEqual(db.cities[0], updatedCity)
+            done()
+          })
+      })
+
     it('should respond with 404 if resource is not found', function (done) {
       request(server)
         .put('/posts/9001')
@@ -484,6 +553,30 @@ describe('Server', function () {
           done()
         })
     })
+
+    it('should respond with json and update property and recalculate geohash',
+      function (done) {
+        var updatedCity = {
+          'id': 1,
+          'city': 'Jeogiwe Dal',
+          'lat': -20.0,
+          'lon': -145.96895,
+          'geohash': 396187746229295
+        }
+
+        request(server)
+          .patch('/cities/1')
+          .send({lat: -20.0})
+          .expect('Content-Type', /json/)
+          .expect(updatedCity)
+          .expect(200)
+          .end(function (err, res) {
+            if (err) return done(err)
+            // assert it was created in database too
+            assert.deepEqual(db.cities[0], updatedCity)
+            done()
+          })
+      })
 
     it('should respond with 404 if resource is not found', function (done) {
       request(server)
@@ -618,4 +711,47 @@ describe('Server', function () {
     })
 
   })
+
+  describe('GET /:resource?near=&distance=', function () {
+    it('should respond with json and make near by search', function (done) {
+      request(server)
+        .get('/cities?near=5.0003,-34.456&distance=5000')
+        .expect('Content-Type', /json/)
+        .expect([db.cities[1], db.cities[2]])
+        .expect(200, done)
+    })
+
+    it('should return an empty array when nothing is matched', function (done) {
+      request(server)
+        .get('/cities?near=0,0&distance=5000')
+        .expect('Content-Type', /json/)
+        .expect([])
+        .expect(200, done)
+    })
+
+    it('should support other query parameters', function (done) {
+      request(server)
+        .get('/cities?near=5.0003,-34.456&distance=5000&q=dal')
+        .expect('Content-Type', /json/)
+        .expect([db.cities[2]])
+        .expect(200, done)
+    })
+
+    it('should ignore near search if distance parameter is missing', function (done) {
+      request(server)
+        .get('/cities?near=5.0003,-34.456&q=dal')
+        .expect('Content-Type', /json/)
+        .expect([db.cities[0], db.cities[2]])
+        .expect(200, done)
+    })
+
+    it('should ignore near search if near parameter is missing', function (done) {
+      request(server)
+        .get('/cities?distance=50000&q=dal')
+        .expect('Content-Type', /json/)
+        .expect([db.cities[0], db.cities[2]])
+        .expect(200, done)
+    })
+  })
+
 })

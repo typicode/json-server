@@ -65,6 +65,9 @@ function createApp (source, object, routes, argv) {
   }
 
   router.db._.id = argv.id
+  router.db._.geohash = argv.geohash || 'geohash'
+  router.db._.lat = argv.lat || 'lat'
+  router.db._.lon = argv.lon || 'lon'
   app.db = router.db
   app.use(router)
 
