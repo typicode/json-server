@@ -176,6 +176,60 @@ describe('cli', function () {
 
   })
 
+  describe('db.json --no-gzip=true', function () {
+
+    beforeEach(function (done) {
+      child = cli(['fixtures/seed.js', '--no-gzip=true'])
+      serverReady(PORT, done)
+    })
+
+    it('should not set Content-Encoding to gzip', function (done) {
+      var origin = 'http://example.com'
+
+      request.get('/posts')
+        .set('Origin', origin)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) {
+            done(err)
+            return
+          } else if ('content-encoding' in res.headers) {
+            done(new Error('Content-Encoding is set to gzip'))
+          } else {
+            done()
+          }
+        })
+    })
+
+  })
+
+  describe('db.json --no-gzip=false', function () {
+
+    beforeEach(function (done) {
+      child = cli(['fixtures/seed.js', '--no-gzip=false'])
+      serverReady(PORT, done)
+    })
+
+    it('should set Content-Encoding to gzip', function (done) {
+      var origin = 'http://example.com'
+
+      request.get('/posts')
+        .set('Origin', origin)
+        .expect(200)
+        .end(function (err, res) {
+          if (err) {
+            done(err)
+            return
+          } else if ('content-encoding' in res.headers) {
+            done()
+          } else {
+            done(new Error('Content-Encoding is not set to gzip'))
+          }
+        })
+    })
+
+  })
+
   // FIXME test fails on OS X and maybe on Windows
   // But manually updating db.json works...
   if (os.platform() === 'linux') {

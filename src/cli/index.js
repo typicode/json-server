@@ -41,6 +41,10 @@ module.exports = function () {
         alias: 'nc',
         description: 'Disable Cross-Origin Resource Sharing'
       },
+      'no-gzip': {
+        alias: 'ng',
+        description: 'Disable GZIP Content-Encoding'
+      },
       snapshots: {
         alias: 'S',
         description: 'Set snapshots directory',
@@ -69,6 +73,7 @@ module.exports = function () {
     .boolean('read-only')
     .boolean('quiet')
     .boolean('no-cors')
+    .boolean('no-gzip')
     .help('help').alias('help', 'h')
     .version(pkg.version).alias('version', 'v')
     .example('$0 db.json', '')
