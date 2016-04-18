@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.8.10][Unreleased]
+
+### Added 
+
+* CLI option `-ng/--no-gzip` to disable `gzip` compression
+
 ## [0.8.9][2016-03-17]
 
 * CLI can now read options from `json-server.json` if present
@@ -13,7 +19,7 @@
 
 ## [0.8.7][2016-01-22]
 
-## Added
+### Added
 
 * `gzip` compression to improve performances
 * CLI option `-nc/--no-cors` to disable CORS
