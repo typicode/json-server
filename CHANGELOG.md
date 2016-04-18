@@ -1,8 +1,8 @@
 # Change Log
 
-## [0.8.10][Unreleased]
+## [0.8.10][2016-04-18]
 
-### Added 
+### Added
 
 * CLI option `-ng/--no-gzip` to disable `gzip` compression
 
