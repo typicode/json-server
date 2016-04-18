@@ -19,7 +19,9 @@ module.exports = function (opts) {
   var arr = []
 
   // Compress all requests
-  arr.push(compression())
+  if (!opts.noGzip) {
+    arr.push(compression())
+  }
 
   // Logger
   if (opts.logger) {

@@ -45,7 +45,8 @@ function createApp (source, object, routes, argv) {
   var defaultsOpts = {
     logger: !argv.quiet,
     readOnly: argv.readOnly,
-    noCors: argv.noCors
+    noCors: argv.noCors,
+    noGzip: argv.noGzip
   }
 
   if (argv.static) {

@@ -268,6 +268,7 @@ Options:
   --static, -s       Set static files directory
   --read-only, --ro  Allow only GET requests                          [boolean]
   --no-cors, --nc    Disable Cross-Origin Resource Sharing            [boolean]
+  --no-gzip, --ng    Disable GZIP Content-Encoding                    [boolean]
   --snapshots, -S    Set snapshots directory                     [default: "."]
   --delay, -d        Add delay to responses (ms)
   --id, -i           Set database id property (e.g. _id)        [default: "id"]
