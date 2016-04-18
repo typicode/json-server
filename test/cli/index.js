@@ -164,8 +164,7 @@ describe('cli', function () {
         .expect(200)
         .end(function (err, res) {
           if (err) {
-            done(err)
-            return
+            return done(err)
           } else if ('access-control-allow-origin' in res.headers) {
             done(new Error('CORS headers were not excluded from response'))
           } else {
@@ -191,8 +190,7 @@ describe('cli', function () {
         .expect(200)
         .end(function (err, res) {
           if (err) {
-            done(err)
-            return
+            return done(err)
           } else if ('content-encoding' in res.headers) {
             done(new Error('Content-Encoding is set to gzip'))
           } else {
@@ -218,8 +216,7 @@ describe('cli', function () {
         .expect(200)
         .end(function (err, res) {
           if (err) {
-            done(err)
-            return
+            return done(err)
           } else if ('content-encoding' in res.headers) {
             done()
           } else {

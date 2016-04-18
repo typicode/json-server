@@ -1,3 +1,4 @@
+// Need some fake data for the gzip test to work
 module.exports = function () {
   return { posts: [
     {
