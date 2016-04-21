@@ -292,31 +292,62 @@ You can also set options in a `json-server.json` configuration file.
 
 ### Module
 
-If you need to add authentication, validation, you can use the project as a module in combination with other Express middlewares.
+If you need to add authentication, validation, or __any behavior__, you can use the project as a module in combination with other Express middlewares.
 
-```javascript
+__Simple example__
+
+```js
 var jsonServer = require('json-server')
-
-// Returns an Express server
 var server = jsonServer.create()
-
-// Set default middlewares (logger, static, cors and no-cache)
-server.use(jsonServer.defaults())
-
-// Add custom routes
-// server.get('/custom', function (req, res) { res.json({ msg: 'hello' }) })
-
-// Returns an Express router
 var router = jsonServer.router('db.json')
-server.use(router)
+var middlewares = jsonServer.defaults()
 
-server.listen(3000)
+server.use(middlewares)
+server.use(router)
+server.listen(3000, function () {
+  console.log('JSON Server is running')
+})
 ```
 
 For an in-memory database, you can pass an object to `jsonServer.router()`.
 Please note also that `jsonServer.router()` can be used in existing Express projects.
 
-To modify responses, use `router.render()`:
+__Custom routes example__
+
+Let's say you want a route that echoes query parameters and another one that set a timestamp on every resource created.
+
+```js
+var jsonServer = require('json-server')
+var server = jsonServer.create()
+var router = jsonServer.router('db.json')
+var middlewares = jsonServer.defaults()
+
+// Set default middlewares (logger, static, cors and no-cache)
+server.use(middlewares)
+
+// Add custom routes before JSON Server router
+server.get('/echo', function (req, res) {
+  res.jsonp(req.query)
+})
+
+server.use(function (req, res, next) {
+  if (req.method === 'POST') {
+    req.body.createdAt = Date.now()
+  }
+  // Continue to JSON Server router
+  next()
+})
+
+// Use default router
+server.use(router)
+server.listen(3000, function () {
+  console.log('JSON Server is running')
+})
+```
+
+__Custom output example__
+
+To modify responses, overwrite `router.render` method:
 
 ```javascript
 // In this example, returned resources will be wrapped in a body property
@@ -326,6 +357,8 @@ router.render = function (req, res) {
   })
 }
 ```
+
+__Rewriter example__
 
 To add rewrite rules, use `jsonServer.rewriter()`:
 
@@ -337,7 +370,9 @@ server.use(jsonServer.rewriter({
 }))
 ```
 
-Alternatively, you can also mount the router on another path.
+__Mounting JSON Server on another endpoint example__
+
+Alternatively, you can also mount the router on `/api`.
 
 ```javascript
 server.use('/api', router)
