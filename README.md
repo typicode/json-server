@@ -297,6 +297,7 @@ If you need to add authentication, validation, or __any behavior__, you can use 
 __Simple example__
 
 ```js
+// server.js
 var jsonServer = require('json-server')
 var server = jsonServer.create()
 var router = jsonServer.router('db.json')
@@ -307,6 +308,10 @@ server.use(router)
 server.listen(3000, function () {
   console.log('JSON Server is running')
 })
+```
+
+```sh
+$ node server.js
 ```
 
 For an in-memory database, you can pass an object to `jsonServer.router()`.
