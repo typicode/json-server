@@ -231,7 +231,7 @@ __Tip__ use modules like [faker](https://github.com/Marak/faker.js), [casual](ht
 
 ### Add routes
 
-Create a `routes.json` file.
+Create a `routes.json` file. Pay attention to start every route with /.
 
 ```json
 {
