@@ -34,6 +34,11 @@ module.exports = function (source) {
   // Add specific mixins
   db._.mixin(mixins)
 
+  // Defualt near properties
+  db._.lat = 'lat'
+  db._.lon = 'lon'
+  db._.geohash = 'geohash'
+
   // Expose database
   router.db = db
 

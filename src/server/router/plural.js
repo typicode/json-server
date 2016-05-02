@@ -35,6 +35,7 @@ module.exports = function (db, name) {
 
   // GET /name
   // GET /name?q=
+  // GET /name?near=lat,lon&distance=
   // GET /name?attr=&attr=
   // GET /name?_end=&
   // GET /name?_start=&_end=&
@@ -47,6 +48,8 @@ module.exports = function (db, name) {
     // Remove q, _start, _end, ... from req.query to avoid filtering using those
     // parameters
     var q = req.query.q
+    var near = req.query.near
+    var distance = req.query.distance
     var _start = req.query._start
     var _end = req.query._end
     var _sort = req.query._sort
@@ -55,6 +58,8 @@ module.exports = function (db, name) {
     var _embed = req.query._embed
     var _expand = req.query._expand
     delete req.query.q
+    delete req.query.near
+    delete req.query.distance
     delete req.query._start
     delete req.query._end
     delete req.query._sort
@@ -95,6 +100,21 @@ module.exports = function (db, name) {
         }
       })
 
+    }
+
+    // nearBy query
+    if (near && distance) {
+      var latLong = near.split(',').map(function (val) {
+        return parseFloat(val)
+      })
+      if (
+        latLong.length === 2
+        && !isNaN(latLong[0])
+        && !isNaN(latLong[1])
+        && !isNaN(distance)
+      ) {
+        chain = chain.nearBy(latLong[0], latLong[1], distance)
+      }
     }
 
     Object.keys(req.query).forEach(function (key) {
@@ -209,6 +229,12 @@ module.exports = function (db, name) {
       req.body[key] = utils.toNative(req.body[key])
     }
 
+    // check if it has location data then create geohash
+    if (req.body[db._.lat] && req.body[db._.lon]) {
+      req.body[db._.geohash] = db._.calGeohash(
+        req.body[db._.lat], req.body[db._.lon])
+    }
+
     var resource = db(name)
       .insert(req.body)
 
@@ -225,6 +251,14 @@ module.exports = function (db, name) {
     }
 
     var id = utils.toNative(req.params.id)
+
+    // check if it has location data then create geohash
+    if (req.body[db._.lat] || req.body[db._.lon]) {
+      var old = db(name).getById(id)
+      var lat = req.body[db._.lat] || old.lat
+      var lon = req.body[db._.lon] || old.lon
+      req.body[db._.geohash] = db._.calGeohash(lat, lon)
+    }
 
     var resource = req.method === 'PATCH' ?
       db(name).updateById(id, req.body) :

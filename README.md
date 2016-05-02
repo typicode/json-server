@@ -132,6 +132,60 @@ Add `q`
 GET /posts?q=internet
 ```
 
+### Near by search
+
+Add `near` and `distance`
+
+```
+GET /cities?near=lat,lon&distance=meters
+```
+
+Add `cities` in db.json 
+
+```json
+{
+  "posts": [
+    { "id": 1, "title": "json-server", "author": "typicode" }
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postId": 1 }
+  ],
+  "profile": { "name": "typicode" },
+  "cities": []
+}
+```
+
+start posting your cities
+```
+POST /cities
+```
+with data 
+```json
+{
+  "id": 1,
+  "city": "Jeogiwe",
+  "lat": -28.12785,
+  "lon": -145.96895
+}
+```
+to search
+```
+GET /cities?near=-28.12785,-145.96895&distance=5000
+```
+output is
+```json
+[
+  {
+    "id": 1,
+    "city": "Jeogiwe",
+    "lat": -28.12785,
+    "lon": -145.96895,
+    "geohash": 344516337195371
+  }
+]
+``` 
+When the data is posted to server a geohash property is added in data. This near search works on [geohash](https://en.wikipedia.org/wiki/Geohash) concept. To precalculate the geohash in your existing data use [node-geohash](https://github.com/sunng87/node-geohash)'s `encode_int` method. 
+
 ### Relationships
 
 To include children resources, add `_embed`

@@ -1,10 +1,14 @@
 var uuid = require('node-uuid')
 var pluralize = require('pluralize')
+var geo = require('geo-nearby')
+var ngeohash = require('ngeohash')
 
 module.exports = {
   getRemovable: getRemovable,
   createId: createId,
-  deepQuery: deepQuery
+  deepQuery: deepQuery,
+  nearBy: nearBy,
+  calGeohash: calGeohash
 }
 
 // Returns document ids that have unsatisfied relations
@@ -74,4 +78,13 @@ function deepQuery (value, q) {
       return true
     }
   }
+}
+// extends lowdb instance with nearBy function
+function nearBy (db, lat, lon, distance) {
+  var _ = this
+  return geo(db, {geo: _.geohash || 'geohash'}).nearBy(lat, lon, distance)
+}
+// extends lowdb instace with geohash function
+function calGeohash (lat, lon) {
+  return ngeohash.encode_int(lat, lon)
 }

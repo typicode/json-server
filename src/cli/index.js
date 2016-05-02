@@ -67,6 +67,21 @@ module.exports = function () {
         alias: 'c',
         description: 'Path to config file',
         default: 'json-server.json'
+      },
+      lattitude: {
+        alias: 'y',
+        description: 'Latitude property',
+        default: 'lat'
+      },
+      longitude: {
+        alias: 'x',
+        description: 'Longitude property',
+        default: 'lon'
+      },
+      geohash: {
+        alias: 'g',
+        description: 'Geohash property',
+        default: 'geohash'
       }
     })
     .boolean('watch')
