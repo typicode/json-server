@@ -47,6 +47,12 @@ describe('Server', function () {
       { a: 1 }
     ]
 
+    db.nested = [
+      {resource: {name: 'dewey'}},
+      {resource: {name: 'cheatem'}},
+      {resource: {name: 'howe'}}
+    ]
+
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults())
@@ -196,6 +202,14 @@ describe('Server', function () {
         .get('/posts?_sort=id&_order=DESC')
         .expect('Content-Type', /json/)
         .expect(db.posts.reverse())
+        .expect(200, done)
+    })
+
+    it('should sort on nested field', function (done) {
+      request(server)
+        .get('/nested?_sort=resource.name')
+        .expect('Content-Type', /json/)
+        .expect([db.nested[1], db.nested[0], db.nested[2]])
         .expect(200, done)
     })
   })
