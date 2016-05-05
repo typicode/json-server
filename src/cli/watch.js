@@ -14,6 +14,7 @@ function watchDB (file, cb) {
 
   fs.watch(watchedDir, function (event, changedFile) {
     if (event === 'change' && changedFile === watchedFile) cb()
+    else if (event === 'rename' && changedFile === watchedFile) cb()
   })
 }
 
