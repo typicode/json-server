@@ -7,9 +7,9 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
   * [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
   * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
 
-See also
-* [hotel](https://github.com/typicode/hotel) :hotel: local .dev domains for everyone and more!
-* [husky](https://github.com/typicode/husky) :dog: Git hooks made easy
+See also:
+* :hotel: [hotel](https://github.com/typicode/hotel) - Local domains for everyone and more!
+* :dog: [husky](https://github.com/typicode/husky) - Git hooks made easy
 
 ## Example
 
