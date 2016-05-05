@@ -1,5 +1,10 @@
 # Change Log
 
+## [Unreleased][Unreleased]
+
+* Support sort by nested field (e.g. `_sort=author.name`)
+* Fix graceful-fs warning
+
 ## [0.8.10][2016-04-18]
 
 ### Added
