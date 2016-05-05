@@ -178,7 +178,7 @@ or use `--static`.
 
 ```bash
 mkdir public
-echo 'hello word' > public/index.html
+echo 'hello world' > public/index.html
 json-server db.json
 ```
 
