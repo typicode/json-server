@@ -141,7 +141,7 @@ module.exports = function (db, name) {
       _order = _order || 'ASC'
 
       chain = chain.sortBy(function (element) {
-        return element[_sort]
+        return _.get(element, _sort)
       })
 
       if (_order === 'DESC') {
