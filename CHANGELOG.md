@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.8.12][2016-05-08]
+
+* Minor bug fix
+
 ## [0.8.11][2016-05-08]
 
 * Support sort by nested field (e.g. `_sort=author.name`)
