@@ -28,7 +28,7 @@ module.exports = function (source, cb) {
 
   } else if (is.JSON(source)) {
 
-    data = low(source, { storage: fileAsync }).object
+    data = low(source, { storage: fileAsync }).state()
     cb(null, data)
 
   } else {
