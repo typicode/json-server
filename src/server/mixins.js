@@ -41,7 +41,7 @@ function createId (coll) {
   if (_.isEmpty(coll)) {
     return 1
   } else {
-    var id = _.max(coll, function (doc) {
+    var id = _.maxBy(coll, function (doc) {
       return doc[idProperty]
     })[idProperty]
 

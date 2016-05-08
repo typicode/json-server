@@ -554,9 +554,9 @@ describe('Server', function () {
 
   })
 
-  describe('Database #object', function () {
+  describe('Database state', function () {
     it('should be accessible', function () {
-      assert(router.db.object)
+      assert(router.db.state())
     })
   })
 
@@ -614,11 +614,11 @@ describe('Server', function () {
   describe('router.db._.id', function (done) {
 
     beforeEach(function () {
-      router.db.object = {
+      router.db.state({
         posts: [
           { _id: 1 }
         ]
-      }
+      })
 
       router.db._.id = '_id'
     })
@@ -627,7 +627,7 @@ describe('Server', function () {
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
-        .expect(router.db.object.posts[0])
+        .expect(router.db.state().posts[0])
         .expect(200, done)
     })
 

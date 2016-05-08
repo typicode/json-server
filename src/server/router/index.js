@@ -4,6 +4,7 @@ var bodyParser = require('body-parser')
 var _ = require('lodash')
 var _db = require('underscore-db')
 var low = require('lowdb')
+var fileAsync = require('lowdb/lib/file-async')
 var plural = require('./plural')
 var nested = require('./nested')
 var singular = require('./singular')
@@ -23,9 +24,9 @@ module.exports = function (source) {
   var db
   if (_.isObject(source)) {
     db = low()
-    db.object = source
+    db.state(source)
   } else {
-    db = low(source)
+    db = low(source, { storage: fileAsync })
   }
 
   // Add underscore-db methods to db
@@ -44,7 +45,7 @@ module.exports = function (source) {
 
   // GET /db
   function showDatabase (req, res, next) {
-    res.locals.data = db.object
+    res.locals.data = db.state()
     next()
   }
 
@@ -53,26 +54,24 @@ module.exports = function (source) {
   router.use(nested())
 
   // Create routes
-  for (var prop in db.object) {
-    var val = db.object[prop]
-
-    if (_.isPlainObject(val)) {
-      router.use('/' + prop, singular(db, prop))
-      continue
+  db.forEach(function (value, key) {
+    if (_.isPlainObject(value)) {
+      router.use('/' + key, singular(db, key))
+      return
     }
 
-    if (_.isArray(val)) {
-      router.use('/' + prop, plural(db, prop))
-      continue
+    if (_.isArray(value)) {
+      router.use('/' + key, plural(db, key))
+      return
     }
 
     var msg =
-      'Type of "' + prop + '" (' + typeof val + ') ' +
+      'Type of "' + key + '" (' + typeof value + ') ' +
       (_.isObject(source) ? '' : 'in ' + source) + ' is not supported. ' +
       'Use objects or arrays of objects.'
 
     throw new Error(msg)
-  }
+  }).value()
 
   router.use(function (req, res) {
     if (!res.locals.data) {
@@ -81,6 +80,11 @@ module.exports = function (source) {
     }
 
     router.render(req, res)
+  })
+
+  router.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(500).send(err.stack)
   })
 
   return router

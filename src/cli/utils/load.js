@@ -1,6 +1,7 @@
 var path = require('path')
 var got = require('got')
 var low = require('lowdb')
+var fileAsync = require('lowdb/lib/file-async')
 var is = require('./is')
 
 module.exports = function (source, cb) {
@@ -27,7 +28,7 @@ module.exports = function (source, cb) {
 
   } else if (is.JSON(source)) {
 
-    data = low(source).object
+    data = low(source, { storage: fileAsync }).object
     cb(null, data)
 
   } else {

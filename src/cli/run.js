@@ -136,8 +136,12 @@ module.exports = function (argv) {
       if (chunk.trim().toLowerCase() === 's') {
         var filename = 'db-' + Date.now() + '.json'
         var file = path.join(argv.snapshots, filename)
-        app.db.saveSync(file)
-        console.log('  Saved snapshot to ' + path.relative(process.cwd(), file) + '\n')
+        app
+          .db
+          .write(file)
+          .then(function () {
+            console.log('  Saved snapshot to ' + path.relative(process.cwd(), file) + '\n')
+          })
       }
     })
 

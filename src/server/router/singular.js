@@ -5,27 +5,28 @@ module.exports = function (db, name) {
   var router = express.Router()
 
   function show (req, res, next) {
-    res.locals.data = db.object[name]
+    res.locals.data = db.get(name).value()
     next()
   }
 
   function create (req, res, next) {
-    res.locals.data = db.object[name] = req.body
+    db.set(name, req.body).value()
+    res.locals.data = db.get(name).value()
     res.status(201)
     next()
   }
 
   function update (req, res, next) {
     if (req.method === 'PUT') {
-      delete db.object[name]
-      db.object[name] = {}
+      db.set(name, req.body)
+        .value()
+    } else {
+      db.get(name)
+        .assign(req.body)
+        .value()
     }
 
-    for (var prop in req.body) {
-      db.object[name][prop] = req.body[prop]
-    }
-
-    res.locals.data = db.object[name]
+    res.locals.data = db.get(name).value()
     next()
   }
 

@@ -12,11 +12,11 @@ module.exports = function (db, name) {
   function embed (resource, e) {
     e && [].concat(e)
       .forEach(function (externalResource) {
-        if (db.object[externalResource]) {
+        if (db.get(externalResource).value) {
           var query = {}
           var singularResource = pluralize.singular(name)
           query[singularResource + 'Id'] = resource.id
-          resource[externalResource] = db(externalResource).where(query)
+          resource[externalResource] = db.get(externalResource).filter(query).value()
         }
       })
   }
@@ -26,9 +26,9 @@ module.exports = function (db, name) {
     e && [].concat(e)
       .forEach(function (innerResource) {
         var plural = pluralize(innerResource)
-        if (db.object[plural]) {
+        if (db.get(plural).value()) {
           var prop = innerResource + 'Id'
-          resource[innerResource] = db(plural).getById(resource[prop])
+          resource[innerResource] = db.get(plural).getById(resource[prop]).value()
         }
       })
   }
@@ -42,7 +42,7 @@ module.exports = function (db, name) {
   function list (req, res, next) {
 
     // Resource chain
-    var chain = db(name).chain()
+    var chain = db.get(name)
 
     // Remove q, _start, _end, ... from req.query to avoid filtering using those
     // parameters
@@ -66,7 +66,7 @@ module.exports = function (db, name) {
     // Automatically delete query parameters that can't be found
     // in the database
     Object.keys(req.query).forEach(function (query) {
-      var arr = db(name).value()
+      var arr = db.get(name).value()
       for (var i in arr) {
         if (
           _.has(arr[i], query) ||
@@ -183,7 +183,7 @@ module.exports = function (db, name) {
     var _embed = req.query._embed
     var _expand = req.query._expand
     var id = utils.toNative(req.params.id)
-    var resource = db(name).getById(id)
+    var resource = db.get(name).getById(id).value()
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
@@ -209,8 +209,9 @@ module.exports = function (db, name) {
       req.body[key] = utils.toNative(req.body[key])
     }
 
-    var resource = db(name)
+    var resource = db.get(name)
       .insert(req.body)
+      .value()
 
     res.status(201)
     res.locals.data = resource
@@ -225,10 +226,13 @@ module.exports = function (db, name) {
     }
 
     var id = utils.toNative(req.params.id)
+    var chain = db.get(name)
 
-    var resource = req.method === 'PATCH' ?
-      db(name).updateById(id, req.body) :
-      db(name).replaceById(id, req.body)
+    chain = req.method === 'PATCH' ?
+      chain.updateById(id, req.body) :
+      chain.replaceById(id, req.body)
+
+    var resource = chain.value()
 
     if (resource) {
       res.locals.data = resource
@@ -239,13 +243,13 @@ module.exports = function (db, name) {
 
   // DELETE /name/:id
   function destroy (req, res, next) {
-    var resource = db(name).removeById(utils.toNative(req.params.id))
+    var resource = db.get(name).removeById(utils.toNative(req.params.id)).value()
 
     // Remove dependents documents
-    var removable = db._.getRemovable(db.object)
+    var removable = db._.getRemovable(db.state())
 
     _.each(removable, function (item) {
-      db(item.name).removeById(item.id)
+      db.get(item.name).removeById(item.id).value()
     })
 
     if (resource) {
