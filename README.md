@@ -118,7 +118,7 @@ Add `_ne` to exclude a value
 GET /posts?id_ne=1
 ```
 
-Add `_like` to filter using RegExp
+Add `_like` to filter (RegExp supported)
 
 ```
 GET /posts?title_like=server

@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.8.13][2016-05-12]
+
+* Make `_like` operator case insensitive
+
 ## [0.8.12][2016-05-08]
 
 * Minor bug fix
@@ -10,8 +14,6 @@
 * Fix `graceful-fs` warning
 
 ## [0.8.10][2016-04-18]
-
-### Added
 
 * CLI option `-ng/--no-gzip` to disable `gzip` compression
 

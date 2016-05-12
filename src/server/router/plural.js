@@ -125,7 +125,7 @@ module.exports = function (db, name) {
               } else if (isDifferent) {
                 return value !== elementValue
               } else if (isLike) {
-                return new RegExp(value).test(elementValue)
+                return new RegExp(value, 'i').test(elementValue)
               } else {
                 return _.matchesProperty(key, value)(element)
               }

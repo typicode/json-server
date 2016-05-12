@@ -259,9 +259,9 @@ describe('Server', function () {
   })
 
   describe('GET /:resource?attr_like=', function () {
-    it('should respond with an array that matches the like operator', function (done) {
+    it('should respond with an array that matches the like operator (case insensitive)', function (done) {
       request(server)
-        .get('/tags?body_like=hoto')
+        .get('/tags?body_like=photo')
         .expect('Content-Type', /json/)
         .expect([
           db.tags[1],
