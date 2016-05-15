@@ -73,8 +73,8 @@ describe('cli', function () {
       request.post('/posts')
         .send({ title: 'hello' })
         .end(function () {
-          var str = fs.readFileSync(dbFile, 'utf8')
           setTimeout(function () {
+            var str = fs.readFileSync(dbFile, 'utf8')
             assert(str.indexOf('hello') !== -1)
             done()
           }, 1000)

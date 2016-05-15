@@ -614,7 +614,7 @@ describe('Server', function () {
   describe('router.db._.id', function (done) {
 
     beforeEach(function () {
-      router.db.getState({
+      router.db.setState({
         posts: [
           { _id: 1 }
         ]
