@@ -28,7 +28,7 @@ module.exports = function (source, cb) {
 
   } else if (is.JSON(source)) {
 
-    data = low(source, { storage: fileAsync }).state()
+    data = low(source, { storage: fileAsync }).getState()
     cb(null, data)
 
   } else {

@@ -246,7 +246,7 @@ module.exports = function (db, name) {
     var resource = db.get(name).removeById(utils.toNative(req.params.id)).value()
 
     // Remove dependents documents
-    var removable = db._.getRemovable(db.state())
+    var removable = db._.getRemovable(db.getState())
 
     _.each(removable, function (item) {
       db.get(item.name).removeById(item.id).value()

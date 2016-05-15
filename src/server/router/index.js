@@ -24,7 +24,7 @@ module.exports = function (source) {
   var db
   if (_.isObject(source)) {
     db = low()
-    db.state(source)
+    db.setState(source)
   } else {
     db = low(source, { storage: fileAsync })
   }
@@ -45,7 +45,7 @@ module.exports = function (source) {
 
   // GET /db
   function showDatabase (req, res, next) {
-    res.locals.data = db.state()
+    res.locals.data = db.getState()
     next()
   }
 

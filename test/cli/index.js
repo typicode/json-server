@@ -31,8 +31,15 @@ describe('cli', function () {
   beforeEach(function () {
     rmrf.sync(tmpDir)
     fs.mkdirSync(tmpDir)
-    fs.writeFileSync(dbFile, JSON.stringify({ posts: [{ 'id': 1, '_id': 2 }] }))
-    fs.writeFileSync(routesFile, JSON.stringify({ '/blog/': '/' }))
+    fs.writeFileSync(dbFile, JSON.stringify({
+      posts: [
+        { id: 1 },
+        {_id: 2 }
+      ]
+    }))
+    fs.writeFileSync(routesFile, JSON.stringify({
+      '/blog/': '/'
+    }))
     ++PORT
     request = supertest('http://localhost:' + PORT)
   })
@@ -49,7 +56,7 @@ describe('cli', function () {
       serverReady(PORT, done)
     })
 
-    it('should support JSON dbFile', function (done) {
+    it('should support JSON file', function (done) {
       request.get('/posts').expect(200, done)
     })
 
@@ -62,6 +69,17 @@ describe('cli', function () {
         .expect(200, done)
     })
 
+    it('should update JSON file', function (done) {
+      request.post('/posts')
+        .send({ title: 'hello' })
+        .end(function () {
+          var str = fs.readFileSync(dbFile, 'utf8')
+          setTimeout(function () {
+            assert(str.indexOf('hello') !== -1)
+            done()
+          }, 1000)
+        })
+    })
   })
 
   describe('seed.js', function () {
