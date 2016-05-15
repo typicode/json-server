@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.8.14][2016-05-15]
+
+* Bug fix: data wasn't written to file in `v0.8.13` and `v0.8.12`
+
 ## [0.8.13][2016-05-12]
 
 * Make `_like` operator case insensitive
