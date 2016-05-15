@@ -623,12 +623,21 @@ describe('Server', function () {
       router.db._.id = '_id'
     })
 
-    it('should be possible to override id property', function (done) {
+    it('should be possible to GET using a different id property', function (done) {
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
         .expect(router.db.getState().posts[0])
         .expect(200, done)
+    })
+
+    it('should be possible to POST using a different id property', function (done) {
+      request(server)
+        .post('/posts')
+        .send({ body: 'hello' })
+        .expect('Content-Type', /json/)
+        .expect({_id: 2, body: 'hello'})
+        .expect(201, done)
     })
 
   })
