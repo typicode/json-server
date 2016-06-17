@@ -6,6 +6,7 @@ var pkg = require('../../package.json')
 module.exports = function () {
 
   updateNotifier({ pkg: pkg }).notify()
+  var portDefault = process.env.PORT || 3000; // heroku provides the port to bind to
 
   var argv = yargs
     .config('config')
