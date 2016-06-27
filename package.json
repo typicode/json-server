@@ -40,7 +40,7 @@
     "test": "npm run test:cli && npm run test:server && standard",
     "test:cli": "NODE_ENV=test mocha -R spec test/cli/*.js",
     "test:server": "NODE_ENV=test mocha -R spec test/server/*.js",
-    "start": "node bin",
+    "start": "node bin --watch db.json",
     "prepush": "npm t"
   },
   "repository": {
