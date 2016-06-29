@@ -294,7 +294,7 @@ You can also set options in a `json-server.json` configuration file.
 
 If you need to add authentication, validation, or __any behavior__, you can use the project as a module in combination with other Express middlewares.
 
-__Simple example__
+#### Simple example
 
 ```js
 // server.js
@@ -317,7 +317,7 @@ $ node server.js
 For an in-memory database, you can pass an object to `jsonServer.router()`.
 Please note also that `jsonServer.router()` can be used in existing Express projects.
 
-__Custom routes example__
+#### Custom routes example
 
 Let's say you want a route that echoes query parameters and another one that set a timestamp on every resource created.
 
@@ -350,7 +350,7 @@ server.listen(3000, function () {
 })
 ```
 
-__Custom output example__
+#### Custom output example
 
 To modify responses, overwrite `router.render` method:
 
@@ -363,7 +363,7 @@ router.render = function (req, res) {
 }
 ```
 
-__Rewriter example__
+#### Rewriter example
 
 To add rewrite rules, use `jsonServer.rewriter()`:
 
@@ -375,7 +375,7 @@ server.use(jsonServer.rewriter({
 }))
 ```
 
-__Mounting JSON Server on another endpoint example__
+#### Mounting JSON Server on another endpoint example
 
 Alternatively, you can also mount the router on `/api`.
 
