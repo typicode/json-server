@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.8.15][Unreleased]
+
+* Bug fix: `--watch` option on OS X
+
 ## [0.8.14][2016-05-15]
 
 * Bug fix: data wasn't written to file in `v0.8.13` and `v0.8.12`
