@@ -4,8 +4,8 @@ Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (serio
 
 Created with <3 for front-end developers who need a quick back-end for prototyping and mocking.
 
-  * [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
-  * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
+* [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
+* [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
 
 See also:
 * :hotel: [hotel](https://github.com/typicode/hotel) - Local domains for everyone and more!
