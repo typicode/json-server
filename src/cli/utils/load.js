@@ -1,5 +1,5 @@
 var path = require('path')
-var got = require('got')
+var request = require('request')
 var low = require('lowdb')
 var fileAsync = require('lowdb/lib/file-async')
 var is = require('./is')
@@ -9,13 +9,10 @@ module.exports = function (source, cb) {
 
   if (is.URL(source)) {
 
-    got(source, { json: true })
-      .then(function (response) {
-        cb(null, response.body)
-      })
-      .catch(function (err) {
-        cb(err)
-      })
+    request({ url: source, json: true }, function (err, response) {
+      if (err) return cb(err)
+      cb(null, response.body)
+    })
 
   } else if (is.JS(source)) {
 
