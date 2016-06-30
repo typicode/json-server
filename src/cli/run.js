@@ -1,11 +1,12 @@
 var fs = require('fs')
 var path = require('path')
+var _ = require('lodash')
 var chalk = require('chalk')
+var chokidar = require('chokidar')
 var enableDestroy = require('server-destroy')
+var pause = require('connect-pause')
 var is = require('./utils/is')
 var load = require('./utils/load')
-var watch = require('./watch')
-var pause = require('connect-pause')
 var jsonServer = require('../server')
 
 function prettyPrint (argv, object, rules) {
@@ -37,9 +38,9 @@ function createApp (source, object, routes, argv) {
   var app = jsonServer.create()
 
   var router = jsonServer.router(
-    is.JSON(source) ?
-    source :
-    object
+    is.JSON(source)
+    ? source
+    : object
   )
 
   var defaultsOpts = {
@@ -149,13 +150,41 @@ module.exports = function (argv) {
     if (argv.watch) {
       console.log(chalk.gray('  Watching...'))
       console.log()
-      watch(argv, function (file) {
-        console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
-        server && server.destroy()
-        start()
-      })
+      var source = argv._[0]
+
+      // Can't watch URL
+      if (is.URL(source)) throw new Error('Can\'t watch URL')
+
+      // Watch .js or .json file
+      chokidar
+        .watch(source)
+        .on('change', function (file) {
+          if (is.JSON(file)) {
+            var obj = JSON.parse(fs.readFileSync(file))
+            // Compare .json file content with in memory database
+            var isDatabaseDifferent = !_.eq(obj, app.db.getState())
+            if (isDatabaseDifferent) {
+              console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
+              server && server.destroy()
+              start()
+            }
+            return
+          }
+
+          server && server.destroy()
+          start()
+        })
+
+      // Watch routes
+      if (argv.routes) {
+        chokidar
+          .watch(argv.routes)
+          .on('change', function (file) {
+            console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
+            server && server.destroy()
+            start()
+          })
+      }
     }
-
   })
-
 }

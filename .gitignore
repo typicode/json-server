@@ -3,4 +3,3 @@ node_modules
 tmp
 .DS_Store
 .idea
-generate.js

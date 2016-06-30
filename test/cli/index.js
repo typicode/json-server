@@ -1,10 +1,10 @@
-var os = require('os')
 var fs = require('fs')
 var path = require('path')
 var cp = require('child_process')
 var assert = require('assert')
 var supertest = require('supertest')
 var rmrf = require('rimraf')
+var express = require('express')
 var serverReady = require('server-ready')
 var pkg = require('../../package.json')
 
@@ -95,12 +95,17 @@ describe('cli', function () {
 
   })
 
-  describe('http://jsonplaceholder.typicode.com/db', function () {
+  describe('http://localhost:8080/db', function () {
 
     beforeEach(function (done) {
-      child = cli(['http://jsonplaceholder.typicode.com/db'])
-      this.timeout(10000)
-      serverReady(PORT, done)
+      var fakeServer = express()
+      fakeServer.get('/db', function (req, res) {
+        res.jsonp({ posts: [] })
+      })
+      fakeServer.listen(8080, function () {
+        child = cli(['http://localhost:8080/db'])
+        serverReady(PORT, done)
+      })
     })
 
     it('should support URL file', function (done) {
@@ -247,31 +252,29 @@ describe('cli', function () {
 
   // FIXME test fails on OS X and maybe on Windows
   // But manually updating db.json works...
-  if (os.platform() === 'linux') {
-    describe('--watch db.json -r routes.json', function () {
+  describe('--watch db.json -r routes.json', function () {
 
-      beforeEach(function (done) {
-        child = cli(['--watch', dbFile, '-r', routesFile])
-        serverReady(PORT, done)
-      })
-
-      it('should watch db file', function (done) {
-        fs.writeFileSync(dbFile, JSON.stringify({ foo: [] }))
-        setTimeout(function () {
-          request.get('/foo').expect(200, done)
-        }, 1000)
-      })
-
-      it('should watch routes file', function (done) {
-        // Can be very slow
-        this.timeout(10000)
-        fs.writeFileSync(routesFile, JSON.stringify({ '/api/': '/' }))
-        setTimeout(function () {
-          request.get('/api/posts').expect(200, done)
-        }, 9000)
-      })
-
+    beforeEach(function (done) {
+      child = cli(['--watch', dbFile, '-r', routesFile])
+      serverReady(PORT, done)
     })
-  }
+
+    it('should watch db file', function (done) {
+      fs.writeFileSync(dbFile, JSON.stringify({ foo: [] }))
+      setTimeout(function () {
+        request.get('/foo').expect(200, done)
+      }, 1000)
+    })
+
+    it('should watch routes file', function (done) {
+      // Can be very slow
+      this.timeout(10000)
+      fs.writeFileSync(routesFile, JSON.stringify({ '/api/': '/' }))
+      setTimeout(function () {
+        request.get('/api/posts').expect(200, done)
+      }, 9000)
+    })
+
+  })
 
 })

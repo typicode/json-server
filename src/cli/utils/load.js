@@ -9,9 +9,13 @@ module.exports = function (source, cb) {
 
   if (is.URL(source)) {
 
-    got(source, { json: true }, function (err, data) {
-      cb(err, data)
-    })
+    got(source, { json: true })
+      .then(function (response) {
+        cb(null, response.body)
+      })
+      .catch(function (err) {
+        cb(err)
+      })
 
   } else if (is.JS(source)) {
 
