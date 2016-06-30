@@ -3,15 +3,15 @@ var path = require('path')
 var cp = require('child_process')
 var assert = require('assert')
 var supertest = require('supertest')
-var rmrf = require('rimraf')
+var osTmpdir = require('os-tmpdir')
+var tempWrite = require('temp-write')
+var mkdirp = require('mkdirp')
+var rimraf = require('rimraf')
 var express = require('express')
 var serverReady = require('server-ready')
 var pkg = require('../../package.json')
 
 var PORT = 3100
-var tmpDir = path.join(__dirname, '../../tmp')
-var dbFile = path.join(tmpDir, 'db.json')
-var routesFile = path.join(tmpDir, 'routes.json')
 
 function cli (args) {
   var bin = path.join(__dirname, '../..', pkg.bin)
@@ -27,25 +27,26 @@ describe('cli', function () {
 
   var child
   var request
+  var dbFile
+  var routesFile
 
   beforeEach(function () {
-    rmrf.sync(tmpDir)
-    fs.mkdirSync(tmpDir)
-    fs.writeFileSync(dbFile, JSON.stringify({
+    dbFile = tempWrite.sync(JSON.stringify({
       posts: [
         { id: 1 },
         {_id: 2 }
       ]
-    }))
-    fs.writeFileSync(routesFile, JSON.stringify({
+    }), 'db.json')
+
+    routesFile = tempWrite.sync(JSON.stringify({
       '/blog/': '/'
-    }))
+    }), 'routes.json')
+
     ++PORT
     request = supertest('http://localhost:' + PORT)
   })
 
   afterEach(function () {
-    rmrf.sync(tmpDir)
     child.kill()
   })
 
@@ -148,13 +149,15 @@ describe('cli', function () {
 
   })
 
-  describe('db.json -s fixtures/public -S ../../tmp', function () {
+  describe('db.json -s fixtures/public -S /some/path/snapshots', function () {
 
-    var snapshotsDir = path.join(tmpDir, 'snapshots')
+    var snapshotsDir = path.join(osTmpdir(), 'snapshots')
     var publicDir = 'fixtures/public'
 
     beforeEach(function (done) {
-      fs.mkdirSync(snapshotsDir)
+      rimraf.sync(snapshotsDir)
+      mkdirp.sync(snapshotsDir)
+
       child = cli([dbFile, '-s', publicDir, '-S', snapshotsDir])
       serverReady(PORT, function () {
         child.stdin.write('s\n')
@@ -166,7 +169,7 @@ describe('cli', function () {
       request.get('/').expect(/Hello/, done)
     })
 
-    it('should save a snapshot in ../../tmp', function () {
+    it('should save a snapshot in snapshots dir', function () {
       assert.equal(fs.readdirSync(snapshotsDir).length, 1)
     })
 

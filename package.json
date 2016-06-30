@@ -32,17 +32,21 @@
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-preset-es2015": "^6.9.0",
+    "cross-env": "^1.0.8",
     "husky": "^0.11.4",
+    "mkdirp": "^0.5.1",
     "mocha": "^2.2.4",
-    "rimraf": "^2.4.1",
+    "os-tmpdir": "^1.0.1",
+    "rimraf": "^2.5.2",
     "server-ready": "^0.2.0",
     "standard": "^3.8.0",
-    "supertest": "~0.8.1"
+    "supertest": "~0.8.1",
+    "temp-write": "^2.1.0"
   },
   "scripts": {
     "test": "npm run test:cli && npm run test:server && standard",
-    "test:cli": "NODE_ENV=test mocha -R spec test/cli/*.js",
-    "test:server": "NODE_ENV=test mocha -R spec test/server/*.js",
+    "test:cli": "cross-env NODE_ENV=test mocha -R spec test/cli/*.js",
+    "test:server": "cross-env NODE_ENV=test mocha -R spec test/server/*.js",
     "start": "node bin",
     "prepush": "npm t",
     "build": "babel src -d lib"
