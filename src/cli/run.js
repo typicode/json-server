@@ -156,23 +156,27 @@ module.exports = function (argv) {
       if (is.URL(source)) throw new Error('Can\'t watch URL')
 
       // Watch .js or .json file
+      // Since lowdb uses atomic writing, directory is watched instead of file
       chokidar
-        .watch(source)
+        .watch(path.dirname(source))
         .on('change', function (file) {
-          if (is.JSON(file)) {
-            var obj = JSON.parse(fs.readFileSync(file))
-            // Compare .json file content with in memory database
-            var isDatabaseDifferent = !_.eq(obj, app.db.getState())
-            if (isDatabaseDifferent) {
+          if (file === source) {
+            if (is.JSON(file)) {
+              console.log(file, fs.readFileSync(file))
+              var obj = JSON.parse(fs.readFileSync(file))
+              // Compare .json file content with in memory database
+              var isDatabaseDifferent = !_.eq(obj, app.db.getState())
+              if (isDatabaseDifferent) {
+                console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
+                server && server.destroy()
+                start()
+              }
+            } else {
               console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
               server && server.destroy()
               start()
             }
-            return
           }
-
-          server && server.destroy()
-          start()
         })
 
       // Watch routes
