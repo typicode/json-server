@@ -4,9 +4,7 @@ var request = require('supertest')
 var jsonServer = require('../../src/server')
 
 /* global beforeEach, describe, it */
-
 describe('Server', function () {
-
   var server
   var router
   var db
@@ -533,7 +531,6 @@ describe('Server', function () {
   })
 
   describe('Static routes', function () {
-
     describe('GET /', function () {
       it('should respond with html', function (done) {
         request(server)
@@ -551,7 +548,6 @@ describe('Server', function () {
           .expect(200, done)
       })
     })
-
   })
 
   describe('Database state', function () {
@@ -561,7 +557,6 @@ describe('Server', function () {
   })
 
   describe('Responses', function () {
-
     it('should have no cache headers (for IE)', function (done) {
       request(server)
         .get('/db')
@@ -570,11 +565,9 @@ describe('Server', function () {
         .expect('Expires', '-1')
         .end(done)
     })
-
   })
 
   describe('Rewriter', function () {
-
     it('should rewrite using prefix', function (done) {
       request(server)
         .get('/api/posts/1')
@@ -588,11 +581,9 @@ describe('Server', function () {
         .expect(db.posts[0])
         .end(done)
     })
-
   })
 
   describe('router.render', function (done) {
-
     beforeEach(function () {
       router.render = function (req, res) {
         res.jsonp({
@@ -608,11 +599,9 @@ describe('Server', function () {
         .expect({ data: db.posts[0] })
         .expect(200, done)
     })
-
   })
 
   describe('router.db._.id', function (done) {
-
     beforeEach(function () {
       router.db.setState({
         posts: [
@@ -639,6 +628,5 @@ describe('Server', function () {
         .expect({_id: 2, body: 'hello'})
         .expect(201, done)
     })
-
   })
 })

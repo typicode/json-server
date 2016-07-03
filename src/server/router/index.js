@@ -11,7 +11,6 @@ var singular = require('./singular')
 var mixins = require('../mixins')
 
 module.exports = function (source) {
-
   // Create router
   var router = express.Router()
 

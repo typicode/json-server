@@ -3,7 +3,6 @@ var pluralize = require('pluralize')
 var utils = require('../utils')
 
 module.exports = function () {
-
   var router = express.Router()
 
   // Rewrite URL (/:resource/:id/:nested -> /:nested) and request query

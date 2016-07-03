@@ -4,7 +4,6 @@ module.exports = function (routes) {
   var router = express.Router()
 
   Object.keys(routes).forEach(function (route) {
-
     if (route.indexOf(':') !== -1) {
       router.all(route, function (req, res, next) {
         // Rewrite target url using params
@@ -22,7 +21,6 @@ module.exports = function (routes) {
         next()
       })
     }
-
   })
 
   return router

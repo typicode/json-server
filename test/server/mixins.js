@@ -6,11 +6,8 @@ var mixins = require('../../src/server/mixins')
 /* global describe, it */
 
 describe('mixins', function () {
-
   describe('getRemovable', function () {
-
     it('should return removable documents', function () {
-
       var db = {
         posts: [
           {id: 1, comment: 1}
@@ -32,7 +29,6 @@ describe('mixins', function () {
       _.mixin(mixins)
 
       assert.deepEqual(_.getRemovable(db), expected)
-
     })
   })
 })

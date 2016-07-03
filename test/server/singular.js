@@ -2,9 +2,7 @@ var request = require('supertest')
 var jsonServer = require('../../src/server')
 
 /* global beforeEach, describe, it */
-
 describe('Server', function () {
-
   var server
   var router
   var db
@@ -63,5 +61,4 @@ describe('Server', function () {
         .expect(200, done)
     })
   })
-
 })

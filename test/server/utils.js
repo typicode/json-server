@@ -4,9 +4,7 @@ var utils = require('../../src/server/utils')
 /* global describe, it */
 
 describe('utils', function () {
-
   describe('toNative', function () {
-
     it('should convert string to native type', function () {
       // should convert
       assert.strictEqual(utils.toNative('1'), 1)
@@ -22,6 +20,5 @@ describe('utils', function () {
       assert.strictEqual(utils.toNative(1), 1)
       assert.strictEqual(utils.toNative(true), true)
     })
-
   })
 })

@@ -10,9 +10,9 @@ var objectAssign = require('object-assign')
 module.exports = function (opts) {
   var userDir = path.join(process.cwd(), 'public')
   var defaultDir = path.join(__dirname, 'public')
-  var staticDir = fs.existsSync(userDir) ?
-    userDir :
-    defaultDir
+  var staticDir = fs.existsSync(userDir)
+    ? userDir
+    : defaultDir
 
   opts = objectAssign({ logger: true, static: staticDir }, opts)
 

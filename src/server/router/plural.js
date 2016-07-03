@@ -4,7 +4,6 @@ var pluralize = require('pluralize')
 var utils = require('../utils')
 
 module.exports = function (db, name) {
-
   // Create router
   var router = express.Router()
 
@@ -40,7 +39,6 @@ module.exports = function (db, name) {
   // GET /name?_start=&_end=&
   // GET /name?_embed=&_expand=
   function list (req, res, next) {
-
     // Resource chain
     var chain = db.get(name)
 
@@ -82,7 +80,6 @@ module.exports = function (db, name) {
     })
 
     if (q) {
-
       // Full-text search
       q = q.toLowerCase()
 
@@ -94,7 +91,6 @@ module.exports = function (db, name) {
           }
         }
       })
-
     }
 
     Object.keys(req.query).forEach(function (key) {
@@ -228,9 +224,9 @@ module.exports = function (db, name) {
     var id = utils.toNative(req.params.id)
     var chain = db.get(name)
 
-    chain = req.method === 'PATCH' ?
-      chain.updateById(id, req.body) :
-      chain.replaceById(id, req.body)
+    chain = req.method === 'PATCH'
+      ? chain.updateById(id, req.body)
+      : chain.replaceById(id, req.body)
 
     var resource = chain.value()
 

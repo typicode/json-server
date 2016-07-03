@@ -74,7 +74,6 @@ function createApp (source, object, routes, argv) {
 }
 
 module.exports = function (argv) {
-
   var source = argv._[0]
   var app
   var server
@@ -98,7 +97,6 @@ module.exports = function (argv) {
 
     // Load JSON, JS or HTTP database
     load(source, function (err, data) {
-
       if (err) throw err
 
       // Load additional routes
@@ -125,7 +123,6 @@ module.exports = function (argv) {
 
   // Start server
   start(function () {
-
     // Snapshot
     console.log(
       chalk.gray('  Type s + enter at any time to create a snapshot of the database')
@@ -162,7 +159,6 @@ module.exports = function (argv) {
         .on('change', function (file) {
           if (file === source) {
             if (is.JSON(file)) {
-              console.log(file, fs.readFileSync(file))
               var obj = JSON.parse(fs.readFileSync(file))
               // Compare .json file content with in memory database
               var isDatabaseDifferent = !_.eq(obj, app.db.getState())

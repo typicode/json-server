@@ -8,14 +8,11 @@ module.exports = function (source, cb) {
   var data
 
   if (is.URL(source)) {
-
     request({ url: source, json: true }, function (err, response) {
       if (err) return cb(err)
       cb(null, response.body)
     })
-
   } else if (is.JS(source)) {
-
     var filename = path.resolve(source)
     delete require.cache[filename]
     var dataFn = require(filename)
@@ -26,15 +23,10 @@ module.exports = function (source, cb) {
 
     data = dataFn()
     cb(null, data)
-
   } else if (is.JSON(source)) {
-
     data = low(source, { storage: fileAsync }).getState()
     cb(null, data)
-
   } else {
-
     throw new Error('Unsupported source ' + source)
-
   }
 }

@@ -1,7 +1,6 @@
 var express = require('express')
 
 module.exports = function (db, name) {
-
   var router = express.Router()
 
   function show (req, res, next) {
@@ -37,5 +36,4 @@ module.exports = function (db, name) {
     .patch(update)
 
   return router
-
 }

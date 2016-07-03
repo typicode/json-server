@@ -24,7 +24,6 @@ function cli (args) {
 /* global beforeEach, afterEach, describe, it */
 
 describe('cli', function () {
-
   var child
   var request
   var dbFile
@@ -34,7 +33,7 @@ describe('cli', function () {
     dbFile = tempWrite.sync(JSON.stringify({
       posts: [
         { id: 1 },
-        {_id: 2 }
+        { _id: 2 }
       ]
     }), 'db.json')
 
@@ -51,7 +50,6 @@ describe('cli', function () {
   })
 
   describe('db.json', function () {
-
     beforeEach(function (done) {
       child = cli([dbFile])
       serverReady(PORT, done)
@@ -84,7 +82,6 @@ describe('cli', function () {
   })
 
   describe('seed.js', function () {
-
     beforeEach(function (done) {
       child = cli(['fixtures/seed.js'])
       serverReady(PORT, done)
@@ -93,11 +90,9 @@ describe('cli', function () {
     it('should support JS file', function (done) {
       request.get('/posts').expect(200, done)
     })
-
   })
 
   describe('http://localhost:8080/db', function () {
-
     beforeEach(function (done) {
       var fakeServer = express()
       fakeServer.get('/db', function (req, res) {
@@ -112,11 +107,9 @@ describe('cli', function () {
     it('should support URL file', function (done) {
       request.get('/posts').expect(200, done)
     })
-
   })
 
   describe('db.json -r routes.json -i _id --read-only', function () {
-
     beforeEach(function (done) {
       child = cli([dbFile, '-r', routesFile, '-i', '_id', '--read-only'])
       serverReady(PORT, done)
@@ -129,11 +122,9 @@ describe('cli', function () {
     it('should allow only GET requests', function (done) {
       request.post('/blog/posts').expect(403, done)
     })
-
   })
 
   describe('db.json -d 1000', function () {
-
     beforeEach(function (done) {
       child = cli([dbFile, '-d', 1000])
       serverReady(PORT, done)
@@ -146,11 +137,9 @@ describe('cli', function () {
         done(end - start > 1000 ? err : new Error('Request wasn\'t delayed'))
       })
     })
-
   })
 
   describe('db.json -s fixtures/public -S /some/path/snapshots', function () {
-
     var snapshotsDir = path.join(osTmpdir(), 'snapshots')
     var publicDir = 'fixtures/public'
 
@@ -172,11 +161,9 @@ describe('cli', function () {
     it('should save a snapshot in snapshots dir', function () {
       assert.equal(fs.readdirSync(snapshotsDir).length, 1)
     })
-
   })
 
   describe('db.json --no-cors=true', function () {
-
     beforeEach(function (done) {
       child = cli(['fixtures/seed.js', '--no-cors=true'])
       serverReady(PORT, done)
@@ -198,11 +185,9 @@ describe('cli', function () {
           }
         })
     })
-
   })
 
   describe('db.json --no-gzip=true', function () {
-
     beforeEach(function (done) {
       child = cli(['fixtures/seed.js', '--no-gzip=true'])
       serverReady(PORT, done)
@@ -224,11 +209,9 @@ describe('cli', function () {
           }
         })
     })
-
   })
 
   describe('db.json --no-gzip=false', function () {
-
     beforeEach(function (done) {
       child = cli(['fixtures/seed.js', '--no-gzip=false'])
       serverReady(PORT, done)
@@ -250,13 +233,9 @@ describe('cli', function () {
           }
         })
     })
-
   })
 
-  // FIXME test fails on OS X and maybe on Windows
-  // But manually updating db.json works...
   describe('--watch db.json -r routes.json', function () {
-
     beforeEach(function (done) {
       child = cli(['--watch', dbFile, '-r', routesFile])
       serverReady(PORT, done)
@@ -277,7 +256,5 @@ describe('cli', function () {
         request.get('/api/posts').expect(200, done)
       }, 9000)
     })
-
   })
-
 })

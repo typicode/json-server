@@ -4,7 +4,6 @@ var run = require('./run')
 var pkg = require('../../package.json')
 
 module.exports = function () {
-
   updateNotifier({ pkg: pkg }).notify()
 
   var argv = yargs
