@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.8.15][Unreleased]
+## [0.8.15][2016-07-03]
 
 * Bug fix: `--watch` option on OS X
 
