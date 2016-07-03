@@ -39,8 +39,8 @@
     "os-tmpdir": "^1.0.1",
     "rimraf": "^2.5.2",
     "server-ready": "^0.2.0",
-    "standard": "^3.8.0",
-    "supertest": "~0.8.1",
+    "standard": "^7.1.2",
+    "supertest": "^1.2.0",
     "temp-write": "^2.1.0"
   },
   "scripts": {
