@@ -161,7 +161,7 @@ module.exports = function (argv) {
             if (is.JSON(file)) {
               var obj = JSON.parse(fs.readFileSync(file))
               // Compare .json file content with in memory database
-              var isDatabaseDifferent = !_.eq(obj, app.db.getState())
+              var isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
               if (isDatabaseDifferent) {
                 console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
                 server && server.destroy()
