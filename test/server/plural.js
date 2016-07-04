@@ -469,6 +469,22 @@ describe('Server', function () {
           })
       })
 
+    it('should support x-www-form-urlencoded',
+      function (done) {
+        request(server)
+          .post('/posts')
+          .type('form')
+          .send({body: 'foo'})
+          .expect('Content-Type', /json/)
+          .expect({id: 3, body: 'foo'})
+          .expect(201)
+          .end(function (err, res) {
+            if (err) return done(err)
+            assert.equal(db.posts.length, 3)
+            done()
+          })
+      })
+
     it('should respond with json, create a resource and generate string id',
       function (done) {
         request(server)
