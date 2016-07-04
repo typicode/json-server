@@ -335,6 +335,11 @@ server.get('/echo', function (req, res) {
   res.jsonp(req.query)
 })
 
+// The request body must be parsed before it is edited, or the edit will be ineffective
+var bodyParser = require('body-parser');
+server.use(bodyParser.json({limit: '10mb'}))
+
+// Add a custom middleware that alters the request object
 server.use(function (req, res, next) {
   if (req.method === 'POST') {
     req.body.createdAt = Date.now()
