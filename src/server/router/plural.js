@@ -47,6 +47,7 @@ module.exports = function (db, name) {
     var q = req.query.q
     var _start = req.query._start
     var _end = req.query._end
+    var _page = req.query._page
     var _sort = req.query._sort
     var _order = req.query._order
     var _limit = req.query._limit
@@ -146,17 +147,23 @@ module.exports = function (db, name) {
     }
 
     // Slice result
-    if (_end || _limit) {
+    if (_end || _limit || _page) {
       res.setHeader('X-Total-Count', chain.size())
       res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
     }
 
-    _start = parseInt(_start, 10) || 0
-
-    if (_end) {
+    if (_page) {
+      _page = parseInt(_page, 10)
+      _page = _page >= 1 ? _page : 1
+      _limit = parseInt(_limit, 10) || 10
+      _start = (_page - 1) * _limit
+      chain = chain.slice(_start, _start + _limit)
+    } else if (_end) {
+      _start = parseInt(_start, 10) || 0
       _end = parseInt(_end, 10)
       chain = chain.slice(_start, _end)
     } else if (_limit) {
+      _start = parseInt(_start, 10) || 0
       _limit = parseInt(_limit, 10)
       chain = chain.slice(_start, _start + _limit)
     }

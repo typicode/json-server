@@ -51,6 +51,24 @@ describe('Server', function () {
       {resource: {name: 'howe'}}
     ]
 
+    db.list = [
+      {id: 1},
+      {id: 2},
+      {id: 3},
+      {id: 4},
+      {id: 5},
+      {id: 6},
+      {id: 7},
+      {id: 8},
+      {id: 9},
+      {id: 10},
+      {id: 11},
+      {id: 12},
+      {id: 13},
+      {id: 14},
+      {id: 15}
+    ]
+
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults())
@@ -232,6 +250,30 @@ describe('Server', function () {
         .expect('x-total-count', db.comments.length.toString())
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
         .expect(db.comments.slice(1, 2))
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource?_page=', function () {
+    it('should paginate', function (done) {
+      request(server)
+        .get('/list?_page=2')
+        .expect('Content-Type', /json/)
+        .expect('x-total-count', db.list.length.toString())
+        .expect('Access-Control-Expose-Headers', 'X-Total-Count')
+        .expect(db.list.slice(10, 20))
+        .expect(200, done)
+    })
+  })
+
+  describe('GET /:resource?_page=&_limit=', function () {
+    it('should paginate with a custom limit', function (done) {
+      request(server)
+        .get('/list?_page=2&_limit=1')
+        .expect('Content-Type', /json/)
+        .expect('x-total-count', db.list.length.toString())
+        .expect('Access-Control-Expose-Headers', 'X-Total-Count')
+        .expect(db.list.slice(1, 2))
         .expect(200, done)
     })
   })
