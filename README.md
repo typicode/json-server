@@ -8,8 +8,8 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
 
 See also:
-* :hotel: [hotel](https://github.com/typicode/hotel) - Local domains for everyone and more!
-* :dog: [husky](https://github.com/typicode/husky) - Git hooks made easy
+* :hotel: [hotel - Get local domains in seconds](https://github.com/typicode/hotel)
+* :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
 
 ## Example
 
