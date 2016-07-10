@@ -99,6 +99,10 @@ module.exports = function (argv) {
     load(source, function (err, data) {
       if (err) throw err
 
+      if (_.isEmpty(data)) {
+        throw new Error(source + ' is empty or does not exist')
+      }
+
       // Load additional routes
       if (argv.routes) {
         console.log(chalk.gray('  Loading', argv.routes))
