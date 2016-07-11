@@ -15,7 +15,7 @@ module.exports = function (source) {
   var router = express.Router()
 
   // Add middlewares
-  router.use(bodyParser.json({limit: '10mb'}))
+  router.use(bodyParser.json({limit: '10mb', extended: false}))
   router.use(bodyParser.urlencoded({extended: false}))
   router.use(methodOverride())
 
