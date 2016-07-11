@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.8.16][2016-07-11]
+
+* Support `x-www-form-urlencoded`
+
 ## [0.8.15][2016-07-03]
 
 * Bug fix: `--watch` option on OS X
