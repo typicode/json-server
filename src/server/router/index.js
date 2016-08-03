@@ -1,6 +1,5 @@
 var express = require('express')
 var methodOverride = require('method-override')
-var bodyParser = require('body-parser')
 var _ = require('lodash')
 var _db = require('underscore-db')
 var low = require('lowdb')
@@ -15,8 +14,6 @@ module.exports = function (source) {
   var router = express.Router()
 
   // Add middlewares
-  router.use(bodyParser.json({limit: '10mb', extended: false}))
-  router.use(bodyParser.urlencoded({extended: false}))
   router.use(methodOverride())
 
   // Create database
