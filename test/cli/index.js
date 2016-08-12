@@ -28,6 +28,7 @@ describe('cli', function () {
   var request
   var dbFile
   var routesFile
+  var middlewaresFile
 
   beforeEach(function () {
     dbFile = tempWrite.sync(JSON.stringify({
@@ -40,6 +41,12 @@ describe('cli', function () {
     routesFile = tempWrite.sync(JSON.stringify({
       '/blog/': '/'
     }), 'routes.json')
+
+    middlewaresFile = tempWrite.sync(
+      'module.exports = function (req, res, next) {\n' +
+      '  res.header("X-Hello", "World")\n' +
+      '  next() }'
+    , 'middlewares.js')
 
     ++PORT
     request = supertest('http://localhost:' + PORT)
@@ -109,14 +116,18 @@ describe('cli', function () {
     })
   })
 
-  describe('db.json -r routes.json -i _id --read-only', function () {
+  describe('db.json -r routes.json -m middlewares.js -i _id --read-only', function () {
     beforeEach(function (done) {
-      child = cli([dbFile, '-r', routesFile, '-i', '_id', '--read-only'])
+      child = cli([dbFile, '-r', routesFile, '-m', middlewaresFile, '-i', '_id', '--read-only'])
       serverReady(PORT, done)
     })
 
     it('should use routes.json and _id as the identifier', function (done) {
       request.get('/blog/posts/2').expect(200, done)
+    })
+
+    it('should apply middlewares', function (done) {
+      request.get('/blog/posts/2').expect('X-Hello', 'World', done)
     })
 
     it('should allow only GET requests', function (done) {
