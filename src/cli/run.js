@@ -111,8 +111,11 @@ module.exports = function (argv) {
 
       // Load middlewares
       if (argv.middlewares) {
+        if (!Array.isArray(argv.middlewares)) {
+          argv.middlewares = [argv.middlewares]
+        }
         console.log(chalk.gray('  Loading', argv.middlewares))
-        var middlewares = require(path.resolve(argv.middlewares))
+        var middlewares = argv.middlewares.map(function (m) { return require(path.resolve(m)) })
       }
 
       console.log(chalk.gray('  Done'))

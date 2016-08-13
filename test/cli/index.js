@@ -28,7 +28,7 @@ describe('cli', function () {
   var request
   var dbFile
   var routesFile
-  var middlewaresFile
+  var middlewareFiles
 
   beforeEach(function () {
     dbFile = tempWrite.sync(JSON.stringify({
@@ -42,12 +42,18 @@ describe('cli', function () {
       '/blog/': '/'
     }), 'routes.json')
 
-    middlewaresFile = tempWrite.sync(
-      'module.exports = function (req, res, next) {\n' +
-      '  res.header("X-Hello", "World")\n' +
-      '  next() }'
-    , 'middlewares.js')
-
+    middlewareFiles = [
+      tempWrite.sync(
+        'module.exports = function (req, res, next) {\n' +
+        '  res.header("X-Hello", "World")\n' +
+        '  next() }'
+        , 'helloWorldMiddleware.js'),
+      tempWrite.sync(
+        'module.exports = function (req, res, next) {\n' +
+        '  res.header("X-Konnichiwa", "Sekai")\n' +
+        '  next() }'
+        , 'helloWorldJaMiddlewares.js')
+    ]
     ++PORT
     request = supertest('http://localhost:' + PORT)
   })
@@ -116,9 +122,9 @@ describe('cli', function () {
     })
   })
 
-  describe('db.json -r routes.json -m middlewares.js -i _id --read-only', function () {
+  describe('db.json -r routes.json -m helloWorldMiddleware.js -i _id --read-only', function () {
     beforeEach(function (done) {
-      child = cli([dbFile, '-r', routesFile, '-m', middlewaresFile, '-i', '_id', '--read-only'])
+      child = cli([dbFile, '-r', routesFile, '-m', middlewareFiles[0], '-i', '_id', '--read-only'])
       serverReady(PORT, done)
     })
 
@@ -132,6 +138,19 @@ describe('cli', function () {
 
     it('should allow only GET requests', function (done) {
       request.post('/blog/posts').expect(403, done)
+    })
+  })
+
+  describe('db.json -m helloWorldMiddleware.js -m helloWorldJaMiddleware.js', function () {
+    beforeEach(function (done) {
+      child = cli([dbFile, '-m', middlewareFiles[0], '-m', middlewareFiles[1]])
+      serverReady(PORT, done)
+    })
+
+    it('should apply all middlewares', function (done) {
+      request.get('/blog/posts')
+        .expect('X-Hello', 'World')
+        .expect('X-Konnichiwa', 'Sekai', done)
     })
   })
 
