@@ -34,7 +34,7 @@ function prettyPrint (argv, object, rules) {
   console.log()
 }
 
-function createApp (source, object, routes, argv) {
+function createApp (source, object, routes, middlewares, argv) {
   var app = jsonServer.create()
 
   var router = jsonServer.router(
@@ -60,6 +60,10 @@ function createApp (source, object, routes, argv) {
   if (routes) {
     var rewriter = jsonServer.rewriter(routes)
     app.use(rewriter)
+  }
+
+  if (middlewares) {
+    app.use(middlewares)
   }
 
   if (argv.delay) {
@@ -105,10 +109,19 @@ module.exports = function (argv) {
         var routes = JSON.parse(fs.readFileSync(argv.routes))
       }
 
+      // Load middlewares
+      if (argv.middlewares) {
+        if (!Array.isArray(argv.middlewares)) {
+          argv.middlewares = [argv.middlewares]
+        }
+        console.log(chalk.gray('  Loading', argv.middlewares))
+        var middlewares = argv.middlewares.map(function (m) { return require(path.resolve(m)) })
+      }
+
       console.log(chalk.gray('  Done'))
 
       // Create app and server
-      app = createApp(source, data, routes, argv)
+      app = createApp(source, data, routes, middlewares, argv)
       server = app.listen(argv.port, argv.host)
 
       // Enhance with a destroy function

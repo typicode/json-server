@@ -28,6 +28,10 @@ module.exports = function () {
         alias: 'r',
         description: 'Path to routes file'
       },
+      middlewares: {
+        alias: 'm',
+        description: 'Path to middlewares file'
+      },
       static: {
         alias: 's',
         description: 'Set static files directory'

@@ -28,6 +28,7 @@ describe('cli', function () {
   var request
   var dbFile
   var routesFile
+  var middlewareFiles
 
   beforeEach(function () {
     dbFile = tempWrite.sync(JSON.stringify({
@@ -41,6 +42,18 @@ describe('cli', function () {
       '/blog/': '/'
     }), 'routes.json')
 
+    middlewareFiles = [
+      tempWrite.sync(
+        'module.exports = function (req, res, next) {\n' +
+        '  res.header("X-Hello", "World")\n' +
+        '  next() }'
+        , 'helloWorldMiddleware.js'),
+      tempWrite.sync(
+        'module.exports = function (req, res, next) {\n' +
+        '  res.header("X-Konnichiwa", "Sekai")\n' +
+        '  next() }'
+        , 'helloWorldJaMiddlewares.js')
+    ]
     ++PORT
     request = supertest('http://localhost:' + PORT)
   })
@@ -109,9 +122,9 @@ describe('cli', function () {
     })
   })
 
-  describe('db.json -r routes.json -i _id --read-only', function () {
+  describe('db.json -r routes.json -m helloWorldMiddleware.js -i _id --read-only', function () {
     beforeEach(function (done) {
-      child = cli([dbFile, '-r', routesFile, '-i', '_id', '--read-only'])
+      child = cli([dbFile, '-r', routesFile, '-m', middlewareFiles[0], '-i', '_id', '--read-only'])
       serverReady(PORT, done)
     })
 
@@ -119,8 +132,25 @@ describe('cli', function () {
       request.get('/blog/posts/2').expect(200, done)
     })
 
+    it('should apply middlewares', function (done) {
+      request.get('/blog/posts/2').expect('X-Hello', 'World', done)
+    })
+
     it('should allow only GET requests', function (done) {
       request.post('/blog/posts').expect(403, done)
+    })
+  })
+
+  describe('db.json -m helloWorldMiddleware.js -m helloWorldJaMiddleware.js', function () {
+    beforeEach(function (done) {
+      child = cli([dbFile, '-m', middlewareFiles[0], '-m', middlewareFiles[1]])
+      serverReady(PORT, done)
+    })
+
+    it('should apply all middlewares', function (done) {
+      request.get('/blog/posts')
+        .expect('X-Hello', 'World')
+        .expect('X-Konnichiwa', 'Sekai', done)
     })
   })
 
