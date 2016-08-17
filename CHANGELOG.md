@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.8.18][2016-08-17]
+
+* Add CLI option `--middlewares`
+
 ## [0.8.17][2016-07-25]
 
 * Fix snapshot creation for JS files (ex: `json-server generator.js`)
