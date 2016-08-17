@@ -215,8 +215,6 @@ describe('cli', function () {
     })
 
     it('should not set Content-Encoding to gzip', function (done) {
-      var origin = 'http://example.com'
-
       request.get('/posts')
         .expect(200)
         .end(function (err, res) {
