@@ -132,9 +132,9 @@ describe('cli', function () {
     })
   })
 
-  describe('db.json -m first-middleware.js -m second-middleware.js', function () {
+  describe('db.json -m first-middleware.js second-middleware.js', function () {
     beforeEach(function (done) {
-      child = cli([dbFile, '-m', middlewareFiles.en, '-m', middlewareFiles.jp])
+      child = cli([dbFile, '-m', middlewareFiles.en, middlewareFiles.jp])
       serverReady(PORT, done)
     })
 
@@ -184,7 +184,7 @@ describe('cli', function () {
     })
   })
 
-  describe('db.json --no-cors=true', function () {
+  describe('fixtures/seed.json --no-cors=true', function () {
     beforeEach(function (done) {
       child = cli(['fixtures/seed.js', '--no-cors=true'])
       serverReady(PORT, done)
@@ -198,8 +198,8 @@ describe('cli', function () {
         .expect(200)
         .end(function (err, res) {
           if (err) {
-            return done(err)
-          } else if ('access-control-allow-origin' in res.headers) {
+            done(err)
+          } if ('access-control-allow-origin' in res.headers) {
             done(new Error('CORS headers were not excluded from response'))
           } else {
             done()
@@ -208,7 +208,7 @@ describe('cli', function () {
     })
   })
 
-  describe('db.json --no-gzip=true', function () {
+  describe('fixtures/seed.json --no-gzip=true', function () {
     beforeEach(function (done) {
       child = cli(['fixtures/seed.js', '--no-gzip=true'])
       serverReady(PORT, done)
@@ -218,39 +218,14 @@ describe('cli', function () {
       var origin = 'http://example.com'
 
       request.get('/posts')
-        .set('Origin', origin)
         .expect(200)
         .end(function (err, res) {
           if (err) {
-            return done(err)
+            done(err)
           } else if ('content-encoding' in res.headers) {
             done(new Error('Content-Encoding is set to gzip'))
           } else {
             done()
-          }
-        })
-    })
-  })
-
-  describe('db.json --no-gzip=false', function () {
-    beforeEach(function (done) {
-      child = cli(['fixtures/seed.js', '--no-gzip=false'])
-      serverReady(PORT, done)
-    })
-
-    it('should set Content-Encoding to gzip', function (done) {
-      var origin = 'http://example.com'
-
-      request.get('/posts')
-        .set('Origin', origin)
-        .expect(200)
-        .end(function (err, res) {
-          if (err) {
-            return done(err)
-          } else if ('content-encoding' in res.headers) {
-            done()
-          } else {
-            done(new Error('Content-Encoding is not set to gzip'))
           }
         })
     })

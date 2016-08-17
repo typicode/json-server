@@ -30,7 +30,8 @@ module.exports = function () {
       },
       middlewares: {
         alias: 'm',
-        description: 'Path to middlewares file'
+        array: true,
+        description: 'Paths to middleware files'
       },
       static: {
         alias: 's',

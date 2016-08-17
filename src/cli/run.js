@@ -110,14 +110,15 @@ module.exports = function (argv) {
       }
 
       // Load middlewares
+      var middlewares
       if (argv.middlewares) {
-        if (!Array.isArray(argv.middlewares)) {
-          argv.middlewares = [argv.middlewares]
-        }
-        console.log(chalk.gray('  Loading', argv.middlewares))
-        var middlewares = argv.middlewares.map(function (m) { return require(path.resolve(m)) })
+        middlewares = argv.middlewares.map(function (m) {
+          console.log(chalk.gray('  Loading', m))
+          return require(path.resolve(m))
+        })
       }
 
+      // Done
       console.log(chalk.gray('  Done'))
 
       // Create app and server
