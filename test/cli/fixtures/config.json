@@ -1,0 +1,6 @@
+{
+  "middlewares": [
+    "./fixtures/middlewares/en",
+    "./fixtures/middlewares/jp"
+  ]
+}
