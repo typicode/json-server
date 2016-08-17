@@ -254,19 +254,20 @@ Now you can access resources using additional routes.
 /blog/posts/1/show
 ```
 
-### Use middlewares
+### Add middlewares
 
-You can use express middlewares with `--middlewares` option
+You can add your middlewares from the CLI using `--middlewares` option:
 
 ```js
-// middlewares.js
+// first.js
 module.exports = function (req, res, next) {
   res.Header('X-Hello', 'World')
 }
 ```
 
 ```bash
-json-server db.json --middlewares middlewares.js
+json-server db.json --middlewares ./hello.js
+json-server db.json --middlewares ./first.js ./second.js
 ```
 
 ### CLI usage
@@ -280,7 +281,7 @@ Options:
   --host, -H         Set host                               [default: "0.0.0.0"]
   --watch, -w        Watch file(s)                                     [boolean]
   --routes, -r       Path to routes file
-  --middlewares, -m  Path to middlewares file
+  --middlewares, -m  Paths to middleware files                           [array]
   --static, -s       Set static files directory
   --read-only, --ro  Allow only GET requests                           [boolean]
   --no-cors, --nc    Disable Cross-Origin Resource Sharing             [boolean]
