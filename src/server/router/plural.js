@@ -32,6 +32,10 @@ module.exports = function (db, name) {
       })
   }
 
+  function getFullURL (req) {
+    return req.protocol + '://' + req.get('host') + req.originalUrl
+  }
+
   // GET /name
   // GET /name?q=
   // GET /name?attr=&attr=
@@ -156,8 +160,28 @@ module.exports = function (db, name) {
       _page = parseInt(_page, 10)
       _page = _page >= 1 ? _page : 1
       _limit = parseInt(_limit, 10) || 10
-      _start = (_page - 1) * _limit
-      chain = chain.slice(_start, _start + _limit)
+      var page = utils.getPage(chain.value(), _page, _limit)
+      var links = {}
+      var fullURL = getFullURL(req)
+
+      if (page.first) {
+        links.first = fullURL.replace('page=' + page.current, 'page=' + page.first)
+      }
+
+      if (page.prev) {
+        links.prev = fullURL.replace('page=' + page.current, 'page=' + page.prev)
+      }
+
+      if (page.next) {
+        links.next = fullURL.replace('page=' + page.current, 'page=' + page.next)
+      }
+
+      if (page.last) {
+        links.last = fullURL.replace('page=' + page.current, 'page=' + page.last)
+      }
+
+      res.links(links)
+      chain = _.chain(page.items)
     } else if (_end) {
       _start = parseInt(_start, 10) || 0
       _end = parseInt(_end, 10)
