@@ -268,19 +268,18 @@ describe('Server', function () {
 
   describe('GET /:resource?_page=&_limit=', function () {
     it('should paginate with a custom limit', function (done) {
+      var link = [
+        '<http://localhost/list?_page=1&_limit=1>; rel="first"',
+        '<http://localhost/list?_page=1&_limit=1>; rel="prev"',
+        '<http://localhost/list?_page=3&_limit=1>; rel="next"',
+        '<http://localhost/list?_page=15&_limit=1>; rel="last"'
+      ].join(', ')
       request(server)
         .get('/list?_page=2&_limit=1')
         .set('host', 'localhost')
         .expect('Content-Type', /json/)
         .expect('x-total-count', db.list.length.toString())
-        .expect('link',
-          [
-            '<http://localhost/list?_page=1&_limit=1>; rel="first"',
-            '<http://localhost/list?_page=1&_limit=1>; rel="prev"',
-            '<http://localhost/list?_page=3&_limit=1>; rel="next"',
-            '<http://localhost/list?_page=15&_limit=1>; rel="last"'
-          ].join(', ')
-        )
+        .expect('link', link)
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
         .expect(db.list.slice(1, 2))
         .expect(200, done)
