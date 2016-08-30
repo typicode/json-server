@@ -44,8 +44,7 @@ module.exports = function (source) {
 
   // GET /db
   function showDatabase (req, res, next) {
-    res.locals.data = db.getState()
-    next()
+    res.jsonp(db.getState())
   }
 
   router.get('/db', showDatabase)
