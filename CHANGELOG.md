@@ -1,8 +1,12 @@
 # Change Log
 
+## [0.8.19][2016-08-18]
+
+* Fix [#341](https://github.com/typicode/json-server/issues/341)
+
 ## [0.8.18][2016-08-17]
 
-* Add CLI option `--middlewares`
+* Add CLI option `--middlewares` and support them in `json-server.json` config file
 
 ## [0.8.17][2016-07-25]
 
