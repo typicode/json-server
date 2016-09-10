@@ -168,7 +168,7 @@ module.exports = function (argv) {
       chokidar
         .watch(path.dirname(source))
         .on('change', function (file) {
-          if (file === source) {
+          if (path.resolve(file) === path.resolve(source)) {
             if (is.JSON(file)) {
               var obj = JSON.parse(fs.readFileSync(file))
               // Compare .json file content with in memory database
