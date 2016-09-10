@@ -85,15 +85,15 @@ GET /posts?id=1&id=2
 GET /comments?author.name=typicode
 ```
 
-### Slice
+### Paginate
 
-Add `_start` and `_end` or `_limit` (an `X-Total-Count` header is included in the response)
+Add `_page` and in the `Link` header you'll get `first`, `prev`, `next` and `last` links
 
 ```
-GET /posts?_start=20&_end=30
-GET /posts/1/comments?_start=20&_end=30
-GET /posts/1/comments?_start=20&_limit=10
+GET /posts?_page=7
 ```
+
+_10 items are returned by default_
 
 ### Sort
 
@@ -102,6 +102,16 @@ Add `_sort` and `_order` (ascending order by default)
 ```
 GET /posts?_sort=views&_order=DESC
 GET /posts/1/comments?_sort=votes&_order=ASC
+```
+
+### Slice
+
+Add `_start` and `_end` or `_limit` (an `X-Total-Count` header is included in the response)
+
+```
+GET /posts?_start=20&_end=30
+GET /posts/1/comments?_start=20&_end=30
+GET /posts/1/comments?_start=20&_limit=10
 ```
 
 ### Operators
