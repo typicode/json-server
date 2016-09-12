@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.8.20][2016-09-12]
+
+* Fix [#355](https://github.com/typicode/json-server/issues/355)
+* Add `_page` support
+
 ## [0.8.19][2016-08-18]
 
 * Fix [#341](https://github.com/typicode/json-server/issues/341)
