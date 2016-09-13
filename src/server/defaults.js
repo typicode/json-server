@@ -2,10 +2,11 @@ var fs = require('fs')
 var path = require('path')
 var express = require('express')
 var logger = require('morgan')
-var bodyParser = require('body-parser')
 var cors = require('cors')
 var compression = require('compression')
 var errorhandler = require('errorhandler')
+var bodyParser = require('body-parser')
+var methodOverride = require('method-override')
 var objectAssign = require('object-assign')
 
 module.exports = function (opts) {
@@ -18,9 +19,6 @@ module.exports = function (opts) {
   opts = objectAssign({ logger: true, static: staticDir }, opts)
 
   var arr = []
-
-  arr.push(bodyParser.json({limit: '10mb', extended: false}))
-  arr.push(bodyParser.urlencoded({extended: false}))
 
   // Compress all requests
   if (!opts.noGzip) {
@@ -69,6 +67,10 @@ module.exports = function (opts) {
       }
     })
   }
+
+  arr.push(bodyParser.json({limit: '10mb', extended: false}))
+  arr.push(bodyParser.urlencoded({extended: false}))
+  arr.push(methodOverride())
 
   return arr
 }

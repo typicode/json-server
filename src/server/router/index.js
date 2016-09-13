@@ -1,5 +1,4 @@
 var express = require('express')
-var methodOverride = require('method-override')
 var _ = require('lodash')
 var _db = require('underscore-db')
 var low = require('lowdb')
@@ -12,9 +11,6 @@ var mixins = require('../mixins')
 module.exports = function (source) {
   // Create router
   var router = express.Router()
-
-  // Add middlewares
-  router.use(methodOverride())
 
   // Create database
   var db
