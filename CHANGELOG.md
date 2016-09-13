@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.8.21][2016-09-13]
+
+* Fix bodyParser issue when using custom routes
+
 ## [0.8.20][2016-09-12]
 
 * Fix [#355](https://github.com/typicode/json-server/issues/355)
