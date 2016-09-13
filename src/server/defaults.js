@@ -5,9 +5,8 @@ var logger = require('morgan')
 var cors = require('cors')
 var compression = require('compression')
 var errorhandler = require('errorhandler')
-var bodyParser = require('body-parser')
-var methodOverride = require('method-override')
 var objectAssign = require('object-assign')
+var common = require('./common')
 
 module.exports = function (opts) {
   var userDir = path.join(process.cwd(), 'public')
@@ -68,9 +67,5 @@ module.exports = function (opts) {
     })
   }
 
-  arr.push(bodyParser.json({limit: '10mb', extended: false}))
-  arr.push(bodyParser.urlencoded({extended: false}))
-  arr.push(methodOverride())
-
-  return arr
+  return arr.concat(common)
 }

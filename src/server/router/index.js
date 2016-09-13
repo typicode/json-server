@@ -7,10 +7,14 @@ var plural = require('./plural')
 var nested = require('./nested')
 var singular = require('./singular')
 var mixins = require('../mixins')
+var common = require('../common')
 
 module.exports = function (source) {
   // Create router
   var router = express.Router()
+
+  // Add middlewares
+  router.use(common)
 
   // Create database
   var db
