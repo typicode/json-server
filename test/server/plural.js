@@ -74,7 +74,8 @@ describe('Server', function () {
     server.use(jsonServer.defaults())
     server.use(jsonServer.rewriter({
       '/api/': '/',
-      '/blog/posts/:id/show': '/posts/:id'
+      '/blog/posts/:id/show': '/posts/:id',
+      '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body'
     }))
     server.use(router)
   })
@@ -645,6 +646,13 @@ describe('Server', function () {
       request(server)
         .get('/blog/posts/1/show')
         .expect(db.posts[0])
+        .end(done)
+    })
+
+    it('should rewrite using params and query', function (done) {
+      request(server)
+        .get('/comments/special/1-quux')
+        .expect([db.comments[4]])
         .end(done)
     })
   })
