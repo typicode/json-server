@@ -1,5 +1,6 @@
 var express = require('express')
 var url = require('url')
+var _ = require('lodash')
 
 module.exports = function (routes) {
   var router = express.Router()
@@ -15,7 +16,7 @@ module.exports = function (routes) {
         req.url = target
         if (target.indexOf('?')) {
           // create query from target
-          Object.assign(req.query, url.parse(target, true).query)
+          _.assign(req.query, url.parse(target, true).query)
         }
         next()
       })
