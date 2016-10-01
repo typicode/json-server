@@ -24,8 +24,8 @@ describe('Server', function () {
     ]
 
     db.users = [
-      {id: 1, username: 'Jim'},
-      {id: 2, username: 'George'}
+      {id: 1, username: 'Jim', tel: '0123'},
+      {id: 2, username: 'George', tel: '123'}
     ]
 
     db.comments = [
@@ -38,6 +38,10 @@ describe('Server', function () {
 
     db.refs = [
       {id: 'abcd-1234', url: 'http://example.com', postId: 1, userId: 1}
+    ]
+
+    db.stringIds = [
+      {id: '1234'}
     ]
 
     db.deep = [
@@ -114,6 +118,14 @@ describe('Server', function () {
         .get('/comments?postId=1&published=true')
         .expect('Content-Type', /json/)
         .expect([db.comments[0]])
+        .expect(200, done)
+    })
+
+    it('should be strict', function (done) {
+      request(server)
+        .get('/users?tel=123')
+        .expect('Content-Type', /json/)
+        .expect([db.users[1]])
         .expect(200, done)
     })
 
@@ -349,6 +361,14 @@ describe('Server', function () {
         .expect(200, done)
     })
 
+    it('should support integer id as string', function (done) {
+      request(server)
+        .get('/stringIds/1234')
+        .expect('Content-Type', /json/)
+        .expect(db.stringIds[0])
+        .expect(200, done)
+    })
+
     it('should respond with 404 if resource is not found', function (done) {
       request(server)
         .get('/posts/9001')
@@ -388,25 +408,25 @@ describe('Server', function () {
 
   describe('GET /:resource/:id?_embed=', function () {
     it('should respond with corresponding resources and embedded resources', function (done) {
-      var posts = db.posts[0]
-      posts.comments = [db.comments[0], db.comments[1]]
+      var post = _.cloneDeep(db.posts[0])
+      post.comments = [db.comments[0], db.comments[1]]
       request(server)
         .get('/posts/1?_embed=comments')
         .expect('Content-Type', /json/)
-        .expect(posts)
+        .expect(post)
         .expect(200, done)
     })
   })
 
   describe('GET /:resource/:id?_embed=&_embed=', function () {
     it('should respond with corresponding resource and embedded resources', function (done) {
-      var posts = db.posts[0]
-      posts.comments = [db.comments[0], db.comments[1]]
-      posts.refs = [db.refs[0]]
+      var post = _.cloneDeep(db.posts[0])
+      post.comments = [db.comments[0], db.comments[1]]
+      post.refs = [db.refs[0]]
       request(server)
         .get('/posts/1?_embed=comments&_embed=refs')
         .expect('Content-Type', /json/)
-        .expect(posts)
+        .expect(post)
         .expect(200, done)
     })
   })
@@ -425,12 +445,12 @@ describe('Server', function () {
 
   describe('GET /:resource/:id?_expand=', function () {
     it('should respond with corresponding resource and expanded inner resources', function (done) {
-      var comments = db.comments[0]
-      comments.post = db.posts[0]
+      var comment = _.cloneDeep(db.comments[0])
+      comment.post = db.posts[0]
       request(server)
         .get('/comments/1?_expand=post')
         .expect('Content-Type', /json/)
-        .expect(comments)
+        .expect(comment)
         .expect(200, done)
     })
   })
@@ -466,7 +486,7 @@ describe('Server', function () {
       function (done) {
         request(server)
           .post('/posts')
-          .send({body: 'foo', booleanValue: 'true', integerValue: '1'})
+          .send({body: 'foo', booleanValue: true, integerValue: 1})
           .expect('Content-Type', /json/)
           .expect({id: 3, body: 'foo', booleanValue: true, integerValue: 1})
           .expect(201)
@@ -475,23 +495,26 @@ describe('Server', function () {
             assert.equal(db.posts.length, 3)
             done()
           })
-      })
+      }
+    )
 
     it('should support x-www-form-urlencoded',
       function (done) {
         request(server)
           .post('/posts')
           .type('form')
-          .send({body: 'foo'})
+          .send({body: 'foo', booleanValue: true, integerValue: 1})
           .expect('Content-Type', /json/)
-          .expect({id: 3, body: 'foo'})
+          // x-www-form-urlencoded will convert to string
+          .expect({id: 3, body: 'foo', booleanValue: 'true', integerValue: '1'})
           .expect(201)
           .end(function (err, res) {
             if (err) return done(err)
             assert.equal(db.posts.length, 3)
             done()
           })
-      })
+      }
+    )
 
     it('should respond with json, create a resource and generate string id',
       function (done) {
@@ -525,7 +548,7 @@ describe('Server', function () {
       request(server)
         .put('/posts/1')
         // body property omitted to test that the resource is replaced
-        .send({id: 1, booleanValue: 'true', integerValue: '1'})
+        .send(post)
         .expect('Content-Type', /json/)
         .expect(post)
         .expect(200)
@@ -540,7 +563,7 @@ describe('Server', function () {
     it('should respond with 404 if resource is not found', function (done) {
       request(server)
         .put('/posts/9001')
-        .send({id: 1, body: 'bar', booleanValue: 'true', integerValue: '1'})
+        .send({id: 1, body: 'bar'})
         .expect('Content-Type', /json/)
         .expect({})
         .expect(404, done)

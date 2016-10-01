@@ -107,13 +107,16 @@ module.exports = function (db, name) {
 
         chain = chain.filter(function (element) {
           return arr
-            .map(utils.toNative)
             .map(function (value) {
               var isDifferent = key.indexOf('_ne') !== -1
               var isRange = key.indexOf('_lte') !== -1 || key.indexOf('_gte') !== -1
               var isLike = key.indexOf('_like') !== -1
               var path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
               var elementValue = _.get(element, path)
+
+              if (!elementValue) {
+                return false
+              }
 
               if (isRange) {
                 var isLowerThan = key.indexOf('_gte') !== -1
@@ -124,11 +127,11 @@ module.exports = function (db, name) {
                   return value >= elementValue
                 }
               } else if (isDifferent) {
-                return value !== elementValue
+                return value !== elementValue.toString()
               } else if (isLike) {
-                return new RegExp(value, 'i').test(elementValue)
+                return new RegExp(value, 'i').test(elementValue.toString())
               } else {
-                return _.matchesProperty(key, value)(element)
+                return value === elementValue.toString()
               }
             }).reduce(function (a, b) {
               return a || b
@@ -209,8 +212,7 @@ module.exports = function (db, name) {
   function show (req, res, next) {
     var _embed = req.query._embed
     var _expand = req.query._expand
-    var id = utils.toNative(req.params.id)
-    var resource = db.get(name).getById(id).value()
+    var resource = db.get(name).getById(req.params.id).value()
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
@@ -232,10 +234,6 @@ module.exports = function (db, name) {
 
   // POST /name
   function create (req, res, next) {
-    for (var key in req.body) {
-      req.body[key] = utils.toNative(req.body[key])
-    }
-
     var resource = db.get(name)
       .insert(req.body)
       .value()
@@ -248,11 +246,7 @@ module.exports = function (db, name) {
   // PUT /name/:id
   // PATCH /name/:id
   function update (req, res, next) {
-    for (var key in req.body) {
-      req.body[key] = utils.toNative(req.body[key])
-    }
-
-    var id = utils.toNative(req.params.id)
+    var id = req.params.id
     var chain = db.get(name)
 
     chain = req.method === 'PATCH'
@@ -270,7 +264,7 @@ module.exports = function (db, name) {
 
   // DELETE /name/:id
   function destroy (req, res, next) {
-    var resource = db.get(name).removeById(utils.toNative(req.params.id)).value()
+    var resource = db.get(name).removeById(req.params.id).value()
 
     // Remove dependents documents
     var removable = db._.getRemovable(db.getState())
