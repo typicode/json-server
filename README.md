@@ -184,7 +184,7 @@ GET /
 ### Static file server
 
 You can use JSON Server to serve your HTML, JS and CSS, simply create a `./public` directory
-or use `--static`.
+or use `--static` to set a different static files directory.
 
 ```bash
 mkdir public
@@ -193,7 +193,7 @@ json-server db.json
 ```
 
 ```bash
-json-server db.json --static ./static
+json-server db.json --static ./some-other-dir
 ```
 
 ### Alternative port
