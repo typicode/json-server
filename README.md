@@ -453,7 +453,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 * [Create a Mock REST API in Seconds for Prototyping your Frontend](https://coligo.io/create-mock-rest-api-with-json-server/)
 
 ### Third-party tools
-
+* [JSON Schema Faker](https://github.com/json-schema-faker/json-schema-faker)
 * [Grunt JSON Server](https://github.com/tfiwm/grunt-json-server)
 * [Docker JSON Server](https://github.com/clue/docker-json-server)
 * [JSON Server GUI](https://github.com/naholyr/json-server-gui)
