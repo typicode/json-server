@@ -153,7 +153,7 @@ module.exports = function (db, name) {
     // Slice result
     if (_end || _limit || _page) {
       res.setHeader('X-Total-Count', chain.size())
-      res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count')
+      res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count' + (_page ? ', Links' : ''))
     }
 
     if (_page) {
