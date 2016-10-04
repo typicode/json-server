@@ -8,5 +8,6 @@ module.exports = {
   },
   defaults: require('./defaults'),
   router: require('./router'),
-  rewriter: require('./rewriter')
+  rewriter: require('./rewriter'),
+  bodyParser: require('./body-parser')
 }

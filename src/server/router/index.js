@@ -1,20 +1,22 @@
 var express = require('express')
+var methodOverride = require('method-override')
 var _ = require('lodash')
 var _db = require('underscore-db')
 var low = require('lowdb')
 var fileAsync = require('lowdb/lib/file-async')
+var bodyParser = require('../body-parser')
 var plural = require('./plural')
 var nested = require('./nested')
 var singular = require('./singular')
 var mixins = require('../mixins')
-var common = require('../common')
 
 module.exports = function (source) {
   // Create router
   var router = express.Router()
 
   // Add middlewares
-  router.use(common)
+  router.use(methodOverride())
+  router.use(bodyParser)
 
   // Create database
   var db

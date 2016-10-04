@@ -6,7 +6,6 @@ var cors = require('cors')
 var compression = require('compression')
 var errorhandler = require('errorhandler')
 var objectAssign = require('object-assign')
-var common = require('./common')
 
 module.exports = function (opts) {
   var userDir = path.join(process.cwd(), 'public')
@@ -67,5 +66,5 @@ module.exports = function (opts) {
     })
   }
 
-  return arr.concat(common)
+  return arr
 }
