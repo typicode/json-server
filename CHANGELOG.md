@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.8.22][2016-10-04]
+
+* Fix `Links` header issue when using `_page`
+* Add query params support to the route rewriter
+
 ## [0.8.21][2016-09-13]
 
 * Fix bodyParser issue when using custom routes
