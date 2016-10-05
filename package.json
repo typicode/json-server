@@ -32,6 +32,7 @@
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-preset-es2015": "^6.9.0",
+    "babel-register": "^6.16.3",
     "cross-env": "^1.0.8",
     "husky": "^0.11.4",
     "mkdirp": "^0.5.1",
