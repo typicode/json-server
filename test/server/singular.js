@@ -1,11 +1,10 @@
-var request = require('supertest')
-var jsonServer = require('../../src/server')
+const request = require('supertest')
+const jsonServer = require('../../src/server')
 
-/* global beforeEach, describe, it */
 describe('Server', function () {
-  var server
-  var router
-  var db
+  let server
+  let router
+  let db
 
   beforeEach(function () {
     db = {}
@@ -32,7 +31,7 @@ describe('Server', function () {
 
   describe('POST /:resource', function () {
     it('should create resource', function (done) {
-      var user = { name: 'bar' }
+      const user = { name: 'bar' }
       request(server)
         .post('/user')
         .send(user)
@@ -43,7 +42,7 @@ describe('Server', function () {
 
   describe('PUT /:resource', function () {
     it('should update resource', function (done) {
-      var user = { name: 'bar' }
+      const user = { name: 'bar' }
       request(server)
         .put('/user')
         .send(user)

@@ -1,4 +1,4 @@
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 
 module.exports = [
   bodyParser.json({limit: '10mb', extended: false}),

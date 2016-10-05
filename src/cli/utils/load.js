@@ -1,30 +1,37 @@
-var path = require('path')
-var request = require('request')
-var low = require('lowdb')
-var fileAsync = require('lowdb/lib/file-async')
-var is = require('./is')
+const path = require('path')
+const request = require('request')
+const low = require('lowdb')
+const fileAsync = require('lowdb/lib/file-async')
+const is = require('./is')
 
 module.exports = function (source, cb) {
-  var data
-
   if (is.URL(source)) {
-    request({ url: source, json: true }, function (err, response) {
+    // Load remote data
+    const opts = {
+      url: source,
+      json: true
+    }
+
+    request(opts, (err, response) => {
       if (err) return cb(err)
       cb(null, response.body)
     })
   } else if (is.JS(source)) {
-    var filename = path.resolve(source)
+    // Clear cache
+    const filename = path.resolve(source)
     delete require.cache[filename]
-    var dataFn = require(filename)
+    const dataFn = require(filename)
 
     if (typeof dataFn !== 'function') {
       throw new Error('The database is a JavaScript file but the export is not a function.')
     }
 
-    data = dataFn()
+    // Run dataFn to generate data
+    const data = dataFn()
     cb(null, data)
   } else if (is.JSON(source)) {
-    data = low(source, { storage: fileAsync }).getState()
+    // Load JSON using lowdb
+    const data = low(source, { storage: fileAsync }).getState()
     cb(null, data)
   } else {
     throw new Error('Unsupported source ' + source)

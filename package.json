@@ -39,14 +39,14 @@
     "os-tmpdir": "^1.0.1",
     "rimraf": "^2.5.2",
     "server-ready": "^0.2.0",
-    "standard": "^7.1.2",
+    "standard": "^8.3.0",
     "supertest": "^1.2.0",
     "temp-write": "^2.1.0"
   },
   "scripts": {
     "test": "npm run test:cli && npm run test:server && standard",
-    "test:cli": "cross-env NODE_ENV=test mocha -R spec test/cli/*.js",
-    "test:server": "cross-env NODE_ENV=test mocha -R spec test/server/*.js",
+    "test:cli": "cross-env NODE_ENV=test mocha test/cli/*.js",
+    "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
     "start": "node bin",
     "prepush": "npm t",
     "build": "babel src -d lib"
@@ -76,5 +76,11 @@
   "bugs": {
     "url": "https://github.com/typicode/json-server/issues"
   },
-  "homepage": "https://github.com/typicode/json-server"
+  "homepage": "https://github.com/typicode/json-server",
+  "standard": {
+    "fix": true,
+    "env": {
+      "mocha": true
+    }
+  }
 }

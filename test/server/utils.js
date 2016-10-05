@@ -1,12 +1,10 @@
-var assert = require('assert')
-var utils = require('../../src/server/utils')
-
-/* global describe, it */
+const assert = require('assert')
+const utils = require('../../src/server/utils')
 
 describe('utils', function () {
   describe('getPage', function () {
-    var array = [1, 2, 3, 4, 5]
-    var perPage = 2
+    const array = [1, 2, 3, 4, 5]
+    const perPage = 2
 
     it('should return first page', function () {
       assert.deepEqual(
