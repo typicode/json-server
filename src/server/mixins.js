@@ -1,4 +1,4 @@
-const uuid = require('node-uuid')
+const shortid = require('shortid')
 const pluralize = require('pluralize')
 
 module.exports = {
@@ -46,7 +46,7 @@ function createId (coll) {
     // Increment integer id or generate string id
     return _.isFinite(id)
       ? ++id
-      : uuid()
+      : shortid.generate()
   }
 }
 
