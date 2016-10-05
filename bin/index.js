@@ -1,2 +1,4 @@
 #!/usr/bin/env node
-require('../lib/cli')()
+process.env.NODE_ENV === 'test'
+  ? require('../src/cli')()
+  : require('../lib/cli')()
