@@ -7,6 +7,7 @@ const enableDestroy = require('server-destroy')
 const pause = require('connect-pause')
 const is = require('./utils/is')
 const load = require('./utils/load')
+const example = require('./example.json')
 const jsonServer = require('../server')
 
 function prettyPrint (argv, object, rules) {
@@ -97,6 +98,13 @@ module.exports = function (argv) {
 
   function start (cb) {
     console.log()
+
+    // Be nice and create a default db.json if it doesn't exist
+    if (is.JSON(source) && !fs.existsSync(source)) {
+      console.log(chalk.gray(`  ${source} doesn't seem to exist, creating one`))
+      fs.writeFileSync(source, JSON.stringify(example, null, 2))
+    }
+
     console.log(chalk.gray('  Loading', source))
 
     // Load JSON, JS or HTTP database
