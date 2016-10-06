@@ -9,7 +9,6 @@ const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 const express = require('express')
 const serverReady = require('server-ready')
-const pkg = require('../../package.json')
 
 let PORT = 3100
 
@@ -238,7 +237,7 @@ describe('cli', () => {
 
   describe('--watch db.json -r routes.json', () => {
     beforeEach((done) => {
-      child = cli([ '--watch', dbFile, '-r', routesFile ])
+      child = cli([ dbFile, '-r', routesFile, '--watch' ])
       serverReady(PORT, done)
     })
 
@@ -249,26 +248,23 @@ describe('cli', () => {
       }, 1000)
     })
 
-    it('should watch routes file', function (done) {
-      // Can be very slow
-      this.timeout(10000)
+    it('should watch routes file', (done) => {
       fs.writeFileSync(routesFile, JSON.stringify({ '/api/': '/' }))
       setTimeout(() => {
         request.get('/api/posts').expect(200, done)
-      }, 9000)
+      }, 1000)
     })
   })
 
-  describe('db.json --config some-config.json', (done) => {
+  describe('db.json', (done) => {
     beforeEach((done) => {
-      child = cli([ dbFile, '--config', 'fixtures/config.json' ])
+      fs.unlinkSync(dbFile)
+      child = cli([ dbFile ])
       serverReady(PORT, done)
     })
 
-    it('should apply all middlewares', (done) => {
-      request.get('/posts')
-        .expect('X-Hello', 'World')
-        .expect('X-Konnichiwa', 'Sekai', done)
+    it('should create JSON file if it doesn\'t exist', (done) => {
+      request.get('/posts').expect(200, done)
     })
   })
 })

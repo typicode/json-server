@@ -2,7 +2,6 @@ const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
 const chalk = require('chalk')
-const chokidar = require('chokidar')
 const enableDestroy = require('server-destroy')
 const pause = require('connect-pause')
 const is = require('./utils/is')
@@ -174,36 +173,38 @@ module.exports = function (argv) {
 
       // Watch .js or .json file
       // Since lowdb uses atomic writing, directory is watched instead of file
-      chokidar
-        .watch(path.dirname(source))
-        .on('change', (file) => {
-          if (path.resolve(file) === path.resolve(source)) {
-            if (is.JSON(file)) {
-              var obj = JSON.parse(fs.readFileSync(file))
-              // Compare .json file content with in memory database
-              var isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
-              if (isDatabaseDifferent) {
-                console.log(chalk.gray(`  ${file} has changed, reloading...`))
-                server && server.destroy()
-                start()
-              }
-            } else {
-              console.log(chalk.gray(`  ${file} has changed, reloading...`))
+      const watchedDir = path.dirname(source)
+      fs.watch(watchedDir, (event, file) => {
+        const watchedFile = path.resolve(watchedDir, file)
+        if (watchedFile === path.resolve(source)) {
+          if (is.JSON(watchedFile)) {
+            var obj = JSON.parse(fs.readFileSync(watchedFile))
+            // Compare .json file content with in memory database
+            var isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
+            if (isDatabaseDifferent) {
+              console.log(chalk.gray(`  ${source} has changed, reloading...`))
               server && server.destroy()
               start()
             }
+          } else {
+            console.log(chalk.gray(`  ${source} has changed, reloading...`))
+            server && server.destroy()
+            start()
           }
-        })
+        }
+      })
 
       // Watch routes
       if (argv.routes) {
-        chokidar
-          .watch(argv.routes)
-          .on('change', (file) => {
-            console.log(chalk.gray(`  ${file} has changed, reloading...`))
+        const watchedDir = path.dirname(argv.routes)
+        fs.watch(watchedDir, (event, file) => {
+          const watchedFile = path.resolve(watchedDir, file)
+          if (watchedFile === path.resolve(argv.routes)) {
+            console.log(chalk.gray(`  ${argv.routes} has changed, reloading...`))
             server && server.destroy()
             start()
-          })
+          }
+        })
       }
     }
   })
