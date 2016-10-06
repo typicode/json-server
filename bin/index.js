@@ -1,3 +1,2 @@
 #!/usr/bin/env node
-// FIXME
-require('../src/cli')()
+require('../lib/cli/bin')
