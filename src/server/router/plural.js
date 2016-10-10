@@ -81,10 +81,10 @@ module.exports = (db, name) => {
           _.has(arr[i], query) ||
           query === 'callback' ||
           query === '_' ||
-          query.indexOf('_lte') !== -1 ||
-          query.indexOf('_gte') !== -1 ||
-          query.indexOf('_ne') !== -1 ||
-          query.indexOf('_like') !== -1
+          /_lte$/.test(query) ||
+          /_gte$/.test(query) ||
+          /_ne$/.test(query) ||
+          /_like$/.test(query)
         ) return
       }
       delete req.query[query]
@@ -114,9 +114,9 @@ module.exports = (db, name) => {
         chain = chain.filter((element) => {
           return arr
             .map(function (value) {
-              const isDifferent = key.indexOf('_ne') !== -1
-              const isRange = key.indexOf('_lte') !== -1 || key.indexOf('_gte') !== -1
-              const isLike = key.indexOf('_like') !== -1
+              const isDifferent = /_ne$/.test(key)
+              const isRange = /_lte$/.test(key) || /_gte$/.test(key)
+              const isLike = /_like$/.test(key)
               const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
               const elementValue = _.get(element, path)
 
@@ -125,7 +125,7 @@ module.exports = (db, name) => {
               }
 
               if (isRange) {
-                const isLowerThan = key.indexOf('_gte') !== -1
+                const isLowerThan = /_gte$/.test(key)
 
                 return isLowerThan
                   ? value <= elementValue
