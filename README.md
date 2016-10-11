@@ -1,4 +1,4 @@
-# JSON Server [![](https://travis-ci.org/typicode/json-server.svg)](https://travis-ci.org/typicode/json-server) [![](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server) [![](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/typicode/json-server?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# JSON Server [![](https://travis-ci.org/typicode/json-server.svg?branch=master)](https://travis-ci.org/typicode/json-server) [![](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server) [![](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/typicode/json-server?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)
 
@@ -184,7 +184,7 @@ GET /
 ### Static file server
 
 You can use JSON Server to serve your HTML, JS and CSS, simply create a `./public` directory
-or use `--static`.
+or use `--static` to set a different static files directory.
 
 ```bash
 mkdir public
@@ -193,7 +193,7 @@ json-server db.json
 ```
 
 ```bash
-json-server db.json --static ./static
+json-server db.json --static ./some-other-dir
 ```
 
 ### Alternative port
@@ -271,7 +271,7 @@ You can add your middlewares from the CLI using `--middlewares` option:
 ```js
 // first.js
 module.exports = function (req, res, next) {
-  res.Header('X-Hello', 'World')
+  res.header('X-Hello', 'World')
 }
 ```
 

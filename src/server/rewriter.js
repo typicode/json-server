@@ -1,6 +1,8 @@
 const express = require('express')
+const url = require('url')
+const _ = require('lodash')
 
-module.exports = function (routes) {
+module.exports = (routes) => {
   const router = express.Router()
 
   Object.keys(routes).forEach((route) => {
@@ -12,6 +14,10 @@ module.exports = function (routes) {
           target = target.replace(':' + param, req.params[param])
         }
         req.url = target
+        if (target.indexOf('?')) {
+          // create query from target
+          _.assign(req.query, url.parse(target, true).query)
+        }
         next()
       })
     } else {

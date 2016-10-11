@@ -77,7 +77,8 @@ describe('Server', () => {
     server.use(jsonServer.defaults())
     server.use(jsonServer.rewriter({
       '/api/': '/',
-      '/blog/posts/:id/show': '/posts/:id'
+      '/blog/posts/:id/show': '/posts/:id',
+      '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body'
     }))
     server.use(router)
   })
@@ -270,8 +271,8 @@ describe('Server', () => {
       request(server)
         .get('/list?_page=2')
         .expect('Content-Type', /json/)
-        .expect('X-Total-Count', db.list.length.toString())
-        .expect('Access-Control-Expose-Headers', 'X-Total-Count')
+        .expect('x-total-count', db.list.length.toString())
+        .expect('Access-Control-Expose-Headers', 'X-Total-Count, Links')
         .expect(db.list.slice(10, 20))
         .expect(200, done)
     })
@@ -291,7 +292,7 @@ describe('Server', () => {
         .expect('Content-Type', /json/)
         .expect('x-total-count', db.list.length.toString())
         .expect('link', link)
-        .expect('Access-Control-Expose-Headers', 'X-Total-Count')
+        .expect('Access-Control-Expose-Headers', 'X-Total-Count, Links')
         .expect(db.list.slice(1, 2))
         .expect(200, done)
     })
@@ -667,6 +668,13 @@ describe('Server', () => {
       request(server)
         .get('/blog/posts/1/show')
         .expect(db.posts[0])
+        .end(done)
+    })
+
+    it('should rewrite using params and query', function (done) {
+      request(server)
+        .get('/comments/special/1-quux')
+        .expect([db.comments[4]])
         .end(done)
     })
   })
