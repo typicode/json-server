@@ -271,7 +271,7 @@ You can add your middlewares from the CLI using `--middlewares` option:
 ```js
 // first.js
 module.exports = function (req, res, next) {
-  res.Header('X-Hello', 'World')
+  res.header('X-Hello', 'World')
 }
 ```
 
