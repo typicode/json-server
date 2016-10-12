@@ -19,7 +19,7 @@ const middlewareFiles = {
 
 function cli (args) {
   const bin = path.join(__dirname, '../../src/cli/bin')
-  return cp.spawn('node', [bin, '-p', PORT].concat(args), {
+  return cp.spawn('babel-node', ['--', bin, '-p', PORT].concat(args), {
     cwd: __dirname,
     stdio: ['pipe', process.stdout, process.stderr]
   })
