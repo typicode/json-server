@@ -49,7 +49,7 @@
     "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
     "start": "node bin",
     "prepush": "npm t",
-    "build": "babel src -d lib"
+    "build": "babel src -d lib --copy-files"
   },
   "repository": {
     "type": "git",
