@@ -100,7 +100,9 @@ module.exports = function (argv) {
 
     // Be nice and create a default db.json if it doesn't exist
     if (is.JSON(source) && !fs.existsSync(source)) {
-      console.log(chalk.gray(`  ${source} doesn't seem to exist, creating one`))
+      console.log(chalk.yellow(`  Oops, ${source} doesn't seem to exist`))
+      console.log(chalk.yellow(`  Creating ${source} with some default data`))
+      console.log()
       fs.writeFileSync(source, JSON.stringify(example, null, 2))
     }
 
