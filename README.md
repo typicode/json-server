@@ -48,7 +48,7 @@ Also when doing requests, its good to know that
 ## Install
 
 ```bash
-$ npm install -g json-server
+$ npm install -g json-server@next
 ```
 
 ## Routes
