@@ -269,9 +269,10 @@ Now you can access resources using additional routes.
 You can add your middlewares from the CLI using `--middlewares` option:
 
 ```js
-// first.js
+// hello.js
 module.exports = function (req, res, next) {
   res.header('X-Hello', 'World')
+  next()
 }
 ```
 
