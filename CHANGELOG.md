@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.9.0-beta.1]
+## [0.9.0-beta.2]
 
 * Shorter `uuid`
 * No automatic conversion of strings to boolean or integer
