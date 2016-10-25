@@ -51,6 +51,8 @@ Also when doing requests, its good to know that
 $ npm install -g json-server
 ```
 
+__Beta__ if you want to try `v0.9.0-beta` [[README](https://github.com/typicode/json-server/tree/next)], you can use the following command `npm install -g json-server@next` 
+
 ## Routes
 
 Based on the previous `db.json` file, here are all the default routes. You can also add [other routes](#add-routes) using `--routes`.
