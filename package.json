@@ -44,7 +44,7 @@
     "temp-write": "^2.1.0"
   },
   "scripts": {
-    "test": "npm run test:cli && npm run test:server && standard",
+    "test": "npm run test:cli && npm run test:server && standard --fix",
     "test:cli": "cross-env NODE_ENV=test mocha test/cli/*.js",
     "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
     "start": "node bin",

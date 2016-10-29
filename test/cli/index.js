@@ -17,8 +17,9 @@ const middlewareFiles = {
   jp: './fixtures/middlewares/jp.js'
 }
 
+const bin = path.join(__dirname, '../../src/cli/bin')
+
 function cli (args) {
-  const bin = path.join(__dirname, '../../src/cli/bin')
   return cp.spawn('babel-node', ['--', bin, '-p', PORT].concat(args), {
     cwd: __dirname,
     stdio: ['pipe', process.stdout, process.stderr]
@@ -52,7 +53,7 @@ describe('cli', () => {
   })
 
   afterEach(() => {
-    child.kill()
+    child.kill('SIGKILL')
   })
 
   describe('db.json', () => {
@@ -256,7 +257,7 @@ describe('cli', () => {
     })
   })
 
-  describe('db.json', (done) => {
+  describe('db.json', () => {
     beforeEach((done) => {
       fs.unlinkSync(dbFile)
       child = cli([ dbFile ])
@@ -265,6 +266,20 @@ describe('cli', () => {
 
     it('should create JSON file if it doesn\'t exist', (done) => {
       request.get('/posts').expect(200, done)
+    })
+  })
+
+  describe.only('db.json with error', () => {
+    it('should output an error', (done) => {
+      const errorFile = tempWrite.sync(
+        JSON.stringify({ 'blog/posts': [] }),
+        'db-error.json'
+      )
+      child = cli([ errorFile ])
+      child.on('close', (code) => {
+        assert.equal(code, 1)
+        done()
+      })
     })
   })
 })

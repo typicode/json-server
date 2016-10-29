@@ -6,6 +6,7 @@ const enableDestroy = require('server-destroy')
 const pause = require('connect-pause')
 const is = require('./utils/is')
 const load = require('./utils/load')
+const checkDatabase = require('./utils/check-database')
 const example = require('./example.json')
 const jsonServer = require('../server')
 
@@ -42,6 +43,15 @@ function createApp (source, object, routes, middlewares, argv) {
     ? source
     : object
   )
+
+  try {
+    checkDatabase(router.db.getState())
+  } catch (e) {
+    const msg = `Error: ${e.message}`
+    console.log()
+    console.error(chalk.red(msg))
+    process.exit(1)
+  }
 
   const defaultsOpts = {
     logger: !argv.quiet,
