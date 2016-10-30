@@ -51,7 +51,15 @@ Also when doing requests, its good to know that
 $ npm install -g json-server
 ```
 
-__Beta__ if you want to try `v0.9.0-beta` [[README](https://github.com/typicode/json-server/tree/next)], you can use the following command `npm install -g json-server@next` 
+### Beta
+
+To try [v0.9.0-beta](https://github.com/typicode/json-server/tree/next)
+
+```bash
+$ npm install -g json-server@next
+```
+
+
 
 ## Routes
 
