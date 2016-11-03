@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.8.23][2016-11-31]
+
+* Fix `Links` header
+
 ## [0.8.22][2016-10-04]
 
 * Fix `Links` header issue when using `_page`
