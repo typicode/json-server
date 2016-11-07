@@ -5,6 +5,7 @@ const _db = require('underscore-db')
 const low = require('lowdb')
 const fileAsync = require('lowdb/lib/file-async')
 const bodyParser = require('../body-parser')
+const validateData = require('./validate-data')
 const plural = require('./plural')
 const nested = require('./nested')
 const singular = require('./singular')
@@ -25,6 +26,13 @@ module.exports = (source) => {
     db.setState(source)
   } else {
     db = low(source, { storage: fileAsync })
+  }
+
+  try {
+    validateData(db.getState())
+  } catch (err) {
+    console.log(err.message)
+    process.exit(1)
   }
 
   // Add underscore-db methods to db

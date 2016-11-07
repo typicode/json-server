@@ -257,7 +257,7 @@ describe('cli', () => {
     })
   })
 
-  describe('db.json', () => {
+  describe('non existent db.json', () => {
     beforeEach((done) => {
       fs.unlinkSync(dbFile)
       child = cli([ dbFile ])
@@ -269,16 +269,21 @@ describe('cli', () => {
     })
   })
 
-  describe.only('db.json with error', () => {
-    it('should output an error', (done) => {
-      const errorFile = tempWrite.sync(
-        JSON.stringify({ 'blog/posts': [] }),
+  describe('db.json with error', () => {
+    beforeEach(() => {
+      dbFile = tempWrite.sync(
+        JSON.stringify({ 'a/b': [] }),
         'db-error.json'
       )
-      child = cli([ errorFile ])
-      child.on('close', (code) => {
-        assert.equal(code, 1)
-        done()
+    })
+
+    it('should exit with an error', (done) => {
+      child = cli([ dbFile ])
+      child.on('exit', (code) => {
+        if (code === 1) {
+          return done()
+        }
+        return done(new Error('should exit with error code'))
       })
     })
   })
