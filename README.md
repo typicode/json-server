@@ -354,7 +354,15 @@ server.listen(3000, function () {
 $ node server.js
 ```
 
-For an in-memory database, you can pass an object to `jsonServer.router()`.
+The path you provide to the `jsonServer.router` function  is relative to the directory from where you launch your node process. If you run the above code from another directory, it’s better to use an absolute path:
+
+```js
+var path = require('path')
+var router = jsonServer.router(path.join(__dirname, 'db.json'))
+```
+
+For an in-memory database, simply pass an object to `jsonServer.router()`.
+
 Please note also that `jsonServer.router()` can be used in existing Express projects.
 
 #### Custom routes example
