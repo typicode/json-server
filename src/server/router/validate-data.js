@@ -2,11 +2,12 @@ const _ = require('lodash')
 
 function validateKey (key) {
   if (key.indexOf('/') !== -1) {
-    const msg =
-      `Oops, found / character in data property ${key} which is not` +
-      'supported and may results in errors.\n' +
-      'If you need to add a prefix to your routes, see\n' +
-      'https://github.com/typicode/json-server/tree/next#add-routes'
+    const msg = [
+      `Oops, found / character in database property '${key}'.`,
+      '',
+      '/ aren\'t supported, if you want to tweak default routes, see',
+      'https://github.com/typicode/json-server/tree/next#add-custom-routes'
+    ].join('\n')
     throw new Error(msg)
   }
 }
@@ -17,6 +18,9 @@ module.exports = (obj) => {
       .keys(obj)
       .forEach(validateKey)
   } else {
-    throw new Error(`Data must be an object. Found ${typeof obj}.`)
+    throw new Error(
+      `Data must be an object. Found ${typeof obj}.` +
+      'See https://github.com/typicode/json-server for example.'
+    )
   }
 }

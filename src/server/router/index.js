@@ -28,12 +28,7 @@ module.exports = (source) => {
     db = low(source, { storage: fileAsync })
   }
 
-  try {
-    validateData(db.getState())
-  } catch (err) {
-    console.log(err.message)
-    process.exit(1)
-  }
+  validateData(db.getState())
 
   // Add underscore-db methods to db
   db._.mixin(_db)

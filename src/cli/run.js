@@ -6,7 +6,6 @@ const enableDestroy = require('server-destroy')
 const pause = require('connect-pause')
 const is = require('./utils/is')
 const load = require('./utils/load')
-const checkDatabase = require('./utils/check-database')
 const example = require('./example.json')
 const jsonServer = require('../server')
 
@@ -38,18 +37,17 @@ function prettyPrint (argv, object, rules) {
 function createApp (source, object, routes, middlewares, argv) {
   const app = jsonServer.create()
 
-  const router = jsonServer.router(
-    is.JSON(source)
-    ? source
-    : object
-  )
+  let router
 
   try {
-    checkDatabase(router.db.getState())
+    router = jsonServer.router(
+      is.JSON(source)
+      ? source
+      : object
+    )
   } catch (e) {
-    const msg = `Error: ${e.message}`
     console.log()
-    console.error(chalk.red(msg))
+    console.error(chalk.red(e.message.replace(/^/gm, '  ')))
     process.exit(1)
   }
 
