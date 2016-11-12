@@ -12,6 +12,10 @@
   * [#383](https://github.com/typicode/json-server/issues/383)
 * Updated dependencies and codebase to ES6 
 
+## [0.8.23][2016-11-03]
+
+* Fix `Links` header
+
 ## [0.8.22][2016-10-04]
 
 * Fix `Links` header issue when using `_page`
