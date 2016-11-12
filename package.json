@@ -34,6 +34,7 @@
     "babel-register": "^6.16.3",
     "cross-env": "^2.0.1",
     "husky": "^0.11.4",
+    "markdown-toc": "^0.13.0",
     "mkdirp": "^0.5.1",
     "mocha": "^3.1.2",
     "os-tmpdir": "^1.0.1",
@@ -50,6 +51,7 @@
     "start": "node bin",
     "prepush": "npm t",
     "build": "babel src -d lib --copy-files",
+    "toc": "markdown-toc -i README.md",
     "prepublish": "npm run build"
   },
   "repository": {
