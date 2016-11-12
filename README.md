@@ -8,8 +8,56 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
 
 See also:
-* :hotel: [hotel - Get local domains in seconds](https://github.com/typicode/hotel)
+* :hotel: [hotel - Start apps from your browser and get local dev domains in seconds](https://github.com/typicode/hotel)
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
+
+## Table of contents
+
+<details>
+
+<!-- toc -->
+
+- [Example](#example)
+- [Install](#install)
+- [Routes](#routes)
+  * [Plural routes](#plural-routes)
+  * [Singular routes](#singular-routes)
+  * [Filter](#filter)
+  * [Paginate](#paginate)
+  * [Sort](#sort)
+  * [Slice](#slice)
+  * [Operators](#operators)
+  * [Full-text search](#full-text-search)
+  * [Relationships](#relationships)
+  * [Database](#database)
+  * [Homepage](#homepage)
+- [Extras](#extras)
+  * [Static file server](#static-file-server)
+  * [Alternative port](#alternative-port)
+  * [Access from anywhere](#access-from-anywhere)
+  * [Remote schema](#remote-schema)
+  * [Generate random data](#generate-random-data)
+  * [HTTPS](#https)
+  * [Add custom routes](#add-custom-routes)
+  * [Add middlewares](#add-middlewares)
+  * [CLI usage](#cli-usage)
+  * [Module](#module)
+    + [Simple example](#simple-example)
+    + [Custom routes example](#custom-routes-example)
+    + [Access control example](#access-control-example)
+    + [Custom output example](#custom-output-example)
+    + [Rewriter example](#rewriter-example)
+    + [Mounting JSON Server on another endpoint example](#mounting-json-server-on-another-endpoint-example)
+  * [Deployment](#deployment)
+- [Links](#links)
+  * [Video](#video)
+  * [Articles](#articles)
+  * [Third-party tools](#third-party-tools)
+- [License](#license)
+
+<!-- tocstop -->
+
+</details>
 
 ## Example
 
@@ -39,7 +87,8 @@ Now if you go to [http://localhost:3000/posts/1](), you'll get
 { "id": 1, "title": "json-server", "author": "typicode" }
 ```
 
-Also when doing requests, its good to know that
+Also when doing requests, it's good to know that:
+
 - If you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
 - Your request body JSON should be object enclosed, just like the GET output. (for example `{"name": "Foobar"}`)
 - Id values are not mutable. Any `id` value in the body of your PUT or PATCH request wil be ignored. Only a value set in a POST request wil be respected, but only if not already taken.
