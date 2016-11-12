@@ -1,34 +1,52 @@
-var assert = require('assert')
-var _ = require('lodash')
-var _db = require('underscore-db')
-var mixins = require('../../src/server/mixins')
+const assert = require('assert')
+const _ = require('lodash')
+const _db = require('underscore-db')
+const mixins = require('../../src/server/mixins')
 
-/* global describe, it */
+describe('mixins', () => {
+  let db
 
-describe('mixins', function () {
-  describe('getRemovable', function () {
-    it('should return removable documents', function () {
-      var db = {
-        posts: [
-          {id: 1, comment: 1}
-        ],
-        comments: [
-          {id: 1, postId: 1},
-          // Comments below references a post that doesn't exist
-          {id: 2, postId: 2},
-          {id: 3, postId: 2}
-        ]
-      }
+  before(() => {
+    _.mixin(_db)
+    _.mixin(mixins)
+  })
 
-      var expected = [
-        {name: 'comments', id: 2},
-        {name: 'comments', id: 3}
+  beforeEach(() => {
+    db = {
+      posts: [
+        { id: 1, comment: 1 }
+      ],
+      comments: [
+        { id: 1, postId: 1 },
+        // Comments below references a post that doesn't exist
+        { id: 2, postId: 2 },
+        { id: 3, postId: 2 }
+      ],
+      photos: [
+        { id: '1' },
+        { id: '2' }
+      ]
+    }
+  })
+
+  describe('getRemovable', () => {
+    it('should return removable documents', () => {
+      const expected = [
+        { name: 'comments', id: 2 },
+        { name: 'comments', id: 3 }
       ]
 
-      _.mixin(_db)
-      _.mixin(mixins)
-
       assert.deepEqual(_.getRemovable(db), expected)
+    })
+  })
+
+  describe('createId', () => {
+    it('should return a new id', () => {
+      assert.equal(_.createId(db.comments), 4)
+    })
+
+    it('should return a new uuid', () => {
+      assert.notEqual(_.createId(db.photos), 3)
     })
   })
 })

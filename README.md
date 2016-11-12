@@ -97,10 +97,14 @@ GET /comments?author.name=typicode
 
 ### Paginate
 
-Add `_page` and in the `Link` header you'll get `first`, `prev`, `next` and `last` links
+Use `_page` and optionally `_limit` to paginate returned data.
+
+In the `Link` header you'll get `first`, `prev`, `next` and `last` links.
+
 
 ```
 GET /posts?_page=7
+GET /posts?_page=7&_limit=20
 ```
 
 _10 items are returned by default_
@@ -247,16 +251,21 @@ module.exports = function() {
 $ json-server index.js
 ```
 
-__Tip__ use modules like [faker](https://github.com/Marak/faker.js), [casual](https://github.com/boo1ean/casual) or [chance](https://github.com/victorquinn/chancejs).
+__Tip__ use modules like [Faker](https://github.com/Marak/faker.js), [Casual](https://github.com/boo1ean/casual), [Chance](https://github.com/victorquinn/chancejs) or [JSON Schema Faker](https://github.com/json-schema-faker/json-schema-faker).
 
-### Add routes
+### HTTPS
 
-Create a `routes.json` file. Pay attention to start every route with /.
+There's many way to set up SSL in development. One simple way though is to use [hotel](https://github.com/typicode/hotel).
+
+### Add custom routes
+
+Create a `routes.json` file. Pay attention to start every route with `/`.
 
 ```json
 {
   "/api/": "/",
-  "/blog/:resource/:id/show": "/:resource/:id"
+  "/blog/:resource/:id/show": "/:resource/:id",
+  "/blog/:category": "/posts/:id?category=:category"
 }
 ```
 
@@ -268,10 +277,11 @@ json-server db.json --routes routes.json
 
 Now you can access resources using additional routes.
 
-```bash
-/api/posts
-/api/posts/1
-/blog/posts/1/show
+```sh
+/api/posts # → /posts
+/api/posts/1  # → /posts/1
+/blog/posts/1/show # → /posts/1
+/blog/javascript # → /posts?category=javascript
 ```
 
 ### Add middlewares
@@ -383,6 +393,9 @@ server.get('/echo', function (req, res) {
   res.jsonp(req.query)
 })
 
+// To handle POST, PUT and PATCH you need to use a body-parser
+// You can use the one used by JSON Server
+server.use(jsonServer.bodyParser)
 server.use(function (req, res, next) {
   if (req.method === 'POST') {
     req.body.createdAt = Date.now()

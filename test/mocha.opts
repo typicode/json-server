@@ -1,0 +1,3 @@
+--compilers js:babel-register
+--reporter spec
+--timeout 5000

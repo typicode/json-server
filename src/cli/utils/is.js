@@ -1,17 +1,17 @@
 module.exports = {
-  JSON: isJSON,
-  JS: isJS,
-  URL: isURL
+  JSON,
+  JS,
+  URL
 }
 
-function isJSON (s) {
-  return !isURL(s) && /\.json$/.test(s)
+function JSON (s) {
+  return !URL(s) && /\.json$/.test(s)
 }
 
-function isJS (s) {
-  return !isURL(s) && /\.js$/.test(s)
+function JS (s) {
+  return !URL(s) && /\.js$/.test(s)
 }
 
-function isURL (s) {
+function URL (s) {
   return /^(http|https):/.test(s)
 }

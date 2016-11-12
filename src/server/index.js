@@ -1,12 +1,9 @@
-var express = require('express')
+const express = require('express')
 
 module.exports = {
-  create: function () {
-    var server = express()
-    server.set('json spaces', 2)
-    return server
-  },
+  create: () => express().set('json spaces', 2),
   defaults: require('./defaults'),
   router: require('./router'),
-  rewriter: require('./rewriter')
+  rewriter: require('./rewriter'),
+  bodyParser: require('./body-parser')
 }

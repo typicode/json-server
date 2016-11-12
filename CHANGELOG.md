@@ -1,5 +1,17 @@
 # Change Log
 
+## [0.9.0][2016-11-11]
+
+* Shorter `uuid`
+* No automatic conversion of strings to boolean or integer
+* Create a default `db.json` file if it doesn't exist
+* Fix
+  * [#361](https://github.com/typicode/json-server/issues/361)
+  * [#363](https://github.com/typicode/json-server/issues/363) [#365](https://github.com/typicode/json-server/issues/365)
+  * [#374](https://github.com/typicode/json-server/issues/374)
+  * [#383](https://github.com/typicode/json-server/issues/383)
+* Updated dependencies and codebase to ES6 
+
 ## [0.8.23][2016-11-03]
 
 * Fix `Links` header

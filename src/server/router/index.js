@@ -1,29 +1,34 @@
-var express = require('express')
-var _ = require('lodash')
-var _db = require('underscore-db')
-var low = require('lowdb')
-var fileAsync = require('lowdb/lib/file-async')
-var plural = require('./plural')
-var nested = require('./nested')
-var singular = require('./singular')
-var mixins = require('../mixins')
-var common = require('../common')
+const express = require('express')
+const methodOverride = require('method-override')
+const _ = require('lodash')
+const _db = require('underscore-db')
+const low = require('lowdb')
+const fileAsync = require('lowdb/lib/file-async')
+const bodyParser = require('../body-parser')
+const validateData = require('./validate-data')
+const plural = require('./plural')
+const nested = require('./nested')
+const singular = require('./singular')
+const mixins = require('../mixins')
 
-module.exports = function (source) {
+module.exports = (source) => {
   // Create router
-  var router = express.Router()
+  const router = express.Router()
 
   // Add middlewares
-  router.use(common)
+  router.use(methodOverride())
+  router.use(bodyParser)
 
   // Create database
-  var db
+  let db
   if (_.isObject(source)) {
     db = low()
     db.setState(source)
   } else {
     db = low(source, { storage: fileAsync })
   }
+
+  validateData(db.getState())
 
   // Add underscore-db methods to db
   db._.mixin(_db)
@@ -35,40 +40,39 @@ module.exports = function (source) {
   router.db = db
 
   // Expose render
-  router.render = function (req, res) {
+  router.render = (req, res) => {
     res.jsonp(res.locals.data)
   }
 
   // GET /db
-  function showDatabase (req, res, next) {
+  router.get('/db', (req, res) => {
     res.jsonp(db.getState())
-  }
+  })
 
-  router.get('/db', showDatabase)
-
+  // Handle /:parent/:parentId/:resource
   router.use(nested())
 
   // Create routes
-  db.forEach(function (value, key) {
+  db.forEach((value, key) => {
     if (_.isPlainObject(value)) {
-      router.use('/' + key, singular(db, key))
+      router.use(`/${key}`, singular(db, key))
       return
     }
 
     if (_.isArray(value)) {
-      router.use('/' + key, plural(db, key))
+      router.use(`/${key}`, plural(db, key))
       return
     }
 
-    var msg =
-      'Type of "' + key + '" (' + typeof value + ') ' +
-      (_.isObject(source) ? '' : 'in ' + source) + ' is not supported. ' +
+    const msg =
+      `Type of "${key}" (${typeof value}) ` +
+      (_.isObject(source) ? '' : `in ${source}`) + ' is not supported. ' +
       'Use objects or arrays of objects.'
 
     throw new Error(msg)
   }).value()
 
-  router.use(function (req, res) {
+  router.use((req, res) => {
     if (!res.locals.data) {
       res.status(404)
       res.locals.data = {}
@@ -77,7 +81,7 @@ module.exports = function (source) {
     router.render(req, res)
   })
 
-  router.use(function (err, req, res, next) {
+  router.use((err, req, res, next) => {
     console.error(err.stack)
     res.status(500).send(err.stack)
   })

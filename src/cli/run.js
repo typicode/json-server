@@ -1,22 +1,22 @@
-var fs = require('fs')
-var path = require('path')
-var _ = require('lodash')
-var chalk = require('chalk')
-var chokidar = require('chokidar')
-var enableDestroy = require('server-destroy')
-var pause = require('connect-pause')
-var is = require('./utils/is')
-var load = require('./utils/load')
-var jsonServer = require('../server')
+const fs = require('fs')
+const path = require('path')
+const _ = require('lodash')
+const chalk = require('chalk')
+const enableDestroy = require('server-destroy')
+const pause = require('connect-pause')
+const is = require('./utils/is')
+const load = require('./utils/load')
+const example = require('./example.json')
+const jsonServer = require('../server')
 
 function prettyPrint (argv, object, rules) {
-  var host = argv.host === '0.0.0.0' ? 'localhost' : argv.host
-  var port = argv.port
-  var root = 'http://' + host + ':' + port
+  const host = argv.host === '0.0.0.0' ? 'localhost' : argv.host
+  const port = argv.port
+  const root = `http://${host}:${port}`
 
   console.log()
   console.log(chalk.bold('  Resources'))
-  for (var prop in object) {
+  for (let prop in object) {
     console.log('  ' + root + '/' + prop)
   }
 
@@ -35,15 +35,23 @@ function prettyPrint (argv, object, rules) {
 }
 
 function createApp (source, object, routes, middlewares, argv) {
-  var app = jsonServer.create()
+  const app = jsonServer.create()
 
-  var router = jsonServer.router(
-    is.JSON(source)
-    ? source
-    : object
-  )
+  let router
 
-  var defaultsOpts = {
+  try {
+    router = jsonServer.router(
+      is.JSON(source)
+      ? source
+      : object
+    )
+  } catch (e) {
+    console.log()
+    console.error(chalk.red(e.message.replace(/^/gm, '  ')))
+    process.exit(1)
+  }
+
+  const defaultsOpts = {
     logger: !argv.quiet,
     readOnly: argv.readOnly,
     noCors: argv.noCors,
@@ -54,11 +62,11 @@ function createApp (source, object, routes, middlewares, argv) {
     defaultsOpts.static = path.join(process.cwd(), argv.static)
   }
 
-  var defaults = jsonServer.defaults(defaultsOpts)
+  const defaults = jsonServer.defaults(defaultsOpts)
   app.use(defaults)
 
   if (routes) {
-    var rewriter = jsonServer.rewriter(routes)
+    const rewriter = jsonServer.rewriter(routes)
     app.use(rewriter)
   }
 
@@ -78,18 +86,18 @@ function createApp (source, object, routes, middlewares, argv) {
 }
 
 module.exports = function (argv) {
-  var source = argv._[0]
-  var app
-  var server
+  const source = argv._[0]
+  let app
+  let server
 
   if (!fs.existsSync(argv.snapshots)) {
-    console.log('Error: snapshots directory ' + argv.snapshots + ' doesn\'t exist')
+    console.log(`Error: snapshots directory ${argv.snapshots} doesn't exist`)
     process.exit(1)
   }
 
   // noop log fn
   if (argv.quiet) {
-    console.log = function () {}
+    console.log = () => {}
   }
 
   console.log()
@@ -97,20 +105,30 @@ module.exports = function (argv) {
 
   function start (cb) {
     console.log()
+
+    // Be nice and create a default db.json if it doesn't exist
+    if (is.JSON(source) && !fs.existsSync(source)) {
+      console.log(chalk.yellow(`  Oops, ${source} doesn't seem to exist`))
+      console.log(chalk.yellow(`  Creating ${source} with some default data`))
+      console.log()
+      fs.writeFileSync(source, JSON.stringify(example, null, 2))
+    }
+
     console.log(chalk.gray('  Loading', source))
 
     // Load JSON, JS or HTTP database
-    load(source, function (err, data) {
+    load(source, (err, data) => {
       if (err) throw err
 
       // Load additional routes
+      let routes
       if (argv.routes) {
         console.log(chalk.gray('  Loading', argv.routes))
-        var routes = JSON.parse(fs.readFileSync(argv.routes))
+        routes = JSON.parse(fs.readFileSync(argv.routes))
       }
 
       // Load middlewares
-      var middlewares
+      let middlewares
       if (argv.middlewares) {
         middlewares = argv.middlewares.map(function (m) {
           console.log(chalk.gray('  Loading', m))
@@ -136,7 +154,7 @@ module.exports = function (argv) {
   }
 
   // Start server
-  start(function () {
+  start(() => {
     // Snapshot
     console.log(
       chalk.gray('  Type s + enter at any time to create a snapshot of the database')
@@ -144,13 +162,13 @@ module.exports = function (argv) {
 
     process.stdin.resume()
     process.stdin.setEncoding('utf8')
-    process.stdin.on('data', function (chunk) {
+    process.stdin.on('data', (chunk) => {
       if (chunk.trim().toLowerCase() === 's') {
-        var filename = 'db-' + Date.now() + '.json'
-        var file = path.join(argv.snapshots, filename)
-        var state = app.db.getState()
+        const filename = 'db-' + Date.now() + '.json'
+        const file = path.join(argv.snapshots, filename)
+        const state = app.db.getState()
         fs.writeFileSync(file, JSON.stringify(state, null, 2), 'utf-8')
-        console.log('  Saved snapshot to ' + path.relative(process.cwd(), file) + '\n')
+        console.log(`  Saved snapshot to ${path.relative(process.cwd(), file)}\n`)
       }
     })
 
@@ -158,43 +176,45 @@ module.exports = function (argv) {
     if (argv.watch) {
       console.log(chalk.gray('  Watching...'))
       console.log()
-      var source = argv._[0]
+      const source = argv._[0]
 
       // Can't watch URL
       if (is.URL(source)) throw new Error('Can\'t watch URL')
 
       // Watch .js or .json file
       // Since lowdb uses atomic writing, directory is watched instead of file
-      chokidar
-        .watch(path.dirname(source))
-        .on('change', function (file) {
-          if (path.resolve(file) === path.resolve(source)) {
-            if (is.JSON(file)) {
-              var obj = JSON.parse(fs.readFileSync(file))
-              // Compare .json file content with in memory database
-              var isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
-              if (isDatabaseDifferent) {
-                console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
-                server && server.destroy()
-                start()
-              }
-            } else {
-              console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
+      const watchedDir = path.dirname(source)
+      fs.watch(watchedDir, (event, file) => {
+        const watchedFile = path.resolve(watchedDir, file)
+        if (watchedFile === path.resolve(source)) {
+          if (is.JSON(watchedFile)) {
+            var obj = JSON.parse(fs.readFileSync(watchedFile))
+            // Compare .json file content with in memory database
+            var isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
+            if (isDatabaseDifferent) {
+              console.log(chalk.gray(`  ${source} has changed, reloading...`))
               server && server.destroy()
               start()
             }
+          } else {
+            console.log(chalk.gray(`  ${source} has changed, reloading...`))
+            server && server.destroy()
+            start()
           }
-        })
+        }
+      })
 
       // Watch routes
       if (argv.routes) {
-        chokidar
-          .watch(argv.routes)
-          .on('change', function (file) {
-            console.log(chalk.gray('  ' + file + ' has changed, reloading...'))
+        const watchedDir = path.dirname(argv.routes)
+        fs.watch(watchedDir, (event, file) => {
+          const watchedFile = path.resolve(watchedDir, file)
+          if (watchedFile === path.resolve(argv.routes)) {
+            console.log(chalk.gray(`  ${argv.routes} has changed, reloading...`))
             server && server.destroy()
             start()
-          })
+          }
+        })
       }
     }
   })

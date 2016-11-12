@@ -1,23 +1,22 @@
-var express = require('express')
-var pluralize = require('pluralize')
-var utils = require('../utils')
+const express = require('express')
+const pluralize = require('pluralize')
 
-module.exports = function () {
-  var router = express.Router()
+module.exports = () => {
+  const router = express.Router()
 
   // Rewrite URL (/:resource/:id/:nested -> /:nested) and request query
   function get (req, res, next) {
-    var prop = pluralize.singular(req.params.resource)
-    req.query[prop + 'Id'] = utils.toNative(req.params.id)
-    req.url = '/' + req.params.nested
+    const prop = pluralize.singular(req.params.resource)
+    req.query[`${prop}Id`] = req.params.id
+    req.url = `/${req.params.nested}`
     next()
   }
 
   // Rewrite URL (/:resource/:id/:nested -> /:nested) and request body
   function post (req, res, next) {
-    var prop = pluralize.singular(req.params.resource)
-    req.body[prop + 'Id'] = utils.toNative(req.params.id)
-    req.url = '/' + req.params.nested
+    const prop = pluralize.singular(req.params.resource)
+    req.body[`${prop}Id`] = req.params.id
+    req.url = `/${req.params.nested}`
     next()
   }
 

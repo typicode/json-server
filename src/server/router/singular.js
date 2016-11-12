@@ -1,7 +1,7 @@
-var express = require('express')
+const express = require('express')
 
-module.exports = function (db, name) {
-  var router = express.Router()
+module.exports = (db, name) => {
+  const router = express.Router()
 
   function show (req, res, next) {
     res.locals.data = db.get(name).value()

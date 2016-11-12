@@ -1,20 +1,21 @@
-var express = require('express')
-var _ = require('lodash')
-var pluralize = require('pluralize')
-var utils = require('../utils')
+const url = require('url')
+const express = require('express')
+const _ = require('lodash')
+const pluralize = require('pluralize')
+const utils = require('../utils')
 
-module.exports = function (db, name) {
+module.exports = (db, name) => {
   // Create router
-  var router = express.Router()
+  const router = express.Router()
 
   // Embed function used in GET /name and GET /name/id
   function embed (resource, e) {
     e && [].concat(e)
-      .forEach(function (externalResource) {
+      .forEach((externalResource) => {
         if (db.get(externalResource).value) {
-          var query = {}
-          var singularResource = pluralize.singular(name)
-          query[singularResource + 'Id'] = resource.id
+          const query = {}
+          const singularResource = pluralize.singular(name)
+          query[`${singularResource}Id`] = resource.id
           resource[externalResource] = db.get(externalResource).filter(query).value()
         }
       })
@@ -23,17 +24,22 @@ module.exports = function (db, name) {
   // Expand function used in GET /name and GET /name/id
   function expand (resource, e) {
     e && [].concat(e)
-      .forEach(function (innerResource) {
-        var plural = pluralize(innerResource)
+      .forEach((innerResource) => {
+        const plural = pluralize(innerResource)
         if (db.get(plural).value()) {
-          var prop = innerResource + 'Id'
+          const prop = `${innerResource}Id`
           resource[innerResource] = db.get(plural).getById(resource[prop]).value()
         }
       })
   }
 
   function getFullURL (req) {
-    return req.protocol + '://' + req.get('host') + req.originalUrl
+    const root = url.format({
+      protocol: req.protocol,
+      host: req.get('host')
+    })
+
+    return `${root}${req.originalUrl}`
   }
 
   // GET /name
@@ -44,19 +50,19 @@ module.exports = function (db, name) {
   // GET /name?_embed=&_expand=
   function list (req, res, next) {
     // Resource chain
-    var chain = db.get(name)
+    let chain = db.get(name)
 
     // Remove q, _start, _end, ... from req.query to avoid filtering using those
     // parameters
-    var q = req.query.q
-    var _start = req.query._start
-    var _end = req.query._end
-    var _page = req.query._page
-    var _sort = req.query._sort
-    var _order = req.query._order
-    var _limit = req.query._limit
-    var _embed = req.query._embed
-    var _expand = req.query._expand
+    let q = req.query.q
+    let _start = req.query._start
+    let _end = req.query._end
+    let _page = req.query._page
+    let _sort = req.query._sort
+    let _order = req.query._order
+    let _limit = req.query._limit
+    let _embed = req.query._embed
+    let _expand = req.query._expand
     delete req.query.q
     delete req.query._start
     delete req.query._end
@@ -68,17 +74,17 @@ module.exports = function (db, name) {
 
     // Automatically delete query parameters that can't be found
     // in the database
-    Object.keys(req.query).forEach(function (query) {
-      var arr = db.get(name).value()
-      for (var i in arr) {
+    Object.keys(req.query).forEach((query) => {
+      const arr = db.get(name).value()
+      for (let i in arr) {
         if (
           _.has(arr[i], query) ||
           query === 'callback' ||
           query === '_' ||
-          query.indexOf('_lte') !== -1 ||
-          query.indexOf('_gte') !== -1 ||
-          query.indexOf('_ne') !== -1 ||
-          query.indexOf('_like') !== -1
+          /_lte$/.test(query) ||
+          /_gte$/.test(query) ||
+          /_ne$/.test(query) ||
+          /_like$/.test(query)
         ) return
       }
       delete req.query[query]
@@ -88,9 +94,9 @@ module.exports = function (db, name) {
       // Full-text search
       q = q.toLowerCase()
 
-      chain = chain.filter(function (obj) {
-        for (var key in obj) {
-          var value = obj[key]
+      chain = chain.filter((obj) => {
+        for (let key in obj) {
+          const value = obj[key]
           if (db._.deepQuery(value, q)) {
             return true
           }
@@ -98,41 +104,41 @@ module.exports = function (db, name) {
       })
     }
 
-    Object.keys(req.query).forEach(function (key) {
+    Object.keys(req.query).forEach((key) => {
       // Don't take into account JSONP query parameters
       // jQuery adds a '_' query parameter too
       if (key !== 'callback' && key !== '_') {
         // Always use an array, in case req.query is an array
-        var arr = [].concat(req.query[key])
+        const arr = [].concat(req.query[key])
 
-        chain = chain.filter(function (element) {
+        chain = chain.filter((element) => {
           return arr
-            .map(utils.toNative)
             .map(function (value) {
-              var isDifferent = key.indexOf('_ne') !== -1
-              var isRange = key.indexOf('_lte') !== -1 || key.indexOf('_gte') !== -1
-              var isLike = key.indexOf('_like') !== -1
-              var path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
-              var elementValue = _.get(element, path)
+              const isDifferent = /_ne$/.test(key)
+              const isRange = /_lte$/.test(key) || /_gte$/.test(key)
+              const isLike = /_like$/.test(key)
+              const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
+              const elementValue = _.get(element, path)
+
+              if (!elementValue) {
+                return
+              }
 
               if (isRange) {
-                var isLowerThan = key.indexOf('_gte') !== -1
+                const isLowerThan = /_gte$/.test(key)
 
-                if (isLowerThan) {
-                  return value <= elementValue
-                } else {
-                  return value >= elementValue
-                }
+                return isLowerThan
+                  ? value <= elementValue
+                  : value >= elementValue
               } else if (isDifferent) {
-                return value !== elementValue
+                return value !== elementValue.toString()
               } else if (isLike) {
-                return new RegExp(value, 'i').test(elementValue)
+                return new RegExp(value, 'i').test(elementValue.toString())
               } else {
-                return _.matchesProperty(key, value)(element)
+                return value === elementValue.toString()
               }
-            }).reduce(function (a, b) {
-              return a || b
             })
+            .reduce((a, b) => a || b)
         })
       }
     })
@@ -160,9 +166,9 @@ module.exports = function (db, name) {
       _page = parseInt(_page, 10)
       _page = _page >= 1 ? _page : 1
       _limit = parseInt(_limit, 10) || 10
-      var page = utils.getPage(chain.value(), _page, _limit)
-      var links = {}
-      var fullURL = getFullURL(req)
+      const page = utils.getPage(chain.value(), _page, _limit)
+      const links = {}
+      const fullURL = getFullURL(req)
 
       if (page.first) {
         links.first = fullURL.replace('page=' + page.current, 'page=' + page.first)
@@ -207,24 +213,25 @@ module.exports = function (db, name) {
   // GET /name/:id
   // GET /name/:id?_embed=&_expand
   function show (req, res, next) {
-    var _embed = req.query._embed
-    var _expand = req.query._expand
-    var id = utils.toNative(req.params.id)
-    var resource = db.get(name).getById(id).value()
+    const _embed = req.query._embed
+    const _expand = req.query._expand
+    const resource = db.get(name)
+      .getById(req.params.id)
+      .value()
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
-      resource = _.cloneDeep(resource)
+      const clone = _.cloneDeep(resource)
 
       // Embed other resources based on resource id
       // /posts/1?_embed=comments
-      embed(resource, _embed)
+      embed(clone, _embed)
 
       // Expand inner resources based on id
       // /posts/1?_expand=user
-      expand(resource, _expand)
+      expand(clone, _expand)
 
-      res.locals.data = resource
+      res.locals.data = clone
     }
 
     next()
@@ -232,11 +239,7 @@ module.exports = function (db, name) {
 
   // POST /name
   function create (req, res, next) {
-    for (var key in req.body) {
-      req.body[key] = utils.toNative(req.body[key])
-    }
-
-    var resource = db.get(name)
+    const resource = db.get(name)
       .insert(req.body)
       .value()
 
@@ -248,18 +251,14 @@ module.exports = function (db, name) {
   // PUT /name/:id
   // PATCH /name/:id
   function update (req, res, next) {
-    for (var key in req.body) {
-      req.body[key] = utils.toNative(req.body[key])
-    }
-
-    var id = utils.toNative(req.params.id)
-    var chain = db.get(name)
+    const id = req.params.id
+    let chain = db.get(name)
 
     chain = req.method === 'PATCH'
       ? chain.updateById(id, req.body)
       : chain.replaceById(id, req.body)
 
-    var resource = chain.value()
+    const resource = chain.value()
 
     if (resource) {
       res.locals.data = resource
@@ -270,13 +269,17 @@ module.exports = function (db, name) {
 
   // DELETE /name/:id
   function destroy (req, res, next) {
-    var resource = db.get(name).removeById(utils.toNative(req.params.id)).value()
+    const resource = db.get(name)
+      .removeById(req.params.id)
+      .value()
 
     // Remove dependents documents
-    var removable = db._.getRemovable(db.getState())
+    const removable = db._.getRemovable(db.getState())
 
-    _.each(removable, function (item) {
-      db.get(item.name).removeById(item.id).value()
+    removable.forEach((item) => {
+      db.get(item.name)
+        .removeById(item.id)
+        .value()
     })
 
     if (resource) {
