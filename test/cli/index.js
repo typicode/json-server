@@ -17,10 +17,10 @@ const middlewareFiles = {
   jp: './fixtures/middlewares/jp.js'
 }
 
-const bin = path.join(__dirname, '../../src/cli/bin')
+const bin = path.join(__dirname, '../../lib/cli/bin')
 
 function cli (args) {
-  return cp.spawn('babel-node', ['--', bin, '-p', PORT].concat(args), {
+  return cp.spawn('node', ['--', bin, '-p', PORT].concat(args), {
     cwd: __dirname,
     stdio: ['pipe', process.stdout, process.stderr]
   })

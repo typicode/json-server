@@ -45,7 +45,7 @@
   },
   "scripts": {
     "test": "npm run test:cli && npm run test:server && standard --fix",
-    "test:cli": "cross-env NODE_ENV=test mocha test/cli/*.js",
+    "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js",
     "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
     "start": "node bin",
     "prepush": "npm t",
