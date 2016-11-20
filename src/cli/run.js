@@ -43,10 +43,10 @@ function createApp (source, object, routes, middlewares, argv) {
   if (is.JS(source)) {
     routerExtras = object.__router
     if (routerExtras) {
-      if (object.__db === undefined) {
-        throw new Error('The database is not assign in file JavaScript.')
+      if (object.__source === undefined) {
+        throw new Error('Define source in object (object, array, string db.json ...)')
       }
-      object = typeof object.__db === 'string' ? require(object.__db) : object.__db
+      object = typeof object.__source === 'string' ? require(object.__source) : object.__source
     }
   }
 
@@ -94,7 +94,8 @@ function createApp (source, object, routes, middlewares, argv) {
 
   if (routerExtras) {
     try {
-      routerExtras = routerExtras(router) // force pass router to router facility capture db
+      // force assign router to callback this facility to capture db
+      routerExtras = routerExtras(router)
     } catch (e) {}
 
     app.use(routerExtras)
