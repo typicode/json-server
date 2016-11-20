@@ -194,6 +194,14 @@ describe('Server', () => {
         .expect([ db.comments[3] ])
         .expect(200, done)
     })
+
+    it('should support filtering by boolean value false', (done) => {
+      request(server)
+        .get('/comments?published=false')
+        .expect('Content-Type', /json/)
+        .expect([ db.comments[1], db.comments[2], db.comments[4] ])
+        .expect(200, done)
+    })
   })
 
   describe('GET /:resource?_end=', () => {
