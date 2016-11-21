@@ -120,7 +120,7 @@ module.exports = (db, name) => {
               const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
               const elementValue = _.get(element, path)
 
-              if (elementValue == null) {
+              if (elementValue === undefined) {
                 return
               }
 
