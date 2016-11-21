@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.9.1][2016-11-21]
+
+* Fix
+ * [#412](https://github.com/typicode/json-server/issues/412)
+
 ## [0.9.0][2016-11-11]
 
 * Shorter `uuid`
