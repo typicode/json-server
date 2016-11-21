@@ -4,7 +4,7 @@
 
 * Fix
  * [#412](https://github.com/typicode/json-server/issues/412)
- * [#451]https://github.com/typicode/json-server/issues/411
+ * [#451](https://github.com/typicode/json-server/issues/411)
 
 ## [0.9.0][2016-11-11]
 
