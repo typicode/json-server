@@ -26,6 +26,7 @@
     "shortid": "^2.2.6",
     "underscore-db": "^0.12.1",
     "update-notifier": "^1.0.2",
+    "uuid": "^3.0.0",
     "yargs": "^6.0.0"
   },
   "devDependencies": {
