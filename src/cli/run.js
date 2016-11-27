@@ -185,21 +185,25 @@ module.exports = function (argv) {
       // Since lowdb uses atomic writing, directory is watched instead of file
       const watchedDir = path.dirname(source)
       fs.watch(watchedDir, (event, file) => {
-        const watchedFile = path.resolve(watchedDir, file)
-        if (watchedFile === path.resolve(source)) {
-          if (is.JSON(watchedFile)) {
-            var obj = JSON.parse(fs.readFileSync(watchedFile))
-            // Compare .json file content with in memory database
-            var isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
-            if (isDatabaseDifferent) {
+        // https://github.com/typicode/json-server/issues/420
+        // file can be null
+        if (file) {
+          const watchedFile = path.resolve(watchedDir, file)
+          if (watchedFile === path.resolve(source)) {
+            if (is.JSON(watchedFile)) {
+              var obj = JSON.parse(fs.readFileSync(watchedFile))
+              // Compare .json file content with in memory database
+              var isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
+              if (isDatabaseDifferent) {
+                console.log(chalk.gray(`  ${source} has changed, reloading...`))
+                server && server.destroy()
+                start()
+              }
+            } else {
               console.log(chalk.gray(`  ${source} has changed, reloading...`))
               server && server.destroy()
               start()
             }
-          } else {
-            console.log(chalk.gray(`  ${source} has changed, reloading...`))
-            server && server.destroy()
-            start()
           }
         }
       })
@@ -208,11 +212,13 @@ module.exports = function (argv) {
       if (argv.routes) {
         const watchedDir = path.dirname(argv.routes)
         fs.watch(watchedDir, (event, file) => {
-          const watchedFile = path.resolve(watchedDir, file)
-          if (watchedFile === path.resolve(argv.routes)) {
-            console.log(chalk.gray(`  ${argv.routes} has changed, reloading...`))
-            server && server.destroy()
-            start()
+          if (file) {
+            const watchedFile = path.resolve(watchedDir, file)
+            if (watchedFile === path.resolve(argv.routes)) {
+              console.log(chalk.gray(`  ${argv.routes} has changed, reloading...`))
+              server && server.destroy()
+              start()
+            }
           }
         })
       }
