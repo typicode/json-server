@@ -102,7 +102,7 @@ $ npm install -g json-server
 
 ## Routes
 
-Based on the previous `db.json` file, here are all the default routes. You can also add [other routes](#add-routes) using `--routes`.
+Based on the previous `db.json` file, here are all the default routes. You can also add [other routes](#add-custom-routes) using `--routes`.
 
 ### Plural routes
 
@@ -211,7 +211,7 @@ GET /comments?_expand=post
 GET /comments/1?_expand=post
 ```
 
-To get or create nested resources (by default one level, [add routes](#add-routes) for more)
+To get or create nested resources (by default one level, [add custom routes](#add-custom-routes) for more)
 
 ```
 GET  /posts/1/comments
