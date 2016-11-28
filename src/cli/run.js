@@ -160,7 +160,11 @@ module.exports = function (argv) {
       chalk.gray('  Type s + enter at any time to create a snapshot of the database')
     )
 
-    process.stdin.resume()
+    // Support nohup
+    // https://github.com/typicode/json-server/issues/221
+    process.stdin.on('error', (err) => {
+      console.log('  Error, can\'t read from stdin')
+    })
     process.stdin.setEncoding('utf8')
     process.stdin.on('data', (chunk) => {
       if (chunk.trim().toLowerCase() === 's') {
