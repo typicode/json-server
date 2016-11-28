@@ -162,7 +162,7 @@ module.exports = function (argv) {
 
     // Support nohup
     // https://github.com/typicode/json-server/issues/221
-    process.stdin.on('error', (err) => {
+    process.stdin.on('error', () => {
       console.log('  Error, can\'t read from stdin')
     })
     process.stdin.setEncoding('utf8')
