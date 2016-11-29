@@ -1,9 +1,9 @@
 # Change Log
 
-## [Unreleased][Unreleased]
+## [0.9.2][2016-11-29]
 
-* Fix [#221](https://github.com/typicode/json-server/issues/221) nohup support
-* Fix [#420](https://github.com/typicode/json-server/issues/420) TypeError when watching db.json
+* Fix [#221](https://github.com/typicode/json-server/issues/221) `nohup` support
+* Fix [#420](https://github.com/typicode/json-server/issues/420) TypeError when watching `db.json`
 
 ## [0.9.1][2016-11-21]
 
