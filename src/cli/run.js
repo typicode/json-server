@@ -188,7 +188,14 @@ module.exports = function (argv) {
         const watchedFile = path.resolve(watchedDir, file)
         if (watchedFile === path.resolve(source)) {
           if (is.JSON(watchedFile)) {
-            var obj = JSON.parse(fs.readFileSync(watchedFile))
+            var obj = null;
+            try {
+                obj = JSON.parse(fs.readFileSync(watchedFile));
+            } catch (e) {
+                console.log('The format of the json file is not right, please check.');
+                console.dir(e);
+                return;
+            }
             // Compare .json file content with in memory database
             var isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
             if (isDatabaseDifferent) {
