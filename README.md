@@ -530,6 +530,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 * [Docker JSON Server](https://github.com/clue/docker-json-server)
 * [JSON Server GUI](https://github.com/naholyr/json-server-gui)
 * [JSON file generator](https://github.com/dfsq/json-server-init)
+* [JSON Server extension](https://github.com/maty21/json-server-extension)
 
 ## License
 
