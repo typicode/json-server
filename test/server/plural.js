@@ -551,10 +551,11 @@ describe('Server', () => {
   })
 
   describe('PUT /:resource/:id', () => {
-    it('should respond with json and replace resource', (done) => {
+    it.only('should respond with json and replace resource', (done) => {
       var post = {id: 1, booleanValue: true, integerValue: 1}
       request(server)
         .put('/posts/1')
+        .set('Accept', 'application/json')
         // body property omitted to test that the resource is replaced
         .send(post)
         .expect('Content-Type', /json/)
@@ -562,8 +563,11 @@ describe('Server', () => {
         .expect(200)
         .end((err, res) => {
           if (err) return done(err)
+          // TODO find a "supertest" way to test this
+          // https://github.com/typicode/json-server/issues/396
+          assert.deepStrictEqual(res.body, post)
           // assert it was created in database too
-          assert.deepEqual(db.posts[0], post)
+          assert.deepStrictEqual(db.posts[0], post)
           done()
         })
     })
@@ -588,8 +592,9 @@ describe('Server', () => {
         .expect(200)
         .end((err, res) => {
           if (err) return done(err)
+          assert.deepStrictEqual(res.body, post)
           // assert it was created in database too
-          assert.deepEqual(db.posts[0], {id: 1, body: 'bar'})
+          assert.deepStrictEqual(db.posts[0], {id: 1, body: 'bar'})
           done()
         })
     })

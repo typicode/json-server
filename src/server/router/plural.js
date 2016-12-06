@@ -253,6 +253,7 @@ module.exports = (db, name) => {
   function update (req, res, next) {
     const id = req.params.id
     let chain = db.get(name)
+    console.log(req.body)
 
     chain = req.method === 'PATCH'
       ? chain.updateById(id, req.body)
