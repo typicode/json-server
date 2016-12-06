@@ -551,7 +551,7 @@ describe('Server', () => {
   })
 
   describe('PUT /:resource/:id', () => {
-    it.only('should respond with json and replace resource', (done) => {
+    it('should respond with json and replace resource', (done) => {
       var post = {id: 1, booleanValue: true, integerValue: 1}
       request(server)
         .put('/posts/1')
