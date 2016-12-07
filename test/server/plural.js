@@ -584,17 +584,19 @@ describe('Server', () => {
 
   describe('PATCH /:resource/:id', () => {
     it('should respond with json and update resource', (done) => {
+      var partial = {body: 'bar'}
+      var post = {id: 1, body: 'bar'}
       request(server)
         .patch('/posts/1')
-        .send({body: 'bar'})
+        .send(partial)
         .expect('Content-Type', /json/)
-        .expect({id: 1, body: 'bar'})
+        .expect(post)
         .expect(200)
         .end((err, res) => {
           if (err) return done(err)
           assert.deepStrictEqual(res.body, post)
           // assert it was created in database too
-          assert.deepStrictEqual(db.posts[0], {id: 1, body: 'bar'})
+          assert.deepStrictEqual(db.posts[0], post)
           done()
         })
     })
