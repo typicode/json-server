@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const jph = require('json-parse-helpfulerror')
 const _ = require('lodash')
 const chalk = require('chalk')
 const enableDestroy = require('server-destroy')
@@ -189,25 +190,30 @@ module.exports = function (argv) {
       // Watch .js or .json file
       // Since lowdb uses atomic writing, directory is watched instead of file
       const watchedDir = path.dirname(source)
+      let readError = false
       fs.watch(watchedDir, (event, file) => {
-<<<<<<< HEAD
         // https://github.com/typicode/json-server/issues/420
         // file can be null
         if (file) {
           const watchedFile = path.resolve(watchedDir, file)
           if (watchedFile === path.resolve(source)) {
             if (is.JSON(watchedFile)) {
-              var obj
+              let obj
               try {
-                obj = JSON.parse(fs.readFileSync(watchedFile))
+                obj = jph.parse(fs.readFileSync(watchedFile))
+                if (readError) {
+                  console.log(chalk.green(`  Read error has been fixed :)`))
+                  readError = false
+                }
               } catch (e) {
-                console.log('Error reading JSON file');
-                console.dir(e);
-                return;
+                readError = true
+                console.log(chalk.red(`  Error reading ${watchedFile}`))
+                console.error(e.message)
+                return
               }
-              
+
               // Compare .json file content with in memory database
-              var isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
+              const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
               if (isDatabaseDifferent) {
                 console.log(chalk.gray(`  ${source} has changed, reloading...`))
                 server && server.destroy()
