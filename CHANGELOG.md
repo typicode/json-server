@@ -3,6 +3,7 @@
 ## [0.9.4][2016-12-08]
 
 * Improve rewriter [#431](https://github.com/typicode/json-server/issues/431)
+* Improve watch mode [#427](https://github.com/typicode/json-server/pull/427) 
 
 ## [0.9.3][2016-12-07]
 
