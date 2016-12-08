@@ -190,13 +190,22 @@ module.exports = function (argv) {
       // Since lowdb uses atomic writing, directory is watched instead of file
       const watchedDir = path.dirname(source)
       fs.watch(watchedDir, (event, file) => {
+<<<<<<< HEAD
         // https://github.com/typicode/json-server/issues/420
         // file can be null
         if (file) {
           const watchedFile = path.resolve(watchedDir, file)
           if (watchedFile === path.resolve(source)) {
             if (is.JSON(watchedFile)) {
-              var obj = JSON.parse(fs.readFileSync(watchedFile))
+              var obj
+              try {
+                obj = JSON.parse(fs.readFileSync(watchedFile))
+              } catch (e) {
+                console.log('Error reading JSON file');
+                console.dir(e);
+                return;
+              }
+              
               // Compare .json file content with in memory database
               var isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
               if (isDatabaseDifferent) {
@@ -204,10 +213,6 @@ module.exports = function (argv) {
                 server && server.destroy()
                 start()
               }
-            } else {
-              console.log(chalk.gray(`  ${source} has changed, reloading...`))
-              server && server.destroy()
-              start()
             }
           }
         }
