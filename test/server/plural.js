@@ -78,7 +78,9 @@ describe('Server', () => {
     server.use(jsonServer.rewriter({
       '/api/': '/',
       '/blog/posts/:id/show': '/posts/:id',
-      '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body'
+      '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body',
+      '/firstpostwithcomment': '/posts/1?_embed=comments'
+
     }))
     server.use(router)
   })
@@ -683,6 +685,15 @@ describe('Server', () => {
       request(server)
         .get('/blog/posts/1/show')
         .expect(db.posts[0])
+        .end(done)
+    })
+
+    it('should rewrite using query without params', function (done) {
+      const expectedPost = _.cloneDeep(db.posts[0])
+      expectedPost.comments = [ db.comments[0], db.comments[1] ]
+      request(server)
+        .get('/firstpostwithcomment')
+        .expect(expectedPost)
         .end(done)
     })
 
