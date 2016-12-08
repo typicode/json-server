@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.9.4][2016-12-08]
+
+* Improve rewriter [#431](https://github.com/typicode/json-server/issues/431)
+
 ## [0.9.3][2016-12-07]
 
 * Fix [#396](https://github.com/typicode/json-server/issues/396) PUT/PATCH saves the updated item with an id that has been converted to string
