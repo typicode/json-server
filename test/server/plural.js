@@ -689,7 +689,7 @@ describe('Server', () => {
         .end(done)
     })
 
-    it('should rewrite using query without params', function (done) {
+    it('should rewrite using query without params', (done) => {
       const expectedPost = _.cloneDeep(db.posts[0])
       expectedPost.comments = [ db.comments[0], db.comments[1] ]
       request(server)
@@ -698,7 +698,7 @@ describe('Server', () => {
         .end(done)
     })
 
-    it('should rewrite using params and query', function (done) {
+    it('should rewrite using params and query', (done) => {
       request(server)
         .get('/comments/special/1-quux')
         .expect([db.comments[4]])
