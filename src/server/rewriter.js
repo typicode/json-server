@@ -7,6 +7,10 @@ function updateQueryString (target, sourceUrl) {
 module.exports = (routes) => {
   const router = express.Router()
 
+  router.get('/__rules', (req, res) => {
+    res.json(routes)
+  })
+
   Object.keys(routes).forEach((route) => {
     if (route.indexOf(':') !== -1) {
       router.all(route, (req, res, next) => {

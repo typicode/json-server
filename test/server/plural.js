@@ -7,6 +7,12 @@ describe('Server', () => {
   let server
   let router
   let db
+  const rewriterRules = {
+    '/api/': '/',
+    '/blog/posts/:id/show': '/posts/:id',
+    '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body',
+    '/firstpostwithcomments': '/posts/1?_embed=comments'
+  }
 
   beforeEach(() => {
     db = {}
@@ -75,13 +81,7 @@ describe('Server', () => {
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults())
-    server.use(jsonServer.rewriter({
-      '/api/': '/',
-      '/blog/posts/:id/show': '/posts/:id',
-      '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body',
-      '/firstpostwithcomments': '/posts/1?_embed=comments'
-
-    }))
+    server.use(jsonServer.rewriter(rewriterRules))
     server.use(router)
   })
 
@@ -701,6 +701,13 @@ describe('Server', () => {
       request(server)
         .get('/comments/special/1-quux')
         .expect([db.comments[4]])
+        .end(done)
+    })
+
+    it('should expose routes', (done) => {
+      request(server)
+        .get('/__rules')
+        .expect(rewriterRules)
         .end(done)
     })
   })
