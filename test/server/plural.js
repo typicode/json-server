@@ -11,7 +11,8 @@ describe('Server', () => {
     '/api/': '/',
     '/blog/posts/:id/show': '/posts/:id',
     '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body',
-    '/firstpostwithcomments': '/posts/1?_embed=comments'
+    '/firstpostwithcomments': '/posts/1?_embed=comments',
+    '/articles?_id=:id': '/posts/:id'
   }
 
   beforeEach(() => {
@@ -703,6 +704,14 @@ describe('Server', () => {
         .expect([db.comments[4]])
         .end(done)
     })
+
+    // TODO
+    // it('should rewrite query params', (done) => {
+    //   request(server)
+    //     .get('/articles?_id=1')
+    //     .expect(db.posts[0])
+    //     .end(done)
+    // })
 
     it('should expose routes', (done) => {
       request(server)
