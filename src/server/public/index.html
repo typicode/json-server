@@ -27,7 +27,9 @@
         Here are the resources that JSON Server has loaded:
       </p>
       <ul id="resources">loading, please wait...</ul>
-      
+
+      <div id="custom-routes"></div>
+
       <p>
         You can view database current state at any time:
       </p>
@@ -36,10 +38,10 @@
           <a href="db">db</a>
         </li>
       </ul>
-      
+
       <p>
         You can use any HTTP verbs (GET, POST, PUT, PATCH and DELETE) and access your resources from anywhere
-        using CORS and JSONP.
+        using CORS or JSONP.
       </p>
 
       <h4>Documentation</h4>
@@ -61,17 +63,30 @@
       </p>
     </div>
 
-
     <script
       src="https://code.jquery.com/jquery-3.0.0.min.js"
       integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
     <script>
       $(function() {
         $.get('db').then(function(data) {
-          $('#resources').empty();
+          var el = $('#resources')
+
+          el.empty()
+
           $.each(data, function(key, value) {
-            $('#resources')
-              .append('<li><a href="'+ key + '">' + key + '</a></li>');
+            el.append('<li><a href="'+ key + '">' + key + '</a></li>')
+          })
+        })
+
+        $.get('__rules').then(function(data) {
+          var el = $('#custom-routes')
+
+          el.append('<p>And the custom routes:</p>')
+            .append('<ul id="custom-routes-list">')
+
+          var listEl = $('#custom-routes-list')
+          $.each(data, function(key, value) {
+            listEl.append('<li>' + key + ' → ' + value + '</li>')
           })
         })
       })

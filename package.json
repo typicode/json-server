@@ -49,7 +49,7 @@
     "test": "npm run test:cli && npm run test:server && standard --fix",
     "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js",
     "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
-    "start": "node bin",
+    "start": "babel-node src/cli/bin",
     "prepush": "npm t",
     "build": "babel src -d lib --copy-files",
     "toc": "markdown-toc -i README.md",
