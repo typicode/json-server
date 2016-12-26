@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* Display custom routes on homepage
+
 ## [0.9.4][2016-12-08]
 
 * Improve rewriter [#431](https://github.com/typicode/json-server/issues/431)
