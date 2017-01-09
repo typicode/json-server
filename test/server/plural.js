@@ -545,7 +545,7 @@ describe('Server', () => {
         .post('/posts/1/comments')
         .send({body: 'foo'})
         .expect('Content-Type', /json/)
-        .expect({id: 6, postId_like: "\\b1\\b", body: 'foo'})
+        .expect({id: 6, postId_like: '\\b1\\b', body: 'foo'})
         .expect(201, done)
     })
   })
