@@ -66,10 +66,11 @@ Create a `db.json` file
 ```json
 {
   "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
+    { "id": 1, "title": "json-server", "author": "typicode", commentId: [1, 2] }
   ],
   "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
+    { "id": 1, "body": "some comment", "postId": 1 },
+    { "id": 2, "body": "some other comment", "postId": 1 }
   ],
   "profile": { "name": "typicode" }
 }
