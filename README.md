@@ -66,7 +66,7 @@ Create a `db.json` file
 ```json
 {
   "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode", commentId: [1, 2] }
+    { "id": 1, "title": "json-server", "author": "typicode", "commentId": [1, 2] }
   ],
   "comments": [
     { "id": 1, "body": "some comment", "postId": 1 },
