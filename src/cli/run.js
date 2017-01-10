@@ -95,7 +95,7 @@ function createApp (source, object, routes, middlewares, argv) {
   if (routerExtras) {
     try {
       // force assign router to callback this facility to capture db
-      routerExtras = routerExtras(router)
+      routerExtras = routerExtras(router, app)
     } catch (e) {}
 
     app.use(routerExtras)
