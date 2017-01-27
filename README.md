@@ -304,7 +304,7 @@ Create a `routes.json` file. Pay attention to start every route with `/`.
 {
   "/api/": "/",
   "/blog/:resource/:id/show": "/:resource/:id",
-  "/blog/:category": "/posts/:id?category=:category"
+  "/blog/:category": "/posts?category=:category"
 }
 ```
 
