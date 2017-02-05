@@ -198,6 +198,14 @@ describe('Server', () => {
         .expect(200, done)
     })
 
+    it('should ignore duplicate q query parameters', (done) => {
+      request(server)
+        .get('/comments?q=foo&q=bar')
+        .expect('Content-Type', /json/)
+        .expect([ db.comments[0] ])
+        .expect(200, done)
+    })
+
     it('should support filtering by boolean value false', (done) => {
       request(server)
         .get('/comments?published=false')

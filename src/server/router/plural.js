@@ -92,6 +92,10 @@ module.exports = (db, name) => {
 
     if (q) {
       // Full-text search
+      if (Array.isArray(q)) {
+        q = q[0]
+      }
+
       q = q.toLowerCase()
 
       chain = chain.filter((obj) => {
