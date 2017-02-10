@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## [0.9.5][2016-02-11]
 
 * Display custom routes on homepage
 * Fix duplicate query params error [#352](https://github.com/typicode/json-server/issues/352)
