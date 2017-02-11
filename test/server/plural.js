@@ -506,6 +506,7 @@ describe('Server', () => {
         request(server)
           .post('/posts')
           .send({body: 'foo', booleanValue: true, integerValue: 1})
+          .expect('Location', /3$/)
           .expect('Content-Type', /json/)
           .expect({id: 3, body: 'foo', booleanValue: true, integerValue: 1})
           .expect(201)

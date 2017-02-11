@@ -247,6 +247,8 @@ module.exports = (db, name) => {
       .insert(req.body)
       .value()
 
+    res.setHeader('Access-Control-Expose-Headers', 'Location')
+    res.setHeader('Location', getFullURL(req) + '/' + resource.id)
     res.status(201)
     res.locals.data = resource
     next()
