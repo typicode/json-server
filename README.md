@@ -167,6 +167,8 @@ GET /posts/1/comments?_start=20&_end=30
 GET /posts/1/comments?_start=20&_limit=10
 ```
 
+_Works exactly as [Array.slice](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) (i.e. `_start` is inclusive and `_end` exclusive)_
+
 ### Operators
 
 Add `_gte` or `_lte` for getting a range
