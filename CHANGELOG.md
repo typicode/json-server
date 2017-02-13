@@ -3,6 +3,7 @@
 ## Unreleased
 
 * Improve performances
+* Add `Location` header to newly created resources [#473](https://github.com/typicode/json-server/pull/473)
 
 ## [0.9.5][2016-02-11]
 
@@ -12,7 +13,7 @@
 ## [0.9.4][2016-12-08]
 
 * Improve rewriter [#431](https://github.com/typicode/json-server/issues/431)
-* Improve watch mode [#427](https://github.com/typicode/json-server/pull/427) 
+* Improve watch mode [#427](https://github.com/typicode/json-server/pull/427)
 
 ## [0.9.3][2016-12-07]
 
@@ -39,7 +40,7 @@
   * [#363](https://github.com/typicode/json-server/issues/363) [#365](https://github.com/typicode/json-server/issues/365)
   * [#374](https://github.com/typicode/json-server/issues/374)
   * [#383](https://github.com/typicode/json-server/issues/383)
-* Updated dependencies and codebase to ES6 
+* Updated dependencies and codebase to ES6
 
 ## [0.8.23][2016-11-03]
 

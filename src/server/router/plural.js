@@ -1,8 +1,8 @@
-const url = require('url')
 const express = require('express')
 const _ = require('lodash')
 const pluralize = require('pluralize')
 const write = require('./write')
+const getFullURL = require('./get-full-url')
 const utils = require('../utils')
 
 module.exports = (db, name) => {
@@ -32,15 +32,6 @@ module.exports = (db, name) => {
           resource[innerResource] = db.get(plural).getById(resource[prop]).value()
         }
       })
-  }
-
-  function getFullURL (req) {
-    const root = url.format({
-      protocol: req.protocol,
-      host: req.get('host')
-    })
-
-    return `${root}${req.originalUrl}`
   }
 
   // GET /name
@@ -250,7 +241,8 @@ module.exports = (db, name) => {
       .value()
 
     res.setHeader('Access-Control-Expose-Headers', 'Location')
-    res.setHeader('Location', getFullURL(req) + '/' + resource.id)
+    res.location(`${getFullURL(req)}/${resource.id}`)
+
     res.status(201)
     res.locals.data = resource
 
