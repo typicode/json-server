@@ -1,4 +1,5 @@
 const express = require('express')
+const write = require('./write')
 
 module.exports = (db, name) => {
   const router = express.Router()
@@ -29,11 +30,13 @@ module.exports = (db, name) => {
     next()
   }
 
+  const w = write(db)
+
   router.route('/')
     .get(show)
-    .post(create)
-    .put(update)
-    .patch(update)
+    .post(create, w)
+    .put(update, w)
+    .patch(update, w)
 
   return router
 }

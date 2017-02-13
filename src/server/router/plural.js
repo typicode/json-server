@@ -2,6 +2,7 @@ const url = require('url')
 const express = require('express')
 const _ = require('lodash')
 const pluralize = require('pluralize')
+const write = require('./write')
 const utils = require('../utils')
 
 module.exports = (db, name) => {
@@ -243,12 +244,14 @@ module.exports = (db, name) => {
 
   // POST /name
   function create (req, res, next) {
-    const resource = db.get(name)
+    const resource = db
+      .get(name)
       .insert(req.body)
       .value()
 
     res.status(201)
     res.locals.data = resource
+
     next()
   }
 
@@ -293,15 +296,17 @@ module.exports = (db, name) => {
     next()
   }
 
+  const w = write(db)
+
   router.route('/')
     .get(list)
-    .post(create)
+    .post(create, w)
 
   router.route('/:id')
     .get(show)
-    .put(update)
-    .patch(update)
-    .delete(destroy)
+    .put(update, w)
+    .patch(update, w)
+    .delete(destroy, w)
 
   return router
 }

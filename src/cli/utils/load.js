@@ -1,7 +1,7 @@
 const path = require('path')
 const request = require('request')
 const low = require('lowdb')
-const fileAsync = require('lowdb/lib/file-async')
+const fileAsync = require('lowdb/lib/storages/file-async')
 const is = require('./is')
 
 module.exports = function (source, cb) {
