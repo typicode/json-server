@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* Improve performances
+
 ## [0.9.5][2016-02-11]
 
 * Display custom routes on homepage
