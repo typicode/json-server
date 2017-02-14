@@ -325,6 +325,19 @@ Now you can access resources using additional routes.
 /blog/javascript # → /posts?category=javascript
 ```
 
+When using custom routes, routes that don't contain params will match any request for which the route path is a prefix of the request URL and replace that prefix with the value they map to. Place routes with parameters first to avoid route collisions.
+
+For example, if you define the following:
+
+```json
+{
+  "/blog/categories": "/categories",
+  "/blog/categories/:category/posts": "/posts?category=:category"
+}
+```
+
+A request to `blog/categories/js/posts` will match the first route and get replaced with `/categories/js/posts`, not `/posts?category=js` as intended. Swapping the routes solves this issue.
+
 ### Add middlewares
 
 You can add your middlewares from the CLI using `--middlewares` option:
