@@ -11,7 +11,7 @@ const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
 
-module.exports = (source) => {
+module.exports = (source, argv) => {
   // Create router
   const router = express.Router()
 
@@ -41,7 +41,13 @@ module.exports = (source) => {
 
   // Expose render
   router.render = (req, res) => {
-    res.jsonp(res.locals.data)
+    if (typeof argv !== 'undefined' && typeof argv.wrapper !== 'undefined') {
+      var resp = {}
+      resp[argv.wrapper] = res.locals.data
+      res.jsonp(resp)
+    } else {
+      res.jsonp(res.locals.data)
+    }
   }
 
   // GET /db
