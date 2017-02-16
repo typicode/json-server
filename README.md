@@ -362,6 +362,7 @@ Options:
   --delay, -d        Add delay to responses (ms)
   --id, -i           Set database id property (e.g. _id)         [default: "id"]
   --quiet, -q        Suppress log messages from output                 [boolean]
+  --wrapper, -W      Set the wrapper of the return
   --help, -h         Show help                                         [boolean]
   --version, -v      Show version number                               [boolean]
 
