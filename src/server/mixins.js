@@ -34,7 +34,7 @@ function getRemovable (db) {
 }
 
 // Return incremented id or uuid
-// Used to override underscore-db's createId with utils.createId
+// Used to override lodash-id's createId with utils.createId
 function createId (coll) {
   const _ = this
   const idProperty = _.__id()

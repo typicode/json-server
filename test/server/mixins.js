@@ -1,13 +1,13 @@
 const assert = require('assert')
 const _ = require('lodash')
-const _db = require('underscore-db')
+const lodashId = require('lodash-id')
 const mixins = require('../../src/server/mixins')
 
 describe('mixins', () => {
   let db
 
   before(() => {
-    _.mixin(_db)
+    _.mixin(lodashId)
     _.mixin(mixins)
   })
 
