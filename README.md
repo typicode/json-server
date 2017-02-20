@@ -387,6 +387,10 @@ If you need to add authentication, validation, or __any behavior__, you can use 
 
 #### Simple example
 
+```sh
+$ npm install json-server --save-dev
+```
+
 ```js
 // server.js
 var jsonServer = require('json-server')
