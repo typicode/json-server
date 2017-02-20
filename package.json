@@ -39,6 +39,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^3.1.2",
     "os-tmpdir": "^1.0.1",
+    "pkg-ok": "^1.0.1",
     "rimraf": "^2.5.2",
     "server-ready": "^0.3.1",
     "standard": "^8.3.0",
@@ -53,7 +54,7 @@
     "prepush": "npm t",
     "build": "babel src -d lib --copy-files",
     "toc": "markdown-toc -i README.md",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build && pkg-ok"
   },
   "repository": {
     "type": "git",
