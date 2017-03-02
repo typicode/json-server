@@ -1,3 +1,5 @@
+/* global m */
+
 // Resource list
 var resources = []
 
@@ -8,7 +10,7 @@ m.request('db').then(function (data) {
 m.mount(
   document.getElementById('resources'),
   {
-    view: function() {
+    view: function () {
       return m('ul', resources.map(function (resource) {
         return m('li',
           m('a', { href: resource }, resource)
