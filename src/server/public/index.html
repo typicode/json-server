@@ -22,11 +22,10 @@
 
       <hr>
 
-      <h4>Routes</h4>
       <p>
         Here are the resources that JSON Server has loaded:
       </p>
-      <ul id="resources">loading, please wait...</ul>
+      <div id="resources">loading, please wait...</div>
 
       <div id="custom-routes"></div>
 
@@ -63,33 +62,7 @@
       </p>
     </div>
 
-    <script
-      src="https://code.jquery.com/jquery-3.0.0.min.js"
-      integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
-    <script>
-      $(function() {
-        $.get('db').then(function(data) {
-          var el = $('#resources')
-
-          el.empty()
-
-          $.each(data, function(key, value) {
-            el.append('<li><a href="'+ key + '">' + key + '</a></li>')
-          })
-        })
-
-        $.get('__rules').then(function(data) {
-          var el = $('#custom-routes')
-
-          el.append('<p>And the custom routes:</p>')
-            .append('<ul id="custom-routes-list">')
-
-          var listEl = $('#custom-routes-list')
-          $.each(data, function(key, value) {
-            listEl.append('<li>' + key + ' → ' + value + '</li>')
-          })
-        })
-      })
-    </script>
+    <script src="https://unpkg.com/mithril/mithril.min.js"></script>
+    <script src="main.js"></script>
   </body>
 </html>
