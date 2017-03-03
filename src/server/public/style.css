@@ -8,14 +8,19 @@ body {
   flex-direction: column;
 }
 
-main {
-  flex: 1;
-  padding: 2rem 0;
-}
-
 a, a:hover {
   color: #1882BC;
   text-decoration: underline;
+}
+
+header a {
+  color: inherit;
+  text-decoration: none;
+}
+
+main {
+  flex: 1;
+  padding: 2rem 0;
 }
 
 table {

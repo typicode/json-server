@@ -1,45 +1,54 @@
 /* global m */
 
 // Resource list
-var resources = []
+var db = {}
 
 m.request('db').then(function (data) {
-  resources = Object.keys(data)
+  db = data
 })
 
 m.mount(
   document.getElementById('resources'),
   {
     view: function () {
-      return m('ul', resources.map(function (resource) {
-        return m('li',
-          m('a', { href: resource }, resource)
-        )
+      var keys = Object.keys(db)
+      console.log(keys, db)
+      return m('ul', keys.map(function (key) {
+        return m('li', [
+          m('a', { href: key }, key),
+          m('span', Array.isArray(db[key])
+            ? '(' + db[key].length + ')'
+            : '(1)'
+          )
+        ])
       }))
     }
   }
 )
 
 // Custom routes
-var rules = {}
+var customRoutes = {}
 
 m.request('__rules').then(function (data) {
-  rules = data
+  customRoutes = data
 })
 
 m.mount(
   document.getElementById('custom-routes'),
   {
     view: function () {
-      return [
-        m('p', 'And the custom routes:'),
-        m('table', Object.keys(rules).map(function (rule) {
-          return m('tr', [
-            m('td', rule),
-            m('td', '⇢ ' + rules[rule])
-          ])
-        }))
-      ]
+      var rules = Object.keys(customRoutes)
+      if (rules.length) {
+        return [
+          m('p', 'And the custom routes:'),
+          m('table', rules.map(function (rule) {
+            return m('tr', [
+              m('td', rule),
+              m('td', '⇢ ' + rules[rule])
+            ])
+          }))
+        ]
+      }
     }
   }
 )
