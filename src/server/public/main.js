@@ -33,8 +33,11 @@ m.mount(
     view: function () {
       return [
         m('p', 'And the custom routes:'),
-        m('ul', Object.keys(rules).map(function (rule) {
-          return m('li', rule + ' → ' + rules[rule])
+        m('table', Object.keys(rules).map(function (rule) {
+          return m('tr', [
+            m('td', rule),
+            m('td', '⇢ ' + rules[rule])
+          ])
         }))
       ]
     }

@@ -1,5 +1,35 @@
-a {
-  color: #1882BC !important;
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  padding: 2rem 0;
+}
+
+a, a:hover {
+  color: #1882BC;
+  text-decoration: underline;
+}
+
+table {
+  margin-left: 30px;
+}
+
+td {
+  border: 0;
+}
+
+td:first-child {
+  width:1%;
+  white-space:nowrap;
+  color: #1882BC;
 }
 
 img {
@@ -7,10 +37,11 @@ img {
   padding-bottom: 20px;
 }
 
-li {
-  list-style-type: square;
+ul {
+  list-style-position: inside;
+  padding-left: 30px;
 }
 
-h4 {
-  padding-top: 20px;
+li {
+  list-style-type: none;
 }
