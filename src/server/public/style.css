@@ -1,40 +1,58 @@
-html {
-  height: 100%;
-}
-
 body {
-  min-height: 100%;
   display: flex;
+  min-height: 100vh;
   flex-direction: column;
+  padding:0;
+  margin: 0;
+  color: #333;
 }
 
-a, a:hover {
-  color: #1882BC;
-  text-decoration: underline;
+header {
+  padding-top: 2.0rem;
+  border-bottom: 1px solid #EEE;
 }
 
 header a {
   color: inherit;
-  text-decoration: none;
 }
 
 main {
   flex: 1;
-  padding: 2rem 0;
+  padding-top: 4rem;
+}
+
+footer {
+  padding-top: 2.5rem;
+  border-top: 1px solid #EEE;
+}
+
+h4 {
+  margin-top: 4rem;
+  letter-spacing: 0;
+}
+
+a {
+  color: #0275d8;
+}
+
+a:hover {
+  color: #014c8c;
+  text-decoration: underline;
 }
 
 table {
-  margin-left: 30px;
+  margin-left: 0;
 }
 
 td {
   border: 0;
+  padding: 0 1em .5em 0;
+  color: #014c8c;
 }
 
 td:first-child {
-  width:1%;
-  white-space:nowrap;
-  color: #1882BC;
+  width: 1%;
+  white-space: nowrap;
 }
 
 img {
@@ -44,9 +62,10 @@ img {
 
 ul {
   list-style-position: inside;
-  padding-left: 30px;
+  padding-left: 0;
 }
 
 li {
   list-style-type: none;
+  margin-bottom: .2rem;
 }

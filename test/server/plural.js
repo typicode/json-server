@@ -657,10 +657,19 @@ describe('Server', () => {
       })
     })
 
-    describe('GET /stylesheets/style.css', () => {
+    describe('GET /main.js', () => {
+      it('should respond with js', (done) => {
+        request(server)
+          .get('/main.js')
+          .expect('Content-Type', /javascript/)
+          .expect(200, done)
+      })
+    })
+
+    describe('GET /style.css', () => {
       it('should respond with css', (done) => {
         request(server)
-          .get('/stylesheets/style.css')
+          .get('/style.css')
           .expect('Content-Type', /css/)
           .expect(200, done)
       })

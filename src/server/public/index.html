@@ -1,65 +1,58 @@
 <html>
   <head>
     <title>JSON Server</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
     <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <header class="container">
-      <h1>
-        <a href="https://github.com/typicode/json-server" class="logo">
-          json-server
+    <header>
+      <div class="container">
+        <a href="https://github.com/typicode/json-server">
+          <h3>JSON Server</h3>
         </a>
-      </h1>
+      </div>
     </header>
-    <main class="container">
-      <hr>
-      <p>
-        Congrats! {😊}<br>
-        <em>You're successfully running JSON Server</em>
-      </p>
+    <main>
+      <div class="container">
+        <p>
+          <strong>Congrats!</strong><br>
+          You're successfully running JSON Server 😄
+        </p>
 
-      <hr>
+        <div id="resources"></div>
 
-      <p>
-        Here are the resources that JSON Server has loaded:
-      </p>
-      <div id="resources">loading, please wait...</div>
+        <p>
+          <em>
+            To access and modify resources, you can use any HTTP method
+          </em>
+          <br>
+          <code>GET</code>
+          <code>POST</code>
+          <code>PUT</code>
+          <code>PATCH</code>
+          <code>DELETE</code>
+          <code>OPTIONS</code>
+        </p>
 
-      <div id="custom-routes"></div>
+        <div id="custom-routes"></div>
 
-      <p>
-        You can view database current state at any time:
-      </p>
-      <ul>
-        <li>
-          <a href="db">db</a>
-        </li>
-      </ul>
+        <!-- <h4>Extra</h4>
+        <p>
 
-      <p>
-        You can use any HTTP verbs (GET, POST, PUT, PATCH and DELETE) and access your resources from anywhere
-        using CORS or JSONP.
-      </p>
-
-      <h4>Documentation</h4>
-      <p>
-        View
-        <a href="https://github.com/typicode/json-server">README</a>
-        on GitHub.
-      </p>
-
-      <h4>Issues</h4>
-      <p>Please go
-        <a href="https://github.com/typicode/json-server/issues">here</a>.
-      </p>
+          <br>
+        </p> -->
+      </div>
     </main>
 
-    <footer class="container">
-      <hr>
-      <p>
-        To replace this page, create an index.html file in ./public, JSON Server will load it.
-      </p>
+    <footer>
+      <div class="container">
+        <p>
+          <em>To replace this page, create a <code>./public</code> directory with an
+          <code>index.html</code> file in it</em>.
+        </p>
+      </div>
     </footer>
 
     <script src="https://unpkg.com/mithril/mithril.min.js"></script>
