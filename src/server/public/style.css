@@ -1,3 +1,7 @@
+html {
+  font-size: 70%;
+}
+
 body {
   display: flex;
   min-height: 100vh;

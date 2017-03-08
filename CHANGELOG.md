@@ -1,9 +1,9 @@
 # Change Log
 
-## Unreleased
+## [0.9.6][2016-03-08]
 
 * Update index page
-* Improve performances (lowdb `v0.15`)
+* Improve performances ([lowdb](https://github.com/typicode/lowdb) `v0.15`)
 * Add `Location` header to newly created resources [#473](https://github.com/typicode/json-server/pull/473)
 
 ## [0.9.5][2016-02-11]
