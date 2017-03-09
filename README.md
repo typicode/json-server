@@ -8,8 +8,9 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 * [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
 
 See also:
-* :hotel: [hotel - Start apps from your browser and get local dev domains in seconds](https://github.com/typicode/hotel)
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
+* :camera: [tlapse - Create a timelapse of your web development](https://github.com/typicode/tlapse)
+* :hotel: [hotel - Process manager for developers with local .dev domain out of the box](https://github.com/typicode/hotel)
 
 ## Table of contents
 
