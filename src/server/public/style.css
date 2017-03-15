@@ -9,6 +9,7 @@ body {
   padding:0;
   margin: 0;
   color: #333;
+  letter-spacing: 0;
 }
 
 header {
@@ -16,13 +17,12 @@ header {
   border-bottom: 1px solid #EEE;
 }
 
-header a {
-  color: inherit;
+header a, header a:hover {
+  text-decoration: none;
 }
 
 main {
   flex: 1;
-  padding-top: 4rem;
 }
 
 footer {
@@ -32,7 +32,6 @@ footer {
 
 h4 {
   margin-top: 4rem;
-  letter-spacing: 0;
 }
 
 a {
@@ -59,11 +58,6 @@ td:first-child {
   white-space: nowrap;
 }
 
-img {
-  padding-top: 50px;
-  padding-bottom: 20px;
-}
-
 ul {
   list-style-position: inside;
   padding-left: 0;
@@ -72,4 +66,8 @@ ul {
 li {
   list-style-type: none;
   margin-bottom: .2rem;
+}
+
+code {
+  border-radius: 0;
 }
