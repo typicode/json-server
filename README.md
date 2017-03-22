@@ -279,11 +279,11 @@ Using JS instead of a JSON file, you can create data programmatically.
 
 ```javascript
 // index.js
-module.exports = function() {
-  var data = { users: [] }
+module.exports = () => {
+  const data = { users: [] }
   // Create 1000 users
-  for (var i = 0; i < 1000; i++) {
-    data.users.push({ id: i, name: 'user' + i })
+  for (let i = 0; i < 1000; i++) {
+    data.users.push({ id: i, name: `user${i}` })
   }
   return data
 }
@@ -332,7 +332,7 @@ You can add your middlewares from the CLI using `--middlewares` option:
 
 ```js
 // hello.js
-module.exports = function (req, res, next) {
+module.exports = (req, res, next) => {
   res.header('X-Hello', 'World')
   next()
 }
@@ -394,14 +394,14 @@ $ npm install json-server --save-dev
 
 ```js
 // server.js
-var jsonServer = require('json-server')
-var server = jsonServer.create()
-var router = jsonServer.router('db.json')
-var middlewares = jsonServer.defaults()
+const jsonServer = require('json-server')
+const server = jsonServer.create()
+const router = jsonServer.router('db.json')
+const middlewares = jsonServer.defaults()
 
 server.use(middlewares)
 server.use(router)
-server.listen(3000, function () {
+server.listen(3000, () => {
   console.log('JSON Server is running')
 })
 ```
@@ -413,8 +413,8 @@ $ node server.js
 The path you provide to the `jsonServer.router` function  is relative to the directory from where you launch your node process. If you run the above code from another directory, it’s better to use an absolute path:
 
 ```js
-var path = require('path')
-var router = jsonServer.router(path.join(__dirname, 'db.json'))
+const path = require('path')
+const router = jsonServer.router(path.join(__dirname, 'db.json'))
 ```
 
 For an in-memory database, simply pass an object to `jsonServer.router()`.
@@ -426,23 +426,23 @@ Please note also that `jsonServer.router()` can be used in existing Express proj
 Let's say you want a route that echoes query parameters and another one that set a timestamp on every resource created.
 
 ```js
-var jsonServer = require('json-server')
-var server = jsonServer.create()
-var router = jsonServer.router('db.json')
-var middlewares = jsonServer.defaults()
+const jsonServer = require('json-server')
+const server = jsonServer.create()
+const router = jsonServer.router('db.json')
+const middlewares = jsonServer.defaults()
 
 // Set default middlewares (logger, static, cors and no-cache)
 server.use(middlewares)
 
 // Add custom routes before JSON Server router
-server.get('/echo', function (req, res) {
+server.get('/echo', (req, res) => {
   res.jsonp(req.query)
 })
 
 // To handle POST, PUT and PATCH you need to use a body-parser
 // You can use the one used by JSON Server
 server.use(jsonServer.bodyParser)
-server.use(function (req, res, next) {
+server.use((req, res, next) => {
   if (req.method === 'POST') {
     req.body.createdAt = Date.now()
   }
@@ -452,7 +452,7 @@ server.use(function (req, res, next) {
 
 // Use default router
 server.use(router)
-server.listen(3000, function () {
+server.listen(3000, () => {
   console.log('JSON Server is running')
 })
 ```
@@ -460,13 +460,13 @@ server.listen(3000, function () {
 #### Access control example
 
 ```js
-var jsonServer = require('json-server')
-var server = jsonServer.create()
-var router = jsonServer.router('db.json')
-var middlewares = jsonServer.defaults()
+const jsonServer = require('json-server')
+const server = jsonServer.create()
+const router = jsonServer.router('db.json')
+const middlewares = jsonServer.defaults()
 
 server.use(middlewares)
-server.use(function (req, res, next) {
+server.use((req, res, next) => {
  if (isAuthorized(req)) { // add your authorization logic here
    next() // continue to JSON Server router
  } else {
@@ -474,7 +474,7 @@ server.use(function (req, res, next) {
  }
 })
 server.use(router)
-server.listen(3000, function () {
+server.listen(3000, () => {
   console.log('JSON Server is running')
 })
 ```
@@ -485,9 +485,9 @@ To modify responses, overwrite `router.render` method:
 
 ```javascript
 // In this example, returned resources will be wrapped in a body property
-router.render = function (req, res) {
+router.render = (req, res) => {
   res.jsonp({
-   body: res.locals.data
+    body: res.locals.data
   })
 }
 ```
