@@ -37,13 +37,13 @@
     "husky": "^0.13.0",
     "markdown-toc": "^0.13.0",
     "mkdirp": "^0.5.1",
-    "mocha": "^3.1.2",
+    "mocha": "^3.2.0",
     "os-tmpdir": "^1.0.1",
     "pkg-ok": "^1.0.1",
     "rimraf": "^2.5.2",
     "server-ready": "^0.3.1",
     "standard": "^8.3.0",
-    "supertest": "^2.0.0",
+    "supertest": "^3.0.0",
     "temp-write": "^2.1.0"
   },
   "scripts": {
