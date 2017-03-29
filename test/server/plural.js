@@ -502,7 +502,7 @@ describe('Server', () => {
 
   describe('POST /:resource', () => {
     it('should respond with json, create a resource and increment id', async () => {
-      const res = await request(server)
+      await request(server)
         .post('/posts')
         .send({body: 'foo', booleanValue: true, integerValue: 1})
         .expect('Access-Control-Expose-Headers', 'Location')
@@ -514,7 +514,7 @@ describe('Server', () => {
     })
 
     it('should support x-www-form-urlencoded', async () => {
-      const res = await request(server)
+      await request(server)
         .post('/posts')
         .type('form')
         .send({body: 'foo', booleanValue: true, integerValue: 1})
@@ -526,7 +526,7 @@ describe('Server', () => {
     })
 
     it('should respond with json, create a resource and generate string id', async () => {
-      const res = await request(server)
+      await request(server)
         .post('/refs')
         .send({url: 'http://foo.com', postId: '1'})
         .expect('Content-Type', /json/)
@@ -601,7 +601,7 @@ describe('Server', () => {
 
   describe('DELETE /:resource/:id', () => {
     it('should respond with empty data, destroy resource and dependent resources', async () => {
-      const res = await request(server)
+      await request(server)
         .del('/posts/1')
         .expect({})
         .expect(200)
