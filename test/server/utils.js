@@ -1,12 +1,12 @@
 const assert = require('assert')
 const utils = require('../../src/server/utils')
 
-describe('utils', function () {
-  describe('getPage', function () {
+describe('utils', () => {
+  describe('getPage', () => {
     const array = [1, 2, 3, 4, 5]
     const perPage = 2
 
-    it('should return first page', function () {
+    it('should return first page', () => {
       assert.deepEqual(
         utils.getPage(array, 1, perPage),
         {
@@ -19,7 +19,7 @@ describe('utils', function () {
       )
     })
 
-    it('should return second page', function () {
+    it('should return second page', () => {
       assert.deepEqual(
         utils.getPage(array, 2, perPage),
         {
@@ -33,7 +33,7 @@ describe('utils', function () {
       )
     })
 
-    it('should return third page (last)', function () {
+    it('should return third page (last)', () => {
       assert.deepEqual(
         utils.getPage(array, 3, perPage),
         {
@@ -46,7 +46,7 @@ describe('utils', function () {
       )
     })
 
-    it('should return an empty array if page is greater than the last page', function () {
+    it('should return an empty array if page is greater than the last page', () => {
       assert.deepEqual(
         utils.getPage(array, 99, perPage),
         {
@@ -55,7 +55,7 @@ describe('utils', function () {
       )
     })
 
-    it('should return the array if perPage is greater than the array size', function () {
+    it('should return the array if perPage is greater than the array size', () => {
       assert.deepEqual(
         utils.getPage(array, 1, 99),
         {
@@ -64,7 +64,7 @@ describe('utils', function () {
       )
     })
 
-    it('should return an empty array if the array is empty', function () {
+    it('should return an empty array if the array is empty', () => {
       assert.deepEqual(
         utils.getPage([], 1, 1),
         {

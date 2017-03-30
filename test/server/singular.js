@@ -1,12 +1,12 @@
 const request = require('supertest')
 const jsonServer = require('../../src/server')
 
-describe('Server', function () {
+describe('Server', () => {
   let server
   let router
   let db
 
-  beforeEach(function () {
+  beforeEach(() => {
     db = {}
 
     db.user = {
@@ -20,44 +20,44 @@ describe('Server', function () {
     server.use(router)
   })
 
-  describe('GET /:resource', function () {
-    it('should respond with corresponding resource', function (done) {
+  describe('GET /:resource', () => {
+    it('should respond with corresponding resource', () => (
       request(server)
         .get('/user')
         .expect(db.user)
-        .expect(200, done)
-    })
+        .expect(200)
+    ))
   })
 
-  describe('POST /:resource', function () {
-    it('should create resource', function (done) {
+  describe('POST /:resource', () => {
+    it('should create resource', () => {
       const user = { name: 'bar' }
-      request(server)
+      return request(server)
         .post('/user')
         .send(user)
         .expect(user)
-        .expect(201, done)
+        .expect(201)
     })
   })
 
-  describe('PUT /:resource', function () {
-    it('should update resource', function (done) {
+  describe('PUT /:resource', () => {
+    it('should update resource', () => {
       const user = { name: 'bar' }
-      request(server)
+      return request(server)
         .put('/user')
         .send(user)
         .expect(user)
-        .expect(200, done)
+        .expect(200)
     })
   })
 
-  describe('PATCH /:resource', function () {
-    it('should update resource', function (done) {
+  describe('PATCH /:resource', () => {
+    it('should update resource', () => (
       request(server)
         .patch('/user')
         .send({ name: 'bar' })
         .expect({ name: 'bar', email: 'foo@example.com' })
-        .expect(200, done)
-    })
+        .expect(200)
+    ))
   })
 })
