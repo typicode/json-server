@@ -1,5 +1,10 @@
 {
   "presets": [
-    ["es2015", { "loose": true }]
+    ["env", {
+      "targets": {
+        "node": 4
+      },
+      "exclude": ["transform-regenerator"]
+    }]
   ]
 }

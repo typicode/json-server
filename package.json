@@ -30,20 +30,20 @@
     "yargs": "^6.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.10.1",
-    "babel-preset-es2015": "^6.16.0",
+    "babel-cli": "^6.24.0",
+    "babel-preset-env": "^1.3.2",
     "babel-register": "^6.16.3",
     "cross-env": "^2.0.1",
     "husky": "^0.13.0",
     "markdown-toc": "^0.13.0",
     "mkdirp": "^0.5.1",
-    "mocha": "^3.1.2",
+    "mocha": "^3.2.0",
     "os-tmpdir": "^1.0.1",
     "pkg-ok": "^1.0.1",
     "rimraf": "^2.5.2",
     "server-ready": "^0.3.1",
     "standard": "^8.3.0",
-    "supertest": "^2.0.0",
+    "supertest": "^3.0.0",
     "temp-write": "^2.1.0"
   },
   "scripts": {
@@ -51,7 +51,7 @@
     "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js",
     "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
     "start": "babel-node src/cli/bin",
-    "prepush": "npm t",
+    "precommit": "npm test",
     "build": "babel src -d lib --copy-files",
     "toc": "markdown-toc -i README.md",
     "prepublish": "npm run build && pkg-ok"
@@ -89,6 +89,6 @@
     }
   },
   "engines": {
-    "node": ">= 0.12"
+    "node": ">= 4"
   }
 }
