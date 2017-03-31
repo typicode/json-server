@@ -1,5 +1,9 @@
 # Change Log
 
+## [Unreleased]
+
+* Drop Node 0.12 support
+
 ## [0.9.6][2016-03-08]
 
 * Update index page
