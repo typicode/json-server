@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
-    "babel-preset-es2017": "^6.22.0",
+    "babel-preset-env": "^1.3.2",
     "babel-register": "^6.16.3",
     "cross-env": "^2.0.1",
     "husky": "^0.13.0",
@@ -51,7 +51,7 @@
     "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js",
     "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
     "start": "babel-node src/cli/bin",
-    "prepush": "npm t",
+    "precommit": "npm test",
     "build": "babel src -d lib --copy-files",
     "toc": "markdown-toc -i README.md",
     "prepublish": "npm run build && pkg-ok"
@@ -89,6 +89,6 @@
     }
   },
   "engines": {
-    "node": ">= 0.12"
+    "node": "4"
   }
 }

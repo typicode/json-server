@@ -1,1 +1,10 @@
-{ "presets": ["es2017"] }
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": 4
+      },
+      "exclude": ["transform-regenerator"]
+    }]
+  ]
+}
