@@ -42,6 +42,18 @@ describe('Server', () => {
       { id: 5, body: 'quux', published: false, postId: 2, userId: 1 }
     ]
 
+    db.buyers = [
+      { id: 1, name: 'Aileen', country: 'Colombia', total: 100 },
+      { id: 2, name: 'Barney', country: 'Colombia', total: 200 },
+      { id: 3, name: 'Carley', country: 'Colombia', total: 300 },
+      { id: 4, name: 'Daniel', country: 'Belize', total: 30 },
+      { id: 5, name: 'Ellen', country: 'Belize', total: 20 },
+      { id: 6, name: 'Frank', country: 'Belize', total: 10 },
+      { id: 7, name: 'Grace', country: 'Argentina', total: 1 },
+      { id: 8, name: 'Henry', country: 'Argentina', total: 2 },
+      { id: 9, name: 'Isabelle', country: 'Argentina', total: 3 }
+    ]
+
     db.refs = [
       { id: 'abcd-1234', url: 'http://example.com', postId: 1, userId: 1 }
     ]
@@ -257,6 +269,18 @@ describe('Server', () => {
         .get('/nested?_sort=resource.name')
         .expect('Content-Type', /json/)
         .expect([ db.nested[1], db.nested[0], db.nested[2] ])
+        .expect(200)
+    ))
+
+    it('should sort on multiple fields', () => (
+      request(server)
+        .get('/buyers?_sort=country,total&_order=asc,desc')
+        .expect('Content-Type', /json/)
+        .expect([
+          db.buyers[8], db.buyers[7], db.buyers[6],
+          db.buyers[3], db.buyers[4], db.buyers[5],
+          db.buyers[2], db.buyers[1], db.buyers[0]
+        ])
         .expect(200)
     ))
   })
