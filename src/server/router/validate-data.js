@@ -6,7 +6,7 @@ function validateKey (key) {
       `Oops, found / character in database property '${key}'.`,
       '',
       '/ aren\'t supported, if you want to tweak default routes, see',
-      'https://github.com/typicode/json-server/tree/next#add-custom-routes'
+      'https://github.com/typicode/json-server/#add-custom-routes'
     ].join('\n')
     throw new Error(msg)
   }
