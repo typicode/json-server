@@ -165,7 +165,7 @@ describe('Server', () => {
     ))
 
     // https://github.com/typicode/json-server/issues/510
-    it.only('should not fail with null value', () => {
+    it('should not fail with null value', () => {
       db.posts.push({ id: 99, body: null })
       return request(server)
         .get('/posts?body=foo')
