@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 * Drop Node 0.12 support
+* Prevent `TypeError` when a filter is applied on a `null` value [#510](https://github.com/typicode/json-server/issues/510)
 
 ## [0.9.6][2016-03-08]
 

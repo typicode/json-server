@@ -114,9 +114,12 @@ module.exports = (db, name) => {
               const isRange = /_lte$/.test(key) || /_gte$/.test(key)
               const isLike = /_like$/.test(key)
               const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
+              // get item value based on path
+              // i.e post.title -> 'foo'
               const elementValue = _.get(element, path)
 
-              if (elementValue === undefined) {
+              // Prevent toString() failing on undefined or null values
+              if (elementValue === undefined || elementValue === null) {
                 return
               }
 

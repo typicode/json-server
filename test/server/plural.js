@@ -20,7 +20,7 @@ describe('Server', () => {
 
     db.posts = [
       { id: 1, body: 'foo' },
-      { id: 2, body: 'bar' }
+      { id: 2, body: 'bar' },
     ]
 
     db.tags = [
@@ -163,6 +163,16 @@ describe('Server', () => {
         .expect(db.comments)
         .expect(200)
     ))
+
+    // https://github.com/typicode/json-server/issues/510
+    it.only('should not fail with null value', () => {
+      db.posts.push({ id: 99, body: null })
+      return request(server)
+        .get('/posts?body=foo')
+        .expect('Content-Type', /json/)
+        .expect([ db.posts[0] ])
+        .expect(200)
+    })
   })
 
   describe('GET /:resource?q=', () => {
