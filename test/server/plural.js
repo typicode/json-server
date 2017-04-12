@@ -20,7 +20,7 @@ describe('Server', () => {
 
     db.posts = [
       { id: 1, body: 'foo' },
-      { id: 2, body: 'bar' },
+      { id: 2, body: 'bar' }
     ]
 
     db.tags = [
