@@ -1,17 +1,17 @@
 # Change Log
 
-## [Unreleased]
+## [0.10.0][2017-04-26]
 
 * Drop Node 0.12 support
 * Prevent `TypeError` when a filter is applied on a `null` value [#510](https://github.com/typicode/json-server/issues/510)
 
-## [0.9.6][2016-03-08]
+## [0.9.6][2017-03-08]
 
 * Update index page
 * Improve performances ([lowdb](https://github.com/typicode/lowdb) `v0.15`)
 * Add `Location` header to newly created resources [#473](https://github.com/typicode/json-server/pull/473)
 
-## [0.9.5][2016-02-11]
+## [0.9.5][2017-02-11]
 
 * Display custom routes on homepage
 * Fix duplicate query params error [#352](https://github.com/typicode/json-server/issues/352)
