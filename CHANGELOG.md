@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* Multiple fields sorting
+
 ## [0.10.0][2017-04-26]
 
 * __Drop Node `v0.12` support__
