@@ -158,11 +158,13 @@ GET /posts?_sort=views&_order=DESC
 GET /posts/1/comments?_sort=votes&_order=ASC
 ```
 
+<!--
 For multiple fields, use the following format:
 
 ```
 GET /posts?_sort=user,views&_order=desc,asc
 ```
+-->
 
 
 ### Slice
