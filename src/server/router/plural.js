@@ -144,19 +144,9 @@ module.exports = (db, name) => {
 
     // Sort
     if (_sort) {
-      if (_sort.match(/,/)) {
-        const _sortSet = _sort.split(/,/)
-        const _orderSet = _order.split(/,/)
-        chain = chain.orderBy(_sortSet, _orderSet)
-      } else {
-        _order = _order || 'ASC'
-        chain = chain.sortBy(function (element) {
-          return _.get(element, _sort)
-        })
-        if (_order === 'DESC') {
-          chain = chain.reverse()
-        }
-      }
+      const _sortSet = _sort.split(',')
+      const _orderSet = (_order || '').split(',').map(s => s.toLowerCase())
+      chain = chain.orderBy(_sortSet, _orderSet)
     }
 
     // Slice result
