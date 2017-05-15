@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## [0.10.1][2017-05-16] `GET /posts?_sort=user,views&_order=desc,asc`
 
 * Multiple fields sorting
 
