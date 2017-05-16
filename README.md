@@ -349,6 +349,17 @@ json-server db.json --middlewares ./hello.js
 json-server db.json --middlewares ./first.js ./second.js
 ```
 
+### Parse request body
+
+You need add body-parser in server.js
+
+```js
+// server.js
+var bodyParser = require('body-parser');
+...
+server.use(bodyParser.json())
+```
+
 ### CLI usage
 
 ```
