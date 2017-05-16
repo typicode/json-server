@@ -27,6 +27,7 @@
     "server-destroy": "^1.0.1",
     "shortid": "^2.2.6",
     "update-notifier": "^1.0.2",
+    "uuid": "^3.0.0",
     "yargs": "^6.0.0"
   },
   "devDependencies": {
