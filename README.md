@@ -538,7 +538,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 * [No API? No Problem! Rapid Development via Mock APIs](https://medium.com/@housecor/rapid-development-via-mock-apis-e559087be066#.93d7w8oro)
 
 ### Third-party tools
-
+* [JSON Schema Faker](https://github.com/json-schema-faker/json-schema-faker)
 * [Grunt JSON Server](https://github.com/tfiwm/grunt-json-server)
 * [Docker JSON Server](https://github.com/clue/docker-json-server)
 * [JSON Server GUI](https://github.com/naholyr/json-server-gui)
