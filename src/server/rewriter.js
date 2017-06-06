@@ -2,7 +2,7 @@ const express = require('express')
 const url = require('url')
 const _ = require('lodash')
 function updateQueryString (target, sourceUrl) {
-  return ~sourceUrl.indexOf('?') ? _.assign(target, url.parse(sourceUrl, true).query) : {}
+  return _.merge(target, url.parse(sourceUrl, true).query)
 }
 module.exports = (routes) => {
   const router = express.Router()
