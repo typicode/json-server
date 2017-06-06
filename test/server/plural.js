@@ -12,7 +12,8 @@ describe('Server', () => {
     '/blog/posts/:id/show': '/posts/:id',
     '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body',
     '/firstpostwithcomments': '/posts/1?_embed=comments',
-    '/blog/:resource': '/:resource?published=true',
+    '/blog/:resource' : '/:resource',
+    '/blog/:resource/published' : '/:resource?published=true',
     '/articles?_id=:id': '/posts/:id'
   }
 
@@ -711,7 +712,7 @@ describe('Server', () => {
         .expect(db.posts[0])
     ))
 
-    it('should rewrite using query without params', () => {
+    it('should rewrite using server-defined query without params', () => {
       const expectedPost = _.cloneDeep(db.posts[0])
       expectedPost.comments = [ db.comments[0], db.comments[1] ]
       return request(server)
@@ -725,9 +726,15 @@ describe('Server', () => {
         .expect([db.comments[4]])
     ))
 
-    it('should rewrite using params, server-defined query, and client-defined query', () => (
+    it('should rewrite using params and client-defined query', () => (
       request(server)
         .get('/blog/comments?userId=1')
+        .expect([db.comments[0],db.comments[2],db.comments[4]])
+    ))
+
+    it('should rewrite using params, server-defined query, and client-defined query', () => (
+      request(server)
+        .get('/blog/comments/published?userId=1')
         .expect([db.comments[0]])
     ))
 
