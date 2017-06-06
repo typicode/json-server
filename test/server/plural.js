@@ -12,8 +12,8 @@ describe('Server', () => {
     '/blog/posts/:id/show': '/posts/:id',
     '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body',
     '/firstpostwithcomments': '/posts/1?_embed=comments',
-    '/blog/:resource' : '/:resource',
-    '/blog/:resource/published' : '/:resource?published=true',
+    '/blog/:resource': '/:resource',
+    '/blog/:resource/published': '/:resource?published=true',
     '/articles?_id=:id': '/posts/:id'
   }
 
@@ -729,7 +729,7 @@ describe('Server', () => {
     it('should rewrite using params and client-defined query', () => (
       request(server)
         .get('/blog/comments?userId=1')
-        .expect([db.comments[0],db.comments[2],db.comments[4]])
+        .expect([db.comments[0], db.comments[2], db.comments[4]])
     ))
 
     it('should rewrite using params, server-defined query, and client-defined query', () => (
