@@ -547,6 +547,16 @@ describe('Server', () => {
       assert.equal(db.posts.length, 3)
     })
 
+    it('should respond with error when sending an array as the body', async () => {
+      await request(server)
+        .post('/posts')
+        .send([{body: 'foo', booleanValue: true, integerValue: 1}])
+        .expect('Content-Type', /json/)
+        .expect({error: 'The body sent was not JSON'})
+        .expect(400)
+      assert.equal(db.posts.length, 2)
+    })
+
     it('should support x-www-form-urlencoded', async () => {
       await request(server)
         .post('/posts')

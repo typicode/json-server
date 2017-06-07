@@ -232,18 +232,23 @@ module.exports = (db, name) => {
 
   // POST /name
   function create (req, res, next) {
-    const resource = db
-      .get(name)
-      .insert(req.body)
-      .value()
+    if (_.isArray(req.body)) {
+      res.status(400)
+      res.send({error: 'The body sent was not JSON'})
+    } else {
+      const resource = db
+        .get(name)
+        .insert(req.body)
+        .value()
 
-    res.setHeader('Access-Control-Expose-Headers', 'Location')
-    res.location(`${getFullURL(req)}/${resource.id}`)
+      res.setHeader('Access-Control-Expose-Headers', 'Location')
+      res.location(`${getFullURL(req)}/${resource.id}`)
 
-    res.status(201)
-    res.locals.data = resource
+      res.status(201)
+      res.locals.data = resource
 
-    next()
+      next()
+    }
   }
 
   // PUT /name/:id
