@@ -154,14 +154,14 @@ _10 items are returned by default_
 Add `_sort` and `_order` (ascending order by default)
 
 ```
-GET /posts?_sort=views&_order=asc
-GET /posts/1/comments?_sort=votes&_order=asc
+GET /posts?_sort=views&_order=ASC
+GET /posts/1/comments?_sort=votes&_order=ASC
 ```
 
 For multiple fields, use the following format:
 
 ```
-GET /posts?_sort=user,views&_order=desc,asc
+GET /posts?_sort=user,views&_order=DESC,ASC
 ```
 
 ### Slice
