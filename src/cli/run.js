@@ -42,9 +42,8 @@ function createApp (source, object, routes, middlewares, argv) {
 
   try {
     router = jsonServer.router(
-      is.JSON(source)
-      ? source
-      : object
+      is.JSON(source) ? source : object,
+      argv
     )
   } catch (e) {
     console.log()

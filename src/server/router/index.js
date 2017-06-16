@@ -11,7 +11,7 @@ const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
 
-module.exports = (source) => {
+module.exports = (source, argv) => {
   // Create router
   const router = express.Router()
 
@@ -60,7 +60,7 @@ module.exports = (source) => {
     }
 
     if (_.isArray(value)) {
-      router.use(`/${key}`, plural(db, key))
+      router.use(`/${key}`, plural(db, key, argv))
       return
     }
 
