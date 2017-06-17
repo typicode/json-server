@@ -92,6 +92,10 @@ module.exports = (db, name) => {
 
       chain = chain.filter((obj) => {
         for (let key in obj) {
+          if (key === 'id') {
+            // ignore id
+            continue
+          }
           const value = obj[key]
           if (db._.deepQuery(value, q)) {
             return true
