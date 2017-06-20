@@ -484,7 +484,6 @@ server.listen(3000, () => {
   console.log('JSON Server is running')
 })
 ```
-
 #### Custom output example
 
 To modify responses, overwrite `router.render` method:
@@ -494,6 +493,18 @@ To modify responses, overwrite `router.render` method:
 router.render = (req, res) => {
   res.jsonp({
     body: res.locals.data
+  })
+}
+```
+
+You can set your own status code for the response:
+
+
+```javascript
+// In this example we simulate a server side error response
+router.render = (req, res) => {
+  res.status(500).jsonp({
+    error: "error message here"
   })
 }
 ```
