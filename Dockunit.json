@@ -1,0 +1,28 @@
+{
+  "containers": [
+    {
+      "prettyName": "nodejs 4.2.1",
+      "image": "dockunit/prebuilt-images:nodejs-mongodb-mocha-jasmine-4.2.1",
+      "testCommand": "NODE_ENV=test mocha -R spec test/**/*.js",
+      "beforeScripts": [
+        "npm install"
+      ]
+    },
+    {
+      "prettyName": "nodejs 0.12.7",
+      "image": "dockunit/prebuilt-images:nodejs-mongodb-mocha-jasmine-0.12.7",
+      "testCommand": "NODE_ENV=test mocha -R spec test/**/*.js",
+      "beforeScripts": [
+        "npm install"
+      ]
+    },
+    {
+      "prettyName": "nodejs 0.10.40",
+      "image": "dockunit/prebuilt-images:nodejs-mongodb-mocha-jasmine-0.10.40",
+      "testCommand": "NODE_ENV=test mocha -R spec test/**/*.js",
+      "beforeScripts": [
+        "npm install"
+      ]
+    }
+  ]
+}
