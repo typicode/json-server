@@ -287,4 +287,52 @@ describe('cli', () => {
       })
     })
   })
+
+  describe('db.json --wrapper data', () => {
+    beforeEach((done) => {
+      fs.unlinkSync(dbFile)
+      child = cli([ dbFile, '--wrapper', 'data' ])
+      serverReady(PORT, done)
+    })
+
+    it('should wrap response json with "data" when full resource is get', (done) => {
+      const user = {
+        'data': [
+          {
+            'id': 1,
+            'title': 'json-server',
+            'author': 'typicode'
+          }
+        ]
+      }
+      request.get('/posts')
+        .expect(200)
+        .end((err, res) => {
+          if (err) {
+            done(err)
+          }
+          assert.deepEqual(res.body, user, 'Json response doesn\'t wrapped by "data"')
+          done()
+        })
+    })
+
+    it('should wrap response json with "data" when specific resource is get', (done) => {
+      const user = {
+        'data': {
+          'id': 1,
+          'title': 'json-server',
+          'author': 'typicode'
+        }
+      }
+      request.get('/posts/1')
+        .expect(200)
+        .end((err, res) => {
+          if (err) {
+            done(err)
+          }
+          assert.deepEqual(res.body, user, 'Json response doesn\'t wrapped by "data"')
+          done()
+        })
+    })
+  })
 })

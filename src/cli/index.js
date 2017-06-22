@@ -67,6 +67,10 @@ module.exports = function () {
         alias: 'q',
         description: 'Suppress log messages from output'
       },
+      'wrapper': {
+        alias: 'W',
+        description: 'Set the wrapper of the return'
+      },
       config: {
         alias: 'c',
         description: 'Path to config file',
