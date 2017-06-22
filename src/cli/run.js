@@ -121,6 +121,10 @@ module.exports = function (argv) {
     load(source, (err, data) => {
       if (err) throw err
 
+      if (_.isEmpty(data)) {
+        throw new Error(source + ' is empty or does not exist')
+      }
+
       // Load additional routes
       let routes
       if (argv.routes) {
