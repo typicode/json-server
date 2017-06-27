@@ -36,7 +36,7 @@ describe('mixins', () => {
         { name: 'comments', id: 3 }
       ]
 
-      assert.deepEqual(_.getRemovable(db), expected)
+      assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
     })
   })
 
