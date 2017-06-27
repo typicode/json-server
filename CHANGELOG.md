@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* Allow alternate foreign key attribute names (eg snake case `post_id`) [#556](https://github.com/typicode/json-server/pull/556)
+
 ## [0.10.1][2017-05-16] 
 
 * Multiple fields sorting `GET /posts?_sort=user,views&_order=desc,asc`
