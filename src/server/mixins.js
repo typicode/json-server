@@ -9,13 +9,13 @@ module.exports = {
 
 // Returns document ids that have unsatisfied relations
 // Example: a comment that references a post that doesn't exist
-function getRemovable (db) {
+function getRemovable (db, opts) {
   const _ = this
   const removable = []
   _.each(db, (coll, collName) => {
     _.each(coll, (doc) => {
       _.each(doc, (value, key) => {
-        if (/Id$/.test(key)) {
+        if (new RegExp(`${opts.foreignKeySuffix}$`).test(key)) {
           const refName = pluralize.plural(key.slice(0, -2))
           // Test if table exists
           if (db[refName]) {

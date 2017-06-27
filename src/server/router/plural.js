@@ -5,7 +5,7 @@ const write = require('./write')
 const getFullURL = require('./get-full-url')
 const utils = require('../utils')
 
-module.exports = (db, name,  opts = { foreignKeySuffix: 'Id' }) => {
+module.exports = (db, name, opts) => {
   // Create router
   const router = express.Router()
 
@@ -272,7 +272,7 @@ module.exports = (db, name,  opts = { foreignKeySuffix: 'Id' }) => {
       .value()
 
     // Remove dependents documents
-    const removable = db._.getRemovable(db.getState())
+    const removable = db._.getRemovable(db.getState(), opts)
 
     removable.forEach((item) => {
       db.get(item.name)
