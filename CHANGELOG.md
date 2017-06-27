@@ -1,8 +1,8 @@
 # Change Log
 
-## [0.10.1][2017-05-16] `GET /posts?_sort=user,views&_order=desc,asc`
+## [0.10.1][2017-05-16] 
 
-* Multiple fields sorting
+* Multiple fields sorting `GET /posts?_sort=user,views&_order=desc,asc`
 
 ## [0.10.0][2017-04-26]
 
