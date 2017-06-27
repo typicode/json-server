@@ -5,7 +5,7 @@ const write = require('./write')
 const getFullURL = require('./get-full-url')
 const utils = require('../utils')
 
-module.exports = (db, name) => {
+module.exports = (db, name, argv) => {
   // Create router
   const router = express.Router()
 
@@ -16,7 +16,7 @@ module.exports = (db, name) => {
         if (db.get(externalResource).value) {
           const query = {}
           const singularResource = pluralize.singular(name)
-          query[`${singularResource}Id`] = resource.id
+          query[`${singularResource}${argv.foreignKeySuffix}`] = resource.id
           resource[externalResource] = db.get(externalResource).filter(query).value()
         }
       })
@@ -28,7 +28,7 @@ module.exports = (db, name) => {
       .forEach((innerResource) => {
         const plural = pluralize(innerResource)
         if (db.get(plural).value()) {
-          const prop = `${innerResource}Id`
+          const prop = `${innerResource}${argv.foreignKeySuffix}`
           resource[innerResource] = db.get(plural).getById(resource[prop]).value()
         }
       })

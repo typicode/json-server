@@ -63,6 +63,11 @@ module.exports = function () {
         description: 'Set database id property (e.g. _id)',
         default: 'id'
       },
+      foreignKeySuffix: {
+        alias: 'f',
+        description: 'Set foreign key suffix, (e.g. _id as in post_id)',
+        default: 'Id'
+      },
       quiet: {
         alias: 'q',
         description: 'Suppress log messages from output'
