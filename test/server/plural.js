@@ -15,10 +15,6 @@ describe('Server', () => {
     '/articles?_id=:id': '/posts/:id'
   }
 
-  const defaultArgv = {
-    foreignKeySuffix: 'Id'
-  }
-
   beforeEach(() => {
     db = {}
 
@@ -96,7 +92,7 @@ describe('Server', () => {
     ]
 
     server = jsonServer.create()
-    router = jsonServer.router(db, defaultArgv)
+    router = jsonServer.router(db)
     server.use(jsonServer.defaults())
     server.use(jsonServer.rewriter(rewriterRules))
     server.use(router)
