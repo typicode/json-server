@@ -5,7 +5,7 @@ const write = require('./write')
 const getFullURL = require('./get-full-url')
 const utils = require('../utils')
 
-module.exports = (db, name,  opts = { foreignKeySuffix: 'Id' }) => {
+module.exports = (db, name, opts = { foreignKeySuffix: 'Id' }) => {
   // Create router
   const router = express.Router()
 
