@@ -38,6 +38,9 @@ describe('cli', () => {
         posts: [
           { id: 1 },
           { _id: 2 }
+        ],
+        comments: [
+          { id: 1, post_id: 1 }
         ]
       }),
       'db.json'
@@ -116,14 +119,19 @@ describe('cli', () => {
     })
   })
 
-  describe('db.json -r routes.json -m middleware.js -i _id --read-only', () => {
+  describe('db.json -r routes.json -m middleware.js -i _id --foreignKeySuffix _id --read-only', () => {
     beforeEach((done) => {
-      child = cli([ dbFile, '-r', routesFile, '-m', middlewareFiles.en, '-i', '_id', '--read-only' ])
+      child = cli([ dbFile, '-r', routesFile, '-m', middlewareFiles.en, '-i', '_id', '--read-only', '--foreignKeySuffix', '_id' ])
       serverReady(PORT, done)
     })
 
     it('should use routes.json and _id as the identifier', (done) => {
       request.get('/blog/posts/2').expect(200, done)
+    })
+
+    it('should use _id as foreignKeySuffix', async () => {
+      const response = await request.get('/posts/1/comments')
+      assert.equal(response.body.length, 1)
     })
 
     it('should apply middlewares', (done) => {

@@ -11,7 +11,7 @@ const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
 
-module.exports = (source, argv) => {
+module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
   // Create router
   const router = express.Router()
 
@@ -50,7 +50,7 @@ module.exports = (source, argv) => {
   })
 
   // Handle /:parent/:parentId/:resource
-  router.use(nested())
+  router.use(nested(opts))
 
   // Create routes
   db.forEach((value, key) => {
@@ -60,7 +60,7 @@ module.exports = (source, argv) => {
     }
 
     if (_.isArray(value)) {
-      router.use(`/${key}`, plural(db, key, argv))
+      router.use(`/${key}`, plural(db, key, opts))
       return
     }
 

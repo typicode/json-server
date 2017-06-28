@@ -64,7 +64,7 @@ module.exports = function () {
         default: 'id'
       },
       foreignKeySuffix: {
-        alias: 'f',
+        alias: 'fks',
         description: 'Set foreign key suffix, (e.g. _id as in post_id)',
         default: 'Id'
       },
