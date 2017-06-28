@@ -2,7 +2,7 @@
 
 ## [0.10.2][2017-06-28]
 
-* Add `--foreignKeySuffix` option (e.g. snake case `post_id`) to make it easier to fake, for example, Rails APIs
+* Add `--foreignKeySuffix` option (e.g. snake case `post_id`) [#556](https://github.com/typicode/json-server/pull/556) [#570](https://github.com/typicode/json-server/pull/570)
 
 ## [0.10.1][2017-05-16]
 
