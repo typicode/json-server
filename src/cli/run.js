@@ -40,6 +40,17 @@ function createApp (source, object, routes, middlewares, argv) {
 
   let router
 
+  let routerExtras
+  if (is.JS(source)) {
+    routerExtras = object.__router
+    if (routerExtras) {
+      if (object.__source === undefined) {
+        throw new Error('Define source in object (object, array, string db.json ...)')
+      }
+      object = typeof object.__source === 'string' ? require(object.__source) : object.__source
+    }
+  }
+
   try {
     router = jsonServer.router(
       is.JSON(source) ? source : object,
@@ -80,6 +91,16 @@ function createApp (source, object, routes, middlewares, argv) {
 
   router.db._.id = argv.id
   app.db = router.db
+
+  if (routerExtras) {
+    try {
+      // force assign router to callback this facility to capture db
+      routerExtras = routerExtras(router, app)
+    } catch (e) {}
+
+    app.use(routerExtras)
+  }
+
   app.use(router)
 
   return app
