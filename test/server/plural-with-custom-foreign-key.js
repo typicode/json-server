@@ -3,7 +3,7 @@ const _ = require('lodash')
 const request = require('supertest')
 const jsonServer = require('../../src/server')
 
-describe('Server', () => {
+describe('Server with custom foreign key', () => {
   let server
   let router
   let db

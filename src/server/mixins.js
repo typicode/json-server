@@ -16,7 +16,9 @@ function getRemovable (db, opts) {
     _.each(coll, (doc) => {
       _.each(doc, (value, key) => {
         if (new RegExp(`${opts.foreignKeySuffix}$`).test(key)) {
-          const refName = pluralize.plural(key.slice(0, -2))
+          // Remove foreign key suffix and pluralize it
+          // Example postId -> posts
+          const refName = pluralize.plural(key.replace(new RegExp(`${opts.foreignKeySuffix}$`), ''))
           // Test if table exists
           if (db[refName]) {
             // Test if references is defined in table

@@ -38,6 +38,15 @@ describe('mixins', () => {
 
       assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
     })
+
+    it('should support custom foreignKeySuffix', () => {
+      const expected = [
+        { name: 'comments', id: 2 },
+        { name: 'comments', id: 3 }
+      ]
+
+      assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
+    })
   })
 
   describe('createId', () => {
