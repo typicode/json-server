@@ -368,6 +368,8 @@ Options:
   --snapshots, -S    Set snapshots directory                      [default: "."]
   --delay, -d        Add delay to responses (ms)
   --id, -i           Set database id property (e.g. _id)         [default: "id"]
+  --foreignKeySuffix, --fks  Set foreign key suffix, (e.g. _id as in post_id)
+                                                                 [default: "Id"]
   --quiet, -q        Suppress log messages from output                 [boolean]
   --help, -h         Show help                                         [boolean]
   --version, -v      Show version number                               [boolean]
