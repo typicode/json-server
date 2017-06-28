@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.10.3 - 2017-06-28
+
+* Fix line-break error in CLI
+
 ## 0.10.2 - 2017-06-28
 
 * Add `--foreignKeySuffix` option (e.g. snake case `post_id`) [#556](https://github.com/typicode/json-server/pull/556) [#570](https://github.com/typicode/json-server/pull/570)
