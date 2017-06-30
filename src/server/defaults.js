@@ -6,6 +6,7 @@ const cors = require('cors')
 const compression = require('compression')
 const errorhandler = require('errorhandler')
 const objectAssign = require('object-assign')
+const bodyParser = require('./body-parser')
 
 module.exports = function (opts) {
   const userDir = path.join(process.cwd(), 'public')
@@ -67,6 +68,9 @@ module.exports = function (opts) {
       }
     })
   }
+
+  // Add middlewares
+  arr.push(bodyParser)
 
   return arr
 }
