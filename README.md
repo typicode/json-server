@@ -101,6 +101,8 @@ Also when doing requests, it's good to know that:
 $ npm install -g json-server
 ```
 
+Requires Node 4+
+
 ## Routes
 
 Based on the previous `db.json` file, here are all the default routes. You can also add [other routes](#add-custom-routes) using `--routes`.
