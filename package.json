@@ -42,7 +42,7 @@
     "eslint-plugin-prettier": "^2.1.2",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
-    "husky": "^0.14.1",
+    "husky": "^0.14.2",
     "markdown-toc": "^0.13.0",
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
