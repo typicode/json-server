@@ -9,8 +9,8 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 
 See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
-* :camera: [tlapse - Create a timelapse of your web development](https://github.com/typicode/tlapse)
-* :hotel: [hotel - Process manager for developers with local .dev domain out of the box](https://github.com/typicode/hotel)
+* :hotel: [hotel - developer tool with local .dev domain and https out of the box](https://github.com/typicode/hotel)
+* :atom_symbol: [react-fake-props - generate fake props for your React tests (Jest, Enzyme, ...)](https://github.com/typicode/react-fake-props)
 
 ## Table of contents
 
