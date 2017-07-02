@@ -9,6 +9,7 @@ module.exports = {
         semi: false,
       },
     ],
+    'prefer-template': "error"
   },
-  env: { mocha: true },
+  env: { mocha: true }
 }

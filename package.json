@@ -92,12 +92,6 @@
     "url": "https://github.com/typicode/json-server/issues"
   },
   "homepage": "https://github.com/typicode/json-server",
-  "standard": {
-    "fix": true,
-    "env": {
-      "mocha": true
-    }
-  },
   "engines": {
     "node": ">= 4"
   }

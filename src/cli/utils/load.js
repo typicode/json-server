@@ -36,6 +36,6 @@ module.exports = function(source, cb) {
     const data = low(source, { storage: fileAsync }).getState()
     cb(null, data)
   } else {
-    throw new Error('Unsupported source ' + source)
+    throw new Error(`Unsupported source ${source}`)
   }
 }

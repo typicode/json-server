@@ -18,20 +18,20 @@ function prettyPrint(argv, object, rules) {
   console.log()
   console.log(chalk.bold('  Resources'))
   for (let prop in object) {
-    console.log('  ' + root + '/' + prop)
+    console.log(`  ${root}/${prop}`)
   }
 
   if (rules) {
     console.log()
     console.log(chalk.bold('  Other routes'))
     for (var rule in rules) {
-      console.log('  ' + rule + ' -> ' + rules[rule])
+      console.log(`  ${rule} -> ${rules[rule]}`)
     }
   }
 
   console.log()
   console.log(chalk.bold('  Home'))
-  console.log('  ' + root)
+  console.log(`  ${root}`)
   console.log()
 }
 
@@ -172,7 +172,7 @@ module.exports = function(argv) {
     process.stdin.setEncoding('utf8')
     process.stdin.on('data', chunk => {
       if (chunk.trim().toLowerCase() === 's') {
-        const filename = 'db-' + Date.now() + '.json'
+        const filename = `db-${Date.now()}.json`
         const file = path.join(argv.snapshots, filename)
         const state = app.db.getState()
         fs.writeFileSync(file, JSON.stringify(state, null, 2), 'utf-8')

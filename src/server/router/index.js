@@ -66,10 +66,10 @@ module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
       }
 
       const msg =
-        `Type of "${key}" (${typeof value}) ` +
-        (_.isObject(source) ? '' : `in ${source}`) +
-        ' is not supported. ' +
-        'Use objects or arrays of objects.'
+        `Type of "${key}" (${typeof value}) ${_.isObject(source)
+          ? ''
+          : `in ${source}`} is not supported. ` +
+        `Use objects or arrays of objects.`
 
       throw new Error(msg)
     })
