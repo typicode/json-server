@@ -1,17 +1,19 @@
 const express = require('express')
 const url = require('url')
 const _ = require('lodash')
-function updateQueryString (target, sourceUrl) {
-  return ~sourceUrl.indexOf('?') ? _.assign(target, url.parse(sourceUrl, true).query) : {}
+function updateQueryString(target, sourceUrl) {
+  return ~sourceUrl.indexOf('?')
+    ? _.assign(target, url.parse(sourceUrl, true).query)
+    : {}
 }
-module.exports = (routes) => {
+module.exports = routes => {
   const router = express.Router()
 
   router.get('/__rules', (req, res) => {
     res.json(routes)
   })
 
-  Object.keys(routes).forEach((route) => {
+  Object.keys(routes).forEach(route => {
     if (route.indexOf(':') !== -1) {
       router.all(route, (req, res, next) => {
         // Rewrite target url using params

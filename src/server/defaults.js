@@ -7,12 +7,10 @@ const compression = require('compression')
 const errorhandler = require('errorhandler')
 const objectAssign = require('object-assign')
 
-module.exports = function (opts) {
+module.exports = function(opts) {
   const userDir = path.join(process.cwd(), 'public')
   const defaultDir = path.join(__dirname, 'public')
-  const staticDir = fs.existsSync(userDir)
-    ? userDir
-    : defaultDir
+  const staticDir = fs.existsSync(userDir) ? userDir : defaultDir
 
   opts = objectAssign({ logger: true, static: staticDir }, opts)
 
@@ -27,10 +25,8 @@ module.exports = function (opts) {
   if (opts.logger) {
     arr.push(
       logger('dev', {
-        skip: (req) => (
-          process.env.NODE_ENV === 'test' ||
-          req.path === '/favicon.ico'
-        )
+        skip: req =>
+          process.env.NODE_ENV === 'test' || req.path === '/favicon.ico'
       })
     )
   }
