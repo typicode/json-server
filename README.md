@@ -11,6 +11,7 @@ See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
 * :hotel: [hotel - developer tool with local .dev domain and https out of the box](https://github.com/typicode/hotel)
 * :atom_symbol: [react-fake-props - generate fake props for your React tests (Jest, Enzyme, ...)](https://github.com/typicode/react-fake-props)
+* :heart: [Patreon page](https://www.patreon.com/typicode)
 
 ## Table of contents
 
