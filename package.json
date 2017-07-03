@@ -15,6 +15,7 @@
     "cors": "^2.3.0",
     "errorhandler": "^1.2.0",
     "express": "^4.9.5",
+    "express-urlrewrite": "^1.2.0",
     "json-parse-helpfulerror": "^1.0.3",
     "lodash": "^4.11.2",
     "lodash-id": "^0.13.0",

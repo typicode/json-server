@@ -42,7 +42,7 @@ describe('cli', () => {
     )
 
     routesFile = tempWrite.sync(
-      JSON.stringify({ '/blog/': '/' }),
+      JSON.stringify({ '/blog/*': '/$1' }),
       'routes.json'
     )
 
@@ -260,7 +260,7 @@ describe('cli', () => {
     })
 
     it('should watch routes file', done => {
-      fs.writeFileSync(routesFile, JSON.stringify({ '/api/': '/' }))
+      fs.writeFileSync(routesFile, JSON.stringify({ '/api/*': '/$1' }))
       setTimeout(() => {
         request.get('/api/posts').expect(200, done)
       }, 1000)
