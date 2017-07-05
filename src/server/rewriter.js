@@ -21,8 +21,8 @@ module.exports = routes => {
         for (let param in req.params) {
           target = target.replace(`:${param}`, req.params[param])
         }
-        req.url = target
         req.query = updateQueryString(req.query, req.url)
+        req.url = target
         next()
       })
     } else {
