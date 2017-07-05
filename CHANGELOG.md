@@ -2,14 +2,14 @@
 
 ## 0.11.0 - 2017-07-05
 
-* Switch to [express-urlrewrite](https://github.com/kapouer/express-urlrewrite) for supporting query parameters in URL rewrite.
+Switch to [express-urlrewrite](https://github.com/kapouer/express-urlrewrite) to support rewriting query parameters (e.g.  `/articles?id=1 # → /posts/1`)
 
 If you're rewriting default routes, you'll need to update your `routes.json` file
 (see [add custom routes](https://github.com/typicode/json-server#add-custom-routes) for updated doc).
 
 ## 0.10.3 - 2017-06-28
 
-* Fix line-break error in CLI
+* Fix `line-break` error in CLI
 
 ## 0.10.2 - 2017-06-28
 
