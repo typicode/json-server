@@ -314,9 +314,10 @@ Create a `routes.json` file. Pay attention to start every route with `/`.
 
 ```json
 {
-  "/api/": "/",
-  "/blog/:resource/:id/show": "/:resource/:id",
-  "/blog/:category": "/posts?category=:category"
+  "/api/*": "/$1",
+  "/:resource/:id/show": "/:resource/:id",
+  "/posts/:category": "/posts?category=:category",
+  "/articles\\?id=:id": "/posts/:id"
 }
 ```
 
@@ -331,8 +332,9 @@ Now you can access resources using additional routes.
 ```sh
 /api/posts # → /posts
 /api/posts/1  # → /posts/1
-/blog/posts/1/show # → /posts/1
-/blog/javascript # → /posts?category=javascript
+/posts/1/show # → /posts/1
+/posts/javascript # → /posts?category=javascript
+/articles?id=1 # → /posts/1
 ```
 
 ### Add middlewares

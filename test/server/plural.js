@@ -8,11 +8,11 @@ describe('Server', () => {
   let router
   let db
   const rewriterRules = {
-    '/api/': '/',
+    '/api/*': '/$1',
     '/blog/posts/:id/show': '/posts/:id',
     '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body',
     '/firstpostwithcomments': '/posts/1?_embed=comments',
-    '/articles?_id=:id': '/posts/:id'
+    '/articles\\?_id=:id': '/posts/:id'
   }
 
   beforeEach(() => {
@@ -660,13 +660,8 @@ describe('Server', () => {
     it('should rewrite using params and query', () =>
       request(server).get('/comments/special/1-quux').expect([db.comments[4]]))
 
-    // TODO
-    // it('should rewrite query params', () => (
-    //   request(server)
-    //     .get('/articles?_id=1')
-    //     .expect(db.posts[0])
-    //     .end(done)
-    // })
+    it('should rewrite query params', () =>
+      request(server).get('/articles?_id=1').expect(db.posts[0]))
 
     it('should expose routes', () =>
       request(server).get('/__rules').expect(rewriterRules))
