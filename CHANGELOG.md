@@ -2,7 +2,7 @@
 
 ## 0.11.0 - 2017-07-05
 
-* Switch to [express-urlrewrite](https://github.com/kapouer/express-urlrewrite) for handling URL rewrite.
+* Switch to [express-urlrewrite](https://github.com/kapouer/express-urlrewrite) for supporting query parameters in URL rewrite.
 
 If you're rewriting default routes, you'll need to update your `routes.json` file
 (see [add custom routes](https://github.com/typicode/json-server#add-custom-routes) for updated doc).
