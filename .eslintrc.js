@@ -8,8 +8,7 @@ module.exports = {
         singleQuote: true,
         semi: false,
       },
-    ],
-    'prefer-template': "error"
+    ]
   },
   env: { mocha: true }
 }
