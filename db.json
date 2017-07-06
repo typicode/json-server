@@ -1,9 +1,4 @@
-{
-  "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
-  ],
-  "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
-  ],
-  "profile": { "name": "typicode" }
-}
+[{ "name":"Bahubali2","rating":4.5,"status":"Superhit"},
+{ "name":"Tubelight","rating":2.0,"status":"Flop"},
+{ "name":"Hindi Medium,","rating":4.0,"status":"hit"},
+{ "name":"Fan","rating":1,"status":"Flop"}]
