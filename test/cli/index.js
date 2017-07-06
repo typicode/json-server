@@ -169,7 +169,7 @@ describe('cli', () => {
       serverReady(PORT, done)
     })
 
-    it('Should have post body in middleware', (done) => {
+    it('should have post body in middleware', (done) => {
       request.post('/posts').send({ name: 'test' })
         .expect('name', 'test', done)
     })
