@@ -21,43 +21,30 @@ describe('Server', () => {
   })
 
   describe('GET /:resource', () => {
-    it('should respond with corresponding resource', () => (
-      request(server)
-        .get('/user')
-        .expect(db.user)
-        .expect(200)
-    ))
+    it('should respond with corresponding resource', () =>
+      request(server).get('/user').expect(db.user).expect(200))
   })
 
   describe('POST /:resource', () => {
     it('should create resource', () => {
       const user = { name: 'bar' }
-      return request(server)
-        .post('/user')
-        .send(user)
-        .expect(user)
-        .expect(201)
+      return request(server).post('/user').send(user).expect(user).expect(201)
     })
   })
 
   describe('PUT /:resource', () => {
     it('should update resource', () => {
       const user = { name: 'bar' }
-      return request(server)
-        .put('/user')
-        .send(user)
-        .expect(user)
-        .expect(200)
+      return request(server).put('/user').send(user).expect(user).expect(200)
     })
   })
 
   describe('PATCH /:resource', () => {
-    it('should update resource', () => (
+    it('should update resource', () =>
       request(server)
         .patch('/user')
         .send({ name: 'bar' })
         .expect({ name: 'bar', email: 'foo@example.com' })
-        .expect(200)
-    ))
+        .expect(200))
   })
 })

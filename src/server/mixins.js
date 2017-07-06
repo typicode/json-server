@@ -9,16 +9,18 @@ module.exports = {
 
 // Returns document ids that have unsatisfied relations
 // Example: a comment that references a post that doesn't exist
-function getRemovable (db, opts) {
+function getRemovable(db, opts) {
   const _ = this
   const removable = []
   _.each(db, (coll, collName) => {
-    _.each(coll, (doc) => {
+    _.each(coll, doc => {
       _.each(doc, (value, key) => {
         if (new RegExp(`${opts.foreignKeySuffix}$`).test(key)) {
           // Remove foreign key suffix and pluralize it
           // Example postId -> posts
-          const refName = pluralize.plural(key.replace(new RegExp(`${opts.foreignKeySuffix}$`), ''))
+          const refName = pluralize.plural(
+            key.replace(new RegExp(`${opts.foreignKeySuffix}$`), '')
+          )
           // Test if table exists
           if (db[refName]) {
             // Test if references is defined in table
@@ -37,7 +39,7 @@ function getRemovable (db, opts) {
 
 // Return incremented id or uuid
 // Used to override lodash-id's createId with utils.createId
-function createId (coll) {
+function createId(coll) {
   const _ = this
   const idProperty = _.__id()
   if (_.isEmpty(coll)) {
@@ -46,13 +48,11 @@ function createId (coll) {
     let id = _(coll).maxBy(idProperty)[idProperty]
 
     // Increment integer id or generate string id
-    return _.isFinite(id)
-      ? ++id
-      : shortid.generate()
+    return _.isFinite(id) ? ++id : shortid.generate()
   }
 }
 
-function deepQuery (value, q) {
+function deepQuery(value, q) {
   const _ = this
   if (value && q) {
     if (_.isArray(value)) {
