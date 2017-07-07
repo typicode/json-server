@@ -1,6 +1,6 @@
 {
   "name": "json-server",
-  "version": "0.10.2",
+  "version": "0.11.1",
   "description": "Serves JSON files through REST routes.",
   "main": "./lib/server/index.js",
   "bin": "./bin/index.js",
@@ -15,6 +15,7 @@
     "cors": "^2.3.0",
     "errorhandler": "^1.2.0",
     "express": "^4.9.5",
+    "express-urlrewrite": "^1.2.0",
     "json-parse-helpfulerror": "^1.0.3",
     "lodash": "^4.11.2",
     "lodash-id": "^0.13.0",
@@ -34,12 +35,21 @@
     "babel-preset-env": "^1.3.2",
     "babel-register": "^6.16.3",
     "cross-env": "^2.0.1",
-    "husky": "^0.13.0",
+    "eslint": "^3.19.0",
+    "eslint-config-prettier": "^2.3.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.6.1",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-prettier": "^2.1.2",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.14.3",
     "markdown-toc": "^0.13.0",
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
     "os-tmpdir": "^1.0.1",
     "pkg-ok": "^1.0.1",
+    "prettier": "^1.5.2",
     "rimraf": "^2.5.2",
     "server-ready": "^0.3.1",
     "standard": "^8.3.0",
@@ -47,14 +57,15 @@
     "temp-write": "^2.1.0"
   },
   "scripts": {
-    "test": "npm run test:cli && npm run test:server && standard",
+    "test": "npm run test:cli && npm run test:server && eslint .",
     "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js",
     "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
     "start": "babel-node src/cli/bin",
-    "precommit": "npm test",
+    "format": "eslint . --fix",
     "build": "babel src -d lib --copy-files",
     "toc": "markdown-toc -i README.md",
-    "prepublish": "npm run build && pkg-ok"
+    "prepublishOnly": "npm run build && pkg-ok",
+    "precommit": "npm test"
   },
   "repository": {
     "type": "git",
@@ -82,12 +93,6 @@
     "url": "https://github.com/typicode/json-server/issues"
   },
   "homepage": "https://github.com/typicode/json-server",
-  "standard": {
-    "fix": true,
-    "env": {
-      "mocha": true
-    }
-  },
   "engines": {
     "node": ">= 4"
   }

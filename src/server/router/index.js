@@ -11,7 +11,7 @@ const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
 
-module.exports = (source) => {
+module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
   // Create router
   const router = express.Router()
 
@@ -50,27 +50,30 @@ module.exports = (source) => {
   })
 
   // Handle /:parent/:parentId/:resource
-  router.use(nested())
+  router.use(nested(opts))
 
   // Create routes
-  db.forEach((value, key) => {
-    if (_.isPlainObject(value)) {
-      router.use(`/${key}`, singular(db, key))
-      return
-    }
+  db
+    .forEach((value, key) => {
+      if (_.isPlainObject(value)) {
+        router.use(`/${key}`, singular(db, key))
+        return
+      }
 
-    if (_.isArray(value)) {
-      router.use(`/${key}`, plural(db, key))
-      return
-    }
+      if (_.isArray(value)) {
+        router.use(`/${key}`, plural(db, key, opts))
+        return
+      }
 
-    const msg =
-      `Type of "${key}" (${typeof value}) ` +
-      (_.isObject(source) ? '' : `in ${source}`) + ' is not supported. ' +
-      'Use objects or arrays of objects.'
+      const msg =
+        `Type of "${key}" (${typeof value}) ${_.isObject(source)
+          ? ''
+          : `in ${source}`} is not supported. ` +
+        `Use objects or arrays of objects.`
 
-    throw new Error(msg)
-  }).value()
+      throw new Error(msg)
+    })
+    .value()
 
   router.use((req, res) => {
     if (!res.locals.data) {

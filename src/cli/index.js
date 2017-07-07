@@ -3,7 +3,7 @@ const yargs = require('yargs')
 const run = require('./run')
 const pkg = require('../../package.json')
 
-module.exports = function () {
+module.exports = function() {
   updateNotifier({ pkg }).notify()
 
   const argv = yargs
@@ -63,6 +63,11 @@ module.exports = function () {
         description: 'Set database id property (e.g. _id)',
         default: 'id'
       },
+      foreignKeySuffix: {
+        alias: 'fks',
+        description: 'Set foreign key suffix (e.g. _id as in post_id)',
+        default: 'Id'
+      },
       quiet: {
         alias: 'q',
         description: 'Suppress log messages from output'
@@ -78,14 +83,15 @@ module.exports = function () {
     .boolean('quiet')
     .boolean('no-cors')
     .boolean('no-gzip')
-    .help('help').alias('help', 'h')
-    .version(pkg.version).alias('version', 'v')
+    .help('help')
+    .alias('help', 'h')
+    .version(pkg.version)
+    .alias('version', 'v')
     .example('$0 db.json', '')
     .example('$0 file.js', '')
     .example('$0 http://example.com/db.json', '')
     .epilog('https://github.com/typicode/json-server')
-    .require(1, 'Missing <source> argument')
-    .argv
+    .require(1, 'Missing <source> argument').argv
 
   run(argv)
 }
