@@ -95,6 +95,6 @@
   },
   "homepage": "https://github.com/typicode/json-server",
   "engines": {
-    "node": ">= 4"
+    "node": ">=4"
   }
 }
