@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.11.2 - 2017-07-10
+
+Fix `engines` field in `package.json`
+
 ## 0.11.1 - 2017-07-10
 
 Add [please-upgrade-node](https://github.com/typicode/please-upgrade-node)
