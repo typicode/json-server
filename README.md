@@ -521,7 +521,7 @@ To add rewrite rules, use `jsonServer.rewriter()`:
 ```javascript
 // Add this before server.use(router)
 server.use(jsonServer.rewriter({
-  '/api/': '/',
+  '/api/*': '/$1',
   '/blog/:resource/:id/show': '/:resource/:id'
 }))
 ```
