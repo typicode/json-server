@@ -21,16 +21,6 @@ module.exports = function(opts) {
     arr.push(compression())
   }
 
-  // Logger
-  if (opts.logger) {
-    arr.push(
-      logger('dev', {
-        skip: req =>
-          process.env.NODE_ENV === 'test' || req.path === '/favicon.ico'
-      })
-    )
-  }
-
   // Enable CORS for all the requests, including static files
   if (!opts.noCors) {
     arr.push(cors({ origin: true, credentials: true }))
@@ -43,6 +33,16 @@ module.exports = function(opts) {
 
   // Serve static files
   arr.push(express.static(opts.static))
+
+  // Logger
+  if (opts.logger) {
+    arr.push(
+      logger('dev', {
+        skip: req =>
+          process.env.NODE_ENV === 'test' || req.path === '/favicon.ico'
+      })
+    )
+  }
 
   // No cache for IE
   // https://support.microsoft.com/en-us/kb/234067
