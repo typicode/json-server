@@ -13,7 +13,7 @@ module.exports = function(opts) {
   const defaultDir = path.join(__dirname, 'public')
   const staticDir = fs.existsSync(userDir) ? userDir : defaultDir
 
-  opts = objectAssign({ logger: true, static: staticDir, bodyParser: true }, opts)
+  opts = objectAssign({ logger: true, static: staticDir }, opts)
 
   const arr = []
 
