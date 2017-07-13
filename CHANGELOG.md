@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.11.2 - 2017-07-10
+
+Fix `engines` field in `package.json`
+
+## 0.11.1 - 2017-07-10
+
+Add [please-upgrade-node](https://github.com/typicode/please-upgrade-node)
+
 ## 0.11.0 - 2017-07-05
 
 Switch to [express-urlrewrite](https://github.com/kapouer/express-urlrewrite) to support rewriting query parameters (e.g.  `/articles?id=1 # → /posts/1`)
