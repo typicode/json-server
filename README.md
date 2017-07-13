@@ -65,6 +65,8 @@ See also:
 
 Development of JSON Server and my other projects are generously supported by contributions from people. If you are benefiting from my projects and would like to help keep them financially sustainable, please visit [Patreon](https://patreon.com/typicode).
 
+If you're a company, you can have your logo here.
+
 ## Example
 
 Create a `db.json` file
