@@ -15,7 +15,7 @@ module.exports = function (opts) {
     ? userDir
     : defaultDir
 
-  opts = objectAssign({ logger: true, static: staticDir }, opts)
+  opts = objectAssign({ logger: true, static: staticDir, bodyParser: true }, opts)
 
   const arr = []
 
@@ -70,7 +70,9 @@ module.exports = function (opts) {
   }
 
   // Add middlewares
-  arr.push(bodyParser)
+  if (opts.bodyParser) {
+    arr.push(bodyParser)
+  }
 
   return arr
 }
