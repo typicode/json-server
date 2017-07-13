@@ -1,4 +1,4 @@
-# JSON Server [![](https://travis-ci.org/typicode/json-server.svg?branch=master)](https://travis-ci.org/typicode/json-server) [![](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server) [![](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/typicode/json-server?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# JSON Server [![](https://travis-ci.org/typicode/json-server.svg?branch=master)](https://travis-ci.org/typicode/json-server) [![](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier) [![](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/typicode/json-server?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)
 
@@ -9,8 +9,9 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 
 See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
-* :camera: [tlapse - Create a timelapse of your web development](https://github.com/typicode/tlapse)
-* :hotel: [hotel - Process manager for developers with local .dev domain out of the box](https://github.com/typicode/hotel)
+* :hotel: [hotel - developer tool with local .dev domain and https out of the box](https://github.com/typicode/hotel)
+* :atom_symbol: [react-fake-props - generate fake props for your React tests (Jest, Enzyme, ...)](https://github.com/typicode/react-fake-props)
+* :heart: [Patreon page - if you want to support JSON Server development](https://www.patreon.com/typicode)
 
 ## Table of contents
 
@@ -313,9 +314,10 @@ Create a `routes.json` file. Pay attention to start every route with `/`.
 
 ```json
 {
-  "/api/": "/",
-  "/blog/:resource/:id/show": "/:resource/:id",
-  "/blog/:category": "/posts?category=:category"
+  "/api/*": "/$1",
+  "/:resource/:id/show": "/:resource/:id",
+  "/posts/:category": "/posts?category=:category",
+  "/articles\\?id=:id": "/posts/:id"
 }
 ```
 
@@ -330,8 +332,9 @@ Now you can access resources using additional routes.
 ```sh
 /api/posts # → /posts
 /api/posts/1  # → /posts/1
-/blog/posts/1/show # → /posts/1
-/blog/javascript # → /posts?category=javascript
+/posts/1/show # → /posts/1
+/posts/javascript # → /posts?category=javascript
+/articles?id=1 # → /posts/1
 ```
 
 ### Add middlewares

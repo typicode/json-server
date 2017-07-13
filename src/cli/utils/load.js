@@ -4,7 +4,7 @@ const low = require('lowdb')
 const fileAsync = require('lowdb/lib/storages/file-async')
 const is = require('./is')
 
-module.exports = function (source, cb) {
+module.exports = function(source, cb) {
   if (is.URL(source)) {
     // Load remote data
     const opts = {
@@ -23,7 +23,9 @@ module.exports = function (source, cb) {
     const dataFn = require(filename)
 
     if (typeof dataFn !== 'function') {
-      throw new Error('The database is a JavaScript file but the export is not a function.')
+      throw new Error(
+        'The database is a JavaScript file but the export is not a function.'
+      )
     }
 
     // Run dataFn to generate data
@@ -34,6 +36,6 @@ module.exports = function (source, cb) {
     const data = low(source, { storage: fileAsync }).getState()
     cb(null, data)
   } else {
-    throw new Error('Unsupported source ' + source)
+    throw new Error(`Unsupported source ${source}`)
   }
 }

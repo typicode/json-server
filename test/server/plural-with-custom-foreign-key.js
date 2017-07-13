@@ -11,10 +11,7 @@ describe('Server with custom foreign key', () => {
   beforeEach(() => {
     db = {}
 
-    db.posts = [
-      { id: 1, body: 'foo' },
-      { id: 2, body: 'bar' }
-    ]
+    db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
 
     db.comments = [
       { id: 1, post_id: 1 },
@@ -29,33 +26,28 @@ describe('Server with custom foreign key', () => {
   })
 
   describe('GET /:parent/:parentId/:resource', () => {
-    it('should respond with json and corresponding nested resources', () => (
+    it('should respond with json and corresponding nested resources', () =>
       request(server)
         .get('/posts/1/comments')
         .expect('Content-Type', /json/)
-        .expect([
-          db.comments[0],
-          db.comments[1]
-        ])
-        .expect(200)
-    ))
+        .expect([db.comments[0], db.comments[1]])
+        .expect(200))
   })
 
   describe('GET /:resource/:id', () => {
-    it('should respond with json and corresponding resource', () => (
+    it('should respond with json and corresponding resource', () =>
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
         .expect(db.posts[0])
-        .expect(200)
-    ))
+        .expect(200))
   })
 
   describe('GET /:resource?_embed=', () => {
     it('should respond with corresponding resources and embedded resources', () => {
       const posts = _.cloneDeep(db.posts)
-      posts[0].comments = [ db.comments[0], db.comments[1] ]
-      posts[1].comments = [ db.comments[2] ]
+      posts[0].comments = [db.comments[0], db.comments[1]]
+      posts[1].comments = [db.comments[2]]
       return request(server)
         .get('/posts?_embed=comments')
         .expect('Content-Type', /json/)
@@ -67,7 +59,7 @@ describe('Server with custom foreign key', () => {
   describe('GET /:resource/:id?_embed=', () => {
     it('should respond with corresponding resources and embedded resources', () => {
       const post = _.cloneDeep(db.posts[0])
-      post.comments = [ db.comments[0], db.comments[1] ]
+      post.comments = [db.comments[0], db.comments[1]]
       return request(server)
         .get('/posts/1?_embed=comments')
         .expect('Content-Type', /json/)
@@ -103,22 +95,18 @@ describe('Server with custom foreign key', () => {
   })
 
   describe('POST /:parent/:parentId/:resource', () => {
-    it('should respond with json and set parentId', () => (
+    it('should respond with json and set parentId', () =>
       request(server)
         .post('/posts/1/comments')
-        .send({body: 'foo'})
+        .send({ body: 'foo' })
         .expect('Content-Type', /json/)
-        .expect({id: 4, post_id: 1, body: 'foo'})
-        .expect(201)
-    ))
+        .expect({ id: 4, post_id: 1, body: 'foo' })
+        .expect(201))
   })
 
   describe('DELETE /:resource/:id', () => {
     it('should respond with empty data, destroy resource and dependent resources', async () => {
-      await request(server)
-        .del('/posts/1')
-        .expect({})
-        .expect(200)
+      await request(server).del('/posts/1').expect({}).expect(200)
       assert.equal(db.posts.length, 1)
       assert.equal(db.comments.length, 1)
     })
