@@ -164,14 +164,13 @@ describe('cli', () => {
   })
 
   describe('db.json -m postbody-middleware.js', () => {
-    beforeEach((done) => {
-      child = cli([ dbFile, '-m', middlewareFiles.postbody ])
+    beforeEach(done => {
+      child = cli([dbFile, '-m', middlewareFiles.postbody])
       serverReady(PORT, done)
     })
 
-    it('should have post body in middleware', (done) => {
-      request.post('/posts').send({ name: 'test' })
-        .expect('name', 'test', done)
+    it('should have post body in middleware', done => {
+      request.post('/posts').send({ name: 'test' }).expect('name', 'test', done)
     })
   })
 
