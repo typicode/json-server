@@ -540,6 +540,21 @@ Alternatively, you can also mount the router on `/api`.
 server.use('/api', router)
 ```
 
+### Disabling logging
+
+```javascript
+const Server      = require('json-server');
+const server      = Server.create();
+const router      = Server.router('db.json');
+const middlewares = Server.defaults({logger: false});
+const routes      = require('routes.json');
+
+server.use(Server.rewriter(routes));
+server.use(middlewares);
+server.use(router);
+server.listen(9001);
+```
+
 ### Deployment
 
 You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholder.typicode.com) is an online fake API powered by JSON Server and running on Heroku.
