@@ -6,6 +6,7 @@ const cors = require('cors')
 const compression = require('compression')
 const errorhandler = require('errorhandler')
 const objectAssign = require('object-assign')
+const bodyParser = require('./body-parser')
 
 module.exports = function(opts) {
   const userDir = path.join(process.cwd(), 'public')
@@ -62,6 +63,11 @@ module.exports = function(opts) {
         res.sendStatus(403) // Forbidden
       }
     })
+  }
+
+  // Add middlewares
+  if (opts.bodyParser) {
+    arr.push(bodyParser)
   }
 
   return arr
