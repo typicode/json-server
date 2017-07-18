@@ -14,7 +14,8 @@ let PORT = 3100
 
 const middlewareFiles = {
   en: './fixtures/middlewares/en.js',
-  jp: './fixtures/middlewares/jp.js'
+  jp: './fixtures/middlewares/jp.js',
+  postbody: './fixtures/middlewares/postbody.js'
 }
 
 const bin = path.join(__dirname, '../../lib/cli/bin')
@@ -159,6 +160,17 @@ describe('cli', () => {
         .get('/posts')
         .expect('X-Hello', 'World')
         .expect('X-Konnichiwa', 'Sekai', done)
+    })
+  })
+
+  describe('db.json -m postbody-middleware.js', () => {
+    beforeEach(done => {
+      child = cli([dbFile, '-m', middlewareFiles.postbody])
+      serverReady(PORT, done)
+    })
+
+    it('should have post body in middleware', done => {
+      request.post('/posts').send({ name: 'test' }).expect('name', 'test', done)
     })
   })
 

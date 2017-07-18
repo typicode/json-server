@@ -61,6 +61,12 @@ See also:
 
 </details>
 
+## Sponsorship
+
+Development of JSON Server and my other projects is generously supported by contributions from people. If you are benefiting from my projects and would like to help keep them financially sustainable, please visit [Patreon](https://patreon.com/typicode).
+
+If you're a company, you can have your logo here.
+
 ## Example
 
 Create a `db.json` file
@@ -101,8 +107,6 @@ Also when doing requests, it's good to know that:
 ```bash
 $ npm install -g json-server
 ```
-
-Requires Node 4+
 
 ## Routes
 
@@ -491,7 +495,6 @@ server.listen(3000, () => {
   console.log('JSON Server is running')
 })
 ```
-
 #### Custom output example
 
 To modify responses, overwrite `router.render` method:
@@ -505,6 +508,18 @@ router.render = (req, res) => {
 }
 ```
 
+You can set your own status code for the response:
+
+
+```javascript
+// In this example we simulate a server side error response
+router.render = (req, res) => {
+  res.status(500).jsonp({
+    error: "error message here"
+  })
+}
+```
+
 #### Rewriter example
 
 To add rewrite rules, use `jsonServer.rewriter()`:
@@ -512,7 +527,7 @@ To add rewrite rules, use `jsonServer.rewriter()`:
 ```javascript
 // Add this before server.use(router)
 server.use(jsonServer.rewriter({
-  '/api/': '/',
+  '/api/*': '/$1',
   '/blog/:resource/:id/show': '/:resource/:id'
 }))
 ```
