@@ -9,9 +9,17 @@ const validateData = require('./validate-data')
 const plural = require('./plural')
 const nested = require('./nested')
 const singular = require('./singular')
-const mixins = require('../mixins')
+const getMixins = require('../mixins')
 
-module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
+const defaultProps = {
+  foreignKeySuffix: 'Id',
+  prepareId: id => id,
+  resourceToPropName: resource => resource
+}
+
+module.exports = (source, options = null) => {
+  const opts = Object.assign({}, defaultProps, options || {})
+
   // Create router
   const router = express.Router()
 
@@ -34,7 +42,7 @@ module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
   db._.mixin(lodashId)
 
   // Add specific mixins
-  db._.mixin(mixins)
+  db._.mixin(getMixins(opts))
 
   // Expose database
   router.db = db

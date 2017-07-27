@@ -1,10 +1,18 @@
 const shortid = require('shortid')
 const pluralize = require('pluralize')
 
-module.exports = {
-  getRemovable,
-  createId,
-  deepQuery
+module.exports = getMixins
+
+function getMixins(options) {
+  return {
+    getRemovable: function(db) {
+      return getRemovable.call(this, db, options)
+    },
+    createId: function() {
+      return options.prepareId(createId.apply(this, arguments))
+    },
+    deepQuery
+  }
 }
 
 // Returns document ids that have unsatisfied relations

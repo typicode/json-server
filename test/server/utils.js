@@ -55,4 +55,14 @@ describe('utils', () => {
       })
     })
   })
+
+  describe('paramIdToId', () => {
+    it('should return number if string passed', () => {
+      assert.equal(utils.paramIdToId('1'), 1)
+    })
+
+    it('should return same if not string passed', () => {
+      assert.equal(utils.paramIdToId(1), 1)
+    })
+  })
 })

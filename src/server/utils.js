@@ -1,5 +1,12 @@
+const _ = require('lodash')
+
 module.exports = {
-  getPage
+  getPage,
+  paramIdToId
+}
+
+function paramIdToId(id) {
+  return _.isString(id) && isFinite(id) ? parseInt(id, 10) : id
 }
 
 function getPage(array, page, perPage) {

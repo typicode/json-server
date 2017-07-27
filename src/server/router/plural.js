@@ -47,6 +47,7 @@ module.exports = (db, name, opts) => {
   // GET /name?_start=&_end=&
   // GET /name?_embed=&_expand=
   function list(req, res, next) {
+    // console.log('!!! LIST')
     // Resource chain
     let chain = db.get(name)
 
@@ -89,6 +90,8 @@ module.exports = (db, name, opts) => {
       delete req.query[query]
     })
 
+    // console.log('!!!! req.query ', req.query);
+
     if (q) {
       // Full-text search
       if (Array.isArray(q)) {
@@ -96,7 +99,6 @@ module.exports = (db, name, opts) => {
       }
 
       q = q.toLowerCase()
-
       chain = chain.filter(obj => {
         for (let key in obj) {
           const value = obj[key]
@@ -114,6 +116,7 @@ module.exports = (db, name, opts) => {
         // Always use an array, in case req.query is an array
         const arr = [].concat(req.query[key])
 
+        // console.log('!!! chain', chain.__wrapped__)
         chain = chain.filter(element => {
           return arr
             .map(function(value) {
@@ -123,7 +126,12 @@ module.exports = (db, name, opts) => {
               const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
               // get item value based on path
               // i.e post.title -> 'foo'
+              // console.log("!!! path", path)
               const elementValue = _.get(element, path)
+              // console.log("!!! elementValue")
+              // console.dir(elementValue)
+              // console.log("!!! value")
+              // console.dir(value)
 
               // Prevent toString() failing on undefined or null values
               if (elementValue === undefined || elementValue === null) {
@@ -137,11 +145,11 @@ module.exports = (db, name, opts) => {
                   ? value <= elementValue
                   : value >= elementValue
               } else if (isDifferent) {
-                return value !== elementValue.toString()
+                return value.toString() !== elementValue.toString()
               } else if (isLike) {
                 return new RegExp(value, 'i').test(elementValue.toString())
               } else {
-                return value === elementValue.toString()
+                return value.toString() === elementValue.toString()
               }
             })
             .reduce((a, b) => a || b)
@@ -228,7 +236,11 @@ module.exports = (db, name, opts) => {
   function show(req, res, next) {
     const _embed = req.query._embed
     const _expand = req.query._expand
-    const resource = db.get(name).getById(req.params.id).value()
+    const resource = db
+      .get(name)
+      // .getById(utils.paramIdToId(req.params.id))
+      .getById(req.params.id)
+      .value()
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
@@ -264,6 +276,7 @@ module.exports = (db, name, opts) => {
   // PUT /name/:id
   // PATCH /name/:id
   function update(req, res, next) {
+    // const id = utils.paramIdToId(req.params.id)
     const id = req.params.id
     let chain = db.get(name)
 
@@ -283,12 +296,16 @@ module.exports = (db, name, opts) => {
 
   // DELETE /name/:id
   function destroy(req, res, next) {
-    const resource = db.get(name).removeById(req.params.id).value()
+    const resource = db
+      .get(name)
+      // .removeById(utils.paramIdToId(req.params.id))
+      .removeById(req.params.id)
+      .value()
 
     // Remove dependents documents
-    console.log({ opts })
-    const removable = db._.getRemovable(db.getState(), opts)
-    console.log(removable)
+    // console.log({ opts })
+    const removable = db._.getRemovable(db.getState())
+    // console.log(removable)
     removable.forEach(item => {
       db.get(item.name).removeById(item.id).value()
     })

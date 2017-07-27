@@ -1,14 +1,14 @@
 const assert = require('assert')
 const _ = require('lodash')
 const lodashId = require('lodash-id')
-const mixins = require('../../src/server/mixins')
+const getMixins = require('../../src/server/mixins')
 
 describe('mixins', () => {
   let db
 
   before(() => {
     _.mixin(lodashId)
-    _.mixin(mixins)
+    _.mixin(getMixins({ foreignKeySuffix: 'Id', prepareId: id => id }))
   })
 
   beforeEach(() => {
@@ -31,7 +31,7 @@ describe('mixins', () => {
         { name: 'comments', id: 3 }
       ]
 
-      assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
+      assert.deepEqual(_.getRemovable(db), expected)
     })
 
     it('should support custom foreignKeySuffix', () => {
@@ -40,7 +40,7 @@ describe('mixins', () => {
         { name: 'comments', id: 3 }
       ]
 
-      assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
+      assert.deepEqual(_.getRemovable(db), expected)
     })
   })
 
