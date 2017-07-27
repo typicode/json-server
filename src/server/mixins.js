@@ -18,6 +18,11 @@ function getMixins(options) {
 // Returns document ids that have unsatisfied relations
 // Example: a comment that references a post that doesn't exist
 function getRemovable(db, opts) {
+  // Can't find relations if foreignKeySuffix is not set
+  if (!opts.foreignKeySuffix) {
+    return []
+  }
+
   const _ = this
   const removable = []
   _.each(db, (coll, collName) => {
