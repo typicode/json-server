@@ -17,7 +17,10 @@ module.exports = (db, name, opts) => {
           const query = {}
           const propName = opts.resourceToPropName(pluralize.singular(name))
           query[`${propName}${opts.foreignKeySuffix}`] = resource.id
-          resource[externalResource] = db
+          const externalResourcePropName = opts.extResourceToPropName(
+            externalResource
+          )
+          resource[externalResourcePropName] = db
             .get(externalResource)
             .filter(query)
             .value()

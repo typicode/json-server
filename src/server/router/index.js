@@ -14,7 +14,8 @@ const getMixins = require('../mixins')
 const defaultProps = {
   foreignKeySuffix: 'Id',
   prepareId: id => id,
-  resourceToPropName: resource => resource
+  resourceToPropName: resource => resource,
+  extResourceToPropName: resource => resource
 }
 
 module.exports = (source, options = null) => {
