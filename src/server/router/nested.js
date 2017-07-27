@@ -1,6 +1,6 @@
 const express = require('express')
 const pluralize = require('pluralize')
-// const utils = require('../utils')
+const utils = require('../utils')
 
 module.exports = opts => {
   const router = express.Router()
@@ -12,7 +12,7 @@ module.exports = opts => {
   // Rewrite URL (/:resource/:id/:nested -> /:nested) and request query
   function get(req, res, next) {
     const prop = toProp(req.params.resource)
-    req.query[prop] = req.params.id
+    req.query[prop] = utils.paramIdToId(req.params.id)
     req.url = `/${req.params.nested}`
     next()
   }
@@ -20,15 +20,25 @@ module.exports = opts => {
   // Rewrite URL (/:resource/:id/:nested -> /:nested) and request body
   function post(req, res, next) {
     const prop = toProp(req.params.resource)
-    // req.body[prop] = utils.paramIdToId(req.params.id)
-    req.body[prop] = req.params.id
+    req.body[prop] = utils.paramIdToId(req.params.id)
     req.url = `/${req.params.nested}`
     next()
   }
 
   // Rewrite URL (/:resource/:id/:nested/:nestedId -> /:nested) and request body
+  function getOne(req, res, next) {
+    req.url = `/${req.params.nested}/${req.params.nestedId}`
+    next()
+  }
+
+  // Rewrite URL (/:resource/:id/:nested/:nestedId -> /:nested) and request body
+  function put(req, res, next) {
+    req.url = `/${req.params.nested}/${req.params.nestedId}`
+    next()
+  }
+
+  // Rewrite URL (/:resource/:id/:nested/:nestedId -> /:nested) and request body
   function del(req, res, next) {
-    // req.url = `/${req.params.nested}/${utils.paramIdToId(req.params.nestedId)}`
     req.url = `/${req.params.nested}/${req.params.nestedId}`
     next()
   }
@@ -36,5 +46,7 @@ module.exports = opts => {
   return router
     .get('/:resource/:id/:nested', get)
     .post('/:resource/:id/:nested', post)
+    .get('/:resource/:id/:nested/:nestedId', getOne)
+    .put('/:resource/:id/:nested/:nestedId', put)
     .delete('/:resource/:id/:nested/:nestedId', del)
 }
