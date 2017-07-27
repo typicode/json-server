@@ -15,8 +15,8 @@ module.exports = (db, name, opts) => {
       [].concat(e).forEach(externalResource => {
         if (db.get(externalResource).value) {
           const query = {}
-          const singularResource = pluralize.singular(name)
-          query[`${singularResource}${opts.foreignKeySuffix}`] = resource.id
+          const propName = opts.resourceToPropName(pluralize.singular(name))
+          query[`${propName}${opts.foreignKeySuffix}`] = resource.id
           resource[externalResource] = db
             .get(externalResource)
             .filter(query)
