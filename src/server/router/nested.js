@@ -8,11 +8,14 @@ module.exports = opts => {
     const propName = opts.resourceToPropName(pluralize.singular(resource))
     return `${propName}${opts.foreignKeySuffix}`
   }
+  const toId = paramId => {
+    return opts.prepareId(utils.paramIdToId(paramId))
+  }
 
   // Rewrite URL (/:resource/:id/:nested -> /:nested) and request query
   function get(req, res, next) {
     const prop = toProp(req.params.resource)
-    req.query[prop] = utils.paramIdToId(req.params.id)
+    req.query[prop] = toId(req.params.id)
     req.url = `/${req.params.nested}`
     next()
   }
@@ -20,7 +23,7 @@ module.exports = opts => {
   // Rewrite URL (/:resource/:id/:nested -> /:nested) and request body
   function post(req, res, next) {
     const prop = toProp(req.params.resource)
-    req.body[prop] = utils.paramIdToId(req.params.id)
+    req.body[prop] = toId(req.params.id)
     req.url = `/${req.params.nested}`
     next()
   }
