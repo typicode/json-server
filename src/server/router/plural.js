@@ -15,9 +15,12 @@ module.exports = (db, name, opts) => {
       [].concat(e).forEach(externalResource => {
         if (db.get(externalResource).value) {
           const query = {}
-          const singularResource = pluralize.singular(name)
-          query[`${singularResource}${opts.foreignKeySuffix}`] = resource.id
-          resource[externalResource] = db
+          const propName = opts.resourceToPropName(pluralize.singular(name))
+          query[`${propName}${opts.foreignKeySuffix}`] = resource.id
+          const externalResourcePropName = opts.extResourceToPropName(
+            externalResource
+          )
+          resource[externalResourcePropName] = db
             .get(externalResource)
             .filter(query)
             .value()
@@ -96,7 +99,6 @@ module.exports = (db, name, opts) => {
       }
 
       q = q.toLowerCase()
-
       chain = chain.filter(obj => {
         for (let key in obj) {
           const value = obj[key]
@@ -137,11 +139,11 @@ module.exports = (db, name, opts) => {
                   ? value <= elementValue
                   : value >= elementValue
               } else if (isDifferent) {
-                return value !== elementValue.toString()
+                return value.toString() !== elementValue.toString()
               } else if (isLike) {
                 return new RegExp(value, 'i').test(elementValue.toString())
               } else {
-                return value === elementValue.toString()
+                return value.toString() === elementValue.toString()
               }
             })
             .reduce((a, b) => a || b)
@@ -228,7 +230,11 @@ module.exports = (db, name, opts) => {
   function show(req, res, next) {
     const _embed = req.query._embed
     const _expand = req.query._expand
-    const resource = db.get(name).getById(req.params.id).value()
+    const resource = db
+      .get(name)
+      // .getById(utils.paramIdToId(req.params.id))
+      .getById(req.params.id)
+      .value()
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
@@ -264,6 +270,7 @@ module.exports = (db, name, opts) => {
   // PUT /name/:id
   // PATCH /name/:id
   function update(req, res, next) {
+    // const id = utils.paramIdToId(req.params.id)
     const id = req.params.id
     let chain = db.get(name)
 
@@ -283,12 +290,14 @@ module.exports = (db, name, opts) => {
 
   // DELETE /name/:id
   function destroy(req, res, next) {
-    const resource = db.get(name).removeById(req.params.id).value()
+    const resource = db
+      .get(name)
+      // .removeById(utils.paramIdToId(req.params.id))
+      .removeById(req.params.id)
+      .value()
 
     // Remove dependents documents
-    console.log({ opts })
-    const removable = db._.getRemovable(db.getState(), opts)
-    console.log(removable)
+    const removable = db._.getRemovable(db.getState())
     removable.forEach(item => {
       db.get(item.name).removeById(item.id).value()
     })

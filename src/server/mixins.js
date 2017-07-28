@@ -1,15 +1,28 @@
 const shortid = require('shortid')
 const pluralize = require('pluralize')
 
-module.exports = {
-  getRemovable,
-  createId,
-  deepQuery
+module.exports = getMixins
+
+function getMixins(options) {
+  return {
+    getRemovable: function(db) {
+      return getRemovable.call(this, db, options)
+    },
+    createId: function() {
+      return options.prepareId(createId.apply(this, arguments))
+    },
+    deepQuery
+  }
 }
 
 // Returns document ids that have unsatisfied relations
 // Example: a comment that references a post that doesn't exist
 function getRemovable(db, opts) {
+  // Can't find relations if foreignKeySuffix is not set
+  if (!opts.foreignKeySuffix) {
+    return []
+  }
+
   const _ = this
   const removable = []
   _.each(db, (coll, collName) => {
