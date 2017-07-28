@@ -328,7 +328,7 @@ Create a `routes.json` file. Pay attention to start every route with `/`.
 Start JSON Server with `--routes` option.
 
 ```bash
-json-server db.json --routes routes.json
+json-server --watch db.json --routes routes.json
 ```
 
 Now you can access resources using additional routes.
