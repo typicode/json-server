@@ -50,7 +50,6 @@ module.exports = (db, name, opts) => {
   // GET /name?_start=&_end=&
   // GET /name?_embed=&_expand=
   function list(req, res, next) {
-    // console.log('!!! LIST')
     // Resource chain
     let chain = db.get(name)
 
@@ -93,8 +92,6 @@ module.exports = (db, name, opts) => {
       delete req.query[query]
     })
 
-    // console.log('!!!! req.query ', req.query);
-
     if (q) {
       // Full-text search
       if (Array.isArray(q)) {
@@ -119,7 +116,6 @@ module.exports = (db, name, opts) => {
         // Always use an array, in case req.query is an array
         const arr = [].concat(req.query[key])
 
-        // console.log('!!! chain', chain.__wrapped__)
         chain = chain.filter(element => {
           return arr
             .map(function(value) {
@@ -129,12 +125,7 @@ module.exports = (db, name, opts) => {
               const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
               // get item value based on path
               // i.e post.title -> 'foo'
-              // console.log("!!! path", path)
               const elementValue = _.get(element, path)
-              // console.log("!!! elementValue")
-              // console.dir(elementValue)
-              // console.log("!!! value")
-              // console.dir(value)
 
               // Prevent toString() failing on undefined or null values
               if (elementValue === undefined || elementValue === null) {
@@ -306,9 +297,7 @@ module.exports = (db, name, opts) => {
       .value()
 
     // Remove dependents documents
-    // console.log({ opts })
     const removable = db._.getRemovable(db.getState())
-    // console.log(removable)
     removable.forEach(item => {
       db.get(item.name).removeById(item.id).value()
     })
