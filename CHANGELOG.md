@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.12.0 - 2017-08-02
+
+* Re-include `body-parser` in `jsonServer.middlewares()`.
+
+If you're using JSON Server within an Express server and experience issues, you can disable it by passing `{ bodyParser: false }`.
+
 ## 0.11.2 - 2017-07-10
 
 Fix `engines` field in `package.json`
