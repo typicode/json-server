@@ -542,11 +542,11 @@ server.use('/api', router)
 
 #### API
 
-__jsonServer.create()__
+`__jsonServer.create()__`
 
 Returns an Express server.
 
-__jsonServer.defaults([options])__
+`__jsonServer.defaults([options])__`
 
 Returns middlewares used by JSON Server.
 
@@ -557,7 +557,7 @@ Returns middlewares used by JSON Server.
   * `noCors` disable CORS (default: false)
   * `readOnly` accept only GET requests (default: false)
   
-__jsonServer.router([path|object])__
+`__jsonServer.router([path|object])__`
 
 Returns JSON Server router. 
 
