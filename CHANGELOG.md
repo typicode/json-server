@@ -4,7 +4,11 @@
 
 * Re-include `body-parser` in `jsonServer.middlewares()`.
 
-If you're using JSON Server in an Express server and experience issues, you can disable it by passing `{ bodyParser: false }`.
+If you're using JSON Server in an Express server and experience issues, you can disable it by passing 
+
+```js
+jsonServer.defaults({ bodyParser: false })
+```
 
 ## 0.11.2 - 2017-07-10
 
