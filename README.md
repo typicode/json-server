@@ -540,6 +540,27 @@ Alternatively, you can also mount the router on `/api`.
 server.use('/api', router)
 ```
 
+#### API
+
+__`jsonServer.create()`__
+
+Returns an Express server.
+
+__`jsonServer.defaults([options])`__
+
+Returns middlewares used by JSON Server.
+
+* options
+  * `static` path to static files
+  * `logger` enable logger middleware (default: true)
+  * `bodyParser` enable body-parser middleware (default: true)
+  * `noCors` disable CORS (default: false)
+  * `readOnly` accept only GET requests (default: false)
+  
+__`jsonServer.router([path|object])`__
+
+Returns JSON Server router. 
+
 ### Deployment
 
 You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholder.typicode.com) is an online fake API powered by JSON Server and running on Heroku.
