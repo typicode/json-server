@@ -542,16 +542,24 @@ server.use('/api', router)
 
 #### API
 
+__jsonServer.create()__
+
+Returns an Express server.
+
 __jsonServer.defaults([options])__
 
 Returns middlewares used by JSON Server.
 
 * options
-  * `static` path
-  * `logger` default: true
-  * `noCors` default: false
-  * `readOnly` default: false
-  * `bodyParser` default: true
+  * `static` path to static files
+  * `logger` enable logger middleware (default: true)
+  * `bodyParser` enable body-parser middleware (default: true)
+  * `noCors` disable CORS (default: false)
+  * `readOnly` accept only GET requests (default: false)
+  
+__jsonServer.router([path|object])__
+
+Returns JSON Server router. 
 
 ### Deployment
 
