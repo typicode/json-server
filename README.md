@@ -19,6 +19,7 @@ See also:
 
 <!-- toc -->
 
+- [Sponsorship](#sponsorship)
 - [Example](#example)
 - [Install](#install)
 - [Routes](#routes)
@@ -50,6 +51,7 @@ See also:
     + [Custom output example](#custom-output-example)
     + [Rewriter example](#rewriter-example)
     + [Mounting JSON Server on another endpoint example](#mounting-json-server-on-another-endpoint-example)
+    + [API](#api)
   * [Deployment](#deployment)
 - [Links](#links)
   * [Video](#video)
