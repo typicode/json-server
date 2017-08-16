@@ -1,5 +1,5 @@
 const path = require('path')
-const request = require('request')
+const phin = require('phin')
 const low = require('lowdb')
 const fileAsync = require('lowdb/lib/storages/file-async')
 const is = require('./is')
@@ -8,13 +8,12 @@ module.exports = function(source, cb) {
   if (is.URL(source)) {
     // Load remote data
     const opts = {
-      url: source,
-      json: true
+      url: source
     }
 
-    request(opts, (err, response) => {
+    phin(opts, (err, response) => {
       if (err) return cb(err)
-      cb(null, response.body)
+      cb(null, JSON.parse(response.body))
     })
   } else if (is.JS(source)) {
     // Clear cache
