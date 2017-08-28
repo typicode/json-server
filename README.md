@@ -19,6 +19,7 @@ See also:
 
 <!-- toc -->
 
+- [Sponsorship](#sponsorship)
 - [Example](#example)
 - [Install](#install)
 - [Routes](#routes)
@@ -50,6 +51,7 @@ See also:
     + [Custom output example](#custom-output-example)
     + [Rewriter example](#rewriter-example)
     + [Mounting JSON Server on another endpoint example](#mounting-json-server-on-another-endpoint-example)
+    + [API](#api)
   * [Deployment](#deployment)
 - [Links](#links)
   * [Video](#video)
@@ -539,6 +541,27 @@ Alternatively, you can also mount the router on `/api`.
 ```javascript
 server.use('/api', router)
 ```
+
+#### API
+
+__`jsonServer.create()`__
+
+Returns an Express server.
+
+__`jsonServer.defaults([options])`__
+
+Returns middlewares used by JSON Server.
+
+* options
+  * `static` path to static files
+  * `logger` enable logger middleware (default: true)
+  * `bodyParser` enable body-parser middleware (default: true)
+  * `noCors` disable CORS (default: false)
+  * `readOnly` accept only GET requests (default: false)
+  
+__`jsonServer.router([path|object])`__
+
+Returns JSON Server router. 
 
 ### Deployment
 

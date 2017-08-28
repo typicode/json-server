@@ -1,6 +1,6 @@
 {
   "name": "json-server",
-  "version": "0.11.3",
+  "version": "0.12.1",
   "description": "Serves JSON files through REST routes.",
   "main": "./lib/server/index.js",
   "bin": "./bin/index.js",
@@ -23,7 +23,7 @@
     "method-override": "^2.1.2",
     "morgan": "^1.3.1",
     "object-assign": "^4.0.1",
-    "please-upgrade-node": "^1.0.0",
+    "please-upgrade-node": "^3.0.1",
     "pluralize": "^3.0.0",
     "request": "^2.72.0",
     "server-destroy": "^1.0.1",
