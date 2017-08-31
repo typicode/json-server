@@ -11,7 +11,28 @@ const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
 
-module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
+module.exports = (source, options) => {
+  const defaultOpts = {
+    foreignKeySuffix: 'Id',
+    queryParameters: {
+      q: 'q',
+      _start: '_start',
+      _end: '_end',
+      _page: '_page',
+      _sort: '_sort',
+      _order: '_order',
+      _limit: '_limit',
+      _embed: '_embed',
+      _expand: '_expand',
+      _lte: '_lte',
+      _gte: '_gte',
+      _ne: '_ne',
+      _like: '_like'
+    }
+  }
+
+  const opts = options ? _.merge(defaultOpts, options) : defaultOpts
+
   // Create router
   const router = express.Router()
 
