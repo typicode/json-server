@@ -32,10 +32,12 @@ module.exports = (db, name, opts) => {
         const plural = pluralize(innerResource)
         if (db.get(plural).value()) {
           const prop = `${innerResource}${opts.foreignKeySuffix}`
-          resource[innerResource] = db
-            .get(plural)
-            .getById(resource[prop])
-            .value()
+          if (resource[prop]) {
+            resource[innerResource] =
+              db.get(plural).getById(resource[prop]).value() || null
+          } else {
+            resource[innerResource] = null
+          }
         }
       })
   }

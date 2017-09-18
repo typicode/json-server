@@ -36,7 +36,8 @@ describe('Server', () => {
       { id: 2, body: 'bar', published: false, postId: 1, userId: 2 },
       { id: 3, body: 'baz', published: false, postId: 2, userId: 1 },
       { id: 4, body: 'qux', published: true, postId: 2, userId: 2 },
-      { id: 5, body: 'quux', published: false, postId: 2, userId: 1 }
+      { id: 5, body: 'quux', published: false, postId: 2, userId: 1 },
+      { id: 6, body: 'qaax', published: true, postId: null, userId: null }
     ]
 
     db.buyers = [
@@ -464,6 +465,16 @@ describe('Server', () => {
         .expect(comment)
         .expect(200)
     })
+    it('should respond with corresponding resource and expanded null inner resources', () => {
+      const comment = _.cloneDeep(db.comments[5])
+      comment.post = null
+      comment.user = null
+      return request(server)
+        .get('/comments/6?_expand=post&_expand=user')
+        .expect('Content-Type', /json/)
+        .expect(comment)
+        .expect(200)
+    })
   })
 
   describe('GET /:resource?_expand=&_expand', () => {
@@ -533,7 +544,7 @@ describe('Server', () => {
         .post('/posts/1/comments')
         .send({ body: 'foo' })
         .expect('Content-Type', /json/)
-        .expect({ id: 6, postId: 1, body: 'foo' })
+        .expect({ id: 7, postId: 1, body: 'foo' })
         .expect(201))
   })
 
@@ -592,7 +603,7 @@ describe('Server', () => {
     it('should respond with empty data, destroy resource and dependent resources', async () => {
       await request(server).del('/posts/1').expect({}).expect(200)
       assert.equal(db.posts.length, 1)
-      assert.equal(db.comments.length, 3)
+      assert.equal(db.comments.length, 4)
     })
 
     it('should respond with 404 if resource is not found', () =>
