@@ -202,10 +202,12 @@ module.exports = function(argv) {
         if (file) {
           const watchedFile = path.resolve(watchedDir, file)
           if (watchedFile === path.resolve(source)) {
-            if (is.JSON(watchedFile)) {
+            const isJSON = is.JSON(watchedFile)
+            const isJS = is.JS(watchedFile)
+            if (isJSON || isJS) {
               let obj
               try {
-                obj = jph.parse(fs.readFileSync(watchedFile))
+                }
                 if (readError) {
                   console.log(chalk.green(`  Read error has been fixed :)`))
                   readError = false
