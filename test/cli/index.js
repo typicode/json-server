@@ -279,6 +279,35 @@ describe('cli', () => {
     })
   })
 
+  describe('--watch generated.js', () => {
+    let generatedDbFile
+
+    beforeEach(done => {
+      generatedDbFile = tempWrite.sync(
+        `module.exports = () => {
+          return {
+            posts: [{ id: 1 }, { _id: 2 }],
+            comments: [{ id: 1, post_id: 1 }]
+          }
+        }`,
+        'generated.js'
+      )
+
+      child = cli([generatedDbFile, '--watch'])
+      serverReady(PORT, done)
+    })
+
+    it('should watch generated db file', done => {
+      let newGenerator = `module.exports = () => {
+        return { foo: [] }
+      }`
+      fs.writeFileSync(generatedDbFile, newGenerator)
+      setTimeout(() => {
+        request.get('/foo').expect(200, done)
+      }, 1000)
+    })
+  })
+
   describe('non existent db.json', () => {
     beforeEach(done => {
       fs.unlinkSync(dbFile)
