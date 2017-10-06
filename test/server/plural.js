@@ -83,6 +83,8 @@ describe('Server', () => {
       { id: 15 }
     ]
 
+    db.groups = [{ id: 1, name: 'Everyone', userId: [1, 2] }]
+
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults())
@@ -452,6 +454,15 @@ describe('Server', () => {
         .expect(refs)
         .expect(200)
     })
+    it('should respond with corresponding resource and expanded inner array resources', () => {
+      const groups = _.cloneDeep(db.groups)
+      groups[0].users = db.users
+      return request(server)
+        .get('/groups?_expand=user')
+        .expect('Content-Type', /json/)
+        .expect(groups)
+        .expect(200)
+    })
   })
 
   describe('GET /:resource/:id?_expand=', () => {
@@ -462,6 +473,15 @@ describe('Server', () => {
         .get('/comments/1?_expand=post')
         .expect('Content-Type', /json/)
         .expect(comment)
+        .expect(200)
+    })
+    it('should respond with corresponding resource and expanded inner array resources', () => {
+      const group = _.cloneDeep(db.groups[0])
+      group.users = db.users
+      return request(server)
+        .get('/groups/1?_expand=user')
+        .expect('Content-Type', /json/)
+        .expect(group)
         .expect(200)
     })
   })

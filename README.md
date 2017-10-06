@@ -222,11 +222,47 @@ GET /posts?_embed=comments
 GET /posts/1?_embed=comments
 ```
 
-To include parent resource, add `_expand`
+To include a parent resource, add `_expand`
 
 ```
 GET /comments?_expand=post
 GET /comments/1?_expand=post
+```
+
+Now if an object from the `comments` table includes a `postId` property, the result will contain the
+referenced object. For example, from this record:
+
+```json
+{ "id": 1, "body": "some comment", "postId": 1 }
+```
+
+you'll get this result:
+
+```json
+{
+  "id": 1,
+  "body": "some comment",
+  "postId": 1,
+  "post": { "id": 1, "title": "json-server", "author": "typicode" }
+}
+```
+
+If the reference id property is an array, all the references will be expanded:
+
+```
+GET /groups/1?_expand=user
+```
+
+```json
+{
+  "id": 1,
+  "name": "Some dudes",
+  "userId": [ 1, 2 ],
+  "users": [
+    { "id": 1, "name": "typicode" },
+    { "id": 2, "name": "foobar" }
+  ]
+}
 ```
 
 To get or create nested resources (by default one level, [add custom routes](#add-custom-routes) for more)
