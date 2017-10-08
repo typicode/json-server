@@ -99,6 +99,17 @@ describe('cli', () => {
     })
   })
 
+  describe('promise support', () => {
+    beforeEach(done => {
+      child = cli(['fixtures/promise.js'])
+      serverReady(PORT, done)
+    })
+
+    it('should support module which returns promise', done => {
+      request.get('/posts').expect(200, done)
+    })
+  })
+
   describe('remote db', () => {
     beforeEach(done => {
       child = cli(['https://jsonplaceholder.typicode.com/db'])
