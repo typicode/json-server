@@ -30,7 +30,12 @@ module.exports = function(source, cb) {
 
     // Run dataFn to generate data
     const data = dataFn()
-    cb(null, data)
+    // if mock data is generated via async support promise too
+    if (typeof data.then === 'function') {
+      data.then(response => cb(null, response))
+    } else {
+      cb(null, data)
+    }
   } else if (is.JSON(source)) {
     // Load JSON using lowdb
     const data = low(source, { storage: fileAsync }).getState()
