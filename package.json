@@ -88,6 +88,10 @@
     "dummy",
     "sandbox"
   ],
+  "prettier": {
+    "singleQuote": true,
+    "semi": false
+  },
   "author": "Typicode <typicode@gmail.com>",
   "license": "MIT",
   "bugs": {

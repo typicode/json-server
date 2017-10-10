@@ -32,11 +32,46 @@ describe('Server', () => {
     ]
 
     db.comments = [
-      { id: 1, body: 'foo', published: true, postId: 1, userId: 1 },
-      { id: 2, body: 'bar', published: false, postId: 1, userId: 2 },
-      { id: 3, body: 'baz', published: false, postId: 2, userId: 1 },
-      { id: 4, body: 'qux', published: true, postId: 2, userId: 2 },
-      { id: 5, body: 'quux', published: false, postId: 2, userId: 1 }
+      {
+        id: 1,
+        body: 'foo',
+        published: true,
+        postId: 1,
+        userId: 1,
+        createdAt: '2017-01-01T00:00:00'
+      },
+      {
+        id: 2,
+        body: 'bar',
+        published: false,
+        postId: 1,
+        userId: 2,
+        createdAt: '2017-01-02T00:00:01'
+      },
+      {
+        id: 3,
+        body: 'baz',
+        published: false,
+        postId: 2,
+        userId: 1,
+        createdAt: '2017-01-02T00:00:02'
+      },
+      {
+        id: 4,
+        body: 'qux',
+        published: true,
+        postId: 2,
+        userId: 2,
+        createdAt: '2017-01-02T00:00:03'
+      },
+      {
+        id: 5,
+        body: 'quux',
+        published: false,
+        postId: 2,
+        userId: 1,
+        createdAt: '2017-01-02T00:00:00'
+      }
     ]
 
     db.buyers = [
@@ -111,7 +146,9 @@ describe('Server', () => {
         .expect(200))
 
     it('should respond with 404 if resource is not found', () =>
-      request(server).get('/undefined').expect(404))
+      request(server)
+        .get('/undefined')
+        .expect(404))
   })
 
   describe('GET /:resource?attr=&attr=', () => {
@@ -324,9 +361,20 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?attr_gte=&attr_lte=', () => {
-    it('should respond with a limited array', () =>
+    it('in case of numbers, should respond with a limited array', () =>
       request(server)
         .get('/comments?id_gte=2&id_lte=3')
+        .expect('Content-Type', /json/)
+        .expect(db.comments.slice(1, 3))
+        .expect(200))
+  })
+
+  describe('GET /:resource?attr_gte=&attr_lte=', () => {
+    it('in case of strings, should respond with a limited array', () =>
+      request(server)
+        .get(
+          '/comments?createdAt_gte=2017-01-02T00:00:01&createdAt_lte=2017-01-02T00:00:02'
+        )
         .expect('Content-Type', /json/)
         .expect(db.comments.slice(1, 3))
         .expect(200))
@@ -590,7 +638,10 @@ describe('Server', () => {
 
   describe('DELETE /:resource/:id', () => {
     it('should respond with empty data, destroy resource and dependent resources', async () => {
-      await request(server).del('/posts/1').expect({}).expect(200)
+      await request(server)
+        .del('/posts/1')
+        .expect({})
+        .expect(200)
       assert.equal(db.posts.length, 1)
       assert.equal(db.comments.length, 3)
     })
@@ -646,25 +697,37 @@ describe('Server', () => {
 
   describe('Rewriter', () => {
     it('should rewrite using prefix', () =>
-      request(server).get('/api/posts/1').expect(db.posts[0]))
+      request(server)
+        .get('/api/posts/1')
+        .expect(db.posts[0]))
 
     it('should rewrite using params', () =>
-      request(server).get('/blog/posts/1/show').expect(db.posts[0]))
+      request(server)
+        .get('/blog/posts/1/show')
+        .expect(db.posts[0]))
 
     it('should rewrite using query without params', () => {
       const expectedPost = _.cloneDeep(db.posts[0])
       expectedPost.comments = [db.comments[0], db.comments[1]]
-      return request(server).get('/firstpostwithcomments').expect(expectedPost)
+      return request(server)
+        .get('/firstpostwithcomments')
+        .expect(expectedPost)
     })
 
     it('should rewrite using params and query', () =>
-      request(server).get('/comments/special/1-quux').expect([db.comments[4]]))
+      request(server)
+        .get('/comments/special/1-quux')
+        .expect([db.comments[4]]))
 
     it('should rewrite query params', () =>
-      request(server).get('/articles?_id=1').expect(db.posts[0]))
+      request(server)
+        .get('/articles?_id=1')
+        .expect(db.posts[0]))
 
     it('should expose routes', () =>
-      request(server).get('/__rules').expect(rewriterRules))
+      request(server)
+        .get('/__rules')
+        .expect(rewriterRules))
   })
 
   describe('router.render', () => {

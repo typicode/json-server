@@ -67,7 +67,12 @@ function deepQuery(value, q) {
           return true
         }
       }
-    } else if (value.toString().toLowerCase().indexOf(q) !== -1) {
+    } else if (
+      value
+        .toString()
+        .toLowerCase()
+        .indexOf(q) !== -1
+    ) {
       return true
     }
   }

@@ -49,6 +49,7 @@ See also:
     + [Custom routes example](#custom-routes-example)
     + [Access control example](#access-control-example)
     + [Custom output example](#custom-output-example)
+    + [Custom query parameters example](#custom-query-parameters-examples)
     + [Rewriter example](#rewriter-example)
     + [Mounting JSON Server on another endpoint example](#mounting-json-server-on-another-endpoint-example)
     + [API](#api)
@@ -520,6 +521,38 @@ router.render = (req, res) => {
     error: "error message here"
   })
 }
+```
+
+#### Custom query parameters example
+
+To modify query parameters, pass a customization object to the router:
+
+```js
+// server.js
+const jsonServer = require('json-server')
+const server = jsonServer.create()
+const router = jsonServer.router('db.json', {
+      q: '_q',
+      _start: '__start',
+      _end: '__end',
+      _page: '__page',
+      _sort: '__sort',
+      _order: '__order',
+      _limit: '__limit',
+      _embed: '__embed',
+      _expand: '__expand',
+      _lte: '__lte',
+      _gte: '__gte',
+      _ne: '__ne',
+      _like: '__like'
+    })
+const middlewares = jsonServer.defaults()
+
+server.use(middlewares)
+server.use(router)
+server.listen(3000, () => {
+  console.log('JSON Server is running')
+})
 ```
 
 #### Rewriter example
