@@ -62,7 +62,7 @@
     "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js",
     "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
     "start": "babel-node src/cli/bin",
-    "format": "eslint . --fix",
+    "fix": "eslint . --fix",
     "build": "babel src -d lib --copy-files",
     "toc": "markdown-toc -i README.md",
     "prepublishOnly": "npm run build && pkg-ok",

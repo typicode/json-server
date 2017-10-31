@@ -7,7 +7,6 @@ const osTmpdir = require('os-tmpdir')
 const tempWrite = require('temp-write')
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
-const express = require('express')
 const serverReady = require('server-ready')
 
 let PORT = 3100
@@ -76,13 +75,16 @@ describe('cli', () => {
     })
 
     it('should update JSON file', done => {
-      request.post('/posts').send({ title: 'hello' }).end(() => {
-        setTimeout(() => {
-          const str = fs.readFileSync(dbFile, 'utf8')
-          assert(str.indexOf('hello') !== -1)
-          done()
-        }, 1000)
-      })
+      request
+        .post('/posts')
+        .send({ title: 'hello' })
+        .end(() => {
+          setTimeout(() => {
+            const str = fs.readFileSync(dbFile, 'utf8')
+            assert(str.indexOf('hello') !== -1)
+            done()
+          }, 1000)
+        })
     })
   })
 
@@ -97,16 +99,10 @@ describe('cli', () => {
     })
   })
 
-  describe('http://localhost:8080/db', () => {
+  describe('remote db', () => {
     beforeEach(done => {
-      const fakeServer = express()
-      fakeServer.get('/db', (req, res) => {
-        res.jsonp({ posts: [] })
-      })
-      fakeServer.listen(8080, () => {
-        child = cli(['http://localhost:8080/db'])
-        serverReady(PORT, done)
-      })
+      child = cli(['https://jsonplaceholder.typicode.com/db'])
+      serverReady(PORT, done)
     })
 
     it('should support URL file', done => {
@@ -170,7 +166,10 @@ describe('cli', () => {
     })
 
     it('should have post body in middleware', done => {
-      request.post('/posts').send({ name: 'test' }).expect('name', 'test', done)
+      request
+        .post('/posts')
+        .send({ name: 'test' })
+        .expect('name', 'test', done)
     })
   })
 
@@ -246,15 +245,18 @@ describe('cli', () => {
     })
 
     it('should not set Content-Encoding to gzip', done => {
-      request.get('/posts').expect(200).end(function(err, res) {
-        if (err) {
-          done(err)
-        } else if ('content-encoding' in res.headers) {
-          done(new Error('Content-Encoding is set to gzip'))
-        } else {
-          done()
-        }
-      })
+      request
+        .get('/posts')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            done(err)
+          } else if ('content-encoding' in res.headers) {
+            done(new Error('Content-Encoding is set to gzip'))
+          } else {
+            done()
+          }
+        })
     })
   })
 
