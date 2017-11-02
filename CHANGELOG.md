@@ -1,10 +1,10 @@
 # Change Log
 
-## Unreleased
+## 0.12.1 - 2017-11-02
 
 * Disable logging for static content requests
 * Remove bad `console.log`
-* Update dependencies
+* Update `dependencies`
 * Use [`nanoid`](https://github.com/ai/nanoid)
 
 ## 0.12.0 - 2017-08-02
