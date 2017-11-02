@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Disable logging for static content requests
 * Remove bad `console.log`
 * Update dependencies
 
