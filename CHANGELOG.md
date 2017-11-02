@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* Remove `console.log`
+
 ## 0.12.0 - 2017-08-02
 
 Re-include `body-parser` in `jsonServer.defaults()`
