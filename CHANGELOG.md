@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-* Remove `console.log`
+* Remove bad `console.log`
+* Update dependencies
 
 ## 0.12.0 - 2017-08-02
 

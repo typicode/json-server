@@ -18,7 +18,7 @@
     "express-urlrewrite": "^1.2.0",
     "json-parse-helpfulerror": "^1.0.3",
     "lodash": "^4.11.2",
-    "lodash-id": "^0.13.0",
+    "lodash-id": "^0.14.0",
     "lowdb": "^0.15.0",
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
@@ -29,7 +29,7 @@
     "request": "^2.83.0",
     "server-destroy": "^1.0.1",
     "update-notifier": "^2.3.0",
-    "yargs": "^6.0.0"
+    "yargs": "^10.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -38,7 +38,7 @@
     "crlf": "^1.1.1",
     "cross-env": "^5.1.1",
     "eslint": "^4.10.0",
-    "eslint-config-prettier": "^2.6.0",
+    "eslint-config-prettier": "^2.7.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",
