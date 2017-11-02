@@ -89,7 +89,7 @@ Start JSON Server
 $ json-server --watch db.json
 ```
 
-Now if you go to [http://localhost:3000/posts/1](), you'll get
+Now if you go to [http://localhost:3000/posts/1](http://localhost:3000/posts/1), you'll get
 
 ```json
 { "id": 1, "title": "json-server", "author": "typicode" }
