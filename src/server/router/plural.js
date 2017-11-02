@@ -295,9 +295,7 @@ module.exports = (db, name, opts) => {
       .value()
 
     // Remove dependents documents
-    console.log({ opts })
     const removable = db._.getRemovable(db.getState(), opts)
-    console.log(removable)
     removable.forEach(item => {
       db
         .get(item.name)
