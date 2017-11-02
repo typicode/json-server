@@ -240,6 +240,13 @@ describe('Server', () => {
         .expect([db.tags[2], db.tags[0], db.tags[1]])
         .expect(200))
 
+    it('should reverse sorting with _order=desc (case insensitive)', () =>
+      request(server)
+        .get('/tags?_sort=body&_order=desc')
+        .expect('Content-Type', /json/)
+        .expect([db.tags[2], db.tags[0], db.tags[1]])
+        .expect(200))
+
     it('should sort on numerical field', () =>
       request(server)
         .get('/posts?_sort=id&_order=DESC')
