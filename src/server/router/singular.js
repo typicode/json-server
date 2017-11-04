@@ -1,9 +1,11 @@
 const express = require('express')
 const write = require('./write')
 const getFullURL = require('./get-full-url')
+const delay = require('./delay')
 
 module.exports = (db, name) => {
   const router = express.Router()
+  router.use(delay)
 
   function show(req, res, next) {
     res.locals.data = db.get(name).value()
