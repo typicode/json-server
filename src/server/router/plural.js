@@ -4,10 +4,12 @@ const pluralize = require('pluralize')
 const write = require('./write')
 const getFullURL = require('./get-full-url')
 const utils = require('../utils')
+const delay = require('./delay')
 
 module.exports = (db, name, opts) => {
   // Create router
   const router = express.Router()
+  router.use(delay)
 
   // Embed function used in GET /name and GET /name/id
   function embed(resource, e) {

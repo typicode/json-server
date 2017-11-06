@@ -501,6 +501,18 @@ describe('Server', () => {
     })
   })
 
+  describe('GET /:resource>_delay=', () => {
+    it('should delay response', done => {
+      const start = new Date()
+      request(server)
+        .get('/posts?_delay=1100')
+        .expect(200, function(err) {
+          const end = new Date()
+          done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
+        })
+    })
+  })
+
   describe('POST /:resource', () => {
     it('should respond with json, create a resource and increment id', async () => {
       await request(server)
@@ -546,6 +558,19 @@ describe('Server', () => {
         .expect(201))
   })
 
+  describe('POST /:resource?_delay=', () => {
+    it('should delay response', done => {
+      const start = new Date()
+      request(server)
+        .post('/posts?_delay=1100')
+        .send({ body: 'foo', booleanValue: true, integerValue: 1 })
+        .expect(201, function(err) {
+          const end = new Date()
+          done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
+        })
+    })
+  })
+
   describe('PUT /:resource/:id', () => {
     it('should respond with json and replace resource', async () => {
       const post = { id: 1, booleanValue: true, integerValue: 1 }
@@ -573,6 +598,20 @@ describe('Server', () => {
         .expect(404))
   })
 
+  describe('PUT /:resource:id?_delay=', () => {
+    it('should delay response', done => {
+      const start = new Date()
+      request(server)
+        .put('/posts/1?_delay=1100')
+        .set('Accept', 'application/json')
+        .send({ id: 1, booleanValue: true, integerValue: 1 })
+        .expect(200, function(err) {
+          const end = new Date()
+          done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
+        })
+    })
+  })
+
   describe('PATCH /:resource/:id', () => {
     it('should respond with json and update resource', async () => {
       const partial = { body: 'bar' }
@@ -597,6 +636,20 @@ describe('Server', () => {
         .expect(404))
   })
 
+  describe('PATCH /:resource:id?_delay=', () => {
+    it('should delay response', done => {
+      const start = new Date()
+      request(server)
+        .patch('/posts/1?_delay=1100')
+        .send({ body: 'bar' })
+        .send({ id: 1, booleanValue: true, integerValue: 1 })
+        .expect(200, function(err) {
+          const end = new Date()
+          done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
+        })
+    })
+  })
+
   describe('DELETE /:resource/:id', () => {
     it('should respond with empty data, destroy resource and dependent resources', async () => {
       await request(server)
@@ -613,6 +666,19 @@ describe('Server', () => {
         .expect('Content-Type', /json/)
         .expect({})
         .expect(404))
+  })
+
+  describe('DELETE /:resource:id?_delay=', () => {
+    it('should delay response', done => {
+      const start = new Date()
+      request(server)
+        .del('/posts/1?_delay=1100')
+        .send({ id: 1, booleanValue: true, integerValue: 1 })
+        .expect(200, function(err) {
+          const end = new Date()
+          done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
+        })
+    })
   })
 
   describe('Static routes', () => {
