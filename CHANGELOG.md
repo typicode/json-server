@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* Add `_delay` query parameter
+
 ## 0.12.1 - 2017-11-02
 
 * Disable logging for static content requests
