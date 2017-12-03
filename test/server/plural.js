@@ -83,6 +83,13 @@ describe('Server', () => {
       { id: 15 }
     ]
 
+    db.products = [
+      { name: 'first product', bought_by: ['firstCustomer', 'secondCustomer'] },
+      { name: 'second product', bought_by: ['firstCustomer'] },
+      { name: 'third product', bought_by: ['secondCustomer'] },
+      { name: 'fourth product' }
+    ]
+
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults())
@@ -356,6 +363,22 @@ describe('Server', () => {
         .get('/tags?body_like=photo')
         .expect('Content-Type', /json/)
         .expect([db.tags[1], db.tags[2]])
+        .expect(200))
+  })
+
+  describe('GET /:resource?attr_contains=', () => {
+    it('should respond with an array that matches the contains operator (case sensitive)', () =>
+      request(server)
+        .get('/products?bought_by_contains=firstCustomer')
+        .expect('Content-Type', /json/)
+        .expect([db.products[0], db.products[1]])
+        .expect(200))
+
+    it('should respond with an array that matches the contains operator when multiple contains (case sensitive)', () =>
+      request(server)
+        .get('/products?bought_by_contains=firstCustomer,secondCustomer')
+        .expect('Content-Type', /json/)
+        .expect([db.products[0]])
         .expect(200))
   })
 
