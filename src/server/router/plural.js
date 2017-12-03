@@ -84,7 +84,8 @@ module.exports = (db, name, opts) => {
           /_lte$/.test(query) ||
           /_gte$/.test(query) ||
           /_ne$/.test(query) ||
-          /_like$/.test(query)
+          /_like$/.test(query) ||
+          /_contains$/.test(query)
         )
           return
       }
@@ -122,7 +123,8 @@ module.exports = (db, name, opts) => {
               const isDifferent = /_ne$/.test(key)
               const isRange = /_lte$/.test(key) || /_gte$/.test(key)
               const isLike = /_like$/.test(key)
-              const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
+              const isContains = /_contains$/.test(key)
+              const path = key.replace(/(_lte|_gte|_ne|_like|_contains)$/, '')
               // get item value based on path
               // i.e post.title -> 'foo'
               const elementValue = _.get(element, path)
@@ -138,13 +140,23 @@ module.exports = (db, name, opts) => {
                 return isLowerThan
                   ? value <= elementValue
                   : value >= elementValue
-              } else if (isDifferent) {
-                return value !== elementValue.toString()
-              } else if (isLike) {
-                return new RegExp(value, 'i').test(elementValue.toString())
-              } else {
-                return value === elementValue.toString()
               }
+
+              if (isDifferent) {
+                return value !== elementValue.toString()
+              }
+
+              if (isContains) {
+                let requested = _.filter((value || '').split(','), _.identity)
+                let found = _.intersection(elementValue, requested)
+                return _.isEqual(found, requested)
+              }
+
+              if (isLike) {
+                return new RegExp(value, 'i').test(elementValue.toString())
+              }
+
+              return value === elementValue.toString()
             })
             .reduce((a, b) => a || b)
         })
