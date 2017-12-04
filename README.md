@@ -13,10 +13,6 @@ See also:
 * :atom_symbol: [react-fake-props - generate fake props for your React tests (Jest, Enzyme, ...)](https://github.com/typicode/react-fake-props)
 * :heartpulse: [Patreon page - if you want to support JSON Server or my other projects](https://www.patreon.com/typicode)
 
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/6WUB3WBwbmZXbZxzrUv5y2A5/typicode/json-server'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/6WUB3WBwbmZXbZxzrUv5y2A5/typicode/json-server.svg' />
-</a>
-
 ## Table of contents
 
 <details>
