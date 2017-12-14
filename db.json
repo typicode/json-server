@@ -1,9 +1,32 @@
 {
+  "viewclassdetails": [
+      {
+    "0": "PREKG",
+    "1": "A",
+    "2": "Group 1",
+    "3": "3",
+    "Standard": "PREKG",
+    "Section": "A",
+    "grp": "Group 1",
+    "NoStudent": "3"
+  },
+  {
+    "0": "PREKG",
+    "1": "A",
+    "2": "Group 2",
+    "3": "1",
+    "Standard": "PREKG",
+    "Section": "A",
+    "grp": "Group 2",
+    "NoStudent": "1"
+  }
+  ],
   "posts": [
     { "id": 1, "title": "json-server", "author": "typicode" }
   ],
   "comments": [
     { "id": 1, "body": "some comment", "postId": 1 }
   ],
-  "profile": { "name": "typicode" }
+  "profile": { "name": "typicode" },
+  
 }
