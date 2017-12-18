@@ -378,4 +378,20 @@ describe('Server with custom query parameters', () => {
         .expect([db.tags[1], db.tags[2]])
         .expect(200))
   })
+
+  describe('GET /:resource?attr__like=', () => {
+    it('should respond with an array that matches the like operator with regular expressions (case insensitive)', () =>
+      request(server)
+        .get('/buyers?country__like=Colombia|Belize')
+        .expect('Content-Type', /json/)
+        .expect([
+          db.buyers[0],
+          db.buyers[1],
+          db.buyers[2],
+          db.buyers[3],
+          db.buyers[4],
+          db.buyers[5]
+        ])
+        .expect(200))
+  })
 })

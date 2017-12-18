@@ -106,10 +106,7 @@ describe('Server with custom foreign key', () => {
 
   describe('DELETE /:resource/:id', () => {
     it('should respond with empty data, destroy resource and dependent resources', async () => {
-      await request(server)
-        .del('/posts/1')
-        .expect({})
-        .expect(200)
+      await request(server).del('/posts/1').expect({}).expect(200)
       assert.equal(db.posts.length, 1)
       assert.equal(db.comments.length, 1)
     })

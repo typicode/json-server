@@ -234,10 +234,7 @@ module.exports = (db, name, opts) => {
   function show(req, res, next) {
     const _embed = req.query[opts.queryParameters._embed]
     const _expand = req.query[opts.queryParameters._expand]
-    const resource = db
-      .get(name)
-      .getById(req.params.id)
-      .value()
+    const resource = db.get(name).getById(req.params.id).value()
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
@@ -259,10 +256,7 @@ module.exports = (db, name, opts) => {
 
   // POST /name
   function create(req, res, next) {
-    const resource = db
-      .get(name)
-      .insert(req.body)
-      .value()
+    const resource = db.get(name).insert(req.body).value()
 
     res.setHeader('Access-Control-Expose-Headers', 'Location')
     res.location(`${getFullURL(req)}/${resource.id}`)
@@ -295,20 +289,14 @@ module.exports = (db, name, opts) => {
 
   // DELETE /name/:id
   function destroy(req, res, next) {
-    const resource = db
-      .get(name)
-      .removeById(req.params.id)
-      .value()
+    const resource = db.get(name).removeById(req.params.id).value()
 
     // Remove dependents documents
     console.log({ opts })
     const removable = db._.getRemovable(db.getState(), opts)
     console.log(removable)
     removable.forEach(item => {
-      db
-        .get(item.name)
-        .removeById(item.id)
-        .value()
+      db.get(item.name).removeById(item.id).value()
     })
 
     if (resource) {
@@ -320,10 +308,7 @@ module.exports = (db, name, opts) => {
 
   const w = write(db)
 
-  router
-    .route('/')
-    .get(list)
-    .post(create, w)
+  router.route('/').get(list).post(create, w)
 
   router
     .route('/:id')
