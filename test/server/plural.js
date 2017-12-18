@@ -325,6 +325,14 @@ describe('Server', () => {
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
         .expect(db.comments.slice(1, 2))
         .expect(200))
+    it('if limit is -1, it should respon with the full array', () =>
+      request(server)
+        .get('/comments?_start=0&_limit=-1')
+        .expect('Content-Type', /json/)
+        .expect('X-Total-Count', db.comments.length.toString())
+        .expect('Access-Control-Expose-Headers', 'X-Total-Count')
+        .expect(db.comments)
+        .expect(200))
   })
 
   describe('GET /:resource?_page=', () => {

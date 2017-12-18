@@ -216,7 +216,7 @@ module.exports = (db, name, opts) => {
     } else if (_limit) {
       _start = parseInt(_start, 10) || 0
       _limit = parseInt(_limit, 10)
-      chain = chain.slice(_start, _start + _limit)
+      chain = _limit === -1 ? chain : chain.slice(_start, _start + _limit)
     }
 
     // embed and expand
