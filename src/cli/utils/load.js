@@ -1,5 +1,6 @@
 const path = require('path')
-const request = require('request')
+const httpsRequest = require('https')
+const httpRequest = require('http')
 const low = require('lowdb')
 const fileAsync = require('lowdb/lib/storages/file-async')
 const is = require('./is')
@@ -7,14 +8,25 @@ const is = require('./is')
 module.exports = function(source, cb) {
   if (is.URL(source)) {
     // Load remote data
-    const opts = {
-      url: source,
-      json: true
+    const getProtocol = protocol => {
+      if (protocol.indexOf('https') === 0) {
+        return httpsRequest
+      }
+      return httpRequest
     }
-
-    request(opts, (err, response) => {
-      if (err) return cb(err)
-      cb(null, response.body)
+    getProtocol(source).get(source, res => {
+      let body = []
+      res.on('data', chunk => {
+        body.push(chunk)
+      })
+      res.on('end', () => {
+        body = Buffer.concat(body).toString()
+        body = JSON.parse(body)
+        cb(null, body)
+      })
+      res.on('error', error => {
+        cb(error)
+      })
     })
   } else if (is.JS(source)) {
     // Clear cache
