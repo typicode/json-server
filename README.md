@@ -9,7 +9,7 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 
 See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
-* :hotel: [hotel - developer tool with local .dev domain and https out of the box](https://github.com/typicode/hotel)
+* :hotel: [hotel - developer tool with local .localhost domain and https out of the box](https://github.com/typicode/hotel)
 * :atom_symbol: [react-fake-props - generate fake props for your React tests (Jest, Enzyme, ...)](https://github.com/typicode/react-fake-props)
 * :heartpulse: [Patreon page - if you want to support JSON Server or my other projects](https://www.patreon.com/typicode)
 
@@ -552,10 +552,10 @@ Returns middlewares used by JSON Server.
   * `bodyParser` enable body-parser middleware (default: true)
   * `noCors` disable CORS (default: false)
   * `readOnly` accept only GET requests (default: false)
-  
+
 __`jsonServer.router([path|object])`__
 
-Returns JSON Server router. 
+Returns JSON Server router.
 
 ### Deployment
 
