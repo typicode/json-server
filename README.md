@@ -97,6 +97,7 @@ Also when doing requests, it's good to know that:
 - Your request body JSON should be object enclosed, just like the GET output. (for example `{"name": "Foobar"}`)
 - Id values are not mutable. Any `id` value in the body of your PUT or PATCH request wil be ignored. Only a value set in a POST request wil be respected, but only if not already taken.
 - A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will result in a 200 OK but without changes being made to the data.
+- DELETE requests will look for dependent documents, and will remove them as well. That means that for the previous `db.json` file, a `DELETE /posts/1` would also delete the dependent comment (with `postId: 1`). You can disable this behavior by raising the 'no-delete-cascade' flag. See [CLI usage](#cli-usage).
 
 ## Install
 
@@ -369,6 +370,7 @@ Options:
   --static, -s       Set static files directory
   --read-only, --ro  Allow only GET requests                           [boolean]
   --no-cors, --nc    Disable Cross-Origin Resource Sharing             [boolean]
+  --no-delete-cascade, --ndc    Disable delete cacade behavior         [boolean]
   --no-gzip, --ng    Disable GZIP Content-Encoding                     [boolean]
   --snapshots, -S    Set snapshots directory                      [default: "."]
   --delay, -d        Add delay to responses (ms)

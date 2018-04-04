@@ -296,14 +296,17 @@ module.exports = (db, name, opts) => {
       .removeById(req.params.id)
       .value()
 
-    // Remove dependents documents
-    const removable = db._.getRemovable(db.getState(), opts)
-    removable.forEach(item => {
-      db
-        .get(item.name)
-        .removeById(item.id)
-        .value()
-    })
+    if (!opts.noDeleteCascade) {
+      // Remove dependents documents
+      const prop = `${pluralize.singular(name)}${opts.foreignKeySuffix}`
+      const dependents = db._.getDependents(db.getState(), prop, req.params.id)
+      dependents.forEach(item => {
+        db
+          .get(item.name)
+          .removeById(item.id)
+          .value()
+      })
+    }
 
     if (resource) {
       res.locals.data = {}

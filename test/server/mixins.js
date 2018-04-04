@@ -24,23 +24,28 @@ describe('mixins', () => {
     }
   })
 
-  describe('getRemovable', () => {
-    it('should return removable documents', () => {
+  describe('getDependents', () => {
+    it('should return dependent documents', () => {
       const expected = [
         { name: 'comments', id: 2 },
         { name: 'comments', id: 3 }
       ]
 
-      assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
+      assert.deepEqual(_.getDependents(db, 'postId', 2), expected)
     })
 
-    it('should support custom foreignKeySuffix', () => {
+    it('should return dependent documents (type insensitive)', () => {
       const expected = [
         { name: 'comments', id: 2 },
         { name: 'comments', id: 3 }
       ]
 
-      assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
+      assert.deepEqual(_.getDependents(db, 'postId', '2'), expected)
+    })
+
+    it('should not return irrelevant dead documents', () => {
+      const expected = [{ name: 'comments', id: 1 }]
+      assert.deepEqual(_.getDependents(db, 'postId', 1), expected)
     })
   })
 

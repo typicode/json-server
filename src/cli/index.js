@@ -45,6 +45,10 @@ module.exports = function() {
         alias: 'nc',
         description: 'Disable Cross-Origin Resource Sharing'
       },
+      'no-delete-cascade': {
+        alias: 'ndc',
+        description: 'Disable delete cascade behavior'
+      },
       'no-gzip': {
         alias: 'ng',
         description: 'Disable GZIP Content-Encoding'
@@ -82,6 +86,7 @@ module.exports = function() {
     .boolean('read-only')
     .boolean('quiet')
     .boolean('no-cors')
+    .boolean('no-delete-cascade')
     .boolean('no-gzip')
     .help('help')
     .alias('help', 'h')

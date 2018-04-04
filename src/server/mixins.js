@@ -1,40 +1,38 @@
 const nanoid = require('nanoid')
-const pluralize = require('pluralize')
 
 module.exports = {
-  getRemovable,
+  getDependents,
   createId,
   deepQuery
 }
 
-// Returns document ids that have unsatisfied relations
-// Example: a comment that references a post that doesn't exist
-function getRemovable(db, opts) {
+/**
+ * Return documents which are dependent on the specified foreign field
+ * Example: a comment that references a post that doesn't exist
+ *
+ * @param {object} db - The entire database object
+ * @param {string} foreignField - The foreign field name. e.g. "postId"
+ * @param {string|number} foreignId - The foreign field id to match
+ * @return {[{name: string, id: string|number]} - Array of dependent objects with resource names and ids
+ */
+function getDependents(db, foreignField, foreignId) {
   const _ = this
-  const removable = []
-  _.each(db, (coll, collName) => {
-    _.each(coll, doc => {
-      _.each(doc, (value, key) => {
-        if (new RegExp(`${opts.foreignKeySuffix}$`).test(key)) {
-          // Remove foreign key suffix and pluralize it
-          // Example postId -> posts
-          const refName = pluralize.plural(
-            key.replace(new RegExp(`${opts.foreignKeySuffix}$`), '')
-          )
-          // Test if table exists
-          if (db[refName]) {
-            // Test if references is defined in table
-            const ref = _.getById(db[refName], value)
-            if (_.isUndefined(ref)) {
-              removable.push({ name: collName, id: doc.id })
-            }
-          }
-        }
-      })
-    })
-  })
-
-  return removable
+  return _.reduce(
+    db,
+    (acc, table, tableName) =>
+      // only work on arrays; object are irrelevant
+      !_.isArray(table)
+        ? acc
+        : table
+            .filter(
+              doc =>
+                // perform a type-insensitive comparison (so we could compare '2' to 2
+                _.get(doc, foreignField, '').toString() === foreignId.toString()
+            )
+            .map(doc => ({ name: tableName, id: doc.id }))
+            .concat(acc),
+    []
+  )
 }
 
 // Return incremented id or uuid
