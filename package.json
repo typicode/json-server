@@ -1,7 +1,7 @@
 {
-  "name": "json-server",
+  "name": "fds-json-server",
   "version": "0.12.1",
-  "description": "Serves JSON files through REST routes.",
+  "description": "A fork from json-server augmented with auth & captcha",
   "main": "./lib/server/index.js",
   "bin": "./bin/index.js",
   "directories": {
@@ -72,7 +72,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/typicode/json-server.git"
+    "url": "git://github.com/fds9/json-server.git"
   },
   "keywords": [
     "JSON",
@@ -90,13 +90,13 @@
     "dummy",
     "sandbox"
   ],
-  "author": "Typicode <typicode@gmail.com>",
+  "author": "Kim Seungha <seungha.me@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/typicode/json-server/issues"
+    "url": "https://github.com/fds9/json-server/issues"
   },
-  "homepage": "https://github.com/typicode/json-server",
+  "homepage": "https://github.com/fds9/json-server",
   "engines": {
-    "node": ">=4"
+    "node": ">=8"
   }
 }
