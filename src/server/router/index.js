@@ -10,6 +10,8 @@ const plural = require('./plural')
 const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
+const user = require('./user')
+const dev = require('./dev')
 
 module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
   // Create router
@@ -48,6 +50,14 @@ module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
   router.get('/db', (req, res) => {
     res.jsonp(db.getState())
   })
+
+  // Mount /users, /auth routes
+  router.use(user(db, opts))
+
+  // Mount /_dev routes if development environment
+  if (process.env.NODE_ENV === 'development') {
+    router.use(dev(db, opts))
+  }
 
   // Handle /:parent/:parentId/:resource
   router.use(nested(opts))
