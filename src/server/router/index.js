@@ -55,7 +55,7 @@ module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
   router.use(user(db, opts))
 
   // Mount /_dev routes if development environment
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV !== 'production') {
     router.use(dev(db, opts))
   }
 
