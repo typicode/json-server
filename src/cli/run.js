@@ -40,12 +40,12 @@ function createApp(source, object, routes, middlewares, argv) {
 
   let router
 
-  const { foreignKeySuffix } = argv
+  const { foreignKeySuffix, noDeleteCascade } = argv
   try {
-    router = jsonServer.router(
-      is.JSON(source) ? source : object,
-      foreignKeySuffix ? { foreignKeySuffix } : undefined
-    )
+    router = jsonServer.router(is.JSON(source) ? source : object, {
+      foreignKeySuffix,
+      noDeleteCascade
+    })
   } catch (e) {
     console.log()
     console.error(chalk.red(e.message.replace(/^/gm, '  ')))
