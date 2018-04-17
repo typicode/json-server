@@ -60,8 +60,8 @@
   },
   "scripts": {
     "test": "npm run test:cli && npm run test:server && eslint .",
-    "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js",
-    "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
+    "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js --colors",
+    "test:server": "cross-env NODE_ENV=test mocha test/server/*.js --colors",
     "start": "babel-node src/cli/bin",
     "fix": "eslint . --fix",
     "build": "babel src -d lib --copy-files",
