@@ -2,3 +2,5 @@ language: node_js
 node_js:
   - "node"
   - "6"
+before_install: npm install -g npm@latest
+install: npm ci
