@@ -1,8 +1,9 @@
 # Change Log
 
-## Unreleased
+## 0.12.2 - 2018-04-26
 
 * Add `_delay` query parameter
+* Upgrade `please-upgrade-node` dependency
 
 ## 0.12.1 - 2017-11-02
 

@@ -24,7 +24,7 @@
     "morgan": "^1.9.0",
     "nanoid": "^1.0.1",
     "object-assign": "^4.0.1",
-    "please-upgrade-node": "^3.0.1",
+    "please-upgrade-node": "^3.0.2",
     "pluralize": "^7.0.0",
     "request": "^2.83.0",
     "server-destroy": "^1.0.1",
