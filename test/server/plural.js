@@ -463,6 +463,38 @@ describe('Server', () => {
     })
   })
 
+  describe('GET /:resource?_expand.filter=', () => {
+    let name = null
+    let user = null
+    let comments = []
+    let filtered = []
+    let postBody = null
+
+    beforeEach(() => {
+      name = db.users[0].username
+      comments = _.cloneDeep(db.comments)
+      user = db.users.find(u => u.username === name)
+      filtered = comments.filter(c => c.userId === user.id)
+
+      let post = db.posts.find(p => p.id === filtered[0].postId)
+      filtered = filtered.filter(c => c.postId === post.id)
+      postBody = post.body
+    })
+
+    it('should support deep filter for expansions', () => {
+      return request(server)
+        .get(
+          '/comments?_expand.filter=post&_expand.filter=user&user.username=' +
+            name +
+            '&post.body=' +
+            postBody
+        )
+        .expect('Content-Type', /json/)
+        .expect(filtered)
+        .expect(200)
+    })
+  })
+
   describe('GET /:resource/:id?_expand=', () => {
     it('should respond with corresponding resource and expanded inner resources', () => {
       const comment = _.cloneDeep(db.comments[0])

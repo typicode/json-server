@@ -49,8 +49,13 @@ module.exports = (db, name, opts) => {
   // GET /name?_start=&_end=&
   // GET /name?_embed=&_expand=
   function list(req, res, next) {
+    res.locals.data = listInternal(req, res)
+    next()
+  }
+
+  function listInternal(req, res, nameOverride = null) {
     // Resource chain
-    let chain = db.get(name)
+    let chain = db.get(nameOverride || name)
 
     // Remove q, _start, _end, ... from req.query to avoid filtering using those
     // parameters
@@ -63,6 +68,7 @@ module.exports = (db, name, opts) => {
     let _limit = req.query._limit
     let _embed = req.query._embed
     let _expand = req.query._expand
+    let _expandFilter = req.query['_expand.filter']
     delete req.query.q
     delete req.query._start
     delete req.query._end
@@ -71,11 +77,32 @@ module.exports = (db, name, opts) => {
     delete req.query._limit
     delete req.query._embed
     delete req.query._expand
+    delete req.query['_expand.filter']
+
+    if (_expandFilter) {
+      ;[].concat(_expandFilter).forEach(expansion => {
+        let prefix = `${expansion}.`
+        let query = _.pickBy(req.query, (v, k) => k.startsWith(prefix))
+
+        req.query = _.omit(req.query, Object.keys(query))
+        query = _.mapKeys(query, (v, k) => k.replace(prefix, ''))
+
+        let filterIds = listInternal({ query }, null, pluralize(expansion)).map(
+          resource => resource.id.toString()
+        )
+
+        let idKey = `${expansion}${opts.foreignKeySuffix}`
+        let existing = req.query[idKey] ? [].concat(req.query[idKey]) : []
+        req.query[`${expansion}${opts.foreignKeySuffix}`] = existing.concat(
+          filterIds
+        )
+      })
+    }
 
     // Automatically delete query parameters that can't be found
     // in the database
     Object.keys(req.query).forEach(query => {
-      const arr = db.get(name).value()
+      const arr = chain.value()
       for (let i in arr) {
         if (
           _.has(arr[i], query) ||
@@ -159,7 +186,9 @@ module.exports = (db, name, opts) => {
     }
 
     // Slice result
-    if (_end || _limit || _page) {
+    if (!res) {
+      // Don't slice without a result.
+    } else if (_end || _limit || _page) {
       res.setHeader('X-Total-Count', chain.size())
       res.setHeader(
         'Access-Control-Expose-Headers',
@@ -167,7 +196,9 @@ module.exports = (db, name, opts) => {
       )
     }
 
-    if (_page) {
+    if (!res) {
+      // Don't slice without a result.
+    } else if (_page) {
       _page = parseInt(_page, 10)
       _page = _page >= 1 ? _page : 1
       _limit = parseInt(_limit, 10) || 10
@@ -221,8 +252,7 @@ module.exports = (db, name, opts) => {
       expand(element, _expand)
     })
 
-    res.locals.data = chain.value()
-    next()
+    return chain.value()
   }
 
   // GET /name/:id

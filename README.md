@@ -138,6 +138,12 @@ GET /posts?id=1&id=2
 GET /comments?author.name=typicode
 ```
 
+To filter an expanded relationship, use `_expand.filter` and filter with `.` for the deep properties.
+
+```
+GET /posts?_expand.filter=user&user.name=Bob
+```
+
 ### Paginate
 
 Use `_page` and optionally `_limit` to paginate returned data.
