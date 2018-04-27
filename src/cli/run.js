@@ -35,17 +35,17 @@ function prettyPrint(argv, object, rules) {
   console.log()
 }
 
-function createApp(source, object, routes, middlewares, argv) {
+function createApp(source, object, routes, middlewares, afterware, argv) {
   const app = jsonServer.create()
 
   let router
 
   const { foreignKeySuffix } = argv
+  const options = foreignKeySuffix ? { foreignKeySuffix } : {}
+  options.afterware = afterware
+
   try {
-    router = jsonServer.router(
-      is.JSON(source) ? source : object,
-      foreignKeySuffix ? { foreignKeySuffix } : undefined
-    )
+    router = jsonServer.router(is.JSON(source) ? source : object, options)
   } catch (e) {
     console.log()
     console.error(chalk.red(e.message.replace(/^/gm, '  ')))
@@ -138,11 +138,18 @@ module.exports = function(argv) {
         })
       }
 
+      // Load afterware
+      let afterware
+      if (argv.afterware) {
+        console.log(chalk.gray('  Loading', argv.afterware))
+        afterware = require(path.resolve(argv.afterware))
+      }
+
       // Done
       console.log(chalk.gray('  Done'))
 
       // Create app and server
-      app = createApp(source, data, routes, middlewares, argv)
+      app = createApp(source, data, routes, middlewares, afterware, argv)
       server = app.listen(argv.port, argv.host)
 
       // Enhance with a destroy function

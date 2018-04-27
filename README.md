@@ -43,6 +43,7 @@ See also:
   * [HTTPS](#https)
   * [Add custom routes](#add-custom-routes)
   * [Add middlewares](#add-middlewares)
+  * [Add afterware](#add-afterware)
   * [CLI usage](#cli-usage)
   * [Module](#module)
     + [Simple example](#simple-example)
@@ -352,6 +353,21 @@ module.exports = (req, res, next) => {
 ```bash
 json-server db.json --middlewares ./hello.js
 json-server db.json --middlewares ./first.js ./second.js
+```
+
+### Add afterware
+
+You can add your afterware (which modifies the response) from the CLI using `--afterware` option:
+
+```js
+// bye.js
+module.exports = (res) => {
+  res.locals.forEach(x => (x.modified = true))
+}
+```
+
+```bash
+json-server db.json --afterware ./hello.js
 ```
 
 ### CLI usage

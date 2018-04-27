@@ -173,6 +173,19 @@ describe('cli', () => {
     })
   })
 
+  describe('db.json -a afterware.js', () => {
+    beforeEach(done => {
+      child = cli([dbFile, '-a', './fixtures/afterware.js'])
+      serverReady(PORT, done)
+    })
+
+    it('should have applied afterware', async () => {
+      let response = await request.get('/posts')
+      response.body.forEach(x => assert(x.after))
+      return Promise.resolve()
+    })
+  })
+
   describe('db.json -d 1000', () => {
     beforeEach(done => {
       child = cli([dbFile, '-d', 1000])

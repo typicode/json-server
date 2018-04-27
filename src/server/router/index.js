@@ -11,7 +11,10 @@ const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
 
-module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
+module.exports = (
+  source,
+  opts = { foreignKeySuffix: 'Id', afterware: null }
+) => {
   // Create router
   const router = express.Router()
 
@@ -82,6 +85,10 @@ module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
     if (!res.locals.data) {
       res.status(404)
       res.locals.data = {}
+    }
+
+    if (opts.afterware) {
+      opts.afterware(res)
     }
 
     router.render(req, res)

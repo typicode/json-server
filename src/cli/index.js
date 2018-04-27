@@ -33,6 +33,10 @@ module.exports = function() {
         array: true,
         description: 'Paths to middleware files'
       },
+      afterware: {
+        alias: 'a',
+        description: 'Path to afterware file'
+      },
       static: {
         alias: 's',
         description: 'Set static files directory'
