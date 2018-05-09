@@ -1,40 +1,14 @@
 const express = require('express')
 const wrap = require('express-async-wrap')
-const fetch = require('node-fetch')
 const jwt = require('jsonwebtoken')
-const { URLSearchParams } = require('url')
 const write = require('./write')
 const bcrypt = require('bcryptjs')
-
-async function checkRecaptcha(recaptchaResponse, remoteIp) {
-  const params = new URLSearchParams()
-  params.append('secret', '6LcO6lAUAAAAAFBpC5k52yeu9GglzkfFFC-Ew4Pa') // FIXME: process.env.RECAPTCHA_SECRET)
-  params.append('response', recaptchaResponse)
-  params.append('remoteip', remoteIp)
-  const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-    method: 'POST',
-    body: params
-  })
-  const data = await res.json()
-  console.log(data)
-  return data.success
-}
 
 module.exports = (db, opts) => {
   const router = express.Router()
 
   async function createUser(req, res, next) {
     await db.defaults({ users: [] }).write()
-    console.log(req.body)
-    // recaptcha
-    const captchaVerified = await checkRecaptcha(
-      req.body['g-recaptcha-response'],
-      req.ip
-    )
-    if (!captchaVerified) {
-      next(new Error('captcha verification failed'))
-      return
-    }
     const { username, password } = req.body
     // username, password 검증
     if (!username || !password) {
@@ -64,13 +38,13 @@ module.exports = (db, opts) => {
       return
     }
     // password bcrypt 변환
-    const hash = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcrypt.hash(password, 10)
     // username, password 저장
     db
       .get('users')
       .insert({
         username,
-        hashedPassword: hash
+        hashedPassword
       })
       .value()
     // 토큰 생성
