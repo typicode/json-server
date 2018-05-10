@@ -13,7 +13,9 @@ const mixins = require('../mixins')
 const user = require('./user')
 const dev = require('./dev')
 
-module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
+module.exports = (source, opts) => {
+  opts = Object.assign({ foreignKeySuffix: 'Id' }, opts)
+
   // Create router
   const router = express.Router()
 

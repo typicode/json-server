@@ -48,8 +48,7 @@ module.exports = (db, opts) => {
       })
       .value()
     // 토큰 생성
-    // FIXME: secret
-    jwt.sign({ username }, 'FIXME', (err, token) => {
+    jwt.sign({ username }, opts.jwtSecret, (err, token) => {
       if (err) {
         next(err)
       } else {

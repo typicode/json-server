@@ -8,10 +8,10 @@ const utils = require('../utils')
 const delay = require('./delay')
 const NotAllowedError = require('./NotAllowedError')
 module.exports = (db, name, opts) => {
-  const { authOpts } = opts
-  // FIXME: authOpts
+  const { authOpts, hashedPasswordName = 'hashedPassword' } = opts
+
   const readPermission =
-    name === 'users' ? 'public' : authOpts[name] && authOpts[name].read
+    name === 'users' ? undefined : authOpts[name] && authOpts[name].read
   const writePermission =
     name === 'users' ? 'ownerOnly' : authOpts[name] && authOpts[name].write
 
@@ -61,8 +61,7 @@ module.exports = (db, name, opts) => {
     let chain = db.get(name)
     if (name === 'users') {
       chain = chain.map(item => {
-        // FIXME: hard coded hasehdPassword
-        return _.omit(item, ['hashedPassword'])
+        return _.omit(item, [hashedPasswordName])
       })
     }
     if (readPermission === 'ownerOnly') {
@@ -252,8 +251,7 @@ module.exports = (db, name, opts) => {
     let chain = db.get(name).getById(req.params.id)
 
     if (name === 'users') {
-      // FIXME: hard coded
-      chain = chain.omit(['hashedPassword'])
+      chain = chain.omit([hashedPasswordName])
     }
     const resource = chain.value()
 
@@ -282,7 +280,6 @@ module.exports = (db, name, opts) => {
   // POST /name
   function create(req, res, next) {
     const body = Object.assign({}, req.body)
-    // FIXME: suffix 설정 반영, 상수로 바꾸기
     if (writePermission === 'ownerOnly') {
       body.userId = req.user.id
     }
@@ -360,8 +357,7 @@ module.exports = (db, name, opts) => {
 
     next()
   }
-  // FIXME: secret
-  const j = jwtMiddleware({ secret: 'FIXME' })
+  const j = jwtMiddleware({ secret: opts.jwtSecret })
   function checkTokenForRead(req, res, next) {
     if (readPermission === 'ifAuthed' || readPermission === 'ownerOnly') {
       j(req, res, next)

@@ -1,3 +1,4 @@
+require('dotenv/config')
 const fs = require('fs')
 const path = require('path')
 const jph = require('json-parse-helpfulerror')
@@ -85,10 +86,16 @@ function createApp(source, object, routes, middlewares, argv) {
       )
     }
   })
+
+  const { JWT_SECRET: jwtSecret } = process.env
+  if (!jwtSecret) {
+    throw new Error('JWT_SECRET environment variable is required')
+  }
   try {
     router = jsonServer.router(is.JSON(source) ? source : object, {
       foreignKeySuffix,
-      authOpts
+      authOpts,
+      jwtSecret
     })
   } catch (e) {
     console.log()
