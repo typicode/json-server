@@ -41,11 +41,55 @@ function createApp(source, object, routes, middlewares, argv) {
   let router
 
   const { foreignKeySuffix } = argv
+
+  // Check and load auth.config.js
+  const authConfigPath = path.resolve(process.cwd(), 'auth.config.js')
+  const authOpts = fs.existsSync(authConfigPath) ? require(authConfigPath) : {}
+
+  console.log('Checking auth.config.js ...')
+  _.forEach(authOpts, (opt, name) => {
+    console.log(`Permission for ${name}: read ${opt.read}, write ${opt.write}`)
+
+    let readLevel, writeLevel
+    switch (opt.read) {
+      case 'ownerOnly':
+        readLevel = 2
+        break
+      case 'ifAuthed':
+        readLevel = 1
+        break
+      case undefined:
+        readLevel = 0
+        break
+      default:
+        throw new Error('Wrong read permission of: ' + name)
+    }
+
+    switch (opt.write) {
+      case 'ownerOnly':
+        writeLevel = 2
+        break
+      case 'ifAuthed':
+        writeLevel = 1
+        break
+      case undefined:
+        writeLevel = 0
+        break
+      default:
+        throw new Error('Wrong write permission of: ' + name)
+    }
+
+    if (readLevel > writeLevel) {
+      throw new Error(
+        'Read permission cannot be stronger than write permission'
+      )
+    }
+  })
   try {
-    router = jsonServer.router(
-      is.JSON(source) ? source : object,
-      foreignKeySuffix ? { foreignKeySuffix } : undefined
-    )
+    router = jsonServer.router(is.JSON(source) ? source : object, {
+      foreignKeySuffix,
+      authOpts
+    })
   } catch (e) {
     console.log()
     console.error(chalk.red(e.message.replace(/^/gm, '  ')))

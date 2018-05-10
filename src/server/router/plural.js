@@ -7,15 +7,8 @@ const getFullURL = require('./get-full-url')
 const utils = require('../utils')
 const delay = require('./delay')
 const NotAllowedError = require('./NotAllowedError')
-
-const authOpts = {
-  posts: {
-    // read: 'ownerOnly',
-    // write: 'ownerOnly'
-  }
-}
-
 module.exports = (db, name, opts) => {
+  const { authOpts } = opts
   // FIXME: authOpts
   const readPermission =
     name === 'users' ? 'public' : authOpts[name] && authOpts[name].read
