@@ -48,6 +48,7 @@ module.exports = (db, opts) => {
       })
       .value()
     // 토큰 생성
+    // FIXME: secret
     jwt.sign({ username }, 'FIXME', (err, token) => {
       if (err) {
         next(err)
@@ -80,7 +81,11 @@ module.exports = (db, opts) => {
       next()
       return
     }
-    jwt.sign({ username: matchedUser.username }, 'FIXME', (err, token) => {
+    const payload = {
+      username: matchedUser.username,
+      id: matchedUser.id
+    }
+    jwt.sign(payload, 'FIXME', (err, token) => {
       if (err) {
         next(err)
       } else {

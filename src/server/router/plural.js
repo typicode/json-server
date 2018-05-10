@@ -1,12 +1,27 @@
 const express = require('express')
 const _ = require('lodash')
 const pluralize = require('pluralize')
+const jwtMiddleware = require('express-jwt')
 const write = require('./write')
 const getFullURL = require('./get-full-url')
 const utils = require('../utils')
 const delay = require('./delay')
+const NotAllowedError = require('./NotAllowedError')
+
+const authOpts = {
+  posts: {
+    // read: 'ownerOnly',
+    // write: 'ownerOnly'
+  }
+}
 
 module.exports = (db, name, opts) => {
+  // FIXME: authOpts
+  const readPermission =
+    name === 'users' ? 'public' : authOpts[name] && authOpts[name].read
+  const writePermission =
+    name === 'users' ? 'ownerOnly' : authOpts[name] && authOpts[name].write
+
   // Create router
   const router = express.Router()
   router.use(delay)
@@ -51,6 +66,17 @@ module.exports = (db, name, opts) => {
   function list(req, res, next) {
     // Resource chain
     let chain = db.get(name)
+    if (name === 'users') {
+      chain = chain.map(item => {
+        // FIXME: hard coded hasehdPassword
+        return _.omit(item, ['hashedPassword'])
+      })
+    }
+    if (readPermission === 'ownerOnly') {
+      chain = chain.filter(item => {
+        return item.userId === req.user.id
+      })
+    }
 
     // Remove q, _start, _end, ... from req.query to avoid filtering using those
     // parameters
@@ -230,12 +256,19 @@ module.exports = (db, name, opts) => {
   function show(req, res, next) {
     const _embed = req.query._embed
     const _expand = req.query._expand
-    const resource = db
-      .get(name)
-      .getById(req.params.id)
-      .value()
+    let chain = db.get(name).getById(req.params.id)
+
+    if (name === 'users') {
+      // FIXME: hard coded
+      chain = chain.omit(['hashedPassword'])
+    }
+    const resource = chain.value()
 
     if (resource) {
+      if (readPermission === 'ownerOnly' && resource.userId !== req.user.id) {
+        next(new NotAllowedError())
+        return
+      }
       // Clone resource to avoid making changes to the underlying object
       const clone = _.cloneDeep(resource)
 
@@ -255,9 +288,14 @@ module.exports = (db, name, opts) => {
 
   // POST /name
   function create(req, res, next) {
+    const body = Object.assign({}, req.body)
+    // FIXME: suffix 설정 반영, 상수로 바꾸기
+    if (writePermission === 'ownerOnly') {
+      body.userId = req.user.id
+    }
     const resource = db
       .get(name)
-      .insert(req.body)
+      .insert(body)
       .value()
 
     res.setHeader('Access-Control-Expose-Headers', 'Location')
@@ -273,12 +311,26 @@ module.exports = (db, name, opts) => {
   // PATCH /name/:id
   function update(req, res, next) {
     const id = req.params.id
+    const body = Object.assign({}, req.body)
+
+    const prevResource = db
+      .get(name)
+      .getById(id)
+      .value()
+    if (writePermission === 'ownerOnly') {
+      if (prevResource.userId !== req.user.id) {
+        next(new NotAllowedError())
+        return
+      } else {
+        body.userId = req.user.id
+      }
+    }
     let chain = db.get(name)
 
     chain =
       req.method === 'PATCH'
-        ? chain.updateById(id, req.body)
-        : chain.replaceById(id, req.body)
+        ? chain.updateById(id, body)
+        : chain.replaceById(id, body)
 
     const resource = chain.value()
 
@@ -295,6 +347,10 @@ module.exports = (db, name, opts) => {
       .get(name)
       .removeById(req.params.id)
       .value()
+    if (writePermission === 'ownerOnly' && resource.userId !== req.user.id) {
+      next(new NotAllowedError())
+      return
+    }
 
     // Remove dependents documents
     const removable = db._.getRemovable(db.getState(), opts)
@@ -311,20 +367,50 @@ module.exports = (db, name, opts) => {
 
     next()
   }
-
+  // FIXME: secret
+  const j = jwtMiddleware({ secret: 'FIXME' })
+  function checkTokenForRead(req, res, next) {
+    if (readPermission === 'ifAuthed' || readPermission === 'ownerOnly') {
+      j(req, res, next)
+    } else {
+      next()
+    }
+  }
+  function checkTokenForWrite(req, res, next) {
+    if (writePermission === 'ifAuthed' || writePermission === 'ownerOnly') {
+      j(req, res, next)
+    } else {
+      next()
+    }
+  }
+  function checkAuthError(err, req, res, next) {
+    if (err instanceof jwtMiddleware.UnauthorizedError) {
+      res.status(401)
+      res.send({
+        reason: err.message
+      })
+    } else if (err instanceof NotAllowedError) {
+      res.status(403)
+      res.send({
+        reason: err.message
+      })
+    } else {
+      next(err)
+    }
+  }
   const w = write(db)
 
   router
     .route('/')
-    .get(list)
-    .post(create, w)
+    .get(checkTokenForRead, list, checkAuthError)
+    .post(checkTokenForWrite, create, w, checkAuthError)
 
   router
     .route('/:id')
-    .get(show)
-    .put(update, w)
-    .patch(update, w)
-    .delete(destroy, w)
+    .get(checkTokenForRead, show, checkAuthError)
+    .put(checkTokenForWrite, update, w, checkAuthError)
+    .patch(checkTokenForWrite, update, w, checkAuthError)
+    .delete(checkTokenForWrite, destroy, w, checkAuthError)
 
   return router
 }

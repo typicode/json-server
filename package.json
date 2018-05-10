@@ -18,6 +18,7 @@
     "errorhandler": "^1.2.0",
     "express": "^4.16.2",
     "express-async-wrap": "^1.0.0",
+    "express-jwt": "^5.3.1",
     "express-urlrewrite": "^1.2.0",
     "json-parse-helpfulerror": "^1.0.3",
     "jsonwebtoken": "^8.2.0",
