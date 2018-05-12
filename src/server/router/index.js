@@ -11,7 +11,6 @@ const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
 const user = require('./user')
-const dev = require('./dev')
 
 module.exports = (source, opts) => {
   opts = Object.assign({ foreignKeySuffix: 'Id' }, opts)
@@ -55,11 +54,6 @@ module.exports = (source, opts) => {
 
   // Mount /users, /auth routes
   router.use(user(db, opts))
-
-  // Mount /_dev routes if development environment
-  if (process.env.NODE_ENV !== 'production') {
-    router.use(dev(db, opts))
-  }
 
   // Handle /:parent/:parentId/:resource
   router.use(nested(opts))
