@@ -1,4 +1,11 @@
 {
-  "presets": ["env", "preact"],
-  "plugins": ["transform-regenerator"]
+  "presets": [
+    [
+      "env", {
+        "targets": {
+          "node": "6"
+        }
+      }
+    ]
+  ]
 }
