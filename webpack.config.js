@@ -12,7 +12,10 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
-    new HtmlWebpackPlugin({ template: 'src/front/index.html' }),
+    new HtmlWebpackPlugin({
+      favicon: 'src/front/favicon.ico',
+      template: 'src/front/index.html'
+    }),
     new MiniCssExtractPlugin()
   ]
 }
