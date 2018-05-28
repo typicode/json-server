@@ -1,3 +1,4 @@
 {
-  "presets": ["env", "preact"]
+  "presets": ["env", "preact"],
+  "plugins": ["transform-regenerator"]
 }
