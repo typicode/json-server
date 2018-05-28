@@ -7,6 +7,20 @@
   "directories": {
     "test": "test"
   },
+  "scripts": {
+    "test": "npm run test:cli && npm run test:server && npm run lint",
+    "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js",
+    "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
+    "start": "run-p start:**",
+    "start:babel-node": "babel-node src/cli/bin",
+    "start:webpack": "webpack -d --watch",
+    "lint": "eslint .",
+    "fix": "npm run lint -- --fix",
+    "build": "babel src -d lib && webpack -p",
+    "toc": "markdown-toc -i README.md",
+    "prepublishOnly": "npm test && npm run build && pkg-ok",
+    "precommit": "npm test"
+  },
   "dependencies": {
     "body-parser": "^1.18.2",
     "chalk": "^2.3.0",
@@ -33,40 +47,43 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-register": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-preact": "^1.1.0",
+    "clean-webpack-plugin": "^0.1.19",
     "cross-env": "^5.1.1",
+    "css-loader": "^0.28.11",
     "eslint": "^4.10.0",
     "eslint-config-prettier": "^2.7.0",
     "eslint-config-standard": "^10.2.1",
+    "eslint-config-standard-preact": "^1.1.6",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-standard": "^3.0.1",
+    "html-webpack-plugin": "^3.2.0",
     "husky": "^0.14.3",
     "markdown-toc": "^1.2.0",
+    "milligram": "^1.3.0",
     "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
+    "npm-run-all": "^4.1.3",
     "os-tmpdir": "^1.0.1",
     "pkg-ok": "^2.1.0",
+    "preact": "^8.2.9",
     "prettier": "^1.7.4",
+    "promise-polyfill": "^7.1.2",
     "rimraf": "^2.6.2",
     "server-ready": "^0.3.1",
     "standard": "^10.0.3",
     "supertest": "^3.0.0",
-    "temp-write": "^3.3.0"
-  },
-  "scripts": {
-    "test": "npm run test:cli && npm run test:server && eslint .",
-    "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js",
-    "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
-    "start": "babel-node src/cli/bin",
-    "fix": "eslint . --fix",
-    "build": "babel src -d lib --copy-files",
-    "toc": "markdown-toc -i README.md",
-    "prepublishOnly": "npm run build && npm run lf && pkg-ok",
-    "precommit": "npm test"
+    "temp-write": "^3.3.0",
+    "webpack": "^4.9.1",
+    "webpack-cli": "^2.1.4",
+    "whatwg-fetch": "^2.0.4"
   },
   "repository": {
     "type": "git",
@@ -95,6 +112,6 @@
   },
   "homepage": "https://github.com/typicode/json-server",
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   }
 }
