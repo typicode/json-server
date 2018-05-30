@@ -698,10 +698,10 @@ describe('Server', () => {
           .expect(200))
     })
 
-    describe('GET /style.css', () => {
+    describe('GET /main.css', () => {
       it('should respond with css', () =>
         request(server)
-          .get('/style.css')
+          .get('/main.css')
           .expect('Content-Type', /css/)
           .expect(200))
     })
