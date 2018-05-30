@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.13.0 - 2018-05-30
+
+* Bundle all index page assets so that you access it without network connection
+* Drop Node 4 support
+
 ## 0.12.2 - 2018-04-26
 
 * Add `_delay` query parameter
