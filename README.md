@@ -199,6 +199,41 @@ Add `_like` to filter (RegExp supported)
 GET /posts?title_like=server
 ```
 
+Add `_contains` to filter arrays attributes (case sensitive)
+
+```json
+{
+  "posts": [
+    { "id": 1, "title": "json-server", "author": "typicode", "tags": ["technology", "beginner"] },
+    { "id": 2, "title": "advanced json-server", "author": "typicode", "tags": ["technology-ai", "advanced"] }
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postId": 1 }
+  ],
+  "profile": { "name": "typicode" }
+}
+```
+
+```
+GET /posts?tags_contains=beginner
+```
+_returns [{ "id": 1, "title": "json-server", "author": "typicode", "tags": ["technology", "beginner"] }]_
+
+difference between __contains_ and __like_
+```
+GET /posts?tags_contains=technology
+```
+_returns [{ "id": 1, "title": "json-server", "author": "typicode", "tags": ["technology", "beginner"] }]_
+
+while __like_ returns both (_like does substring matching)
+
+_returns 
+[
+    { "id": 1, "title": "json-server", "author": "typicode", "tags": ["technology", "beginner"] },
+    { "id": 2, "title": "advanced json-server", "author": "typicode", "tags": ["technology-ai", "advanced"] }
+  ]
+_
+
 ### Full-text search
 
 Add `q`
