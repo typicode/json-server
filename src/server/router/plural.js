@@ -32,12 +32,16 @@ module.exports = (db, name, opts) => {
     e &&
       [].concat(e).forEach(innerResource => {
         const plural = pluralize(innerResource)
-        if (db.get(plural).value()) {
+        const table = db.get(plural)
+        if (table.value()) {
           const prop = `${innerResource}${opts.foreignKeySuffix}`
-          resource[innerResource] = db
-            .get(plural)
-            .getById(resource[prop])
-            .value()
+          if (_.isArray(resource[prop])) {
+            resource[plural] = resource[prop].map(id =>
+              table.getById(id).value()
+            )
+          } else {
+            resource[innerResource] = table.getById(resource[prop]).value()
+          }
         }
       })
   }
