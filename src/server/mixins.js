@@ -22,7 +22,7 @@ function getRemovable(db, opts) {
             key.replace(new RegExp(`${opts.foreignKeySuffix}$`), '')
           )
           // Test if table exists
-          if (db[refName]) {
+          if (db[refName] && value) {
             // Test if references is defined in table
             const ref = _.getById(db[refName], value)
             if (_.isUndefined(ref)) {
