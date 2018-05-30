@@ -27,8 +27,7 @@ module.exports = (db, name) => {
     if (req.method === 'PUT') {
       db.set(name, req.body).value()
     } else {
-      db
-        .get(name)
+      db.get(name)
         .assign(req.body)
         .value()
     }
