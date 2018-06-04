@@ -10,5 +10,5 @@ module.exports = {
       },
     ]
   },
-  env: { mocha: true }
+  env: { jest: true }
 }

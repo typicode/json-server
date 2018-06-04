@@ -6,7 +6,7 @@ const mixins = require('../../src/server/mixins')
 describe('mixins', () => {
   let db
 
-  before(() => {
+  beforeAll(() => {
     _.mixin(lodashId)
     _.mixin(mixins)
   })
@@ -25,7 +25,7 @@ describe('mixins', () => {
   })
 
   describe('getRemovable', () => {
-    it('should return removable documents', () => {
+    test('should return removable documents', () => {
       const expected = [
         { name: 'comments', id: 2 },
         { name: 'comments', id: 3 }
@@ -34,7 +34,7 @@ describe('mixins', () => {
       assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
     })
 
-    it('should support custom foreignKeySuffix', () => {
+    test('should support custom foreignKeySuffix', () => {
       const expected = [
         { name: 'comments', id: 2 },
         { name: 'comments', id: 3 }
@@ -45,11 +45,11 @@ describe('mixins', () => {
   })
 
   describe('createId', () => {
-    it('should return a new id', () => {
+    test('should return a new id', () => {
       assert.equal(_.createId(db.comments), 4)
     })
 
-    it('should return a new uuid', () => {
+    test('should return a new uuid', () => {
       assert.notEqual(_.createId(db.photos), 3)
     })
   })
