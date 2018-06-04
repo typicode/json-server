@@ -4,6 +4,7 @@ const _ = require('lodash')
 const lodashId = require('lodash-id')
 const low = require('lowdb')
 const Memory = require('lowdb/adapters/Memory')
+const FileAsync = require('lowdb/adapters/FileAsync')
 const bodyParser = require('../body-parser')
 const validateData = require('./validate-data')
 const plural = require('./plural')
@@ -12,8 +13,9 @@ const singular = require('./singular')
 const mixins = require('../mixins')
 
 module.exports = (db, opts = { foreignKeySuffix: 'Id' }) => {
-  var isDB = _.has(db, '__chain__') && _.has(db, '__wrapped__')
-  if (!isDB) {
+  if (typeof db === 'string') {
+    db = low(new FileAsync(db))
+  } else if (!_.has(db, '__chain__') || !_.has(db, '__wrapped__')) {
     db = low(new Memory()).setState(db)
   }
 
