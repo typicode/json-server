@@ -9,12 +9,6 @@ const is = require('./utils/is')
 const load = require('./utils/load')
 const jsonServer = require('../server')
 
-const example = {
-  posts: [{ id: 1, title: 'json-server', author: 'typicode' }],
-  comments: [{ id: 1, body: 'some comment', postId: 1 }],
-  profile: { name: 'typicode' }
-}
-
 function prettyPrint(argv, object, rules) {
   const host = argv.host === '0.0.0.0' ? 'localhost' : argv.host
   const port = argv.port
@@ -40,22 +34,15 @@ function prettyPrint(argv, object, rules) {
   console.log()
 }
 
-function createApp(source, object, routes, middlewares, argv) {
+function createApp(db, routes, middlewares, argv) {
   const app = jsonServer.create()
 
-  let router
-
   const { foreignKeySuffix } = argv
-  try {
-    router = jsonServer.router(
-      is.JSON(source) ? source : object,
-      foreignKeySuffix ? { foreignKeySuffix } : undefined
-    )
-  } catch (e) {
-    console.log()
-    console.error(chalk.red(e.message.replace(/^/gm, '  ')))
-    process.exit(1)
-  }
+
+  let router = jsonServer.router(
+    db,
+    foreignKeySuffix ? { foreignKeySuffix } : undefined
+  )
 
   const defaultsOpts = {
     logger: !argv.quiet,
@@ -113,20 +100,10 @@ module.exports = function(argv) {
   function start(cb) {
     console.log()
 
-    // Be nice and create a default db.json if it doesn't exist
-    if (is.JSON(source) && !fs.existsSync(source)) {
-      console.log(chalk.yellow(`  Oops, ${source} doesn't seem to exist`))
-      console.log(chalk.yellow(`  Creating ${source} with some default data`))
-      console.log()
-      fs.writeFileSync(source, JSON.stringify(example, null, 2))
-    }
-
     console.log(chalk.gray('  Loading', source))
 
-    // Load JSON, JS or HTTP database
-    load(source, (err, data) => {
-      if (err) throw err
-
+    // create db and load object, JSON file, JS or HTTP database
+    return load(source).then(db => {
       // Load additional routes
       let routes
       if (argv.routes) {
@@ -147,109 +124,114 @@ module.exports = function(argv) {
       console.log(chalk.gray('  Done'))
 
       // Create app and server
-      app = createApp(source, data, routes, middlewares, argv)
+      app = createApp(db, routes, middlewares, argv)
       server = app.listen(argv.port, argv.host)
 
       // Enhance with a destroy function
       enableDestroy(server)
 
       // Display server informations
-      prettyPrint(argv, data, routes)
-
-      cb && cb()
+      prettyPrint(argv, db.getState(), routes)
     })
   }
 
   // Start server
-  start(() => {
-    // Snapshot
-    console.log(
-      chalk.gray(
-        '  Type s + enter at any time to create a snapshot of the database'
-      )
-    )
-
-    // Support nohup
-    // https://github.com/typicode/json-server/issues/221
-    process.stdin.on('error', () => {
-      console.log(`  Error, can't read from stdin`)
-      console.log(`  Creating a snapshot from the CLI won't be possible`)
-    })
-    process.stdin.setEncoding('utf8')
-    process.stdin.on('data', chunk => {
-      if (chunk.trim().toLowerCase() === 's') {
-        const filename = `db-${Date.now()}.json`
-        const file = path.join(argv.snapshots, filename)
-        const state = app.db.getState()
-        fs.writeFileSync(file, JSON.stringify(state, null, 2), 'utf-8')
-        console.log(
-          `  Saved snapshot to ${path.relative(process.cwd(), file)}\n`
+  start()
+    .then(() => {
+      // Snapshot
+      console.log(
+        chalk.gray(
+          '  Type s + enter at any time to create a snapshot of the database'
         )
-      }
-    })
+      )
 
-    // Watch files
-    if (argv.watch) {
-      console.log(chalk.gray('  Watching...'))
-      console.log()
-      const source = argv._[0]
+      // Support nohup
+      // https://github.com/typicode/json-server/issues/221
+      process.stdin.on('error', () => {
+        console.log(`  Error, can't read from stdin`)
+        console.log(`  Creating a snapshot from the CLI won't be possible`)
+      })
+      process.stdin.setEncoding('utf8')
+      process.stdin.on('data', chunk => {
+        if (chunk.trim().toLowerCase() === 's') {
+          const filename = `db-${Date.now()}.json`
+          const file = path.join(argv.snapshots, filename)
+          const state = app.db.getState()
+          fs.writeFileSync(file, JSON.stringify(state, null, 2), 'utf-8')
+          console.log(
+            `  Saved snapshot to ${path.relative(process.cwd(), file)}\n`
+          )
+        }
+      })
 
-      // Can't watch URL
-      if (is.URL(source)) throw new Error("Can't watch URL")
+      // Watch files
+      if (argv.watch) {
+        console.log(chalk.gray('  Watching...'))
+        console.log()
+        const source = argv._[0]
 
-      // Watch .js or .json file
-      // Since lowdb uses atomic writing, directory is watched instead of file
-      const watchedDir = path.dirname(source)
-      let readError = false
-      fs.watch(watchedDir, (event, file) => {
-        // https://github.com/typicode/json-server/issues/420
-        // file can be null
-        if (file) {
-          const watchedFile = path.resolve(watchedDir, file)
-          if (watchedFile === path.resolve(source)) {
-            if (is.JSON(watchedFile)) {
-              let obj
-              try {
-                obj = jph.parse(fs.readFileSync(watchedFile))
-                if (readError) {
-                  console.log(chalk.green(`  Read error has been fixed :)`))
-                  readError = false
+        // Can't watch URL
+        if (is.URL(source)) throw new Error("Can't watch URL")
+
+        // Watch .js or .json file
+        // Since lowdb uses atomic writing, directory is watched instead of file
+        const watchedDir = path.dirname(source)
+        let readError = false
+        fs.watch(watchedDir, (event, file) => {
+          // https://github.com/typicode/json-server/issues/420
+          // file can be null
+          if (file) {
+            const watchedFile = path.resolve(watchedDir, file)
+            if (watchedFile === path.resolve(source)) {
+              if (is.FILE(watchedFile)) {
+                let obj
+                try {
+                  obj = jph.parse(fs.readFileSync(watchedFile))
+                  if (readError) {
+                    console.log(chalk.green(`  Read error has been fixed :)`))
+                    readError = false
+                  }
+                } catch (e) {
+                  readError = true
+                  console.log(chalk.red(`  Error reading ${watchedFile}`))
+                  console.error(e.message)
+                  return
                 }
-              } catch (e) {
-                readError = true
-                console.log(chalk.red(`  Error reading ${watchedFile}`))
-                console.error(e.message)
-                return
-              }
 
-              // Compare .json file content with in memory database
-              const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
-              if (isDatabaseDifferent) {
-                console.log(chalk.gray(`  ${source} has changed, reloading...`))
+                // Compare .json file content with in memory database
+                const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
+                if (isDatabaseDifferent) {
+                  console.log(
+                    chalk.gray(`  ${source} has changed, reloading...`)
+                  )
+                  server && server.destroy()
+                  start()
+                }
+              }
+            }
+          }
+        })
+
+        // Watch routes
+        if (argv.routes) {
+          const watchedDir = path.dirname(argv.routes)
+          fs.watch(watchedDir, (event, file) => {
+            if (file) {
+              const watchedFile = path.resolve(watchedDir, file)
+              if (watchedFile === path.resolve(argv.routes)) {
+                console.log(
+                  chalk.gray(`  ${argv.routes} has changed, reloading...`)
+                )
                 server && server.destroy()
                 start()
               }
             }
-          }
+          })
         }
-      })
-
-      // Watch routes
-      if (argv.routes) {
-        const watchedDir = path.dirname(argv.routes)
-        fs.watch(watchedDir, (event, file) => {
-          if (file) {
-            const watchedFile = path.resolve(watchedDir, file)
-            if (watchedFile === path.resolve(argv.routes)) {
-              console.log(
-                chalk.gray(`  ${argv.routes} has changed, reloading...`)
-              )
-              server && server.destroy()
-              start()
-            }
-          }
-        })
       }
-    }
-  })
+    })
+    .catch(err => {
+      console.log(err)
+      process.exit(1)
+    })
 }

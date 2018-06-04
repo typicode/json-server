@@ -33,7 +33,7 @@
     "json-parse-helpfulerror": "^1.0.3",
     "lodash": "^4.17.10",
     "lodash-id": "^0.14.0",
-    "lowdb": "^0.15.0",
+    "lowdb": "^1.0.0",
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
     "nanoid": "^1.0.2",
