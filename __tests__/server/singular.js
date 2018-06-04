@@ -21,7 +21,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource', () => {
-    it('should respond with corresponding resource', () =>
+    test('should respond with corresponding resource', () =>
       request(server)
         .get('/user')
         .expect(db.user)
@@ -29,7 +29,7 @@ describe('Server', () => {
   })
 
   describe('POST /:resource', () => {
-    it('should create resource', () => {
+    test('should create resource', () => {
       const user = { name: 'bar' }
       return request(server)
         .post('/user')
@@ -40,7 +40,7 @@ describe('Server', () => {
   })
 
   describe('PUT /:resource', () => {
-    it('should update resource', () => {
+    test('should update resource', () => {
       const user = { name: 'bar' }
       return request(server)
         .put('/user')
@@ -51,7 +51,7 @@ describe('Server', () => {
   })
 
   describe('PATCH /:resource', () => {
-    it('should update resource', () =>
+    test('should update resource', () =>
       request(server)
         .patch('/user')
         .send({ name: 'bar' })

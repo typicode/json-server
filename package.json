@@ -8,9 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run test:cli && npm run test:server && npm run lint",
-    "test:cli": "npm run build && cross-env NODE_ENV=test mocha test/cli/*.js",
-    "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
+    "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
     "start": "run-p start:**",
     "start:babel-node": "babel-node src/cli/bin db.json -r routes.json",
     "start:webpack": "webpack -d --watch",
@@ -69,11 +67,11 @@
     "eslint-plugin-standard": "^3.1.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^0.14.3",
+    "jest": "^23.1.0",
     "markdown-toc": "^1.2.0",
     "milligram": "^1.3.0",
     "mini-css-extract-plugin": "^0.4.0",
     "mkdirp": "^0.5.1",
-    "mocha": "^4.1.0",
     "npm-run-all": "^4.1.3",
     "os-tmpdir": "^1.0.1",
     "pkg-ok": "^2.2.0",
