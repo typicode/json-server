@@ -1,2 +1,3 @@
 src
-test
+__tests__
+__fixtures__
