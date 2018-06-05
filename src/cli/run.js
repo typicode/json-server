@@ -102,6 +102,8 @@ module.exports = function(argv) {
 
     console.log(chalk.gray('  Loading', source))
 
+    server = undefined
+
     // create db and load object, JSON file, JS or HTTP database
     return load(source).then(db => {
       // Load additional routes
@@ -204,8 +206,7 @@ module.exports = function(argv) {
                   console.log(
                     chalk.gray(`  ${source} has changed, reloading...`)
                   )
-                  server && server.destroy()
-                  start()
+                  server && server.destroy(() => start())
                 }
               }
             }
@@ -222,8 +223,7 @@ module.exports = function(argv) {
                 console.log(
                   chalk.gray(`  ${argv.routes} has changed, reloading...`)
                 )
-                server && server.destroy()
-                start()
+                server && server.destroy(() => start())
               }
             }
           })
