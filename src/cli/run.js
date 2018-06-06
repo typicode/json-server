@@ -16,7 +16,7 @@ const example = {
 }
 
 function prettyPrint(argv, object, rules) {
-  const host = argv.host === '0.0.0.0' ? 'localhost' : argv.host
+  const host = argv.host
   const port = argv.port
   const root = `http://${host}:${port}`
 
