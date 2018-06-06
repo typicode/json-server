@@ -38,12 +38,12 @@ module.exports = (db, name) => {
 
   const w = write(db)
 
-  router
-    .route('/')
-    .get(show)
-    .post(create, w)
-    .put(update, w)
-    .patch(update, w)
+  function r (req, res, next) {
+    db.read();
+    next();
+  };
+  router.route('/').get(r, show).post(r, create, w).put(r, update, w).patch(r, update, w);
+
 
   return router
 }
