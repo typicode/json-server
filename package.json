@@ -16,8 +16,7 @@
     "fix": "npm run lint -- --fix",
     "build": "babel src -d lib && webpack -p",
     "toc": "markdown-toc -i README.md",
-    "prepublishOnly": "npm test && npm run build && pkg-ok",
-    "precommit": "npm test"
+    "prepublishOnly": "npm test && npm run build && pkg-ok"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -66,7 +65,7 @@
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-standard": "^3.1.0",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^0.14.3",
+    "husky": "^1.0.0-rc.8",
     "jest": "^23.1.0",
     "markdown-toc": "^1.2.0",
     "milligram": "^1.3.0",
@@ -115,5 +114,10 @@
   "homepage": "https://github.com/typicode/json-server",
   "engines": {
     "node": ">=6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
   }
 }
