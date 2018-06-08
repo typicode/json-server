@@ -362,7 +362,7 @@ json-server [options] <source>
 Options:
   --config, -c       Path to config file           [default: "json-server.json"]
   --port, -p         Set port                                    [default: 3000]
-  --host, -H         Set host                               [default: "0.0.0.0"]
+  --host, -H         Set host                             [default: "localhost"]
   --watch, -w        Watch file(s)                                     [boolean]
   --routes, -r       Path to routes file
   --middlewares, -m  Paths to middleware files                           [array]

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.14.0 - 2018-06-09
+
+* Listen to `localhost` by default, instead of `0.0.0.0`
+
 ## 0.13.0 - 2018-05-30
 
 * Bundle all index page assets so that you access it without network connection
