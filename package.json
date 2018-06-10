@@ -40,7 +40,7 @@
     "request": "^2.87.0",
     "server-destroy": "^1.0.1",
     "update-notifier": "^2.5.0",
-    "yargs": "^10.1.2"
+    "yargs": "^11.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
