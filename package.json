@@ -79,7 +79,6 @@
     "promise-polyfill": "^7.1.2",
     "rimraf": "^2.6.2",
     "server-ready": "^0.3.1",
-    "standard": "^10.0.3",
     "supertest": "^3.1.0",
     "temp-write": "^3.4.0",
     "webpack": "^4.10.2",
