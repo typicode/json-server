@@ -76,13 +76,13 @@
     "pkg-ok": "^2.2.0",
     "preact": "^8.2.9",
     "prettier": "^1.13.5",
-    "promise-polyfill": "^7.1.2",
+    "promise-polyfill": "^8.0.0",
     "rimraf": "^2.6.2",
     "server-ready": "^0.3.1",
     "supertest": "^3.1.0",
     "temp-write": "^3.4.0",
     "webpack": "^4.12.0",
-    "webpack-cli": "^2.1.5",
+    "webpack-cli": "^3.0.3",
     "whatwg-fetch": "^2.0.4"
   },
   "repository": {
