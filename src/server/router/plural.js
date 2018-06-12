@@ -313,17 +313,14 @@ module.exports = (db, name, opts) => {
 
   const w = write(db)
 
-  router
-    .route('/')
-    .get(list)
-    .post(create, w)
+  function r (req, res, next) {
+    db.read();
+    next();
+  };
+  router.route('/').get(r, list).post(r, create, w);
 
-  router
-    .route('/:id')
-    .get(show)
-    .put(update, w)
-    .patch(update, w)
-    .delete(destroy, w)
+  router.route('/:id').get(r, show).put(r, update, w).patch(r,update, w).delete(r, destroy, w);
+
 
   return router
 }
