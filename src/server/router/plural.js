@@ -122,7 +122,9 @@ module.exports = (db, name, opts) => {
               const isDifferent = /_ne$/.test(key)
               const isRange = /_lte$/.test(key) || /_gte$/.test(key)
               const isLike = /_like$/.test(key)
-              const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
+              const isIn = /_in$/.test(key);
+              const isNotIn = /_nin$/.test(key);
+              const path = key.replace(/(_lte|_gte|_ne|_like|_in|_nin)$/, '')
               // get item value based on path
               // i.e post.title -> 'foo'
               const elementValue = _.get(element, path)
@@ -142,6 +144,9 @@ module.exports = (db, name, opts) => {
                 return value !== elementValue.toString()
               } else if (isLike) {
                 return new RegExp(value, 'i').test(elementValue.toString())
+              } else if(isIn || isNotIn) {
+                const includes = _.includes(_.map(elementValue, el => el.toString()), value)
+                return (isIn && includes) || (isNotIn && !includes)
               } else {
                 return value === elementValue.toString()
               }
