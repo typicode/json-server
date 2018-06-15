@@ -142,6 +142,8 @@ module.exports = (db, name, opts) => {
                 return value !== elementValue.toString()
               } else if (isLike) {
                 return new RegExp(value, 'i').test(elementValue.toString())
+              } else if(Array.isArray(elementValue)) {
+                return _.includes(_.map(elementValue, el => el.toString()), value)
               } else {
                 return value === elementValue.toString()
               }
