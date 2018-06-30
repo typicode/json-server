@@ -3,7 +3,8 @@ const methodOverride = require('method-override')
 const _ = require('lodash')
 const lodashId = require('lodash-id')
 const low = require('lowdb')
-const fileAsync = require('lowdb/lib/storages/file-async')
+// const fileAsync = require('lowdb/lib/storages/file-async')
+const fileSync = require('lowdb/lib/storages/file-sync')
 const bodyParser = require('../body-parser')
 const validateData = require('./validate-data')
 const plural = require('./plural')
@@ -25,7 +26,7 @@ module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
     db = low()
     db.setState(source)
   } else {
-    db = low(source, { storage: fileAsync })
+    db = low(source, { storage: fileSync })
   }
 
   validateData(db.getState())
