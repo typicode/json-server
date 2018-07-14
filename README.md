@@ -20,8 +20,7 @@ See also:
 <!-- toc -->
 
 - [Sponsorship](#sponsorship)
-- [Example](#example)
-- [Install](#install)
+- [Getting started](#getting-started)
 - [Routes](#routes)
   * [Plural routes](#plural-routes)
   * [Singular routes](#singular-routes)
@@ -63,7 +62,13 @@ See also:
 
 </details>
 
-## Example
+## Getting started
+
+Install JSON Server 
+
+```
+npm install -g json-server
+```
 
 Create a `db.json` file
 
@@ -82,7 +87,7 @@ Create a `db.json` file
 Start JSON Server
 
 ```bash
-$ json-server --watch db.json
+json-server --watch db.json
 ```
 
 Now if you go to [http://localhost:3000/posts/1](http://localhost:3000/posts/1), you'll get
@@ -97,12 +102,6 @@ Also when doing requests, it's good to know that:
 - Your request body JSON should be object enclosed, just like the GET output. (for example `{"name": "Foobar"}`)
 - Id values are not mutable. Any `id` value in the body of your PUT or PATCH request will be ignored. Only a value set in a POST request will be respected, but only if not already taken.
 - A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will result in a 200 OK but without changes being made to the data.
-
-## Install
-
-```bash
-$ npm install -g json-server
-```
 
 ## Routes
 
