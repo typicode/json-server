@@ -15,7 +15,9 @@ See also:
 
 ## Sponsors
 
-[![](https://i.imgur.com/2LDiENb.png | height=60)](https://www.youtube.com/channel/UC29ju8bIPH5as8OGnQzwJyA)
+<a href="https://www.youtube.com/channel/UC29ju8bIPH5as8OGnQzwJyA">
+ <img src="https://i.imgur.com/2LDiENb.png" height="60px">
+</a>
 
 ## Table of contents
 
