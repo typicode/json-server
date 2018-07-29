@@ -19,6 +19,8 @@ See also:
   <img src="https://i.imgur.com/2LDiENb.png" height="60px">
 </a>
 
+[[Become a sponsor]](https://patreon.com/typicode)
+
 ## Table of contents
 
 <details>
