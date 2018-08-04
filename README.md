@@ -1,5 +1,7 @@
 # JSON Server [![](https://travis-ci.org/typicode/json-server.svg?branch=master)](https://travis-ci.org/typicode/json-server) [![](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server)
 
+### Important: looking for your feedback, [JSON Server survey](https://goo.gl/forms/NRC6rlJGkHaDdTrP2), thanks 🙏
+
 Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)
 
 Created with <3 for front-end developers who need a quick back-end for prototyping and mocking.
