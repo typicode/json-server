@@ -1,9 +1,16 @@
-{
-  "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
-  ],
-  "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
-  ],
-  "profile": { "name": "typicode" }
-}
+[
+  {
+    "firstName": "John",
+    "lastName": "Doe",
+    "emailID": "johnDoe@yahoo.com",
+    "phoneNo": "3445632197",
+    "status": "Active"
+  },
+  {
+    "firstName": "Mary",
+    "lastName": "Simons",
+    "emailID": "m_simons@gmail.com",
+    "phoneNo": "9890567433",
+    "status": "Inactive"
+  }
+]
