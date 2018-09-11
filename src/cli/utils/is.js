@@ -1,10 +1,10 @@
 module.exports = {
-  JSON,
+  FILE,
   JS,
   URL
 }
 
-function JSON(s) {
+function FILE(s) {
   return !URL(s) && /\.json$/.test(s)
 }
 
