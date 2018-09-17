@@ -4,7 +4,6 @@ const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
 const compression = require('compression')
-const errorhandler = require('errorhandler')
 const objectAssign = require('object-assign')
 const bodyParser = require('./body-parser')
 
@@ -29,6 +28,7 @@ module.exports = function(opts) {
 
   if (process.env.NODE_ENV === 'development') {
     // only use in development
+    const errorhandler = require('errorhandler')
     arr.push(errorhandler())
   }
 
