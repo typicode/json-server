@@ -18,12 +18,6 @@ See also:
 ## Sponsors
 
 <p>
-  <a href="https://www.youtube.com/channel/UC29ju8bIPH5as8OGnQzwJyA">
-    <img src="https://i.imgur.com/2LDiENb.png" height="60px">
-  </a>
-</p>
-
-<p>
   <a href="https://tigersheet.com/" target="_blank">
     <img src="https://i.imgur.com/RvvnNlB.png" height="60px">
   </a>
