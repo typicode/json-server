@@ -10,7 +10,7 @@ const bodyParser = require('./body-parser')
 
 module.exports = function(opts) {
   const userDir = path.join(process.cwd(), 'public')
-  const defaultDir = path.join(__dirname, 'public')
+  const defaultDir = path.join(__dirname, '../../dist')
   const staticDir = fs.existsSync(userDir) ? userDir : defaultDir
 
   opts = objectAssign({ logger: true, static: staticDir }, opts)
@@ -20,16 +20,6 @@ module.exports = function(opts) {
   // Compress all requests
   if (!opts.noGzip) {
     arr.push(compression())
-  }
-
-  // Logger
-  if (opts.logger) {
-    arr.push(
-      logger('dev', {
-        skip: req =>
-          process.env.NODE_ENV === 'test' || req.path === '/favicon.ico'
-      })
-    )
   }
 
   // Enable CORS for all the requests, including static files
@@ -44,6 +34,16 @@ module.exports = function(opts) {
 
   // Serve static files
   arr.push(express.static(opts.static))
+
+  // Logger
+  if (opts.logger) {
+    arr.push(
+      logger('dev', {
+        skip: req =>
+          process.env.NODE_ENV === 'test' || req.path === '/favicon.ico'
+      })
+    )
+  }
 
   // No cache for IE
   // https://support.microsoft.com/en-us/kb/234067

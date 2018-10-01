@@ -2,6 +2,7 @@
 node_modules
 tmp
 lib
+dist
 .DS_Store
 .idea
 db.json

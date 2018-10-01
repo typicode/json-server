@@ -26,7 +26,7 @@ describe('Server with custom foreign key', () => {
   })
 
   describe('GET /:parent/:parentId/:resource', () => {
-    it('should respond with json and corresponding nested resources', () =>
+    test('should respond with json and corresponding nested resources', () =>
       request(server)
         .get('/posts/1/comments')
         .expect('Content-Type', /json/)
@@ -35,7 +35,7 @@ describe('Server with custom foreign key', () => {
   })
 
   describe('GET /:resource/:id', () => {
-    it('should respond with json and corresponding resource', () =>
+    test('should respond with json and corresponding resource', () =>
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
@@ -44,7 +44,7 @@ describe('Server with custom foreign key', () => {
   })
 
   describe('GET /:resource?_embed=', () => {
-    it('should respond with corresponding resources and embedded resources', () => {
+    test('should respond with corresponding resources and embedded resources', () => {
       const posts = _.cloneDeep(db.posts)
       posts[0].comments = [db.comments[0], db.comments[1]]
       posts[1].comments = [db.comments[2]]
@@ -57,7 +57,7 @@ describe('Server with custom foreign key', () => {
   })
 
   describe('GET /:resource/:id?_embed=', () => {
-    it('should respond with corresponding resources and embedded resources', () => {
+    test('should respond with corresponding resources and embedded resources', () => {
       const post = _.cloneDeep(db.posts[0])
       post.comments = [db.comments[0], db.comments[1]]
       return request(server)
@@ -69,7 +69,7 @@ describe('Server with custom foreign key', () => {
   })
 
   describe('GET /:resource?_expand=', () => {
-    it('should respond with corresponding resource and expanded inner resources', () => {
+    test('should respond with corresponding resource and expanded inner resources', () => {
       const comments = _.cloneDeep(db.comments)
       comments[0].post = db.posts[0]
       comments[1].post = db.posts[0]
@@ -83,7 +83,7 @@ describe('Server with custom foreign key', () => {
   })
 
   describe('GET /:resource/:id?_expand=', () => {
-    it('should respond with corresponding resource and expanded inner resources', () => {
+    test('should respond with corresponding resource and expanded inner resources', () => {
       const comment = _.cloneDeep(db.comments[0])
       comment.post = db.posts[0]
       return request(server)
@@ -95,7 +95,7 @@ describe('Server with custom foreign key', () => {
   })
 
   describe('POST /:parent/:parentId/:resource', () => {
-    it('should respond with json and set parentId', () =>
+    test('should respond with json and set parentId', () =>
       request(server)
         .post('/posts/1/comments')
         .send({ body: 'foo' })
@@ -105,8 +105,11 @@ describe('Server with custom foreign key', () => {
   })
 
   describe('DELETE /:resource/:id', () => {
-    it('should respond with empty data, destroy resource and dependent resources', async () => {
-      await request(server).del('/posts/1').expect({}).expect(200)
+    test('should respond with empty data, destroy resource and dependent resources', async () => {
+      await request(server)
+        .del('/posts/1')
+        .expect({})
+        .expect(200)
       assert.equal(db.posts.length, 1)
       assert.equal(db.comments.length, 1)
     })
