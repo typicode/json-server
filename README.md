@@ -598,4 +598,6 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 
 ## License
 
-MIT - [Typicode](https://github.com/typicode) - [Patreon](https://www.patreon.com/typicode)
+MIT
+
+[Patreon](https://www.patreon.com/typicode) - [Supporters](https://thanks.typicode.com) ✨
