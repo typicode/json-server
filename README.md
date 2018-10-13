@@ -16,12 +16,6 @@ _To all the amazing people who have answered the JSON Server survey, thanks so m
 
 ## Sponsors
 
-<p>
-  <a href="https://tigersheet.com/" target="_blank">
-    <img src="https://i.imgur.com/RvvnNlB.png" height="60px">
-  </a>
-</p>
-
 [[Become a sponsor]](https://patreon.com/typicode)
 
 ## Table of contents
