@@ -132,6 +132,20 @@ module.exports = function(argv) {
 
       // Display server informations
       prettyPrint(argv, db.getState(), routes)
+
+      // Catch and handle any error occurring in the server process
+      process.on('uncaughtException', error => {
+        if (error.errno === 'EADDRINUSE')
+          console.log(
+            chalk.red(
+              `Cannot bind to the port ${
+                error.port
+              }. Specify some other port number either through --port argument or through the json-server.json configuration file`
+            )
+          )
+        else console.log('Some error occurred', error)
+        process.exit(1)
+      })
     })
   }
 
