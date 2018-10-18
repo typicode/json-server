@@ -140,7 +140,7 @@ module.exports = function(argv) {
             chalk.red(
               `Cannot bind to the port ${
                 error.port
-              }. Specify some other port number either through --port argument or through the json-server.json configuration file`
+              }. Please specify another port number either through --port argument or through the json-server.json configuration file`
             )
           )
         else console.log('Some error occurred', error)
