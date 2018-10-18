@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.14.1 - 2018-10-18
+
+* Show error message if port is already used
+
 ## 0.14.0 - 2018-06-09
 
 * Listen to `localhost` by default, instead of `0.0.0.0`
