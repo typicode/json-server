@@ -24,8 +24,6 @@ _To all the amazing people who have answered the JSON Server survey, thanks so m
 
 ## Table of contents
 
-<details>
-
 <!-- toc -->
 
 - [Sponsorship](#sponsorship)
@@ -68,8 +66,6 @@ _To all the amazing people who have answered the JSON Server survey, thanks so m
 - [License](#license)
 
 <!-- tocstop -->
-
-</details>
 
 ## Getting started
 
