@@ -10,9 +10,13 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
 * :hotel: [hotel - developer tool with local .localhost domain and https out of the box](https://github.com/typicode/hotel)
-* :heartpulse: [Become a Patron](https://www.patreon.com/typicode)
+* ⚛️ 🔧 [react-lodash - lodash as React components](https://github.com/typicode/react-lodash)
 
 _To all the amazing people who have answered the JSON Server survey, thanks so much <3 !_
+
+<a href="https://www.patreon.com/typicode">
+  <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
+</a>
 
 ## Sponsors
 
