@@ -42,6 +42,57 @@ module.exports = (db, name, opts) => {
       })
   }
 
+  function include(resource, r, e) {
+    if(util.isNullOrUndefined(resource)) return;    
+    e && [].concat(e)
+        .forEach((relationship) => {
+            if (db.get(relationship).value) {
+                let singularResource = pluralize.singular(r);
+                let singularRelationship = pluralize.singular(relationship);
+                let manyMany = null;
+
+                // this table lookup could be cached
+
+                if(`${singularResource}_${singularRelationship}` in db.__wrapped__) {
+                    // e.g. user_group
+                    manyMany = `${singularResource}_${singularRelationship}`;
+                } else if (`${singularRelationship}_${singularResource}` in db.__wrapped__) {
+                    // e.g. group_user
+                    manyMany = `${singularRelationship}_${singularResource}`;
+                } else if (`${r}_${relationship}` in db.__wrapped__) {
+                    // e.g. users_groups
+                    manyMany = `${r}_${relationship}`;
+                } else if (`${relationship}_${r}` in db.__wrapped__) {
+                    // e.g. groups_users
+                    manyMany = `${relationship}_${r}`;
+                }
+
+                if(manyMany == null) return;
+
+                // assumes many-many tables are firstId, secondId relations.
+                const relationshipKey = `${singularRelationship}Id`;
+                const resourceKey = `${singularResource}Id`;
+
+                const joinQuery = {};
+                joinQuery[resourceKey] = resource.id;
+
+                const items = db.get(manyMany).filter(joinQuery).value();
+                if(util.isNullOrUndefined(items)) {
+                    // not found
+                    resource[relationship] = [];
+                    return;
+                }
+                const ids = items.map((item) => item[relationshipKey]);
+
+                const related = db.get(relationship).filter((elem) => {
+                    return ids.includes(elem.id);
+                }).value();
+
+                resource[relationship] = related;
+            }
+        });
+  }
+
   // GET /name
   // GET /name?q=
   // GET /name?attr=&attr=
@@ -63,6 +114,7 @@ module.exports = (db, name, opts) => {
     let _limit = req.query._limit
     let _embed = req.query._embed
     let _expand = req.query._expand
+    let _include = req.query._include;
     delete req.query.q
     delete req.query._start
     delete req.query._end
@@ -71,6 +123,7 @@ module.exports = (db, name, opts) => {
     delete req.query._limit
     delete req.query._embed
     delete req.query._expand
+    delete req.query._include;
 
     // Automatically delete query parameters that can't be found
     // in the database
@@ -219,6 +272,7 @@ module.exports = (db, name, opts) => {
     chain = chain.cloneDeep().forEach(function(element) {
       embed(element, _embed)
       expand(element, _expand)
+      include(element, name, _include);
     })
 
     res.locals.data = chain.value()
@@ -230,6 +284,7 @@ module.exports = (db, name, opts) => {
   function show(req, res, next) {
     const _embed = req.query._embed
     const _expand = req.query._expand
+    const _include = req.query._include;
     const resource = db
       .get(name)
       .getById(req.params.id)
@@ -246,6 +301,10 @@ module.exports = (db, name, opts) => {
       // Expand inner resources based on id
       // /posts/1?_expand=user
       expand(clone, _expand)
+
+      // Include many to many resources based on id
+      // /posts/1?_include=users
+      include(clone, name, _include);
 
       res.locals.data = clone
     }
