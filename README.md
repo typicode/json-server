@@ -234,6 +234,15 @@ GET  /posts/1/comments
 POST /posts/1/comments
 ```
 
+To include many to many relationships
+
+```
+GET /posts?_include=tags
+GET /posts/1?_include=tags
+GET /tags?_include=posts
+GET /tags/1?_include=posts
+```
+
 ### Database
 
 ```
