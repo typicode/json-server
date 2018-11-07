@@ -17,30 +17,43 @@ module.exports = (db, name, opts) => {
     e &&
       [].concat(e).forEach(externalResource => {
         if (db.get(externalResource).value) {
-          const query = {}
+          var query = {}
           const singularResource = pluralize.singular(name)
           query[`${singularResource}${opts.foreignKeySuffix}`] = resource.id
-          resource[externalResource] = db
+          var results = db
             .get(externalResource)
             .filter(query)
             .value()
+          
+          // check for one to many relationships
+          if(results.length==0){
+            query = {}
+            query[`${name}${opts.foreignKeySuffix}`] = [resource.id]
+            results = db
+              .get(externalResource)
+              .filter(query)
+              .value()
+          }
+          resource[externalResource] = results
         }
       })
   }
 
   // Expand function used in GET /name and GET /name/id
   function expand(resource, e) {
-    e &&
-      [].concat(e).forEach(innerResource => {
-        const plural = pluralize(innerResource)
-        if (db.get(plural).value()) {
-          const prop = `${innerResource}${opts.foreignKeySuffix}`
-          resource[innerResource] = db
-            .get(plural)
-            .getById(resource[prop])
-            .value()
+    e && [].concat(e).forEach(function (innerResource) {
+      var plural = pluralize(innerResource);
+      if (db.get(plural).value()) {
+        var prop = `${innerResource}${opts.foreignKeySuffix}`;
+        if (_.isArray(resource[prop])) {
+          resource[innerResource] = resource[prop].map(function (id) {
+            return db.get(plural).getById(id).value();
+          });
+        } else {
+          resource[innerResource] = db.get(plural).getById(resource[prop]).value();
         }
-      })
+      }
+    });
   }
 
   function include(resource, r, e) {

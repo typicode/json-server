@@ -72,7 +72,7 @@ _To all the amazing people who have answered the JSON Server survey, thanks so m
 Install JSON Server 
 
 ```
-npm install -g json-server
+npm install --from-git git@github.com:PhilliesGomide/json-server.git
 ```
 
 Create a `db.json` file with some data
@@ -218,6 +218,7 @@ To include children resources, add `_embed`
 ```
 GET /posts?_embed=comments
 GET /posts/1?_embed=comments
+GET /tags/1?_embed=comments
 ```
 
 To include parent resource, add `_expand`
@@ -225,6 +226,7 @@ To include parent resource, add `_expand`
 ```
 GET /comments?_expand=post
 GET /comments/1?_expand=post
+GET /comments/1?_expand=tags
 ```
 
 To get or create nested resources (by default one level, [add custom routes](#add-custom-routes) for more)

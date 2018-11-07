@@ -4,7 +4,9 @@
     { "id": 2, "title": "lowdb", "author": "typicode" }
   ],
   "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
+    { "id": 1, "body": "some comment", "postId": 1, "tagsId": [1,2] },
+    { "id": 2, "body": "some other comment", "postId": 1, "tagsId": [2,3] },
+    { "id": 3, "body": "some different comment", "postId": 2, "tagsId": [1,2,3] }
   ],
   "profile": { "name": "typicode" },
   "tags": [
