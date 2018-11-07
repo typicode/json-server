@@ -1,9 +1,22 @@
 {
   "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
+    { "id": 1, "title": "json-server", "author": "typicode" },
+    { "id": 2, "title": "lowdb", "author": "typicode" }
   ],
   "comments": [
     { "id": 1, "body": "some comment", "postId": 1 }
   ],
-  "profile": { "name": "typicode" }
+  "profile": { "name": "typicode" },
+  "tags": [
+    { "id": 1, "name": "javascript" },
+    { "id": 2, "name": "node" },
+    { "id": 3, "name": "json" }
+  ],
+  "posts_tags": [
+    { "id": 1, "postId": 1, "tagId": 1 },
+    { "id": 2, "postId": 1, "tagId": 2 },
+    { "id": 3, "postId": 1, "tagId": 3 },
+    { "id": 4, "postId": 2, "tagId": 1 },
+    { "id": 5, "postId": 2, "tagId": 2 }
+  ]
 }

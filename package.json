@@ -40,6 +40,7 @@
     "request": "^2.87.0",
     "server-destroy": "^1.0.1",
     "update-notifier": "^2.5.0",
+    "util": "^0.11.1",
     "yargs": "^11.1.0"
   },
   "devDependencies": {

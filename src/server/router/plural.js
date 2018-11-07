@@ -5,6 +5,7 @@ const write = require('./write')
 const getFullURL = require('./get-full-url')
 const utils = require('../utils')
 const delay = require('./delay')
+const util = require('util');
 
 module.exports = (db, name, opts) => {
   // Create router
