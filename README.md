@@ -265,11 +265,11 @@ or use `--static` to set a different static files directory.
 ```bash
 mkdir public
 echo 'hello world' > public/index.html
-json-server db.json
+json-server-relationship db.json
 ```
 
 ```bash
-json-server db.json --static ./some-other-dir
+json-server-relationship db.json --static ./some-other-dir
 ```
 
 ### Alternative port
@@ -277,7 +277,7 @@ json-server db.json --static ./some-other-dir
 You can start JSON Server on other ports with the `--port` flag:
 
 ```bash
-$ json-server --watch db.json --port 3004
+$ json-server-relationship --watch db.json --port 3004
 ```
 
 ### Access from anywhere
@@ -289,8 +289,8 @@ You can access your fake API from anywhere using CORS and JSONP.
 You can load remote schemas.
 
 ```bash
-$ json-server http://example.com/file.json
-$ json-server http://jsonplaceholder.typicode.com/db
+$ json-server-relationship http://example.com/file.json
+$ json-server-relationship http://jsonplaceholder.typicode.com/db
 ```
 
 ### Generate random data
@@ -310,7 +310,7 @@ module.exports = () => {
 ```
 
 ```bash
-$ json-server index.js
+$ json-server-relationship index.js
 ```
 
 **Tip** use modules like [Faker](https://github.com/Marak/faker.js), [Casual](https://github.com/boo1ean/casual), [Chance](https://github.com/victorquinn/chancejs) or [JSON Schema Faker](https://github.com/json-schema-faker/json-schema-faker).
@@ -335,7 +335,7 @@ Create a `routes.json` file. Pay attention to start every route with `/`.
 Start JSON Server with `--routes` option.
 
 ```bash
-json-server db.json --routes routes.json
+json-server-relationship db.json --routes routes.json
 ```
 
 Now you can access resources using additional routes.
@@ -361,14 +361,14 @@ module.exports = (req, res, next) => {
 ```
 
 ```bash
-json-server db.json --middlewares ./hello.js
-json-server db.json --middlewares ./first.js ./second.js
+json-server-relationship db.json --middlewares ./hello.js
+json-server-relationship db.json --middlewares ./first.js ./second.js
 ```
 
 ### CLI usage
 
 ```
-json-server [options] <source>
+json-server-relationship [options] <source>
 
 Options:
   --config, -c       Path to config file           [default: "json-server.json"]
@@ -391,11 +391,11 @@ Options:
   --version, -v      Show version number                               [boolean]
 
 Examples:
-  json-server db.json
-  json-server file.js
-  json-server http://example.com/db.json
+  json-server-relationship db.json
+  json-server-relationship file.js
+  json-server-relationship http://example.com/db.json
 
-https://github.com/typicode/json-server
+https://github.com/PhilliesGomide/json-server-relationship/
 ```
 
 You can also set options in a `json-server.json` configuration file.
@@ -413,7 +413,7 @@ If you need to add authentication, validation, or **any behavior**, you can use 
 #### Simple example
 
 ```sh
-$ npm install json-server --save-dev
+$ npm install json-server-relationship --save-dev
 ```
 
 ```js
@@ -450,7 +450,7 @@ Please note also that `jsonServer.router()` can be used in existing Express proj
 Let's say you want a route that echoes query parameters and another one that set a timestamp on every resource created.
 
 ```js
-const jsonServer = require("json-server");
+const jsonServer = require("json-server-relationship");
 const server = jsonServer.create();
 const router = jsonServer.router("db.json");
 const middlewares = jsonServer.defaults();
@@ -484,7 +484,7 @@ server.listen(3000, () => {
 #### Access control example
 
 ```js
-const jsonServer = require("json-server");
+const jsonServer = require("json-server-relationship");
 const server = jsonServer.create();
 const router = jsonServer.router("db.json");
 const middlewares = jsonServer.defaults();
