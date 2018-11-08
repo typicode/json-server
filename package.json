@@ -93,7 +93,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/typicode/json-server.git"
+    "url": "git://github.com/PhilliesGomide/json-server-relationship.git"
   },
   "keywords": [
     "JSON",
@@ -114,9 +114,9 @@
   "author": "Typicode <typicode@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/typicode/json-server/issues"
+    "url": "https://github.com/PhilliesGomide/json-server-relationship/issues"
   },
-  "homepage": "https://github.com/typicode/json-server",
+  "homepage": "https://github.com/PhilliesGomide/json-server-relationship/",
   "engines": {
     "node": ">=6"
   },
