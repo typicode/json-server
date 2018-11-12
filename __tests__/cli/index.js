@@ -8,6 +8,7 @@ const tempWrite = require('temp-write')
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 const serverReady = require('server-ready')
+const os = require('os')
 
 let PORT = 3100
 
@@ -85,6 +86,24 @@ describe('cli', () => {
             done()
           }, 1000)
         })
+    })
+  })
+
+  describe('Server endpoint', () => {
+    const hostName = os.hostname()
+    beforeEach(done => {
+      child = cli(['-a', true, dbFile])
+      // serverReady(PORT, hostName, done)
+      setTimeout(done, 1000)
+    })
+
+    test('should answer using os.hostname address', done => {
+      let customRequest = supertest(`http://${hostName}:${PORT}`)
+      customRequest.get('/').expect(200, done)
+    })
+
+    test('should answer using localhost address', done => {
+      request.get('/').expect(200, done)
     })
   })
 
