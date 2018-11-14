@@ -133,7 +133,7 @@ describe('cli', () => {
 
     test('should use _id as foreignKeySuffix', async () => {
       const response = await request.get('/posts/1/comments')
-      assert.equal(response.body.length, 1)
+      assert.strictEqual(response.body.length, 1)
     })
 
     test('should apply middlewares', done => {
@@ -208,7 +208,7 @@ describe('cli', () => {
     })
 
     test('should save a snapshot in snapshots dir', () => {
-      assert.equal(fs.readdirSync(snapshotsDir).length, 1)
+      assert.strictEqual(fs.readdirSync(snapshotsDir).length, 1)
     })
   })
 
