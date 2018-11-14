@@ -3,6 +3,7 @@
 ## 0.14.1 - Unreleased
 
 * Show error message if port is already used
+* Upgrade to [lowdb](https://github.com/typicode/lowdb) `1.0`
 
 ## 0.14.0 - 2018-06-09
 
