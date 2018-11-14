@@ -541,7 +541,7 @@ describe('Server', () => {
     test('should respond with json, create a resource and generate string id', async () => {
       await request(server)
         .post('/refs')
-        .send({ url: 'http://foo.com', postId: '1' })
+        .send({ url: 'http://foo.com', postId: 1 })
         .expect('Content-Type', /json/)
         .expect(201)
       assert.equal(db.refs.length, 2)
@@ -554,7 +554,7 @@ describe('Server', () => {
         .post('/posts/1/comments')
         .send({ body: 'foo' })
         .expect('Content-Type', /json/)
-        .expect({ id: 6, postId: 1, body: 'foo' })
+        .expect({ id: 6, postId: '1', body: 'foo' })
         .expect(201))
   })
 
