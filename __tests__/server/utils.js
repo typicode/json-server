@@ -7,7 +7,7 @@ describe('utils', () => {
     const perPage = 2
 
     test('should return first page', () => {
-      assert.deepEqual(utils.getPage(array, 1, perPage), {
+      assert.deepStrictEqual(utils.getPage(array, 1, perPage), {
         items: [1, 2],
         current: 1,
         first: 1,
@@ -17,7 +17,7 @@ describe('utils', () => {
     })
 
     test('should return second page', () => {
-      assert.deepEqual(utils.getPage(array, 2, perPage), {
+      assert.deepStrictEqual(utils.getPage(array, 2, perPage), {
         items: [3, 4],
         current: 2,
         first: 1,
@@ -28,7 +28,7 @@ describe('utils', () => {
     })
 
     test('should return third page (last)', () => {
-      assert.deepEqual(utils.getPage(array, 3, perPage), {
+      assert.deepStrictEqual(utils.getPage(array, 3, perPage), {
         items: [5],
         current: 3,
         first: 1,
@@ -38,19 +38,19 @@ describe('utils', () => {
     })
 
     test('should return an empty array if page is greater than the last page', () => {
-      assert.deepEqual(utils.getPage(array, 99, perPage), {
+      assert.deepStrictEqual(utils.getPage(array, 99, perPage), {
         items: []
       })
     })
 
     test('should return the array if perPage is greater than the array size', () => {
-      assert.deepEqual(utils.getPage(array, 1, 99), {
+      assert.deepStrictEqual(utils.getPage(array, 1, 99), {
         items: array
       })
     })
 
     test('should return an empty array if the array is empty', () => {
-      assert.deepEqual(utils.getPage([], 1, 1), {
+      assert.deepStrictEqual(utils.getPage([], 1, 1), {
         items: []
       })
     })

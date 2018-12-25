@@ -31,7 +31,10 @@ describe('mixins', () => {
         { name: 'comments', id: 3 }
       ]
 
-      assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
+      assert.deepStrictEqual(
+        _.getRemovable(db, { foreignKeySuffix: 'Id' }),
+        expected
+      )
     })
 
     test('should support custom foreignKeySuffix', () => {
@@ -40,17 +43,20 @@ describe('mixins', () => {
         { name: 'comments', id: 3 }
       ]
 
-      assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
+      assert.deepStrictEqual(
+        _.getRemovable(db, { foreignKeySuffix: 'Id' }),
+        expected
+      )
     })
   })
 
   describe('createId', () => {
     test('should return a new id', () => {
-      assert.equal(_.createId(db.comments), 4)
+      assert.strictEqual(_.createId(db.comments), 4)
     })
 
     test('should return a new uuid', () => {
-      assert.notEqual(_.createId(db.photos), 3)
+      assert.notStrictEqual(_.createId(db.photos), 3)
     })
   })
 })

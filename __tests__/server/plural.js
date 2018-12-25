@@ -523,7 +523,7 @@ describe('Server', () => {
         .expect('Content-Type', /json/)
         .expect({ id: 3, body: 'foo', booleanValue: true, integerValue: 1 })
         .expect(201)
-      assert.equal(db.posts.length, 3)
+      assert.strictEqual(db.posts.length, 3)
     })
 
     test('should support x-www-form-urlencoded', async () => {
@@ -535,16 +535,16 @@ describe('Server', () => {
         // x-www-form-urlencoded will convert to string
         .expect({ id: 3, body: 'foo', booleanValue: 'true', integerValue: '1' })
         .expect(201)
-      assert.equal(db.posts.length, 3)
+      assert.strictEqual(db.posts.length, 3)
     })
 
     test('should respond with json, create a resource and generate string id', async () => {
       await request(server)
         .post('/refs')
-        .send({ url: 'http://foo.com', postId: '1' })
+        .send({ url: 'http://foo.com', postId: 1 })
         .expect('Content-Type', /json/)
         .expect(201)
-      assert.equal(db.refs.length, 2)
+      assert.strictEqual(db.refs.length, 2)
     })
   })
 
@@ -554,7 +554,7 @@ describe('Server', () => {
         .post('/posts/1/comments')
         .send({ body: 'foo' })
         .expect('Content-Type', /json/)
-        .expect({ id: 6, postId: 1, body: 'foo' })
+        .expect({ id: 6, postId: '1', body: 'foo' })
         .expect(201))
   })
 
@@ -656,8 +656,8 @@ describe('Server', () => {
         .del('/posts/1')
         .expect({})
         .expect(200)
-      assert.equal(db.posts.length, 1)
-      assert.equal(db.comments.length, 3)
+      assert.strictEqual(db.posts.length, 1)
+      assert.strictEqual(db.comments.length, 3)
     })
 
     test('should respond with 404 if resource is not found', () =>
