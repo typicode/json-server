@@ -1,6 +1,6 @@
 # Change Log
 
-## 0.14.1 - Unreleased
+## 0.14.1 - 2018-12-25
 
 * Show error message if port is already used
 * Upgrade to [lowdb](https://github.com/typicode/lowdb) `1.0`
