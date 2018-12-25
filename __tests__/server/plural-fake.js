@@ -19,7 +19,7 @@ describe('Fake server', () => {
   })
 
   describe('POST /:resource', () => {
-    test('should respond with json, create a resource and increment id', async () => {
+    test('should not create a resource', async () => {
       await request(server)
         .post('/posts')
         .send({ body: 'foo', booleanValue: true, integerValue: 1 })
@@ -28,13 +28,12 @@ describe('Fake server', () => {
         .expect('Content-Type', /json/)
         .expect({ id: 3, body: 'foo', booleanValue: true, integerValue: 1 })
         .expect(201)
-      // assert it was not created in database
       assert.equal(db.posts.length, 2)
     })
   })
 
   describe('PUT /:resource/:id', () => {
-    test('should respond with json and replace resource', async () => {
+    test('should not replace resource', async () => {
       const post = { id: 1, booleanValue: true, integerValue: 1 }
       const res = await request(server)
         .put('/posts/1')
@@ -47,13 +46,12 @@ describe('Fake server', () => {
       // TODO find a "supertest" way to test this
       // https://github.com/typicode/json-server/issues/396
       assert.deepStrictEqual(res.body, post)
-      // assert it was not created in database
       assert.notDeepStrictEqual(db.posts[0], post)
     })
   })
 
   describe('PATCH /:resource/:id', () => {
-    test('should respond with json and update resource', async () => {
+    test('should not update resource', async () => {
       const partial = { body: 'bar' }
       const post = { id: 1, body: 'bar' }
       const res = await request(server)
@@ -63,18 +61,16 @@ describe('Fake server', () => {
         .expect(post)
         .expect(200)
       assert.deepStrictEqual(res.body, post)
-      // assert it was not created in database
       assert.notDeepStrictEqual(db.posts[0], post)
     })
   })
 
   describe('DELETE /:resource/:id', () => {
-    test('should respond with empty data, destroy resource and dependent resources', async () => {
+    test('should not destroy resource', async () => {
       await request(server)
         .del('/posts/1')
         .expect({})
         .expect(200)
-      // assert it was not created in database
       assert.equal(db.posts.length, 2)
     })
   })
