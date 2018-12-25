@@ -53,7 +53,7 @@ module.exports = (db, opts = { foreignKeySuffix: 'Id', _isFake: false }) => {
   // Create routes
   db.forEach((value, key) => {
     if (_.isPlainObject(value)) {
-      router.use(`/${key}`, singular(db, key))
+      router.use(`/${key}`, singular(db, key, opts))
       return
     }
 
