@@ -28,7 +28,7 @@ describe('Fake server', () => {
         .expect('Content-Type', /json/)
         .expect({ id: 3, body: 'foo', booleanValue: true, integerValue: 1 })
         .expect(201)
-      assert.equal(db.posts.length, 2)
+      assert.strictEqual(db.posts.length, 2)
     })
   })
 
@@ -71,7 +71,7 @@ describe('Fake server', () => {
         .del('/posts/1')
         .expect({})
         .expect(200)
-      assert.equal(db.posts.length, 2)
+      assert.strictEqual(db.posts.length, 2)
     })
   })
 })
