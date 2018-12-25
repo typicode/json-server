@@ -255,10 +255,19 @@ module.exports = (db, name, opts) => {
 
   // POST /name
   function create(req, res, next) {
-    const resource = db
-      .get(name)
-      .insert(req.body)
-      .value()
+    let resource
+    if (opts._isFake) {
+      const id = db
+        .get(name)
+        .createId()
+        .value()
+      resource = { ...req.body, id }
+    } else {
+      resource = db
+        .get(name)
+        .insert(req.body)
+        .value()
+    }
 
     res.setHeader('Access-Control-Expose-Headers', 'Location')
     res.location(`${getFullURL(req)}/${resource.id}`)
@@ -273,14 +282,29 @@ module.exports = (db, name, opts) => {
   // PATCH /name/:id
   function update(req, res, next) {
     const id = req.params.id
-    let chain = db.get(name)
+    let resource
 
-    chain =
-      req.method === 'PATCH'
-        ? chain.updateById(id, req.body)
-        : chain.replaceById(id, req.body)
+    if (opts._isFake) {
+      resource = db
+        .get(name)
+        .getById(id)
+        .value()
 
-    const resource = chain.value()
+      if (req.method === 'PATCH') {
+        resource = { ...resource, ...req.body }
+      } else {
+        resource = { ...req.body, id: resource.id }
+      }
+    } else {
+      let chain = db.get(name)
+
+      chain =
+        req.method === 'PATCH'
+          ? chain.updateById(id, req.body)
+          : chain.replaceById(id, req.body)
+
+      resource = chain.value()
+    }
 
     if (resource) {
       res.locals.data = resource
@@ -291,18 +315,24 @@ module.exports = (db, name, opts) => {
 
   // DELETE /name/:id
   function destroy(req, res, next) {
-    const resource = db
-      .get(name)
-      .removeById(req.params.id)
-      .value()
+    let resource
 
-    // Remove dependents documents
-    const removable = db._.getRemovable(db.getState(), opts)
-    removable.forEach(item => {
-      db.get(item.name)
-        .removeById(item.id)
+    if (opts._isFake) {
+      resource = db.get(name).value()
+    } else {
+      resource = db
+        .get(name)
+        .removeById(req.params.id)
         .value()
-    })
+
+      // Remove dependents documents
+      const removable = db._.getRemovable(db.getState(), opts)
+      removable.forEach(item => {
+        db.get(item.name)
+          .removeById(item.id)
+          .value()
+      })
+    }
 
     if (resource) {
       res.locals.data = {}
