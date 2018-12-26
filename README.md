@@ -308,7 +308,7 @@ __Tip__ use modules like [Faker](https://github.com/Marak/faker.js), [Casual](ht
 
 ### HTTPS
 
-There's many way to set up SSL in development. One simple way though is to use [hotel](https://github.com/typicode/hotel).
+There are many ways to set up SSL in development. One simple way is to use [hotel](https://github.com/typicode/hotel).
 
 ### Add custom routes
 
