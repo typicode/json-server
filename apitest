@@ -1,0 +1,63 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "firstName": "Belachew",
+      "lastName": "Shewa",
+      "Email": "Bele@gmail.com"
+    },
+    {
+      "id": "2",
+      "firstName": "Mekdes",
+      "lastName": "Ketema",
+      "Email": "Mekdi@gmail.com"
+    },
+    {
+      "id": "3",
+      "firstName": "Nardos",
+      "lastName": "Getachew",
+      "Email": "Nardi@gmail.com"
+    },
+    {
+      "id": "4",
+      "firstName": "Beshaw",
+      "lastName": "Shefr",
+      "Email": "Bsha@gmail.com"
+    },
+    {
+      "id": "5",
+      "firstName": "Bel",
+      "lastName": "Shewa",
+      "Email": "Bele123@gmail.com"
+    },
+    {
+      "users": {
+        "id": "6",
+        "firstName": "Koklen",
+        "lastName": "Shewa",
+        "Email": "Koklen23@gmail.com"
+      },
+      "id": "WyNHO7w"
+    },
+    {
+      "id": "6",
+      "firstName": "Koklen",
+      "lastName": "Shewa",
+      "Email": "Koklen23@gmail.com"
+    }
+  ],
+  "department": [
+    {
+      "name": "Digital",
+      "location": "Airport_Branch"
+    },
+    {
+      "name": "B2B",
+      "location": "Airport_Branch"
+    },
+    {
+      "name": "B2C",
+      "location": "Airport_Branch"
+    }
+  ]
+}
