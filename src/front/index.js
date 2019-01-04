@@ -1,6 +1,6 @@
 import 'promise-polyfill/src/polyfill'
 import 'whatwg-fetch'
-import { h, render } from 'preact'
+import { render } from 'preact'
 import 'milligram/dist/milligram.css'
 import './style.css'
 
