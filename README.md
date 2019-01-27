@@ -574,7 +574,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 * [Node Module Of The Week - json-server](http://nmotw.in/json-server/)
 * [Mock up your REST API with JSON Server](http://www.betterpixels.co.uk/projects/2015/05/09/mock-up-your-rest-api-with-json-server/)
 * [ng-admin: Add an AngularJS admin GUI to any RESTful API](http://marmelab.com/blog/2014/09/15/easy-backend-for-your-restful-api.html)
-* [Fast prototyping using Restangular and Json-server](http://glebbahmutov.com/blog/fast-prototyping-using-restangular-and-json-server/)
+* [Fast prototyping using Restangular and Json-server](https://glebbahmutov.com/blog/fast-prototyping-restangular-and-json-server/)
 * [Create a Mock REST API in Seconds for Prototyping your Frontend](https://coligo.io/create-mock-rest-api-with-json-server/)
 * [No API? No Problem! Rapid Development via Mock APIs](https://medium.com/@housecor/rapid-development-via-mock-apis-e559087be066#.93d7w8oro)
 * [Zero Code REST With json-server](https://dzone.com/articles/zero-code-rest-with-json-server)
