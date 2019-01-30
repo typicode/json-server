@@ -12,7 +12,7 @@ module.exports = (db, name, opts) => {
   router.use(delay)
 
   // Embed function used in GET /name and GET /name/id
-  function embed(resource, e) {
+  function _embed(resource, e) {
     e &&
       [].concat(e).forEach(externalResource => {
         if (db.get(externalResource).value) {
@@ -38,7 +38,7 @@ module.exports = (db, name, opts) => {
   }
 
   // Expand function used in GET /name and GET /name/id
-  function expand(resource, e) {
+  function _expand(resource, e) {
     e &&
       [].concat(e).forEach(function(innerResource) {
         var plural = pluralize(innerResource)
@@ -61,7 +61,7 @@ module.exports = (db, name, opts) => {
       })
   }
 
-  function include(resource, r, e) {
+  function _include(resource, r, e) {
     if (resource === null || resource === undefined) return
     e &&
       [].concat(e).forEach(relationship => {
@@ -123,34 +123,34 @@ module.exports = (db, name, opts) => {
   // GET /name
   // GET /name?q=
   // GET /name?attr=&attr=
-  // GET /name?_end=&
-  // GET /name?_start=&_end=&
-  // GET /name?_embed=&_expand=
+  // GET /name?end=&
+  // GET /name?start=&end=&
+  // GET /name?embed=&expand=
   function list(req, res, next) {
     // Resource chain
     let chain = db.get(name)
 
-    // Remove q, _start, _end, ... from req.query to avoid filtering using those
+    // Remove q, start, end, ... from req.query to avoid filtering using those
     // parameters
     let q = req.query.q
-    let _start = req.query._start
-    let _end = req.query._end
-    let _page = req.query._page
-    let _sort = req.query._sort
-    let _order = req.query._order
-    let _limit = req.query._limit
-    let _embed = req.query._embed
-    let _expand = req.query._expand
-    let _include = req.query._include
+    let start = req.query.start
+    let end = req.query.end
+    let page = req.query.page
+    let sort = req.query.sort
+    let order = req.query.order
+    let limit = req.query.limit
+    let embed = req.query.embed
+    let expand = req.query.expand
+    let include = req.query.include
     delete req.query.q
-    delete req.query._start
-    delete req.query._end
-    delete req.query._sort
-    delete req.query._order
-    delete req.query._limit
-    delete req.query._embed
-    delete req.query._expand
-    delete req.query._include
+    delete req.query.start
+    delete req.query.end
+    delete req.query.sort
+    delete req.query.order
+    delete req.query.limit
+    delete req.query.embed
+    delete req.query.expand
+    delete req.query.include
 
     // Automatically delete query parameters that can't be found
     // in the database
@@ -232,74 +232,74 @@ module.exports = (db, name, opts) => {
     })
 
     // Sort
-    if (_sort) {
-      const _sortSet = _sort.split(',')
-      const _orderSet = (_order || '').split(',').map(s => s.toLowerCase())
-      chain = chain.orderBy(_sortSet, _orderSet)
+    if (sort) {
+      const sortSet = sort.split(',')
+      const orderSet = (order || '').split(',').map(s => s.toLowerCase())
+      chain = chain.orderBy(sortSet, orderSet)
     }
 
     // Slice result
-    if (_end || _limit || _page) {
+    if (end || limit || page) {
       res.setHeader('X-Total-Count', chain.size())
       res.setHeader(
         'Access-Control-Expose-Headers',
-        `X-Total-Count${_page ? ', Link' : ''}`
+        `X-Total-Count${page ? ', Link' : ''}`
       )
     }
 
-    if (_page) {
-      _page = parseInt(_page, 10)
-      _page = _page >= 1 ? _page : 1
-      _limit = parseInt(_limit, 10) || 10
-      const page = utils.getPage(chain.value(), _page, _limit)
+    if (page) {
+      page = parseInt(page, 10)
+      page = page >= 1 ? page : 1
+      limit = parseInt(limit, 10) || 10
+      const _page = utils.getPage(chain.value(), page, limit)
       const links = {}
       const fullURL = getFullURL(req)
 
-      if (page.first) {
+      if (_page.first) {
         links.first = fullURL.replace(
-          `page=${page.current}`,
-          `page=${page.first}`
+          `page=${_page.current}`,
+          `page=${_page.first}`
         )
       }
 
-      if (page.prev) {
+      if (_page.prev) {
         links.prev = fullURL.replace(
-          `page=${page.current}`,
-          `page=${page.prev}`
+          `page=${_page.current}`,
+          `page=${_page.prev}`
         )
       }
 
-      if (page.next) {
+      if (_page.next) {
         links.next = fullURL.replace(
-          `page=${page.current}`,
-          `page=${page.next}`
+          `page=${_page.current}`,
+          `page=${_page.next}`
         )
       }
 
-      if (page.last) {
+      if (_page.last) {
         links.last = fullURL.replace(
-          `page=${page.current}`,
-          `page=${page.last}`
+          `page=${_page.current}`,
+          `page=${_page.last}`
         )
       }
 
       res.links(links)
-      chain = _.chain(page.items)
-    } else if (_end) {
-      _start = parseInt(_start, 10) || 0
-      _end = parseInt(_end, 10)
-      chain = chain.slice(_start, _end)
-    } else if (_limit) {
-      _start = parseInt(_start, 10) || 0
-      _limit = parseInt(_limit, 10)
-      chain = chain.slice(_start, _start + _limit)
+      chain = _.chain(_page.items)
+    } else if (end) {
+      start = parseInt(start, 10) || 0
+      end = parseInt(end, 10)
+      chain = chain.slice(start, end)
+    } else if (limit) {
+      start = parseInt(start, 10) || 0
+      limit = parseInt(limit, 10)
+      chain = chain.slice(start, start + limit)
     }
 
     // embed and expand
     chain = chain.cloneDeep().forEach(function(element) {
-      embed(element, _embed)
-      expand(element, _expand)
-      include(element, name, _include)
+      _embed(element, embed)
+      _expand(element, expand)
+      _include(element, name, include)
     })
 
     res.locals.data = chain.value()
@@ -307,11 +307,11 @@ module.exports = (db, name, opts) => {
   }
 
   // GET /name/:id
-  // GET /name/:id?_embed=&_expand
+  // GET /name/:id?embed=&expand
   function show(req, res, next) {
-    const _embed = req.query._embed
-    const _expand = req.query._expand
-    const _include = req.query._include
+    const embed = req.query.embed
+    const expand = req.query.expand
+    const include = req.query.include
     const resource = db
       .get(name)
       .getById(req.params.id)
@@ -322,16 +322,16 @@ module.exports = (db, name, opts) => {
       const clone = _.cloneDeep(resource)
 
       // Embed other resources based on resource id
-      // /posts/1?_embed=comments
-      embed(clone, _embed)
+      // /posts/1?embed=comments
+      _embed(clone, embed)
 
       // Expand inner resources based on id
-      // /posts/1?_expand=user
-      expand(clone, _expand)
+      // /posts/1?expand=user
+      _expand(clone, expand)
 
       // Include many to many resources based on id
-      // /posts/1?_include=users
-      include(clone, name, _include)
+      // /posts/1?include=users
+      _include(clone, name, include)
 
       res.locals.data = clone
     }

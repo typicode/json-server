@@ -43,51 +43,51 @@ describe('Server with custom foreign key', () => {
         .expect(200))
   })
 
-  describe('GET /:resource?_embed=', () => {
+  describe('GET /:resource?embed=', () => {
     test('should respond with corresponding resources and embedded resources', () => {
       const posts = _.cloneDeep(db.posts)
       posts[0].comments = [db.comments[0], db.comments[1]]
       posts[1].comments = [db.comments[2]]
       return request(server)
-        .get('/posts?_embed=comments')
+        .get('/posts?embed=comments')
         .expect('Content-Type', /json/)
         .expect(posts)
         .expect(200)
     })
   })
 
-  describe('GET /:resource/:id?_embed=', () => {
+  describe('GET /:resource/:id?embed=', () => {
     test('should respond with corresponding resources and embedded resources', () => {
       const post = _.cloneDeep(db.posts[0])
       post.comments = [db.comments[0], db.comments[1]]
       return request(server)
-        .get('/posts/1?_embed=comments')
+        .get('/posts/1?embed=comments')
         .expect('Content-Type', /json/)
         .expect(post)
         .expect(200)
     })
   })
 
-  describe('GET /:resource?_expand=', () => {
+  describe('GET /:resource?expand=', () => {
     test('should respond with corresponding resource and expanded inner resources', () => {
       const comments = _.cloneDeep(db.comments)
       comments[0].post = db.posts[0]
       comments[1].post = db.posts[0]
       comments[2].post = db.posts[1]
       return request(server)
-        .get('/comments?_expand=post')
+        .get('/comments?expand=post')
         .expect('Content-Type', /json/)
         .expect(comments)
         .expect(200)
     })
   })
 
-  describe('GET /:resource/:id?_expand=', () => {
+  describe('GET /:resource/:id?expand=', () => {
     test('should respond with corresponding resource and expanded inner resources', () => {
       const comment = _.cloneDeep(db.comments[0])
       comment.post = db.posts[0]
       return request(server)
-        .get('/comments/1?_expand=post')
+        .get('/comments/1?expand=post')
         .expect('Content-Type', /json/)
         .expect(comment)
         .expect(200)

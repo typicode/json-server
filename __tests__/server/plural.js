@@ -11,7 +11,7 @@ describe('Server', () => {
     '/api/*': '/$1',
     '/blog/posts/:id/show': '/posts/:id',
     '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body',
-    '/firstpostwithcomments': '/posts/1?_embed=comments',
+    '/firstpostwithcomments': '/posts/1?embed=comments',
     '/articles\\?_id=:id': '/posts/:id'
   }
 
@@ -214,10 +214,10 @@ describe('Server', () => {
         .expect(200))
   })
 
-  describe('GET /:resource?_end=', () => {
+  describe('GET /:resource?end=', () => {
     test('should respond with a sliced array', () =>
       request(server)
-        .get('/comments?_end=2')
+        .get('/comments?end=2')
         .expect('Content-Type', /json/)
         .expect('x-total-count', db.comments.length.toString())
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
@@ -225,45 +225,45 @@ describe('Server', () => {
         .expect(200))
   })
 
-  describe('GET /:resource?_sort=', () => {
+  describe('GET /:resource?sort=', () => {
     test('should respond with json and sort on a field', () =>
       request(server)
-        .get('/tags?_sort=body')
+        .get('/tags?sort=body')
         .expect('Content-Type', /json/)
         .expect([db.tags[1], db.tags[0], db.tags[2]])
         .expect(200))
 
-    test('should reverse sorting with _order=DESC', () =>
+    test('should reverse sorting with order=DESC', () =>
       request(server)
-        .get('/tags?_sort=body&_order=DESC')
+        .get('/tags?sort=body&order=DESC')
         .expect('Content-Type', /json/)
         .expect([db.tags[2], db.tags[0], db.tags[1]])
         .expect(200))
 
-    test('should reverse sorting with _order=desc (case insensitive)', () =>
+    test('should reverse sorting with order=desc (case insensitive)', () =>
       request(server)
-        .get('/tags?_sort=body&_order=desc')
+        .get('/tags?sort=body&order=desc')
         .expect('Content-Type', /json/)
         .expect([db.tags[2], db.tags[0], db.tags[1]])
         .expect(200))
 
     test('should sort on numerical field', () =>
       request(server)
-        .get('/posts?_sort=id&_order=DESC')
+        .get('/posts?sort=id&order=DESC')
         .expect('Content-Type', /json/)
         .expect(db.posts.reverse())
         .expect(200))
 
     test('should sort on nested field', () =>
       request(server)
-        .get('/nested?_sort=resource.name')
+        .get('/nested?sort=resource.name')
         .expect('Content-Type', /json/)
         .expect([db.nested[1], db.nested[0], db.nested[2]])
         .expect(200))
 
     test('should sort on multiple fields', () =>
       request(server)
-        .get('/buyers?_sort=country,total&_order=asc,desc')
+        .get('/buyers?sort=country,total&order=asc,desc')
         .expect('Content-Type', /json/)
         .expect([
           db.buyers[8],
@@ -279,10 +279,10 @@ describe('Server', () => {
         .expect(200))
   })
 
-  describe('GET /:resource?_start=&_end=', () => {
+  describe('GET /:resource?start=&end=', () => {
     test('should respond with a sliced array', () =>
       request(server)
-        .get('/comments?_start=1&_end=2')
+        .get('/comments?start=1&end=2')
         .expect('Content-Type', /json/)
         .expect('X-Total-Count', db.comments.length.toString())
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
@@ -290,10 +290,10 @@ describe('Server', () => {
         .expect(200))
   })
 
-  describe('GET /:resource?_start=&_limit=', () => {
+  describe('GET /:resource?start=&limit=', () => {
     test('should respond with a limited array', () =>
       request(server)
-        .get('/comments?_start=1&_limit=1')
+        .get('/comments?start=1&limit=1')
         .expect('Content-Type', /json/)
         .expect('X-Total-Count', db.comments.length.toString())
         .expect('Access-Control-Expose-Headers', 'X-Total-Count')
@@ -301,10 +301,10 @@ describe('Server', () => {
         .expect(200))
   })
 
-  describe('GET /:resource?_page=', () => {
+  describe('GET /:resource?page=', () => {
     test('should paginate', () =>
       request(server)
-        .get('/list?_page=2')
+        .get('/list?page=2')
         .expect('Content-Type', /json/)
         .expect('x-total-count', db.list.length.toString())
         .expect('Access-Control-Expose-Headers', 'X-Total-Count, Link')
@@ -312,16 +312,16 @@ describe('Server', () => {
         .expect(200))
   })
 
-  describe('GET /:resource?_page=&_limit=', () => {
+  describe('GET /:resource?page=&limit=', () => {
     test('should paginate with a custom limit', () => {
       const link = [
-        '<http://localhost/list?_page=1&_limit=1>; rel="first"',
-        '<http://localhost/list?_page=1&_limit=1>; rel="prev"',
-        '<http://localhost/list?_page=3&_limit=1>; rel="next"',
-        '<http://localhost/list?_page=15&_limit=1>; rel="last"'
+        '<http://localhost/list?page=1&limit=1>; rel="first"',
+        '<http://localhost/list?page=1&limit=1>; rel="prev"',
+        '<http://localhost/list?page=3&limit=1>; rel="next"',
+        '<http://localhost/list?page=15&limit=1>; rel="last"'
       ].join(', ')
       return request(server)
-        .get('/list?_page=2&_limit=1')
+        .get('/list?page=2&limit=1')
         .set('host', 'localhost')
         .expect('Content-Type', /json/)
         .expect('x-total-count', db.list.length.toString())
@@ -398,20 +398,20 @@ describe('Server', () => {
         .expect(404))
   })
 
-  describe('GET /:resource?_embed=', () => {
+  describe('GET /:resource?embed=', () => {
     test('should respond with corresponding resources and embedded resources', () => {
       const posts = _.cloneDeep(db.posts)
       posts[0].comments = [db.comments[0], db.comments[1]]
       posts[1].comments = [db.comments[2], db.comments[3], db.comments[4]]
       return request(server)
-        .get('/posts?_embed=comments')
+        .get('/posts?embed=comments')
         .expect('Content-Type', /json/)
         .expect(posts)
         .expect(200)
     })
   })
 
-  describe('GET /:resource?_embed&_embed=', () => {
+  describe('GET /:resource?embed&embed=', () => {
     test('should respond with corresponding resources and embedded resources', () => {
       const posts = _.cloneDeep(db.posts)
       posts[0].comments = [db.comments[0], db.comments[1]]
@@ -419,82 +419,82 @@ describe('Server', () => {
       posts[1].comments = [db.comments[2], db.comments[3], db.comments[4]]
       posts[1].refs = []
       return request(server)
-        .get('/posts?_embed=comments&_embed=refs')
+        .get('/posts?embed=comments&embed=refs')
         .expect('Content-Type', /json/)
         .expect(posts)
         .expect(200)
     })
   })
 
-  describe('GET /:resource/:id?_embed=', () => {
+  describe('GET /:resource/:id?embed=', () => {
     test('should respond with corresponding resources and embedded resources', () => {
       const post = _.cloneDeep(db.posts[0])
       post.comments = [db.comments[0], db.comments[1]]
       return request(server)
-        .get('/posts/1?_embed=comments')
+        .get('/posts/1?embed=comments')
         .expect('Content-Type', /json/)
         .expect(post)
         .expect(200)
     })
   })
 
-  describe('GET /:resource/:id?_embed=&_embed=', () => {
+  describe('GET /:resource/:id?embed=&embed=', () => {
     test('should respond with corresponding resource and embedded resources', () => {
       const post = _.cloneDeep(db.posts[0])
       post.comments = [db.comments[0], db.comments[1]]
       post.refs = [db.refs[0]]
       return request(server)
-        .get('/posts/1?_embed=comments&_embed=refs')
+        .get('/posts/1?embed=comments&embed=refs')
         .expect('Content-Type', /json/)
         .expect(post)
         .expect(200)
     })
   })
 
-  describe('GET /:resource?_expand=', () => {
+  describe('GET /:resource?expand=', () => {
     test('should respond with corresponding resource and expanded inner resources', () => {
       const refs = _.cloneDeep(db.refs)
       refs[0].post = db.posts[0]
       return request(server)
-        .get('/refs?_expand=post')
+        .get('/refs?expand=post')
         .expect('Content-Type', /json/)
         .expect(refs)
         .expect(200)
     })
   })
 
-  describe('GET /:resource/:id?_expand=', () => {
+  describe('GET /:resource/:id?expand=', () => {
     test('should respond with corresponding resource and expanded inner resources', () => {
       const comment = _.cloneDeep(db.comments[0])
       comment.post = db.posts[0]
       return request(server)
-        .get('/comments/1?_expand=post')
+        .get('/comments/1?expand=post')
         .expect('Content-Type', /json/)
         .expect(comment)
         .expect(200)
     })
   })
 
-  describe('GET /:resource?_expand=&_expand', () => {
+  describe('GET /:resource?expand=&expand', () => {
     test('should respond with corresponding resource and expanded inner resources', () => {
       const refs = _.cloneDeep(db.refs)
       refs[0].post = db.posts[0]
       refs[0].user = db.users[0]
       return request(server)
-        .get('/refs?_expand=post&_expand=user')
+        .get('/refs?expand=post&expand=user')
         .expect('Content-Type', /json/)
         .expect(refs)
         .expect(200)
     })
   })
 
-  describe('GET /:resource/:id?_expand=&_expand=', () => {
+  describe('GET /:resource/:id?expand=&expand=', () => {
     test('should respond with corresponding resource and expanded inner resources', () => {
       const comments = db.comments[0]
       comments.post = db.posts[0]
       comments.user = db.users[0]
       return request(server)
-        .get('/comments/1?_expand=post&_expand=user')
+        .get('/comments/1?expand=post&expand=user')
         .expect('Content-Type', /json/)
         .expect(comments)
         .expect(200)

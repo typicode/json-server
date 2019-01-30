@@ -60,7 +60,7 @@ If you're rewriting default routes, you'll need to update your `routes.json` fil
 
 ## 0.10.1 - 2017-05-16
 
-* Multiple fields sorting `GET /posts?_sort=user,views&_order=desc,asc`
+* Multiple fields sorting `GET /posts?sort=user,views&order=desc,asc`
 
 ## 0.10.0 - 2017-04-26
 
@@ -116,7 +116,7 @@ If you're rewriting default routes, you'll need to update your `routes.json` fil
 
 ## 0.8.22 - 2016-10-04
 
-* Fix `Links` header issue when using `_page`
+* Fix `Links` header issue when using `page`
 * Add query params support to the route rewriter
 
 ## 0.8.21 - 2016-09-13
@@ -126,7 +126,7 @@ If you're rewriting default routes, you'll need to update your `routes.json` fil
 ## 0.8.20 - 2016-09-12
 
 * Fix [#355](https://github.com/typicode/json-server/issues/355)
-* Add `_page` support
+* Add `page` support
 
 ## 0.8.19 - 2016-08-18
 
@@ -162,7 +162,7 @@ If you're rewriting default routes, you'll need to update your `routes.json` fil
 
 ## 0.8.11 - 2016-05-08
 
-* Support sort by nested field (e.g. `_sort=author.name`)
+* Support sort by nested field (e.g. `sort=author.name`)
 * Fix `graceful-fs` warning
 
 ## 0.8.10 - 2016-04-18
