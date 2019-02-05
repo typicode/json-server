@@ -24,7 +24,9 @@ See also:
   </a>
 </p>
 
-[[Become a sponsor and have your company logo here]](https://patreon.com/typicode)
+<p align="center">
+  <a href="https://patreon.com/typicode">Become a sponsor and have your company logo here</a>
+</p>
 
 ## Table of contents
 
