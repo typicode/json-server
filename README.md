@@ -18,6 +18,12 @@ See also:
 
 ## Sponsors
 
+<p>
+  <a href="https://tryretool.com/?utm_source=sponsor&utm_campaign=typicode" target="_blank">
+    <img src="https://i.imgur.com/IBItATn.png" height="60px">
+  </a>
+</p>
+
 __[[Become a sponsor and have your company logo here]](https://patreon.com/typicode)__
 
 ## Table of contents
