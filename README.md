@@ -571,6 +571,10 @@ Returns JSON Server router.
 
 You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholder.typicode.com) is an online fake API powered by JSON Server and running on Heroku.
 
+Another option for AWS Cloud: 
+Serverless deployment of json server in a AWS lambda (FaaS)
+[json-server-less-λ](https://github.com/pharindoko/json-server-less-lambda)
+
 ## Links
 
 ### Video
