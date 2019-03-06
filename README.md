@@ -16,13 +16,25 @@ See also:
   <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
 </a>
 
-## Sponsors
+<h2 align="center">Sponsors</h2>
+
+<p>&nbsp;</p>
 
 <p align="center">
   <a href="https://tryretool.com/?utm_source=sponsor&utm_campaign=typicode" target="_blank">
     <img src="https://i.imgur.com/IBItATn.png" height="60px">
   </a>
 </p>
+
+<p>&nbsp;</p>
+
+<p align="center">
+  <a href="https://www.zinggrid.com/?utm_source=jsonserver&utm_medium=github&utm_campaign=sponsorship" target="_blank">
+    <img src="https://i.imgur.com/3mJGTAQ.png" height="30px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
 
 <p align="center">
   <a href="https://patreon.com/typicode">Become a sponsor and have your company logo here</a>
@@ -32,7 +44,6 @@ See also:
 
 <!-- toc -->
 
-- [Sponsorship](#sponsorship)
 - [Getting started](#getting-started)
 - [Routes](#routes)
   * [Plural routes](#plural-routes)
