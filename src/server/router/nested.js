@@ -17,7 +17,7 @@ module.exports = opts => {
   // Rewrite URL (/:resource/:id/:nested -> /:nested) and request body
   function post(req, res, next) {
     const prop = pluralize.singular(req.params.resource)
-    req.body[`${prop}${opts.foreignKeySuffix}`] = req.params.id
+    req.body[`${prop}${opts.foreignKeySuffix}`] = parseInt(req.params.id)
     req.url = `/${req.params.nested}`
     next()
   }
