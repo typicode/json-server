@@ -279,6 +279,22 @@ describe('Server', () => {
         .expect(200))
   })
 
+  describe('GET /:resource?_field=', () => {
+    test('should return only selected field', () =>
+      request(server)
+        .get('/users?_field=id')
+        .expect('Content-Type', /json/)
+        .expect(_.map(db.users, u => _.pick(u, ['id'])))
+        .expect(200))
+
+    test('should support multiple fields filter', () =>
+      request(server)
+        .get('/users?_field=id,username')
+        .expect('Content-Type', /json/)
+        .expect(_.map(db.users, u => _.pick(u, ['id', 'username'])))
+        .expect(200))
+  })
+
   describe('GET /:resource?_start=&_end=', () => {
     test('should respond with a sliced array', () =>
       request(server)
@@ -434,6 +450,18 @@ describe('Server', () => {
         .get('/posts/1?_embed=comments')
         .expect('Content-Type', /json/)
         .expect(post)
+        .expect(200)
+    })
+  })
+
+  describe('GET /:resource/:id?_field=', () => {
+    test('should respond with corresponding filtered fields', () => {
+      return request(server)
+        .get('/posts/1?_field=body')
+        .expect('Content-Type', /json/)
+        .expect({
+          body: db.posts[0].body
+        })
         .expect(200)
     })
   })

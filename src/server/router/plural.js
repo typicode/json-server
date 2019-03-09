@@ -1,6 +1,5 @@
 const express = require('express')
 const _ = require('lodash')
-const pluralize = require('pluralize')
 const write = require('./write')
 const getFullURL = require('./get-full-url')
 const utils = require('../utils')
@@ -10,37 +9,6 @@ module.exports = (db, name, opts) => {
   // Create router
   const router = express.Router()
   router.use(delay)
-
-  // Embed function used in GET /name and GET /name/id
-  function embed(resource, e) {
-    e &&
-      [].concat(e).forEach(externalResource => {
-        if (db.get(externalResource).value) {
-          const query = {}
-          const singularResource = pluralize.singular(name)
-          query[`${singularResource}${opts.foreignKeySuffix}`] = resource.id
-          resource[externalResource] = db
-            .get(externalResource)
-            .filter(query)
-            .value()
-        }
-      })
-  }
-
-  // Expand function used in GET /name and GET /name/id
-  function expand(resource, e) {
-    e &&
-      [].concat(e).forEach(innerResource => {
-        const plural = pluralize(innerResource)
-        if (db.get(plural).value()) {
-          const prop = `${innerResource}${opts.foreignKeySuffix}`
-          resource[innerResource] = db
-            .get(plural)
-            .getById(resource[prop])
-            .value()
-        }
-      })
-  }
 
   // GET /name
   // GET /name?q=
@@ -59,6 +27,7 @@ module.exports = (db, name, opts) => {
     let _end = req.query._end
     let _page = req.query._page
     let _sort = req.query._sort
+    let _field = req.query._field
     let _order = req.query._order
     let _limit = req.query._limit
     let _embed = req.query._embed
@@ -67,6 +36,7 @@ module.exports = (db, name, opts) => {
     delete req.query._start
     delete req.query._end
     delete req.query._sort
+    delete req.query._field
     delete req.query._order
     delete req.query._limit
     delete req.query._embed
@@ -217,9 +187,14 @@ module.exports = (db, name, opts) => {
 
     // embed and expand
     chain = chain.cloneDeep().forEach(function(element) {
-      embed(element, _embed)
-      expand(element, _expand)
+      utils.embed(element, name, db, opts, _embed)
+      utils.expand(element, db, opts, _expand)
     })
+
+    // Filter fields
+    if (_field) {
+      chain = utils.fields(chain, _field)
+    }
 
     res.locals.data = chain.value()
     next()
@@ -230,6 +205,7 @@ module.exports = (db, name, opts) => {
   function show(req, res, next) {
     const _embed = req.query._embed
     const _expand = req.query._expand
+    const _field = req.query._field
     const resource = db
       .get(name)
       .getById(req.params.id)
@@ -237,15 +213,18 @@ module.exports = (db, name, opts) => {
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
-      const clone = _.cloneDeep(resource)
+      let clone = _.cloneDeep(resource)
+
+      // Optionally filter returned fields
+      clone = utils.fields(clone, _field)
 
       // Embed other resources based on resource id
       // /posts/1?_embed=comments
-      embed(clone, _embed)
+      utils.embed(clone, name, db, opts, _embed)
 
       // Expand inner resources based on id
       // /posts/1?_expand=user
-      expand(clone, _expand)
+      utils.expand(clone, db, opts, _expand)
 
       res.locals.data = clone
     }

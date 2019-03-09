@@ -2,13 +2,24 @@ const express = require('express')
 const write = require('./write')
 const getFullURL = require('./get-full-url')
 const delay = require('./delay')
+const utils = require('../utils')
 
 module.exports = (db, name, opts) => {
   const router = express.Router()
   router.use(delay)
 
   function show(req, res, next) {
-    res.locals.data = db.get(name).value()
+    let chain = db.get(name)
+    let _field = req.query._field
+    let _expand = req.query._expand
+    let _embed = req.query._embed
+
+    // Apply filters
+    chain = utils.expand(chain, db, opts, _expand)
+    chain = utils.embed(chain, name, db, opts, _embed)
+    chain = utils.fields(chain, _field)
+
+    res.locals.data = chain.value()
     next()
   }
 
