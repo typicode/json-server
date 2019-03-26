@@ -1,4 +1,61 @@
 {
+  "patients": [
+        {
+            "id": 1,
+            "name": "Ram",
+            "age": 24,
+            "dob": "01-10-1998",
+            "height":5.9,
+            "weight":"79 KG",
+            "phone":1234567894,
+            "email": "ram@xyz.com",
+            "address": "Bangalore"
+        },
+        {
+            "id": 2,
+            "name": "Suresh",
+            "age": 30,
+            "dob": "01-10-1988",
+            "height":5.11,
+            "weight":"89 KG",
+            "phone":7894561236,
+            "email": "suresh@xyz.com",
+            "address": "Chennai"
+        },
+        {
+            "id":3,
+            "name": "Sanjay",
+            "age": 35,
+            "dob": "30-10-1989",
+            "height":5.12,
+            "weight":"85 KG",
+            "phone":4567891325,
+            "email": "sanjay@xyz.com",
+            "address": "Hyderabad"
+        },
+        {
+            "id": 4,
+            "name": "Nixon",
+            "age": 25,
+            "dob": "13-09-1993",
+            "height":5.11,
+            "weight":"85 KG",
+            "phone":7412589631,
+            "email": "nixon@xyz.com",
+            "address": "Kerla"
+        },
+        {
+            "id": 5,
+            "name": "Jyoti",
+            "age": 24,
+            "dob": "12-12-1994",
+            "height":5.5,
+            "weight":"54 KG",
+            "phone":2587413698,
+            "email": "jyoti@xyz.com",
+            "address": "Lucknow"
+        }
+    ],
   "posts": [
     { "id": 1, "title": "json-server", "author": "typicode" }
   ],
