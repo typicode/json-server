@@ -18,7 +18,7 @@ See also:
 
 <h2 align="center">Sponsors</h2>
 
-<p>&nbsp;</p>
+<h3 align="center">Gold</h3>
 
 <p align="center">
   <a href="https://tryretool.com/?utm_source=sponsor&utm_campaign=typicode" target="_blank">
@@ -26,7 +26,7 @@ See also:
   </a>
 </p>
 
-<p>&nbsp;</p>
+<h3 align="center">Bronze</h3>
 
 <p align="center">
   <a href="https://www.zinggrid.com/?utm_source=jsonserver&utm_medium=github&utm_campaign=sponsorship" target="_blank">
