@@ -5,12 +5,12 @@ Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (serio
 Created with <3 for front-end developers who need a quick back-end for prototyping and mocking.
 
 * [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
-* [JSONPlaceholder - Live running version](http://jsonplaceholder.typicode.com)
+* [JSONPlaceholder - Live running version](https://jsonplaceholder.typicode.com)
+* [__My JSON Server__ - no installation required, use your own data](https://my-json-server.typicode.com)
 
 See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
 * :hotel: [hotel - developer tool with local .localhost domain and https out of the box](https://github.com/typicode/hotel)
-* ⚛️ 🔧 [react-lodash - lodash as React components](https://github.com/typicode/react-lodash)
 
 <a href="https://www.patreon.com/typicode">
   <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
