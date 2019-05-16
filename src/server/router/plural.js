@@ -55,6 +55,7 @@ module.exports = (db, name, opts) => {
     // Remove q, _start, _end, ... from req.query to avoid filtering using those
     // parameters
     let q = req.query.q
+    let prop = req.query.prop
     let _start = req.query._start
     let _end = req.query._end
     let _page = req.query._page
@@ -63,7 +64,9 @@ module.exports = (db, name, opts) => {
     let _limit = req.query._limit
     let _embed = req.query._embed
     let _expand = req.query._expand
+    let _keys = req.query._keys
     delete req.query.q
+    delete req.query.prop
     delete req.query._start
     delete req.query._end
     delete req.query._sort
@@ -71,6 +74,7 @@ module.exports = (db, name, opts) => {
     delete req.query._limit
     delete req.query._embed
     delete req.query._expand
+    delete req.query._keys
 
     // Automatically delete query parameters that can't be found
     // in the database
@@ -84,7 +88,8 @@ module.exports = (db, name, opts) => {
           /_lte$/.test(query) ||
           /_gte$/.test(query) ||
           /_ne$/.test(query) ||
-          /_like$/.test(query)
+          /_like$/.test(query) ||
+          /_contains$/.test(query)
         )
           return
       }
@@ -101,6 +106,9 @@ module.exports = (db, name, opts) => {
 
       chain = chain.filter(obj => {
         for (let key in obj) {
+          // ignore key(field)
+          if (prop && prop.indexOf(key) === -1) continue
+
           const value = obj[key]
           if (db._.deepQuery(value, q)) {
             return true
@@ -122,7 +130,8 @@ module.exports = (db, name, opts) => {
               const isDifferent = /_ne$/.test(key)
               const isRange = /_lte$/.test(key) || /_gte$/.test(key)
               const isLike = /_like$/.test(key)
-              const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
+              const isContains = /_contains$/.test(key)
+              const path = key.replace(/(_lte|_gte|_ne|_like|_contains)$/, '')
               // get item value based on path
               // i.e post.title -> 'foo'
               const elementValue = _.get(element, path)
@@ -141,7 +150,17 @@ module.exports = (db, name, opts) => {
               } else if (isDifferent) {
                 return value !== elementValue.toString()
               } else if (isLike) {
-                return new RegExp(value, 'i').test(elementValue.toString())
+                var rx = new RegExp(value, 'i')
+                if (Array.isArray(elementValue)) {
+                  return elementValue.some(x => rx.test(x.toString()))
+                }
+                return rx.test(elementValue.toString())
+              } else if (isContains) {
+                if (!Array.isArray(elementValue)) {
+                  res.status(400)
+                  return false
+                }
+                return elementValue.includes(value)
               } else {
                 return value === elementValue.toString()
               }
@@ -220,6 +239,13 @@ module.exports = (db, name, opts) => {
       embed(element, _embed)
       expand(element, _expand)
     })
+    console.log('_keys:', _keys)
+    // return only properties listed
+    if (_keys) {
+      // filter properties down by key
+      let a = _keys.split(',')
+      chain = chain.map(_.partial(_.pick, _, a))
+    }
 
     res.locals.data = chain.value()
     next()

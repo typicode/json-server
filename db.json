@@ -1,9 +1,104 @@
 {
   "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
   ],
   "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
   ],
-  "profile": { "name": "typicode" }
+  "profile": {
+    "name": "typicode"
+  },
+  "sessions": [
+    {
+      "id": 1,
+      "name": "blazor",
+      "tags": [
+        ".core",
+        "server",
+        "client",
+        "javascript"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "node",
+      "tags": [
+        "javascript",
+        "server",
+        "client"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "cosmosdb",
+      "tags": [
+        "javascript",
+        "database"
+      ]
+    }
+  ],
+  "buyers": [
+    {
+      "id": 1,
+      "name": "Aileen",
+      "country": "Colombia",
+      "total": 100
+    },
+    {
+      "id": 2,
+      "name": "Barney",
+      "country": "Colombia",
+      "total": 200
+    },
+    {
+      "id": 3,
+      "name": "Carley",
+      "country": "Colombia",
+      "total": 300
+    },
+    {
+      "id": 4,
+      "name": "Daniel",
+      "country": "Belize",
+      "total": 30
+    },
+    {
+      "id": 5,
+      "name": "Ellen",
+      "country": "Belize",
+      "total": 20
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "country": "Belize",
+      "total": 10
+    },
+    {
+      "id": 7,
+      "name": "Grace",
+      "country": "Argentina",
+      "total": 1
+    },
+    {
+      "id": 8,
+      "name": "Henry",
+      "country": "Argentina",
+      "total": 2
+    },
+    {
+      "id": 9,
+      "name": "Isabelle",
+      "country": "Argentina",
+      "total": 3
+    }
+  ]
 }

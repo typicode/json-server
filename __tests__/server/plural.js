@@ -21,15 +21,27 @@ describe('Server', () => {
     db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
 
     db.tags = [
-      { id: 1, body: 'Technology' },
-      { id: 2, body: 'Photography' },
-      { id: 3, body: 'photo' }
+      { id: 1, body: 'Technology', tags: ['common', 'business'] },
+      { id: 2, body: 'Photography', tags: ['common', 'individual'] },
+      { id: 3, body: 'photo', tags: ['individual'] }
+    ]
+
+    db.frameworks = [
+      {
+        id: 1,
+        url: 'vue',
+        tags: ['javascript', 'reactive', 'slots']
+      },
+      { id: 2, url: 'angular', tags: ['typescript', 'framework'] },
+      { id: 3, url: 'react', tags: ['javascript', 'framework', 'reactive'] }
     ]
 
     db.users = [
       { id: 1, username: 'Jim', tel: '0123' },
       { id: 2, username: 'George', tel: '123' }
     ]
+
+    db.keyed = [{ id: 1, username: 'Jim' }, { id: 2, username: 'George' }]
 
     db.comments = [
       { id: 1, body: 'foo', published: true, postId: 1, userId: 1 },
@@ -114,6 +126,15 @@ describe('Server', () => {
       request(server)
         .get('/undefined')
         .expect(404))
+  })
+
+  describe('GET /:resource?_keys=', () => {
+    it('should get only specific properties', () =>
+      request(server)
+        .get('/users?_keys=id,username')
+        .expect('Content-Type', /json/)
+        .expect(db.keyed)
+        .expect(200))
   })
 
   describe('GET /:resource?attr=&attr=', () => {
@@ -212,6 +233,42 @@ describe('Server', () => {
         .expect('Content-Type', /json/)
         .expect([db.comments[1], db.comments[2], db.comments[4]])
         .expect(200))
+
+    test.only('should support limiting filter to specific property', () =>
+      request(server)
+        .get('/buyers?q=en&prop=name')
+        .expect('Content-Type', /json/)
+        .expect([db.buyers[0], db.buyers[4], db.buyers[7]])
+        .expect(200))
+
+    test.only('should support limiting filter to specific properties', () =>
+      request(server)
+        .get('/buyers?q=el&prop=name&prop=country')
+        .expect('Content-Type', /json/)
+        .expect([
+          db.buyers[0],
+          db.buyers[4],
+          db.buyers[6],
+          db.buyers[7],
+          db.buyers[8]
+        ])
+        .expect(200))
+  })
+
+  describe.only('GET /:resource?field_includes=', () => {
+    test('should return entries where the field contains the text', () =>
+      request(server)
+        .get('/frameworks?tags_like=reactive')
+        .expect('Content-Type', /json/)
+        .expect([db.frameworks[0], db.frameworks[2]])
+        .expect(200))
+
+    test('should respond with Bad Request status code if field is not an array', () =>
+      request(server)
+        .get('/frameworks?url_contains=script')
+        .expect('Content-Type', /json/)
+        .expect([])
+        .expect(400))
   })
 
   describe('GET /:resource?_end=', () => {
@@ -356,6 +413,13 @@ describe('Server', () => {
         .get('/tags?body_like=photo')
         .expect('Content-Type', /json/)
         .expect([db.tags[1], db.tags[2]])
+        .expect(200))
+
+    test('should respond with an array that matches the like operator (case insensitive) for an array', () =>
+      request(server)
+        .get('/tags?tags_like=common')
+        .expect('Content-Type', /json/)
+        .expect([db.tags[0], db.tags[1]])
         .expect(200))
   })
 

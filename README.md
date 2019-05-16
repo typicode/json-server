@@ -214,10 +214,15 @@ Add `_ne` to exclude a value
 GET /posts?id_ne=1
 ```
 
-Add `_like` to filter (RegExp supported)
+Add `_like` to filter (RegExp supported) also supports arrays
 
 ```
 GET /posts?title_like=server
+```
+
+Add `_contains` to search arrays (this is CaseSensitive)
+```
+GET /posts?tags_contains=server
 ```
 
 ### Full-text search
@@ -226,6 +231,25 @@ Add `q`
 
 ```
 GET /posts?q=internet
+```
+
+Add `q` with `prop` to limit the search fields
+
+```
+GET /posts?q=internet&prop=title
+```
+or expand to multiple fields
+
+```
+GET /posts?q=internet&prop=title&prop=second_field
+```
+
+### Map Results
+
+Add `_keys` to limit the results
+
+```
+GET /buyers?_keys=id,name
 ```
 
 ### Relationships
