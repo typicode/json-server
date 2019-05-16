@@ -1,7 +1,8 @@
+const assert = require('assert')
 const request = require('supertest')
 const jsonServer = require('../../src/server')
 
-describe('Server', () => {
+describe('Fake server', () => {
   let server
   let router
   let db
@@ -15,47 +16,44 @@ describe('Server', () => {
     }
 
     server = jsonServer.create()
-    router = jsonServer.router(db)
+    router = jsonServer.router(db, { _isFake: true })
     server.use(jsonServer.defaults())
     server.use(router)
   })
 
-  describe('GET /:resource', () => {
-    it('should respond with corresponding resource', () =>
-      request(server)
-        .get('/user')
-        .expect(db.user)
-        .expect(200))
-  })
-
   describe('POST /:resource', () => {
-    it('should create resource', () => {
+    test('should not create resource', async () => {
       const user = { name: 'bar' }
-      return request(server)
+      await request(server)
         .post('/user')
         .send(user)
         .expect(user)
         .expect(201)
+      assert.notDeepStrictEqual(db.user, user)
     })
   })
 
   describe('PUT /:resource', () => {
-    it('should update resource', () => {
+    test('should not update resource', async () => {
       const user = { name: 'bar' }
-      return request(server)
+      await request(server)
         .put('/user')
         .send(user)
         .expect(user)
         .expect(200)
+      assert.notDeepStrictEqual(db.user, user)
     })
   })
 
   describe('PATCH /:resource', () => {
-    it('should update resource', () =>
-      request(server)
+    test('should not update resource', async () => {
+      const user = { name: 'bar' }
+      await request(server)
         .patch('/user')
-        .send({ name: 'bar' })
+        .send(user)
         .expect({ name: 'bar', email: 'foo@example.com' })
-        .expect(200))
+        .expect(200)
+      assert.notDeepStrictEqual(db.user, user)
+    })
   })
 })

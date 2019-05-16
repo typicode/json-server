@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['standard', 'prettier'],
+  extends: ['standard', 'standard-preact', 'prettier'],
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': [
@@ -10,5 +10,5 @@ module.exports = {
       },
     ]
   },
-  env: { mocha: true }
+  env: { jest: true }
 }

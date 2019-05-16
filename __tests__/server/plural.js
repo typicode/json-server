@@ -91,7 +91,7 @@ describe('Server', () => {
   })
 
   describe('GET /db', () => {
-    it('should respond with json and full database', () =>
+    test('should respond with json and full database', () =>
       request(server)
         .get('/db')
         .expect('Content-Type', /json/)
@@ -100,7 +100,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource', () => {
-    it('should respond with json and corresponding resources', () =>
+    test('should respond with json and corresponding resources', () =>
       request(server)
         .get('/posts')
         .set('Origin', 'http://example.com')
@@ -110,49 +110,49 @@ describe('Server', () => {
         .expect(db.posts)
         .expect(200))
 
-    it('should respond with 404 if resource is not found', () =>
+    test('should respond with 404 if resource is not found', () =>
       request(server)
         .get('/undefined')
         .expect(404))
   })
 
   describe('GET /:resource?attr=&attr=', () => {
-    it('should respond with json and filter resources', () =>
+    test('should respond with json and filter resources', () =>
       request(server)
         .get('/comments?postId=1&published=true')
         .expect('Content-Type', /json/)
         .expect([db.comments[0]])
         .expect(200))
 
-    it('should be strict', () =>
+    test('should be strict', () =>
       request(server)
         .get('/users?tel=123')
         .expect('Content-Type', /json/)
         .expect([db.users[1]])
         .expect(200))
 
-    it('should support multiple filters', () =>
+    test('should support multiple filters', () =>
       request(server)
         .get('/comments?id=1&id=2')
         .expect('Content-Type', /json/)
         .expect([db.comments[0], db.comments[1]])
         .expect(200))
 
-    it('should support deep filter', () =>
+    test('should support deep filter', () =>
       request(server)
         .get('/deep?a.b=1')
         .expect('Content-Type', /json/)
         .expect([db.deep[0]])
         .expect(200))
 
-    it('should ignore JSONP query parameters callback and _ ', () =>
+    test('should ignore JSONP query parameters callback and _ ', () =>
       request(server)
         .get('/comments?callback=1&_=1')
         .expect('Content-Type', /text/)
         .expect(new RegExp(db.comments[0].body)) // JSONP returns text
         .expect(200))
 
-    it('should ignore unknown query parameters', () =>
+    test('should ignore unknown query parameters', () =>
       request(server)
         .get('/comments?foo=1&bar=2')
         .expect('Content-Type', /json/)
@@ -160,7 +160,7 @@ describe('Server', () => {
         .expect(200))
 
     // https://github.com/typicode/json-server/issues/510
-    it('should not fail with null value', () => {
+    test('should not fail with null value', () => {
       db.posts.push({ id: 99, body: null })
       return request(server)
         .get('/posts?body=foo')
@@ -171,42 +171,42 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?q=', () => {
-    it('should respond with json and make a full-text search', () =>
+    test('should respond with json and make a full-text search', () =>
       request(server)
         .get('/tags?q=pho')
         .expect('Content-Type', /json/)
         .expect([db.tags[1], db.tags[2]])
         .expect(200))
 
-    it('should respond with json and make a deep full-text search', () =>
+    test('should respond with json and make a deep full-text search', () =>
       request(server)
         .get('/deep?q=1')
         .expect('Content-Type', /json/)
         .expect(db.deep)
         .expect(200))
 
-    it('should return an empty array when nothing is matched', () =>
+    test('should return an empty array when nothing is matched', () =>
       request(server)
         .get('/tags?q=nope')
         .expect('Content-Type', /json/)
         .expect([])
         .expect(200))
 
-    it('should support other query parameters', () =>
+    test('should support other query parameters', () =>
       request(server)
         .get('/comments?q=qu&published=true')
         .expect('Content-Type', /json/)
         .expect([db.comments[3]])
         .expect(200))
 
-    it('should ignore duplicate q query parameters', () =>
+    test('should ignore duplicate q query parameters', () =>
       request(server)
         .get('/comments?q=foo&q=bar')
         .expect('Content-Type', /json/)
         .expect([db.comments[0]])
         .expect(200))
 
-    it('should support filtering by boolean value false', () =>
+    test('should support filtering by boolean value false', () =>
       request(server)
         .get('/comments?published=false')
         .expect('Content-Type', /json/)
@@ -215,7 +215,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?_end=', () => {
-    it('should respond with a sliced array', () =>
+    test('should respond with a sliced array', () =>
       request(server)
         .get('/comments?_end=2')
         .expect('Content-Type', /json/)
@@ -226,42 +226,42 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?_sort=', () => {
-    it('should respond with json and sort on a field', () =>
+    test('should respond with json and sort on a field', () =>
       request(server)
         .get('/tags?_sort=body')
         .expect('Content-Type', /json/)
         .expect([db.tags[1], db.tags[0], db.tags[2]])
         .expect(200))
 
-    it('should reverse sorting with _order=DESC', () =>
+    test('should reverse sorting with _order=DESC', () =>
       request(server)
         .get('/tags?_sort=body&_order=DESC')
         .expect('Content-Type', /json/)
         .expect([db.tags[2], db.tags[0], db.tags[1]])
         .expect(200))
 
-    it('should reverse sorting with _order=desc (case insensitive)', () =>
+    test('should reverse sorting with _order=desc (case insensitive)', () =>
       request(server)
         .get('/tags?_sort=body&_order=desc')
         .expect('Content-Type', /json/)
         .expect([db.tags[2], db.tags[0], db.tags[1]])
         .expect(200))
 
-    it('should sort on numerical field', () =>
+    test('should sort on numerical field', () =>
       request(server)
         .get('/posts?_sort=id&_order=DESC')
         .expect('Content-Type', /json/)
         .expect(db.posts.reverse())
         .expect(200))
 
-    it('should sort on nested field', () =>
+    test('should sort on nested field', () =>
       request(server)
         .get('/nested?_sort=resource.name')
         .expect('Content-Type', /json/)
         .expect([db.nested[1], db.nested[0], db.nested[2]])
         .expect(200))
 
-    it('should sort on multiple fields', () =>
+    test('should sort on multiple fields', () =>
       request(server)
         .get('/buyers?_sort=country,total&_order=asc,desc')
         .expect('Content-Type', /json/)
@@ -280,7 +280,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?_start=&_end=', () => {
-    it('should respond with a sliced array', () =>
+    test('should respond with a sliced array', () =>
       request(server)
         .get('/comments?_start=1&_end=2')
         .expect('Content-Type', /json/)
@@ -291,7 +291,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?_start=&_limit=', () => {
-    it('should respond with a limited array', () =>
+    test('should respond with a limited array', () =>
       request(server)
         .get('/comments?_start=1&_limit=1')
         .expect('Content-Type', /json/)
@@ -302,7 +302,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?_page=', () => {
-    it('should paginate', () =>
+    test('should paginate', () =>
       request(server)
         .get('/list?_page=2')
         .expect('Content-Type', /json/)
@@ -313,7 +313,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?_page=&_limit=', () => {
-    it('should paginate with a custom limit', () => {
+    test('should paginate with a custom limit', () => {
       const link = [
         '<http://localhost/list?_page=1&_limit=1>; rel="first"',
         '<http://localhost/list?_page=1&_limit=1>; rel="prev"',
@@ -333,7 +333,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?attr_gte=&attr_lte=', () => {
-    it('should respond with a limited array', () =>
+    test('should respond with a limited array', () =>
       request(server)
         .get('/comments?id_gte=2&id_lte=3')
         .expect('Content-Type', /json/)
@@ -342,7 +342,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?attr_ne=', () => {
-    it('should respond with a limited array', () =>
+    test('should respond with a limited array', () =>
       request(server)
         .get('/comments?id_ne=1')
         .expect('Content-Type', /json/)
@@ -351,7 +351,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?attr_like=', () => {
-    it('should respond with an array that matches the like operator (case insensitive)', () =>
+    test('should respond with an array that matches the like operator (case insensitive)', () =>
       request(server)
         .get('/tags?body_like=photo')
         .expect('Content-Type', /json/)
@@ -360,7 +360,7 @@ describe('Server', () => {
   })
 
   describe('GET /:parent/:parentId/:resource', () => {
-    it('should respond with json and corresponding nested resources', () =>
+    test('should respond with json and corresponding nested resources', () =>
       request(server)
         .get('/posts/1/comments')
         .expect('Content-Type', /json/)
@@ -369,28 +369,28 @@ describe('Server', () => {
   })
 
   describe('GET /:resource/:id', () => {
-    it('should respond with json and corresponding resource', () =>
+    test('should respond with json and corresponding resource', () =>
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
         .expect(db.posts[0])
         .expect(200))
 
-    it('should support string id, respond with json and corresponding resource', () =>
+    test('should support string id, respond with json and corresponding resource', () =>
       request(server)
         .get('/refs/abcd-1234')
         .expect('Content-Type', /json/)
         .expect(db.refs[0])
         .expect(200))
 
-    it('should support integer id as string', () =>
+    test('should support integer id as string', () =>
       request(server)
         .get('/stringIds/1234')
         .expect('Content-Type', /json/)
         .expect(db.stringIds[0])
         .expect(200))
 
-    it('should respond with 404 if resource is not found', () =>
+    test('should respond with 404 if resource is not found', () =>
       request(server)
         .get('/posts/9001')
         .expect('Content-Type', /json/)
@@ -399,7 +399,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?_embed=', () => {
-    it('should respond with corresponding resources and embedded resources', () => {
+    test('should respond with corresponding resources and embedded resources', () => {
       const posts = _.cloneDeep(db.posts)
       posts[0].comments = [db.comments[0], db.comments[1]]
       posts[1].comments = [db.comments[2], db.comments[3], db.comments[4]]
@@ -412,7 +412,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?_embed&_embed=', () => {
-    it('should respond with corresponding resources and embedded resources', () => {
+    test('should respond with corresponding resources and embedded resources', () => {
       const posts = _.cloneDeep(db.posts)
       posts[0].comments = [db.comments[0], db.comments[1]]
       posts[0].refs = [db.refs[0]]
@@ -427,7 +427,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource/:id?_embed=', () => {
-    it('should respond with corresponding resources and embedded resources', () => {
+    test('should respond with corresponding resources and embedded resources', () => {
       const post = _.cloneDeep(db.posts[0])
       post.comments = [db.comments[0], db.comments[1]]
       return request(server)
@@ -439,7 +439,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource/:id?_embed=&_embed=', () => {
-    it('should respond with corresponding resource and embedded resources', () => {
+    test('should respond with corresponding resource and embedded resources', () => {
       const post = _.cloneDeep(db.posts[0])
       post.comments = [db.comments[0], db.comments[1]]
       post.refs = [db.refs[0]]
@@ -452,7 +452,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?_expand=', () => {
-    it('should respond with corresponding resource and expanded inner resources', () => {
+    test('should respond with corresponding resource and expanded inner resources', () => {
       const refs = _.cloneDeep(db.refs)
       refs[0].post = db.posts[0]
       return request(server)
@@ -464,7 +464,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource/:id?_expand=', () => {
-    it('should respond with corresponding resource and expanded inner resources', () => {
+    test('should respond with corresponding resource and expanded inner resources', () => {
       const comment = _.cloneDeep(db.comments[0])
       comment.post = db.posts[0]
       return request(server)
@@ -476,7 +476,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource?_expand=&_expand', () => {
-    it('should respond with corresponding resource and expanded inner resources', () => {
+    test('should respond with corresponding resource and expanded inner resources', () => {
       const refs = _.cloneDeep(db.refs)
       refs[0].post = db.posts[0]
       refs[0].user = db.users[0]
@@ -489,7 +489,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource/:id?_expand=&_expand=', () => {
-    it('should respond with corresponding resource and expanded inner resources', () => {
+    test('should respond with corresponding resource and expanded inner resources', () => {
       const comments = db.comments[0]
       comments.post = db.posts[0]
       comments.user = db.users[0]
@@ -502,7 +502,7 @@ describe('Server', () => {
   })
 
   describe('GET /:resource>_delay=', () => {
-    it('should delay response', done => {
+    test('should delay response', done => {
       const start = new Date()
       request(server)
         .get('/posts?_delay=1100')
@@ -514,7 +514,7 @@ describe('Server', () => {
   })
 
   describe('POST /:resource', () => {
-    it('should respond with json, create a resource and increment id', async () => {
+    test('should respond with json, create a resource and increment id', async () => {
       await request(server)
         .post('/posts')
         .send({ body: 'foo', booleanValue: true, integerValue: 1 })
@@ -523,10 +523,10 @@ describe('Server', () => {
         .expect('Content-Type', /json/)
         .expect({ id: 3, body: 'foo', booleanValue: true, integerValue: 1 })
         .expect(201)
-      assert.equal(db.posts.length, 3)
+      assert.strictEqual(db.posts.length, 3)
     })
 
-    it('should support x-www-form-urlencoded', async () => {
+    test('should support x-www-form-urlencoded', async () => {
       await request(server)
         .post('/posts')
         .type('form')
@@ -535,31 +535,31 @@ describe('Server', () => {
         // x-www-form-urlencoded will convert to string
         .expect({ id: 3, body: 'foo', booleanValue: 'true', integerValue: '1' })
         .expect(201)
-      assert.equal(db.posts.length, 3)
+      assert.strictEqual(db.posts.length, 3)
     })
 
-    it('should respond with json, create a resource and generate string id', async () => {
+    test('should respond with json, create a resource and generate string id', async () => {
       await request(server)
         .post('/refs')
-        .send({ url: 'http://foo.com', postId: '1' })
+        .send({ url: 'http://foo.com', postId: 1 })
         .expect('Content-Type', /json/)
         .expect(201)
-      assert.equal(db.refs.length, 2)
+      assert.strictEqual(db.refs.length, 2)
     })
   })
 
   describe('POST /:parent/:parentId/:resource', () => {
-    it('should respond with json and set parentId', () =>
+    test('should respond with json and set parentId', () =>
       request(server)
         .post('/posts/1/comments')
         .send({ body: 'foo' })
         .expect('Content-Type', /json/)
-        .expect({ id: 6, postId: 1, body: 'foo' })
+        .expect({ id: 6, postId: '1', body: 'foo' })
         .expect(201))
   })
 
   describe('POST /:resource?_delay=', () => {
-    it('should delay response', done => {
+    test('should delay response', done => {
       const start = new Date()
       request(server)
         .post('/posts?_delay=1100')
@@ -572,7 +572,7 @@ describe('Server', () => {
   })
 
   describe('PUT /:resource/:id', () => {
-    it('should respond with json and replace resource', async () => {
+    test('should respond with json and replace resource', async () => {
       const post = { id: 1, booleanValue: true, integerValue: 1 }
       const res = await request(server)
         .put('/posts/1')
@@ -589,7 +589,7 @@ describe('Server', () => {
       assert.deepStrictEqual(db.posts[0], post)
     })
 
-    it('should respond with 404 if resource is not found', () =>
+    test('should respond with 404 if resource is not found', () =>
       request(server)
         .put('/posts/9001')
         .send({ id: 1, body: 'bar' })
@@ -599,7 +599,7 @@ describe('Server', () => {
   })
 
   describe('PUT /:resource:id?_delay=', () => {
-    it('should delay response', done => {
+    test('should delay response', done => {
       const start = new Date()
       request(server)
         .put('/posts/1?_delay=1100')
@@ -613,7 +613,7 @@ describe('Server', () => {
   })
 
   describe('PATCH /:resource/:id', () => {
-    it('should respond with json and update resource', async () => {
+    test('should respond with json and update resource', async () => {
       const partial = { body: 'bar' }
       const post = { id: 1, body: 'bar' }
       const res = await request(server)
@@ -627,7 +627,7 @@ describe('Server', () => {
       assert.deepStrictEqual(db.posts[0], post)
     })
 
-    it('should respond with 404 if resource is not found', () =>
+    test('should respond with 404 if resource is not found', () =>
       request(server)
         .patch('/posts/9001')
         .send({ body: 'bar' })
@@ -637,7 +637,7 @@ describe('Server', () => {
   })
 
   describe('PATCH /:resource:id?_delay=', () => {
-    it('should delay response', done => {
+    test('should delay response', done => {
       const start = new Date()
       request(server)
         .patch('/posts/1?_delay=1100')
@@ -651,16 +651,16 @@ describe('Server', () => {
   })
 
   describe('DELETE /:resource/:id', () => {
-    it('should respond with empty data, destroy resource and dependent resources', async () => {
+    test('should respond with empty data, destroy resource and dependent resources', async () => {
       await request(server)
         .del('/posts/1')
         .expect({})
         .expect(200)
-      assert.equal(db.posts.length, 1)
-      assert.equal(db.comments.length, 3)
+      assert.strictEqual(db.posts.length, 1)
+      assert.strictEqual(db.comments.length, 3)
     })
 
-    it('should respond with 404 if resource is not found', () =>
+    test('should respond with 404 if resource is not found', () =>
       request(server)
         .del('/posts/9001')
         .expect('Content-Type', /json/)
@@ -669,7 +669,7 @@ describe('Server', () => {
   })
 
   describe('DELETE /:resource:id?_delay=', () => {
-    it('should delay response', done => {
+    test('should delay response', done => {
       const start = new Date()
       request(server)
         .del('/posts/1?_delay=1100')
@@ -683,7 +683,7 @@ describe('Server', () => {
 
   describe('Static routes', () => {
     describe('GET /', () => {
-      it('should respond with html', () =>
+      test('should respond with html', () =>
         request(server)
           .get('/')
           .expect(/You're successfully running JSON Server/)
@@ -691,30 +691,30 @@ describe('Server', () => {
     })
 
     describe('GET /main.js', () => {
-      it('should respond with js', () =>
+      test('should respond with js', () =>
         request(server)
           .get('/main.js')
           .expect('Content-Type', /javascript/)
           .expect(200))
     })
 
-    describe('GET /style.css', () => {
-      it('should respond with css', () =>
+    describe('GET /main.css', () => {
+      test('should respond with css', () =>
         request(server)
-          .get('/style.css')
+          .get('/main.css')
           .expect('Content-Type', /css/)
           .expect(200))
     })
   })
 
   describe('Database state', () => {
-    it('should be accessible', () => {
+    test('should be accessible', () => {
       assert(router.db.getState())
     })
   })
 
   describe('Responses', () => {
-    it('should have no cache headers (for IE)', () =>
+    test('should have no cache headers (for IE)', () =>
       request(server)
         .get('/db')
         .expect('Cache-Control', 'no-cache')
@@ -723,17 +723,17 @@ describe('Server', () => {
   })
 
   describe('Rewriter', () => {
-    it('should rewrite using prefix', () =>
+    test('should rewrite using prefix', () =>
       request(server)
         .get('/api/posts/1')
         .expect(db.posts[0]))
 
-    it('should rewrite using params', () =>
+    test('should rewrite using params', () =>
       request(server)
         .get('/blog/posts/1/show')
         .expect(db.posts[0]))
 
-    it('should rewrite using query without params', () => {
+    test('should rewrite using query without params', () => {
       const expectedPost = _.cloneDeep(db.posts[0])
       expectedPost.comments = [db.comments[0], db.comments[1]]
       return request(server)
@@ -741,17 +741,17 @@ describe('Server', () => {
         .expect(expectedPost)
     })
 
-    it('should rewrite using params and query', () =>
+    test('should rewrite using params and query', () =>
       request(server)
         .get('/comments/special/1-quux')
         .expect([db.comments[4]]))
 
-    it('should rewrite query params', () =>
+    test('should rewrite query params', () =>
       request(server)
         .get('/articles?_id=1')
         .expect(db.posts[0]))
 
-    it('should expose routes', () =>
+    test('should expose routes', () =>
       request(server)
         .get('/__rules')
         .expect(rewriterRules))
@@ -764,7 +764,7 @@ describe('Server', () => {
       }
     })
 
-    it('should be possible to wrap response', () =>
+    test('should be possible to wrap response', () =>
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
@@ -781,14 +781,14 @@ describe('Server', () => {
       router.db._.id = '_id'
     })
 
-    it('should be possible to GET using a different id property', () =>
+    test('should be possible to GET using a different id property', () =>
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
         .expect(router.db.getState().posts[0])
         .expect(200))
 
-    it('should be possible to POST using a different id property', () =>
+    test('should be possible to POST using a different id property', () =>
       request(server)
         .post('/posts')
         .send({ body: 'hello' })

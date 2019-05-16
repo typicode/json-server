@@ -18,7 +18,7 @@ module.exports = function() {
       host: {
         alias: 'H',
         description: 'Set host',
-        default: '0.0.0.0'
+        default: 'localhost'
       },
       watch: {
         alias: 'w',
