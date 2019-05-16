@@ -239,7 +239,7 @@ module.exports = (db, name, opts) => {
       embed(element, _embed)
       expand(element, _expand)
     })
-    console.log('_keys:', _keys)
+
     // return only properties listed
     if (_keys) {
       // filter properties down by key

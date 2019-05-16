@@ -234,16 +234,16 @@ describe('Server', () => {
         .expect([db.comments[1], db.comments[2], db.comments[4]])
         .expect(200))
 
-    test.only('should support limiting filter to specific property', () =>
+    test('should support limiting filter to specific property', () =>
       request(server)
         .get('/buyers?q=en&prop=name')
         .expect('Content-Type', /json/)
         .expect([db.buyers[0], db.buyers[4], db.buyers[7]])
         .expect(200))
 
-    test.only('should support limiting filter to specific properties', () =>
+    test('should support limiting filter to specific properties', () =>
       request(server)
-        .get('/buyers?q=el&prop=name&prop=country')
+        .get('/buyers?q=en&prop=name&prop=country')
         .expect('Content-Type', /json/)
         .expect([
           db.buyers[0],
@@ -255,7 +255,7 @@ describe('Server', () => {
         .expect(200))
   })
 
-  describe.only('GET /:resource?field_includes=', () => {
+  describe('GET /:resource?field_includes=', () => {
     test('should return entries where the field contains the text', () =>
       request(server)
         .get('/frameworks?tags_like=reactive')
