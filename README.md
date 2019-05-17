@@ -26,7 +26,6 @@ See also:
   </a>
 </p>
 
-
 <p align="center">
   <a href="https://www.kickstarter.com/projects/leotrieu/build-your-on-demand-startup-for-jobs-and-freelanc?utm_source=typicode&utm_medium=github" target="_blank">
     <img src="https://i.imgur.com/tBU7RZj.png" height="60px">
