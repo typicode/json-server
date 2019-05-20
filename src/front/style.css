@@ -51,7 +51,7 @@ table {
 td {
   border: 0;
   padding: 0 1em .5em 0;
-  color: #014c8c;
+  font-weight: 300;
 }
 
 td:first-child {

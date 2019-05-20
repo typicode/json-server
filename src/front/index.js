@@ -1,75 +1,81 @@
 import 'promise-polyfill/src/polyfill'
 import 'whatwg-fetch'
-import { h, render } from 'preact'
 import 'milligram/dist/milligram.css'
 import './style.css'
 
 function ResourceItem({ name, length }) {
-  return (
+  return `
     <li>
-      <a href={name}>/{name}</a> <sup>{length ? `${length}x` : 'object'}</sup>
+      <a href="${name}">/${name}</a>
+      <sup>${length ? `${length}x` : 'object'}</sup>
     </li>
-  )
+  `
 }
 
 function ResourceList({ db }) {
-  return (
+  return `
     <ul>
-      {Object.keys(db).map(name => (
-        <ResourceItem
-          name={name}
-          length={Array.isArray(db[name]) && db[name].length}
-        />
-      ))}
+      ${Object.keys(db)
+        .map(name =>
+          ResourceItem({
+            name,
+            length: Array.isArray(db[name]) && db[name].length
+          })
+        )
+        .join('')}
     </ul>
-  )
+  `
 }
 
 function NoResources() {
-  return <p>No resources found</p>
+  return `<p>No resources found</p>`
 }
 
 function ResourcesBlock({ db }) {
-  return (
+  return `
     <div>
       <h4>Resources</h4>
-      {Object.keys(db).length ? <ResourceList db={db} /> : <NoResources />}
+      ${Object.keys(db).length ? ResourceList({ db }) : NoResources()}
     </div>
-  )
+  `
 }
 
 window
   .fetch('db')
   .then(response => response.json())
-  .then(db =>
-    render(<ResourcesBlock db={db} />, document.getElementById('resources'))
+  .then(
+    db =>
+      (document.getElementById('resources').innerHTML = ResourcesBlock({ db }))
   )
 
 function CustomRoutesBlock({ customRoutes }) {
   const rules = Object.keys(customRoutes)
   if (rules.length) {
-    return (
+    return `
       <div>
         <h4>Custom Routes</h4>
         <table>
-          {rules.map(rule => (
-            <tr>
-              <td>{rule}</td>
-              <td>⇢ {customRoutes[rule]}</td>
-            </tr>
-          ))}
+          ${rules
+            .map(
+              rule =>
+                `<tr>
+              <td>${rule}</td>
+              <td>⇢ ${customRoutes[rule]}</td>
+            </tr>`
+            )
+            .join('')}
         </table>
       </div>
-    )
+    `
   }
 }
 
 window
   .fetch('__rules')
   .then(response => response.json())
-  .then(customRoutes => {
-    render(
-      <CustomRoutesBlock customRoutes={customRoutes} />,
-      document.getElementById('custom-routes')
-    )
-  })
+  .then(
+    customRoutes =>
+      (document.getElementById('custom-routes').innerHTML = CustomRoutesBlock({
+        customRoutes
+      }))
+  )

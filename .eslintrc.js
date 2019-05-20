@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['standard', 'standard-preact', 'prettier'],
+  extends: ['standard', 'prettier'],
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': [
