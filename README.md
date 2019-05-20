@@ -37,7 +37,7 @@ See also:
 <h3 align="center">Bronze</h3>
 
 <p align="center">
-  <a href="https://www.zinggrid.com/?utm_source=jsonserver&utm_medium=github&utm_campaign=sponsorship" target="_blank">
+  <a href="https://www.zinggrid.com/hello/json-server?utm_source=jsonserver&utm_medium=github&utm_campaign=sponsorship" target="_blank">
     <img src="https://i.imgur.com/3mJGTAQ.png" height="30px">
   </a>
 </p>
