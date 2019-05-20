@@ -109,7 +109,7 @@
   },
   "homepage": "https://github.com/typicode/json-server",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "husky": {
     "hooks": {
