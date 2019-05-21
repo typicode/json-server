@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 0.15.0 - 2019-05-21
 
 * __Breaking__ Require Node 8
 * Upgrade dependencies
