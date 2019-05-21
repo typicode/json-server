@@ -3,7 +3,7 @@
 ## Unreleased
 
 * __Breaking__ Require Node 8
-* Update dependencies
+* Upgrade dependencies
 
 ## 0.14.2 - 2018-12-26
 
