@@ -4,6 +4,7 @@
 
 * __Breaking__ Require Node 8
 * Upgrade dependencies
+* Reduce package size
 
 ## 0.14.2 - 2018-12-26
 
