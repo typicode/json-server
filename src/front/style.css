@@ -6,7 +6,7 @@ body {
   flex-direction: column;
   padding: 0;
   margin: 0;
-  color: #333;
+  color: #3b4252;
   letter-spacing: 0;
 }
 
@@ -20,9 +20,13 @@ header {
   border-bottom: 1px solid #eee;
 }
 
-header a,
-header a:hover {
+header a {
+  color: inherit;
   text-decoration: none;
+}
+
+header a:hover {
+  text-decoration: underline;
 }
 
 nav ul {
@@ -35,11 +39,15 @@ nav li.title {
   flex-grow: 5;
   text-align: left;
   font-weight: bold;
+  font-size: 1.4rem;
+  color: #3b4252;
 }
 
 nav li {
   flex-grow: 1;
+  align-self: center;
   text-align: right;
+  color: #4c566a;
 }
 
 main {
@@ -61,11 +69,11 @@ i {
 }
 
 a {
-  color: #0275d8;
+  color: #5e81ac;
 }
 
 a:hover {
-  color: #014c8c;
+  color: #81a1c1;
   text-decoration: underline;
 }
 
@@ -97,5 +105,5 @@ code {
   padding: 0.2rem;
   margin: 0rem 0.2rem;
   border-radius: 0.2rem;
-  background: #eee;
+  background: #e5e9f0;
 }

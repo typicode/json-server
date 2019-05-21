@@ -59,7 +59,7 @@ function CustomRoutesBlock({ customRoutes }) {
               rule =>
                 `<tr>
               <td>${rule}</td>
-              <td>⇢ ${customRoutes[rule]}</td>
+              <td><code>⇢</code> ${customRoutes[rule]}</td>
             </tr>`
             )
             .join('')}
