@@ -1,6 +1,5 @@
 import 'promise-polyfill/src/polyfill'
 import 'whatwg-fetch'
-import 'milligram/dist/milligram.css'
 import './style.css'
 
 function ResourceItem({ name, length }) {
@@ -34,7 +33,7 @@ function NoResources() {
 function ResourcesBlock({ db }) {
   return `
     <div>
-      <h4>Resources</h4>
+      <h1>Resources</h1>
       ${Object.keys(db).length ? ResourceList({ db }) : NoResources()}
     </div>
   `
@@ -53,7 +52,7 @@ function CustomRoutesBlock({ customRoutes }) {
   if (rules.length) {
     return `
       <div>
-        <h4>Custom Routes</h4>
+        <h1>Custom Routes</h1>
         <table>
           ${rules
             .map(
