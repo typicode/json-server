@@ -57,6 +57,7 @@ See also:
   * [Relationships](#relationships)
   * [Database](#database)
   * [Homepage](#homepage)
+  * [Exit](#exit)
 - [Extras](#extras)
   * [Static file server](#static-file-server)
   * [Alternative port](#alternative-port)
@@ -263,6 +264,15 @@ Returns default index file or serves `./public` directory
 
 ```
 GET /
+```
+
+### Exit
+
+Terminates process running json-server, returns a 200 before and after termination 
+the success code (0).
+
+```
+GET /__exit
 ```
 
 ## Extras
