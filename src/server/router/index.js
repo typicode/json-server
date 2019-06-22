@@ -47,6 +47,14 @@ module.exports = (db, opts = { foreignKeySuffix: 'Id', _isFake: false }) => {
     res.jsonp(db.getState())
   })
 
+  // GET /__exit
+  router.get('/__exit', (req, res) => {
+    res.sendStatus(200)
+    res.on('finish', () => {
+      process.exit()
+    })
+  })
+
   // Handle /:parent/:parentId/:resource
   router.use(nested(opts))
 
