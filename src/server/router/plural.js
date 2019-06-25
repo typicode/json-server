@@ -253,24 +253,41 @@ module.exports = (db, name, opts) => {
     next()
   }
 
-  // POST /name
-  function create(req, res, next) {
-    let resource
+  function createUnit(data) {
     if (opts._isFake) {
       const id = db
         .get(name)
         .createId()
         .value()
-      resource = { ...req.body, id }
+      return { ...data, id }
     } else {
-      resource = db
+      return db
         .get(name)
-        .insert(req.body)
+        .insert(data)
         .value()
+    }
+  }
+
+  // POST /name
+  function create(req, res, next) {
+    let resource
+    if (Array.isArray(req.body)) {
+      resource = []
+      for (let i = 0; i < req.body.length; i++) {
+        const existResource = db
+          .get(name)
+          .getById(req.body[i].id)
+          .value()
+        if (!existResource) {
+          resource = [...resource, createUnit(req.body[i])]
+        }
+      }
+    } else {
+      resource = createUnit(req.body)
     }
 
     res.setHeader('Access-Control-Expose-Headers', 'Location')
-    res.location(`${getFullURL(req)}/${resource.id}`)
+    res.location(`${getFullURL(req)}/${resource.id || ''}`)
 
     res.status(201)
     res.locals.data = resource
@@ -278,32 +295,45 @@ module.exports = (db, name, opts) => {
     next()
   }
 
-  // PUT /name/:id
-  // PATCH /name/:id
-  function update(req, res, next) {
-    const id = req.params.id
-    let resource
-
+  function updateUnit(method, id, data) {
     if (opts._isFake) {
-      resource = db
+      let resource = db
         .get(name)
         .getById(id)
         .value()
 
-      if (req.method === 'PATCH') {
-        resource = { ...resource, ...req.body }
+      if (method === 'PATCH') {
+        return { ...resource, ...data }
       } else {
-        resource = { ...req.body, id: resource.id }
+        return { ...data, id: resource.id }
       }
     } else {
       let chain = db.get(name)
 
       chain =
-        req.method === 'PATCH'
-          ? chain.updateById(id, req.body)
-          : chain.replaceById(id, req.body)
+        method === 'PATCH'
+          ? chain.updateById(id, data)
+          : chain.replaceById(id, data)
 
-      resource = chain.value()
+      return chain.value()
+    }
+  }
+
+  // PUT /name/:id
+  // PATCH /name/:id
+  function update(req, res, next) {
+    let resource
+
+    if (Array.isArray(req.body)) {
+      resource = []
+      for (let i = 0; i < req.body.length; i++) {
+        resource = [
+          ...resource,
+          updateUnit(req.method, req.body[i].id, req.body[i])
+        ]
+      }
+    } else {
+      resource = updateUnit(req.method, req.params.id, req.body)
     }
 
     if (resource) {
@@ -313,16 +343,13 @@ module.exports = (db, name, opts) => {
     next()
   }
 
-  // DELETE /name/:id
-  function destroy(req, res, next) {
-    let resource
-
+  function destroyUnit(id) {
     if (opts._isFake) {
-      resource = db.get(name).value()
+      return db.get(name).value()
     } else {
-      resource = db
+      let resource = db
         .get(name)
-        .removeById(req.params.id)
+        .removeById(id)
         .value()
 
       // Remove dependents documents
@@ -332,6 +359,22 @@ module.exports = (db, name, opts) => {
           .removeById(item.id)
           .value()
       })
+
+      return resource
+    }
+  }
+
+  // DELETE /name/:id
+  function destroy(req, res, next) {
+    let resource
+
+    if (Array.isArray(req.body)) {
+      resource = []
+      for (let i = 0; i < req.body.length; i++) {
+        resource = [...resource, destroyUnit(req.body[i].id)]
+      }
+    } else {
+      resource = destroyUnit(req.params.id)
     }
 
     if (resource) {
@@ -347,6 +390,9 @@ module.exports = (db, name, opts) => {
     .route('/')
     .get(list)
     .post(create, w)
+    .put(update, w)
+    .patch(update, w)
+    .delete(destroy, w)
 
   router
     .route('/:id')
