@@ -1,6 +1,6 @@
 # Test against this version of Node.js
 environment:
-  nodejs_version: "7"
+  nodejs_version: "8"
 
 # Install scripts. (runs after repo cloning)
 install:
