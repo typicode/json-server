@@ -1,0 +1,43 @@
+{
+    "coord": {
+        "lon": 105.84,
+        "lat": 21.02
+    },
+    "weather": [
+        {
+            "id": 802,
+            "main": "Clouds",
+            "description": "scattered clouds",
+            "icon": "03d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 302.15,
+        "pressure": 1003,
+        "humidity": 89,
+        "temp_min": 302.15,
+        "temp_max": 302.15
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 5.1,
+        "deg": 290
+    },
+    "clouds": {
+        "all": 40
+    },
+    "dt": 1561944061,
+    "sys": {
+        "type": 1,
+        "id": 9308,
+        "message": 0.0056,
+        "country": "VN",
+        "sunrise": 1561933108,
+        "sunset": 1561981318
+    },
+    "timezone": 25200,
+    "id": 1581130,
+    "name": "Ha Noi",
+    "cod": 200
+}
