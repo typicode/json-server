@@ -35,7 +35,7 @@ module.exports = function(source) {
         if (err) return reject(err)
         resolve(low(new Memory()).setState(response.body))
       })
-    } else if (is.JS(source)) {
+    } else if (is.Module(source)) {
       // Clear cache
       const filename = path.resolve(source)
       delete require.cache[filename]
