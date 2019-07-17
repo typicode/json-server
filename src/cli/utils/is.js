@@ -1,6 +1,6 @@
 module.exports = {
   FILE,
-  JS,
+  Module,
   URL
 }
 
@@ -8,8 +8,13 @@ function FILE(s) {
   return !URL(s) && /\.json$/.test(s)
 }
 
-function JS(s) {
-  return !URL(s) && /\.js$/.test(s)
+function Module(s) {
+  try {
+    require(s)
+    return true
+  } catch (error) {
+    return false
+  }
 }
 
 function URL(s) {
