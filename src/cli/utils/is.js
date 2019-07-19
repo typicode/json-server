@@ -13,11 +13,7 @@ function Module(s) {
     require(s)
     return true
   } catch (error) {
-    if (error.code === 'MODULE_NOT_FOUND') {
-      return false
-    } else {
-      throw error
-    }
+    return error.code !== 'MODULE_NOT_FOUND'
   }
 }
 
