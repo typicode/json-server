@@ -86,7 +86,7 @@ See also:
 
 ## Getting started
 
-Install JSON Server 
+Install JSON Server
 
 ```
 npm install -g json-server
@@ -131,6 +131,8 @@ Based on the previous `db.json` file, here are all the default routes. You can a
 
 ### Plural routes
 
+The plural route support all the filters listed below.
+
 ```
 GET    /posts
 GET    /posts/1
@@ -142,11 +144,23 @@ DELETE /posts/1
 
 ### Singular routes
 
+The singular route support __field__, __embed__ and __expand__ filters.
+
 ```
 GET    /profile
 POST   /profile
 PUT    /profile
 PATCH  /profile
+```
+
+### Field
+
+Filter the returned fields by name, only support one level.
+
+```
+GET /profile?field=name
+GET /posts?field=title
+GET /posts?field=title,author
 ```
 
 ### Filter
