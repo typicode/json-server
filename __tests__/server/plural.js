@@ -138,6 +138,13 @@ describe('Server', () => {
         .expect([db.comments[0], db.comments[1]])
         .expect(200))
 
+    test('should support multiple filters', () =>
+      request(server)
+        .get('/comments?id[]=1&id[]=2')
+        .expect('Content-Type', /json/)
+        .expect([db.comments[0], db.comments[1]])
+        .expect(200))
+
     test('should support deep filter', () =>
       request(server)
         .get('/deep?a.b=1')
