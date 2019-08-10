@@ -18,11 +18,13 @@ module.exports = (db, name, opts) => {
         if (db.get(externalResource).value) {
           const query = {}
           const singularResource = pluralize.singular(name)
-          query[`${singularResource}${opts.foreignKeySuffix}`] = resource.id
-          resource[externalResource] = db
-            .get(externalResource)
-            .filter(query)
-            .value()
+          let externalResourceVal = db.get(externalResource)
+          let [resourceValue] = externalResourceVal.value()
+          let queryIdx = `${singularResource}${opts.foreignKeySuffix}`
+          query[queryIdx] = Array.isArray(resourceValue[queryIdx])
+            ? [resource.id]
+            : resource.id
+          resource[externalResource] = externalResourceVal.filter(query).value()
         }
       })
   }

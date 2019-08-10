@@ -83,6 +83,11 @@ describe('Server', () => {
       { id: 15 }
     ]
 
+    db.multiple = [
+      { id: 1, body: 'foo', published: true, postId: 1, userId: [1] },
+      { id: 2, body: 'bar', published: false, postId: 2, userId: [1, 2] }
+    ]
+
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults())
@@ -409,6 +414,18 @@ describe('Server', () => {
         .expect(posts)
         .expect(200)
     })
+
+    // https://github.com/typicode/json-server/issues/366
+    test('should respond with corresponding resources and multiple embedded resources', () => {
+      const users = _.cloneDeep(db.users)
+      users[0].multiple = [db.multiple[0], db.multiple[1]]
+      users[1].multiple = [db.multiple[1]]
+      return request(server)
+        .get('/users?_embed=multiple')
+        .expect('Content-Type', /json/)
+        .expect(users)
+        .expect(200)
+    })
   })
 
   describe('GET /:resource?_embed&_embed=', () => {
@@ -434,6 +451,17 @@ describe('Server', () => {
         .get('/posts/1?_embed=comments')
         .expect('Content-Type', /json/)
         .expect(post)
+        .expect(200)
+    })
+
+    // https://github.com/typicode/json-server/issues/366
+    test('should respond with corresponding resources and multiple embedded resources', () => {
+      const users = _.cloneDeep(db.users[1])
+      users.multiple = [db.multiple[1]]
+      return request(server)
+        .get('/users/2?_embed=multiple')
+        .expect('Content-Type', /json/)
+        .expect(users)
         .expect(200)
     })
   })
