@@ -1,5 +1,10 @@
 module.exports = {
-  getPage
+  getPage,
+  parseID
+}
+
+function parseID(id) {
+  return /^\d+$/.test(id) ? +id : id
 }
 
 function getPage(array, page, perPage) {

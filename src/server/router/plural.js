@@ -301,7 +301,7 @@ module.exports = (db, name, opts) => {
   // PUT /name/:id
   // PATCH /name/:id
   function update(req, res, next) {
-    const id = parseInt(req.params.id)
+    const id = req.params.id
     let resource
 
     if (opts._isFake) {

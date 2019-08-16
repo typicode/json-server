@@ -615,6 +615,32 @@ describe('Server', () => {
           }
         ])
         .expect(201))
+
+    test('should support bulk insertion with non numeric id', () =>
+      request(server)
+        .post('/refs/abcd-1234/posts')
+        .send([
+          {
+            body: 'foo'
+          },
+          {
+            body: 'bar'
+          }
+        ])
+        .expect('Content-Type', /json/)
+        .expect([
+          {
+            id: 3,
+            refId: 'abcd-1234',
+            body: 'foo'
+          },
+          {
+            id: 4,
+            refId: 'abcd-1234',
+            body: 'bar'
+          }
+        ])
+        .expect(201))
   })
 
   describe('POST /:resource?_delay=', () => {
