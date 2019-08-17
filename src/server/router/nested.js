@@ -1,6 +1,8 @@
+const _ = require('lodash')
 const express = require('express')
 const pluralize = require('pluralize')
 const delay = require('./delay')
+const utils = require('../utils')
 
 module.exports = opts => {
   const router = express.Router()
@@ -16,8 +18,16 @@ module.exports = opts => {
 
   // Rewrite URL (/:resource/:id/:nested -> /:nested) and request body
   function post(req, res, next) {
-    const prop = pluralize.singular(req.params.resource)
-    req.body[`${prop}${opts.foreignKeySuffix}`] = req.params.id
+    const id = utils.parseID(req.params.id)
+    const prop = pluralize.singular(req.params.resource) + opts.foreignKeySuffix
+    if (_.isArray(req.body)) {
+      req.body = req.body.map(r => ({
+        ...r,
+        [prop]: id
+      }))
+    } else {
+      req.body[prop] = id
+    }
     req.url = `/${req.params.nested}`
     next()
   }

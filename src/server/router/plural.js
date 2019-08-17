@@ -91,8 +91,8 @@ module.exports = (db, name, opts) => {
       delete req.query[query]
     })
 
+    // Full-text search
     if (q) {
-      // Full-text search
       if (Array.isArray(q)) {
         q = q[0]
       }
@@ -256,21 +256,41 @@ module.exports = (db, name, opts) => {
   // POST /name
   function create(req, res, next) {
     let resource
-    if (opts._isFake) {
-      const id = db
-        .get(name)
-        .createId()
-        .value()
-      resource = { ...req.body, id }
-    } else {
-      resource = db
-        .get(name)
-        .insert(req.body)
-        .value()
-    }
+    const body = req.body
 
-    res.setHeader('Access-Control-Expose-Headers', 'Location')
-    res.location(`${getFullURL(req)}/${resource.id}`)
+    if (_.isArray(body)) {
+      resource = body.map(r => {
+        if (opts._isFake) {
+          return {
+            ...r,
+            id: db
+              .get(name)
+              .createId()
+              .value()
+          }
+        }
+        return db
+          .get(name)
+          .insert(r)
+          .value()
+      })
+    } else {
+      if (opts._isFake) {
+        const id = db
+          .get(name)
+          .createId()
+          .value()
+        resource = { ...body, id }
+      } else {
+        resource = db
+          .get(name)
+          .insert(body)
+          .value()
+      }
+
+      res.setHeader('Access-Control-Expose-Headers', 'Location')
+      res.location(`${getFullURL(req)}/${resource.id}`)
+    }
 
     res.status(201)
     res.locals.data = resource
