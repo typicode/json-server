@@ -116,13 +116,14 @@ module.exports = (db, name, opts) => {
         // Always use an array, in case req.query is an array
         const arr = [].concat(req.query[key])
 
+        const isDifferent = /_ne$/.test(key)
+        const isRange = /_lte$/.test(key) || /_gte$/.test(key)
+        const isLike = /_like$/.test(key)
+        const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
+
         chain = chain.filter(element => {
           return arr
             .map(function(value) {
-              const isDifferent = /_ne$/.test(key)
-              const isRange = /_lte$/.test(key) || /_gte$/.test(key)
-              const isLike = /_like$/.test(key)
-              const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
               // get item value based on path
               // i.e post.title -> 'foo'
               const elementValue = _.get(element, path)
@@ -146,7 +147,7 @@ module.exports = (db, name, opts) => {
                 return value === elementValue.toString()
               }
             })
-            .reduce((a, b) => a || b)
+            .reduce((a, b) => (isDifferent ? a && b : a || b))
         })
       }
     })

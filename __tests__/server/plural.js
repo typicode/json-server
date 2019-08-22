@@ -348,6 +348,13 @@ describe('Server', () => {
         .expect('Content-Type', /json/)
         .expect(db.comments.slice(1))
         .expect(200))
+
+    test('should accept multiple parameters', () =>
+      request(server)
+        .get('/comments?id_ne=1&id_ne=2')
+        .expect('Content-Type', /json/)
+        .expect(db.comments.slice(2))
+        .expect(200))
   })
 
   describe('GET /:resource?attr_like=', () => {
@@ -356,6 +363,12 @@ describe('Server', () => {
         .get('/tags?body_like=photo')
         .expect('Content-Type', /json/)
         .expect([db.tags[1], db.tags[2]])
+        .expect(200))
+    test('should accept multiple parameters', () =>
+      request(server)
+        .get('/tags?body_like=photo&body_like=tech')
+        .expect('Content-Type', /json/)
+        .expect(db.tags)
         .expect(200))
   })
 
