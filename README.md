@@ -37,7 +37,7 @@ See also:
 <p>&nbsp;</p>
 
 <p align="center">
-  <a href="https://patreon.com/typicode">Become a sponsor and have your company logo here</a>
+  <a href="https://github.com/users/typicode/sponsorship">Become a sponsor and have your company logo here</a>
 </p>
 
 ## Table of contents
@@ -610,4 +610,4 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 
 MIT
 
-[Patreon](https://www.patreon.com/typicode) - [Supporters](https://thanks.typicode.com) ✨
+[Supporters](https://thanks.typicode.com) ✨
