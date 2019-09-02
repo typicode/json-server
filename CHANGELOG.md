@@ -1,5 +1,7 @@
 # Change Log
 
+Changes for 0.15.1+ can now be found in https://github.com/typicode/json-server/releases
+
 ## 0.15.0 - 2019-05-21
 
 * __Breaking__ Require Node 8
