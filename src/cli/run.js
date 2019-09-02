@@ -14,7 +14,7 @@ function prettyPrint(argv, object, rules) {
 
   console.log()
   console.log(chalk.bold('  Resources'))
-  for (let prop in object) {
+  for (const prop in object) {
     console.log(`  ${root}/${prop}`)
   }
 
@@ -37,7 +37,7 @@ function createApp(db, routes, middlewares, argv) {
 
   const { foreignKeySuffix } = argv
 
-  let router = jsonServer.router(
+  const router = jsonServer.router(
     db,
     foreignKeySuffix ? { foreignKeySuffix } : undefined
   )
@@ -138,9 +138,7 @@ module.exports = function(argv) {
         if (error.errno === 'EADDRINUSE')
           console.log(
             chalk.red(
-              `Cannot bind to the port ${
-                error.port
-              }. Please specify another port number either through --port argument or through the json-server.json configuration file`
+              `Cannot bind to the port ${error.port}. Please specify another port number either through --port argument or through the json-server.json configuration file`
             )
           )
         else console.log('Some error occurred', error)

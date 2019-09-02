@@ -62,7 +62,7 @@ function deepQuery(value, q) {
         }
       }
     } else if (_.isObject(value) && !_.isArray(value)) {
-      for (let k in value) {
+      for (const k in value) {
         if (_.deepQuery(value[k], q)) {
           return true
         }
