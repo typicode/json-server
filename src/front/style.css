@@ -1,8 +1,8 @@
 body {
   display: flex;
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   flex-direction: column;
   padding: 0;
   margin: 0;
@@ -48,6 +48,10 @@ nav li {
   align-self: center;
   text-align: right;
   color: #4c566a;
+}
+
+.fa-heart {
+  color: deeppink;
 }
 
 main {
