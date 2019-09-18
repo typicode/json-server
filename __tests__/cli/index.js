@@ -30,6 +30,7 @@ describe('cli', () => {
   let child
   let request
   let dbFile
+  let dbFileJs
   let routesFile
 
   beforeEach(() => {
@@ -39,6 +40,16 @@ describe('cli', () => {
         comments: [{ id: 1, post_id: 1 }]
       }),
       'db.json'
+    )
+
+    dbFileJs = tempWrite.sync(
+      `module.exports = () => {
+        return ${JSON.stringify({
+          posts: [{ id: 1 }, { _id: 2 }],
+          comments: [{ id: 1, post_id: 1 }]
+        })}
+      }`,
+      'db.js'
     )
 
     routesFile = tempWrite.sync(
@@ -277,6 +288,20 @@ describe('cli', () => {
       fs.writeFileSync(routesFile, JSON.stringify({ '/api/*': '/$1' }))
       setTimeout(() => {
         request.get('/api/posts').expect(200, done)
+      }, 1000)
+    })
+  })
+
+  describe('--watch db.js -r routes.json', () => {
+    beforeEach(done => {
+      child = cli([dbFileJs, '-r', routesFile, '--watch'])
+      serverReady(PORT, done)
+    })
+
+    test('should watch db file', done => {
+      fs.writeFileSync(dbFileJs, 'module.exports = () => {return {foo: []}}')
+      setTimeout(() => {
+        request.get('/foo').expect(200, done)
       }, 1000)
     })
   })
