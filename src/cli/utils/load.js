@@ -14,7 +14,7 @@ const example = {
 }
 
 module.exports = function(source) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     if (is.FILE(source)) {
       if (!fs.existsSync(source)) {
         console.log(chalk.yellow(`  Oops, ${source} doesn't seem to exist`))
@@ -48,7 +48,7 @@ module.exports = function(source) {
       }
 
       // Run dataFn to generate data
-      const data = dataFn()
+      const data = await dataFn()
       resolve(low(new Memory()).setState(data))
     } else {
       throw new Error(`Unsupported source ${source}`)
