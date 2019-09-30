@@ -34,6 +34,7 @@
     "method-override": "^3.0.0",
     "morgan": "^1.9.1",
     "nanoid": "^2.1.0",
+    "node-fetch": "^2.6.0",
     "object-assign": "^4.1.1",
     "please-upgrade-node": "^3.2.0",
     "pluralize": "^8.0.0",
@@ -109,11 +110,6 @@
   "homepage": "https://github.com/typicode/json-server",
   "engines": {
     "node": ">=8"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm test"
-    }
   },
   "jest": {
     "testURL": "http://localhost/"
