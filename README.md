@@ -38,3 +38,5 @@ PUT 'http://localhost:3001/posts/1'      //update row with id == 1
 DELETE 'http://localhost:3001/posts/1'   //delete row with id == 1
 
 ```
+
+Exchange API documentation: https://www.alphavantage.co/documentation/
