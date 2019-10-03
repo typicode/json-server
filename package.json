@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
-    "start": "run-p start:**",
+    "start": "json-server mock-db.js",
     "start:babel-node": "babel-node src/cli/bin db.json -r routes.json",
     "start:webpack": "webpack -d --watch",
     "lint": "eslint . --ignore-path .gitignore",
