@@ -17,7 +17,7 @@ npm install
 Start JSON Server
 
 ```bash
-json-server mock-db.js
+npm start
 
 ```
 
