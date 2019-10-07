@@ -2,14 +2,14 @@
   "name": "json-server",
   "version": "0.15.1",
   "description": "Serves JSON files through REST routes.",
-  "main": "./lib/server/index.js",
   "bin": "./lib/cli/bin.js",
   "directories": {
     "test": "test"
   },
+  "main": "server.js",
   "scripts": {
     "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
-    "start": "json-server mock-db.js",
+    "start": "node server.js",
     "start:babel-node": "babel-node src/cli/bin db.json -r routes.json",
     "start:webpack": "webpack -d --watch",
     "lint": "eslint . --ignore-path .gitignore",
@@ -44,6 +44,7 @@
     "yargs": "^14.0.0"
   },
   "devDependencies": {
+    "json-server": "^0.15.1",
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
