@@ -31,11 +31,7 @@ Current routes List (basic REST exemple)
 
 ```
 
-GET 'http://localhost:3001/posts'        //get all rows
-GET 'http://localhost:3001/posts/1'      //get row by id == 1
-POST 'http://localhost:3001/posts'       //add new item to DB
-PUT 'http://localhost:3001/posts/1'      //update row with id == 1
-DELETE 'http://localhost:3001/posts/1'   //delete row with id == 1
+GET 'http://localhost:3001/exchange?from=EUR&to=MDL' => get exchange rate details
 
 ```
 
