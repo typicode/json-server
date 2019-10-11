@@ -28,6 +28,7 @@
     "express": "^4.17.1",
     "express-urlrewrite": "^1.2.0",
     "json-parse-helpfulerror": "^1.0.3",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0",
