@@ -80,7 +80,24 @@ function login(req, res) {
   res.status(200).json({ access_token })
 }
 
+function getAccountDetails(req, res) {
+  jwt.verify(
+    req.headers.authorization.split(' ')[1],
+    SECRET_KEY,
+    (err, authorizedData) => {
+      if (err) {
+        res.sendStatus(403).json({
+          err
+        })
+      } else {
+        res.json(authorizedData)
+      }
+    }
+  )
+}
+
 module.exports = {
   login,
-  register
+  register,
+  getAccountDetails
 }

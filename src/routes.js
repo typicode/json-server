@@ -14,6 +14,11 @@ module.exports = [
   },
   {
     method: 'GET',
+    route: '/auth/details',
+    controller: authController.getAccountDetails
+  },
+  {
+    method: 'GET',
     route: '/exchange',
     controller: controller.exchangeCurrency
   }
