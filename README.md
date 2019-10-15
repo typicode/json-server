@@ -12,9 +12,7 @@ See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
 * :hotel: [hotel - developer tool with local .localhost domain and https out of the box](https://github.com/typicode/hotel)
 
-<h2 align="center">Sponsors</h2>
-
-<h3 align="center">Gold 🥇</h3>
+<h2 align="center">Gold spnsors 🥇</h2>
 
 <p align="center">
   <a href="https://tryretool.com/?utm_source=sponsor&utm_campaign=typicode" target="_blank">
@@ -22,9 +20,7 @@ See also:
   </a>
 </p>
 
----
-
-<h3 align="center">Bronze 🥉</h3>
+<h2 align="center">Bronze sponsors 🥉</h2>
 
 <p align="center">
   <a href="https://www.zinggrid.com/hello/json-server?utm_source=jsonserver&utm_medium=github&utm_campaign=sponsorship" target="_blank">
@@ -38,11 +34,7 @@ See also:
   </a>
 </p>
 
----
-
-<p align="center">
-  <a href="https://github.com/users/typicode/sponsorship">Become a sponsor and have your company logo here</a>
-</p>
+[Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
 
 ## Table of contents
 
