@@ -40,8 +40,6 @@ See also:
 
 ---
 
-<p>&nbsp;</p>
-
 <p align="center">
   <a href="https://github.com/users/typicode/sponsorship">Become a sponsor and have your company logo here</a>
 </p>
