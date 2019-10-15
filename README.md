@@ -12,6 +12,8 @@ See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
 * :hotel: [hotel - developer tool with local .localhost domain and https out of the box](https://github.com/typicode/hotel)
 
+<p>&nbsp;</p>
+
 <h2 align="center">Gold sponsors 🥇</h2>
 
 <p>&nbsp;</p>
