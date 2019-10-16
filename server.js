@@ -18,14 +18,6 @@ server.use(bodyParser.urlencoded({ extended: true }))
 server.use(bodyParser.json())
 server.use(jsonServer.defaults())
 
-routes.forEach(route => {
-  if (route.method === 'POST') {
-    server.post(route.route, route.controller)
-  } else {
-    server.get(route.route, route.controller)
-  }
-})
-
 server.use(/^(?!\/auth).*$/, (req, res, next) => {
   if (
     req.headers.authorization === undefined ||
@@ -53,6 +45,14 @@ server.use(/^(?!\/auth).*$/, (req, res, next) => {
     const status = 401
     const message = 'Error access_token is revoked'
     res.status(status).json({ status, message })
+  }
+})
+
+routes.forEach(route => {
+  if (route.method === 'POST') {
+    server.post(route.route, route.controller)
+  } else {
+    server.get(route.route, route.controller)
   }
 })
 

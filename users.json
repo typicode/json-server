@@ -1,14 +1,1 @@
-{
-    "users": [
-        {
-            "id": 2,
-            "email": "anton@email.com",
-            "password": "anton"
-        },
-        {
-            "id": 2,
-            "email": "antonel@email.com",
-            "password": "anton"
-        }
-    ]
-}
+{"users":[{"id":2,"email":"anton@email.com","password":"anton"},{"id":2,"email":"antonel@email.com","password":"anton"},{"id":2,"email":"serii@email.com","password":"anton"},{"id":2,"email":"serioga@email.com","password":"anton"},{"id":2,"email":"seriogaia@email.com","password":"anton"}]}

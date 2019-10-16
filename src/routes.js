@@ -14,7 +14,7 @@ module.exports = [
   },
   {
     method: 'GET',
-    route: '/auth/details',
+    route: '/account',
     controller: authController.getAccountDetails
   },
   {
