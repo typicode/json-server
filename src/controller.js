@@ -24,6 +24,39 @@ function exchangeCurrency(req, res) {
   }
 }
 
+function exchangeCurrencyHistory(req, res) {
+  if (req.method === 'GET') {
+    const fregvencyOptions = {
+      daily: 'DIGITAL_CURRENCY_DAILY',
+      weekly: 'DIGITAL_CURRENCY_WEEKLY',
+      monthly: 'DIGITAL_CURRENCY_MONTHLY'
+    }
+
+    const from = req.query.from
+    const to = req.query.to
+    const frequency =
+      fregvencyOptions[req.query.frequency] || fregvencyOptions.daily
+
+    if (from != null && to !== null) {
+      fetch(
+        `https://www.alphavantage.co/query?function=${frequency}&symbol=${from}&market=${to}&apikey=WVS7S95FAMLLH9Z6`
+      )
+        .then(res => res.json())
+        .then(json => res.status(200).jsonp(json))
+        .catch(() =>
+          res.status(500).jsonp({
+            error: 'something is wrong with request'
+          })
+        )
+    } else {
+      res.status(500).jsonp({
+        error: 'something is wrong with server'
+      })
+    }
+  }
+}
+
 module.exports = {
-  exchangeCurrency
+  exchangeCurrency,
+  exchangeCurrencyHistory
 }

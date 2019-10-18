@@ -21,5 +21,10 @@ module.exports = [
     method: 'GET',
     route: '/exchange',
     controller: controller.exchangeCurrency
+  },
+  {
+    method: 'GET',
+    route: '/exchange-history',
+    controller: controller.exchangeCurrencyHistory
   }
 ]
