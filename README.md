@@ -32,6 +32,7 @@ Current routes List (basic REST exemple)
 ```
 
 GET 'http://localhost:3001/exchange?from=EUR&to=MDL' => get exchange rate details
+GET 'http://localhost:3001/exchange-history?from=BTC&to=MDL => get digital currency exchange history
 
 ```
 
