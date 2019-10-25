@@ -36,12 +36,6 @@ See also:
   </a>
 </p>
 
-<p align="center">
-  <a href="https://writersperhour.com" target="_blank">
-    <img src="https://i.imgur.com/JxoFkAr.png" height="30px">
-  </a>
-</p>
-
 <p>&nbsp;</p>
 
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
