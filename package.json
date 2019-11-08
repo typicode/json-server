@@ -81,6 +81,9 @@
     "webpack-cli": "^3.3.7",
     "whatwg-fetch": "^3.0.0"
   },
+  "resolutions": {
+    "graceful-fs": "4.2.3"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/typicode/json-server.git"
