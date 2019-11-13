@@ -42,7 +42,15 @@ function exchangeCurrencyHistory(req, res) {
         `https://www.alphavantage.co/query?function=${frequency}&symbol=${from}&market=${to}&apikey=WVS7S95FAMLLH9Z6`
       )
         .then(res => res.json())
-        .then(json => res.status(200).jsonp(json))
+        .then(json => {
+          const data = json['Time Series (Digital Currency Daily)']
+
+          const rowData = Object.keys(data).map(key => {
+            return { date: key, ...data[key] }
+          })
+
+          res.status(200).jsonp(rowData)
+        })
         .catch(() =>
           res.status(500).jsonp({
             error: 'something is wrong with request'
