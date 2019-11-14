@@ -46,7 +46,13 @@ function exchangeCurrencyHistory(req, res) {
           const data = json['Time Series (Digital Currency Daily)']
 
           const rowData = Object.keys(data).map(key => {
-            return { date: key, ...data[key] }
+            return {
+              date: key,
+              open: data[key][`1a. open (${to})`],
+              high: data[key][`2a. high (${to})`],
+              low: data[key][`3a. low (${to})`],
+              close: data[key][`4a. close (${to})`]
+            }
           })
 
           res.status(200).jsonp(rowData)
