@@ -1,9 +1,9 @@
-const fetch = require('node-fetch')
+const fetch = require("node-fetch");
 
 function exchangeCurrency(req, res) {
-  if (req.method === 'GET') {
-    const from = req.query.from
-    const to = req.query.to
+  if (req.method === "GET") {
+    const from = req.query.from;
+    const to = req.query.to;
 
     if (from != null && to !== null) {
       fetch(
@@ -13,29 +13,29 @@ function exchangeCurrency(req, res) {
         .then(json => res.status(200).jsonp(json))
         .catch(() =>
           res.status(500).jsonp({
-            error: 'something is wrong with request'
+            error: "something is wrong with request"
           })
-        )
+        );
     } else {
       res.status(500).jsonp({
-        error: 'something is wrong with server'
-      })
+        error: "something is wrong with server"
+      });
     }
   }
 }
 
 function exchangeCurrencyHistory(req, res) {
-  if (req.method === 'GET') {
+  if (req.method === "GET") {
     const fregvencyOptions = {
-      daily: 'DIGITAL_CURRENCY_DAILY',
-      weekly: 'DIGITAL_CURRENCY_WEEKLY',
-      monthly: 'DIGITAL_CURRENCY_MONTHLY'
-    }
+      daily: "DIGITAL_CURRENCY_DAILY",
+      weekly: "DIGITAL_CURRENCY_WEEKLY",
+      monthly: "DIGITAL_CURRENCY_MONTHLY"
+    };
 
-    const from = req.query.from
-    const to = req.query.to
+    const from = req.query.from;
+    const to = req.query.to;
     const frequency =
-      fregvencyOptions[req.query.frequency] || fregvencyOptions.daily
+      fregvencyOptions[req.query.frequency] || fregvencyOptions.daily;
 
     if (from != null && to !== null) {
       fetch(
@@ -43,29 +43,29 @@ function exchangeCurrencyHistory(req, res) {
       )
         .then(res => res.json())
         .then(json => {
-          const data = json['Time Series (Digital Currency Daily)']
+          const data = json["Time Series (Digital Currency Daily)"];
 
           const rowData = Object.keys(data).map(key => {
             return {
               date: key,
               open: data[key][`1a. open (${to})`],
-              high: data[key][`2a. high (${to})`],
-              low: data[key][`3a. low (${to})`],
+              highest: data[key][`2a. high (${to})`],
+              lowest: data[key][`3a. low (${to})`],
               close: data[key][`4a. close (${to})`]
-            }
-          })
+            };
+          });
 
-          res.status(200).jsonp(rowData)
+          res.status(200).jsonp(rowData);
         })
         .catch(() =>
           res.status(500).jsonp({
-            error: 'something is wrong with request'
+            error: "something is wrong with request"
           })
-        )
+        );
     } else {
       res.status(500).jsonp({
-        error: 'something is wrong with server'
-      })
+        error: "something is wrong with server"
+      });
     }
   }
 }
@@ -73,4 +73,4 @@ function exchangeCurrencyHistory(req, res) {
 module.exports = {
   exchangeCurrency,
   exchangeCurrencyHistory
-}
+};
