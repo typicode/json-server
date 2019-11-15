@@ -49,8 +49,8 @@ function exchangeCurrencyHistory(req, res) {
             return {
               date: key,
               open: data[key][`1a. open (${to})`],
-              highest: data[key][`2a. high (${to})`],
-              lowest: data[key][`3a. low (${to})`],
+              high: data[key][`2a. high (${to})`],
+              low: data[key][`3a. low (${to})`],
               close: data[key][`4a. close (${to})`]
             };
           });
