@@ -12,7 +12,15 @@ const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
 
-module.exports = (db, opts = { foreignKeySuffix: 'Id', _isFake: false }) => {
+module.exports = (db, opts = {}) => {
+  opts = {
+    foreignKeySuffix: 'Id',
+    resourceAlias: {},
+    effectWhenCreate: (data, resource, req, res) => data,
+    effectWhenUpdate: (data, resource, req, res) => data,
+    _isFake: false,
+    ...opts
+  }
   if (typeof db === 'string') {
     db = low(new FileSync(db))
   } else if (!_.has(db, '__chain__') || !_.has(db, '__wrapped__')) {

@@ -5,6 +5,7 @@ const _ = require('lodash')
 const chalk = require('chalk')
 const enableDestroy = require('server-destroy')
 const pause = require('connect-pause')
+const omitEmpty = require('omit-empty')
 const is = require('./utils/is')
 const load = require('./utils/load')
 const jsonServer = require('../server')
@@ -35,11 +36,14 @@ function prettyPrint(argv, object, rules) {
 function createApp(db, routes, middlewares, argv) {
   const app = jsonServer.create()
 
-  const { foreignKeySuffix } = argv
+  const { foreignKeySuffix, resourceAlias } = argv
 
   const router = jsonServer.router(
     db,
-    foreignKeySuffix ? { foreignKeySuffix } : undefined
+    omitEmpty({
+      foreignKeySuffix,
+      resourceAlias
+    })
   )
 
   const defaultsOpts = {
