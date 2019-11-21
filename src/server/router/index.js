@@ -16,8 +16,9 @@ module.exports = (db, opts = {}) => {
   opts = {
     foreignKeySuffix: 'Id',
     resourceAlias: {},
-    effectWhenCreate: (data, resource, req, res) => data,
-    effectWhenUpdate: (data, resource, req, res) => data,
+    effectWhenCreate: ({ data }) => data,
+    effectWhenUpdate: ({ data }) => data,
+    effectWhenDestroy: () => {},
     _isFake: false,
     ...opts
   }

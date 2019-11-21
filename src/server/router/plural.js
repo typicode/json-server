@@ -340,7 +340,13 @@ module.exports = (db, name, opts) => {
   }
 
   function _create(req, res, name, body) {
-    body = opts.effectWhenCreate(body, name, req, res)
+    body = opts.effectWhenCreate({
+      resource: name,
+      data: body,
+      req,
+      res,
+      db
+    })
 
     if (opts._isFake) {
       const id = db
@@ -417,7 +423,13 @@ module.exports = (db, name, opts) => {
   }
 
   function _update(req, res, id, name, body) {
-    body = opts.effectWhenUpdate(body, name, req, res)
+    body = opts.effectWhenUpdate({
+      resource: name,
+      data: body,
+      req,
+      res,
+      db
+    })
 
     let resource
     if (opts._isFake) {
@@ -446,6 +458,14 @@ module.exports = (db, name, opts) => {
 
   // DELETE /name/:id
   function destroy(req, res, next) {
+    opts.effectWhenDestroy({
+      resource: name,
+      id: req.params.id,
+      req,
+      res,
+      db
+    })
+
     let resource
 
     if (opts._isFake) {

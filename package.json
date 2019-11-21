@@ -9,7 +9,7 @@
   },
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
-    "test": "npm run build && cross-env NODE_ENV=test jest --testTimeout 10000 && npm run lint",
+    "test": "npm run build && cross-env NODE_ENV=test jest --testTimeout 50000 && npm run lint",
     "start": "run-p start:**",
     "start:babel-node": "babel-node src/cli/bin db.json -r routes.json",
     "start:webpack": "webpack -d --watch",
