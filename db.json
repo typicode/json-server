@@ -1,9 +1,27 @@
-{
-  "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
-  ],
-  "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
-  ],
-  "profile": { "name": "typicode" }
+{ 
+   "tpp":{ 
+      "code":"TPP-CODE",
+      "name":"TPP-NAME"
+   },
+   "access":{ 
+      "accessType":"05",
+      "balances":[ 
+         { 
+            "iban":"ES1111111111111111111111"
+         },
+         { 
+            "iban":"ES2222222222222222222222",
+            "currency":"USD"
+         },
+         { 
+            "iban":"ES3333333333333333333333"
+         }
+      ],
+      "transactions":[ 
+         { 
+            "iban":"ES1111111111111111111111"
+         }
+      ]
+   },
+   "validUntil":"2018-05-17"
 }
