@@ -9,7 +9,7 @@
   },
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
-    "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
+    "test": "npm run build && cross-env NODE_ENV=test jest --testTimeout 50000 && npm run lint",
     "start": "run-p start:**",
     "start:babel-node": "babel-node src/cli/bin db.json -r routes.json",
     "start:webpack": "webpack -d --watch",
@@ -36,6 +36,7 @@
     "morgan": "^1.9.1",
     "nanoid": "^2.1.0",
     "object-assign": "^4.1.1",
+    "omit-empty": "^1.0.0",
     "please-upgrade-node": "^3.2.0",
     "pluralize": "^8.0.0",
     "request": "^2.88.0",

@@ -68,6 +68,11 @@ module.exports = function() {
         description: 'Set foreign key suffix (e.g. _id as in post_id)',
         default: 'Id'
       },
+      resourceAlias: {
+        alias: 'A',
+        description:
+          'Set resource alias in the file (e.g. {"creator": "user"} )'
+      },
       quiet: {
         alias: 'q',
         description: 'Suppress log messages from output'

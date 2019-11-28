@@ -11,16 +11,26 @@ module.exports = (db, name, opts) => {
   const router = express.Router()
   router.use(delay)
 
+  // Get real resource name
+  const resourceAlias =
+    (typeof opts.resourceAlias === 'string' && require(opts.resourceAlias)) ||
+    opts.resourceAlias ||
+    {}
+  function getRealResource(resourceName) {
+    return resourceAlias[resourceName] || resourceName
+  }
+
   // Embed function used in GET /name and GET /name/id
   function embed(resource, e) {
     e &&
       [].concat(e).forEach(externalResource => {
-        if (db.get(externalResource).value) {
+        const realResource = getRealResource(externalResource)
+        if (db.get(realResource).value) {
           const query = {}
           const singularResource = pluralize.singular(name)
           query[`${singularResource}${opts.foreignKeySuffix}`] = resource.id
           resource[externalResource] = db
-            .get(externalResource)
+            .get(realResource)
             .filter(query)
             .value()
         }
@@ -31,7 +41,7 @@ module.exports = (db, name, opts) => {
   function expand(resource, e) {
     e &&
       [].concat(e).forEach(innerResource => {
-        const plural = pluralize(innerResource)
+        const plural = pluralize(getRealResource(innerResource))
         if (db.get(plural).value()) {
           const prop = `${innerResource}${opts.foreignKeySuffix}`
           resource[innerResource] = db
@@ -40,6 +50,24 @@ module.exports = (db, name, opts) => {
             .value()
         }
       })
+  }
+
+  // POST /name?_split=
+  function split(body, e) {
+    const keys = [].concat(e)
+    const mainBody = {}
+    const relativeBodies = {}
+    Object.keys(body).forEach(key => {
+      if (keys.indexOf(key) === -1) {
+        mainBody[key] = body[key]
+      } else {
+        relativeBodies[key] = body[key]
+      }
+    })
+    return {
+      mainBody,
+      relativeBodies
+    }
   }
 
   // GET /name
@@ -255,19 +283,51 @@ module.exports = (db, name, opts) => {
   }
 
   // POST /name
+  // POST /name?_split=
   function create(req, res, next) {
+    const { _split } = req.query
     let resource
-    if (opts._isFake) {
-      const id = db
-        .get(name)
-        .createId()
-        .value()
-      resource = { ...req.body, id }
+    if (_split) {
+      const { mainBody, relativeBodies } = split(req.body, _split)
+
+      resource = _create(req, res, name, mainBody)
+      const singularResource = pluralize.singular(name)
+      const prop = `${singularResource}${opts.foreignKeySuffix}`
+      for (const _name in relativeBodies) {
+        const body = relativeBodies[_name]
+        const plural = pluralize(getRealResource(_name))
+        if (Array.isArray(body)) {
+          resource[_name] = body.map(body => {
+            body[prop] = resource.id
+            if (
+              body.id &&
+              db
+                .get(plural)
+                .getById(body.id)
+                .value()
+            ) {
+              return _update(req, res, body.id, plural, body)
+            } else {
+              return _create(req, res, plural, body)
+            }
+          })
+        } else {
+          body[prop] = resource.id
+          if (
+            body.id &&
+            db
+              .get(plural)
+              .getById(body.id)
+              .value()
+          ) {
+            resource[_name] = _update(req, res, body.id, plural, body)
+          } else {
+            resource[_name] = _create(req, res, plural, body)
+          }
+        }
+      }
     } else {
-      resource = db
-        .get(name)
-        .insert(req.body)
-        .value()
+      resource = _create(req, res, name, req.body)
     }
 
     res.setHeader('Access-Control-Expose-Headers', 'Location')
@@ -279,32 +339,81 @@ module.exports = (db, name, opts) => {
     next()
   }
 
-  // PUT /name/:id
-  // PATCH /name/:id
-  function update(req, res, next) {
-    const id = req.params.id
-    let resource
+  function _create(req, res, name, body) {
+    body = opts.effectWhenCreate({
+      resource: name,
+      data: body,
+      req,
+      res,
+      db
+    })
 
     if (opts._isFake) {
-      resource = db
+      const id = db
         .get(name)
-        .getById(id)
+        .createId()
         .value()
+      return { ...body, id }
+    } else {
+      return db
+        .get(name)
+        .insert(body)
+        .cloneDeep()
+        .value()
+    }
+  }
 
-      if (req.method === 'PATCH') {
-        resource = { ...resource, ...req.body }
-      } else {
-        resource = { ...req.body, id: resource.id }
+  // PUT /name/:id
+  // PATCH /name/:id
+  // PUT /name/:id?_split=
+  // PATCH /name/:id?_split=
+  function update(req, res, next) {
+    const { id } = req.params
+    const { _split } = req.query
+
+    let resource
+    if (_split) {
+      const { mainBody, relativeBodies } = split(req.body, _split)
+
+      resource = _update(req, res, id, name, mainBody)
+      const singularResource = pluralize.singular(name)
+      const prop = `${singularResource}${opts.foreignKeySuffix}`
+
+      for (const _name in relativeBodies) {
+        const body = relativeBodies[_name]
+        const plural = pluralize(getRealResource(_name))
+        if (Array.isArray(body)) {
+          resource[_name] = body.map(body => {
+            body[prop] = resource.id
+            if (
+              body.id &&
+              db
+                .get(plural)
+                .getById(body.id)
+                .value()
+            ) {
+              return _update(req, res, body.id, plural, body)
+            } else {
+              return _create(req, res, plural, body)
+            }
+          })
+        } else {
+          body[prop] = resource.id
+          if (
+            body.id &&
+            db
+              .get(plural)
+              .getById(body.id)
+              .value()
+          ) {
+            resource[_name] = _update(req, res, body.id, plural, body)
+          } else {
+            resource[_name] = _create(req, res, plural, body)
+          }
+        }
       }
     } else {
-      let chain = db.get(name)
-
-      chain =
-        req.method === 'PATCH'
-          ? chain.updateById(id, req.body)
-          : chain.replaceById(id, req.body)
-
-      resource = chain.value()
+      resource = _update(req, res, id, name, req.body)
     }
 
     if (resource) {
@@ -314,8 +423,50 @@ module.exports = (db, name, opts) => {
     next()
   }
 
+  function _update(req, res, id, name, body) {
+    body = opts.effectWhenUpdate({
+      resource: name,
+      data: body,
+      req,
+      res,
+      db
+    })
+
+    let resource
+    if (opts._isFake) {
+      resource = db
+        .get(name)
+        .getById(id)
+        .value()
+
+      if (req.method === 'PATCH') {
+        resource = { ...resource, ...body }
+      } else {
+        resource = { ...body, id: resource.id }
+      }
+    } else {
+      let chain = db.get(name)
+
+      chain =
+        req.method === 'PATCH'
+          ? chain.updateById(id, body)
+          : chain.replaceById(id, body)
+
+      resource = chain.cloneDeep().value()
+    }
+    return resource
+  }
+
   // DELETE /name/:id
   function destroy(req, res, next) {
+    opts.effectWhenDestroy({
+      resource: name,
+      id: req.params.id,
+      req,
+      res,
+      db
+    })
+
     let resource
 
     if (opts._isFake) {
