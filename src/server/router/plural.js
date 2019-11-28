@@ -368,7 +368,8 @@ module.exports = (db, name, opts) => {
   // PUT /name/:id?_split=
   // PATCH /name/:id?_split=
   function update(req, res, next) {
-    const { id, _split } = req.params
+    const { id } = req.params
+    const { _split } = req.query
 
     let resource
     if (_split) {
@@ -383,7 +384,7 @@ module.exports = (db, name, opts) => {
         const plural = pluralize(getRealResource(_name))
         if (Array.isArray(body)) {
           resource[_name] = body.map(body => {
-            body[prop] = id
+            body[prop] = resource.id
             if (
               body.id &&
               db
@@ -397,7 +398,7 @@ module.exports = (db, name, opts) => {
             }
           })
         } else {
-          body[prop] = id
+          body[prop] = resource.id
           if (
             body.id &&
             db
