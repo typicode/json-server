@@ -1,9 +1,180 @@
 {
-  "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
-  ],
-  "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
-  ],
-  "profile": { "name": "typicode" }
+   "soilchartbyphandecavg": [
+      {
+         "name": "Seed",
+         "data": [
+            {
+               "name": "2017",
+               "y": 11000,
+               "drilldown": "2017"
+            },
+            {
+               "name": "2018",
+               "y": 14000,
+               "drilldown": "2018"
+            },
+            {
+               "name": "2019",
+               "y": 12000,
+               "drilldown": "2019"
+            }
+         ]
+      },
+      {
+         "name": "Fetilizers",
+         "data": [
+            {
+               "name": "2017",
+               "y": 14000,
+               "drilldown": "2017"
+            },
+            {
+               "name": "2018",
+               "y": 10000,
+               "drilldown": "2018"
+            },
+            {
+               "name": "2019",
+               "y": 19000,
+               "drilldown": "2019"
+            }
+         ]
+      }
+   ],
+   "drilldown": {
+      "series": [
+         {
+            "id": "2017",
+            "name": "2017",
+            "data": [
+               [
+                  "Warangal",
+                  4000
+               ],
+               [
+                  "Yallandu",
+                  2000
+               ],
+               [
+                  "Bhadrachalam",
+                  1000
+               ],
+               [
+                  "Somasila",
+                  4000
+               ]
+            ]
+         },
+         {
+            "id": "2018",
+            "name": "2018",
+            "data": [
+               [
+                  "Warangal",
+                  6000
+               ],
+               [
+                  "Yallandu",
+                  2000
+               ],
+               [
+                  "Bhadrachalam",
+                  2000
+               ],
+               [
+                  "Somasila",
+                  4000
+               ]
+            ]
+         },
+         {
+            "id": "2019",
+            "name": "2019",
+            "data": [
+               [
+                  "Warangal",
+                  2000
+               ],
+               [
+                  "Yallandu",
+                  5000
+               ],
+               [
+                  "Bhadrachalam",
+                  3000
+               ],
+               [
+                  "Somasila",
+                  2000
+               ]
+            ]
+         },
+         {
+            "id": "2017",
+            "name": "2017",
+            "data": [
+               [
+                  "Warangal",
+                  2000
+               ],
+               [
+                  "Yallandu",
+                  4000
+               ],
+               [
+                  "Bhadrachalam",
+                  1000
+               ],
+               [
+                  "Somasila",
+                  7000
+               ]
+            ]
+         },
+         {
+            "id": "2018",
+            "name": "2018",
+            "data": [
+               [
+                  "Warangal",
+                  2000
+               ],
+               [
+                  "Yallandu",
+                  2000
+               ],
+               [
+                  "Bhadrachalam",
+                  3000
+               ],
+               [
+                  "Somasila",
+                  3000
+               ]
+            ]
+         },
+         {
+            "id": "2019",
+            "name": "2019",
+            "data": [
+               [
+                  "Warangal",
+                  7000
+               ],
+               [
+                  "Yallandu",
+                  8000
+               ],
+               [
+                  "Bhadrachalam",
+                  2000
+               ],
+               [
+                  "Somasila",
+                  2000
+               ]
+            ]
+         }
+      ]
+   }
 }
