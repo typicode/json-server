@@ -54,6 +54,10 @@ function createApp(db, routes, middlewares, argv) {
     defaultsOpts.static = path.join(process.cwd(), argv.static)
   }
 
+  if (argv.render) {
+    router.render = render
+  }
+
   const defaults = jsonServer.defaults(defaultsOpts)
   app.use(defaults)
 
@@ -118,6 +122,13 @@ module.exports = function(argv) {
           console.log(chalk.gray('  Loading', m))
           return require(path.resolve(m))
         })
+      }
+
+      // Load render method
+      let render
+      if (argv.render) {
+        console.log(chalk.gray('  Loading', argv.render))
+        render = require(path.resolve(argv.render))
       }
 
       // Done

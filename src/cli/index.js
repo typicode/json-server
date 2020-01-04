@@ -72,6 +72,10 @@ module.exports = function() {
         alias: 'q',
         description: 'Suppress log messages from output'
       },
+      render: {
+        alias: 're',
+        description: 'To modify responses'
+      },
       config: {
         alias: 'c',
         description: 'Path to config file',
@@ -85,6 +89,7 @@ module.exports = function() {
     .boolean('no-gzip')
     .help('help')
     .alias('help', 'h')
+    .alias('render', 're')
     .version(pkg.version)
     .alias('version', 'v')
     .example('$0 db.json', '')
