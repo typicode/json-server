@@ -5,5 +5,37 @@
   "comments": [
     { "id": 1, "body": "some comment", "postId": 1 }
   ],
-  "profile": { "name": "typicode" }
+  "profile": { "name": "typicode" },
+  "curation": [
+    {
+      "title": "걸어서 세계속으로",
+      "menuType": "프로그램 페이지",
+      "menuColor": "black",
+      "url": "https://dmyk.kbs.co.kr/front2/program_info.html?program_code=T2005-0731"
+    },
+    {
+      "title": "광개토태왕",
+      "menuType": "영상 콘텐츠 재생",
+      "menuColor": "black",
+      "url": "https://m.naver.com"
+    },
+    {
+      "title": "오늘의 K",
+      "menuType": "오늘의 K",
+      "menuColor": "black",
+      "url": "https://dmyk2.static.kbs.co.kr/front2/gnb_home.html"
+    },
+    {
+      "title": "트로트 신인 유산슬",
+      "menuType": "검색 결과 페이지",
+      "menuColor": "black",
+      "url": "https://m.daum.net"
+    },
+    {
+      "title": "베스트 클립",
+      "menuType": "클립 메뉴",
+      "menuColor": "black",
+      "url": "https://m.nate.com"
+    }
+  ]
 }
