@@ -5,7 +5,6 @@ const logger = require('morgan')
 const cors = require('cors')
 const compression = require('compression')
 const errorhandler = require('errorhandler')
-const objectAssign = require('object-assign')
 const bodyParser = require('./body-parser')
 
 module.exports = function(opts) {
@@ -13,7 +12,7 @@ module.exports = function(opts) {
   const defaultDir = path.join(__dirname, '../../dist')
   const staticDir = fs.existsSync(userDir) ? userDir : defaultDir
 
-  opts = objectAssign({ logger: true, static: staticDir }, opts)
+  opts = Object.assign({ logger: true, static: staticDir }, opts)
 
   const arr = []
 

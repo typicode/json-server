@@ -35,7 +35,6 @@
     "method-override": "^3.0.0",
     "morgan": "^1.9.1",
     "nanoid": "^2.1.0",
-    "object-assign": "^4.1.1",
     "please-upgrade-node": "^3.2.0",
     "pluralize": "^8.0.0",
     "request": "^2.88.0",
