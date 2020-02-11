@@ -12,10 +12,27 @@ describe('Fake server', () => {
 
     db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
 
+    db.comments = [
+      { id: 1, body: 'foo', published: true, postId: 1, userId: 1 },
+      { id: 2, body: 'bar', published: false, postId: 1, userId: 2 },
+      { id: 3, body: 'baz', published: false, postId: 2, userId: 1 },
+      { id: 4, body: 'qux', published: true, postId: 2, userId: 2 },
+      { id: 5, body: 'quux', published: false, postId: 2, userId: 1 }
+    ]
+
     server = jsonServer.create()
     router = jsonServer.router(db, { _isFake: true })
     server.use(jsonServer.defaults())
     server.use(router)
+  })
+
+  describe('GET /:parent/:parentId/:resource', () => {
+    test('should respond with json and corresponding nested resources', () =>
+      request(server)
+        .get('/posts/1/comments')
+        .expect('Content-Type', /json/)
+        .expect([db.comments[0], db.comments[1]])
+        .expect(200))
   })
 
   describe('POST /:resource', () => {
