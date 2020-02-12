@@ -11,6 +11,7 @@
     "fix": "npm run lint -- --fix",
     "build": "babel src -d lib",
     "toc": "markdown-toc -i README.md",
+    "postversion": "git push && git push --tags",
     "prepublishOnly": "npm test && npm run build && pkg-ok"
   },
   "dependencies": {
