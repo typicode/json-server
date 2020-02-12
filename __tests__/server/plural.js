@@ -18,7 +18,10 @@ describe('Server', () => {
   beforeEach(() => {
     db = {}
 
-    db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
+    db.posts = [
+      { id: 1, body: 'foo' },
+      { id: 2, body: 'bar' }
+    ]
 
     db.tags = [
       { id: 1, body: 'Technology' },

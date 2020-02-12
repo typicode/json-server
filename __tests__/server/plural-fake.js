@@ -10,7 +10,10 @@ describe('Fake server', () => {
   beforeEach(() => {
     db = {}
 
-    db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
+    db.posts = [
+      { id: 1, body: 'foo' },
+      { id: 2, body: 'bar' }
+    ]
 
     db.comments = [
       { id: 1, body: 'foo', published: true, postId: 1, userId: 1 },

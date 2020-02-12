@@ -11,7 +11,10 @@ describe('Server with custom foreign key', () => {
   beforeEach(() => {
     db = {}
 
-    db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
+    db.posts = [
+      { id: 1, body: 'foo' },
+      { id: 2, body: 'bar' }
+    ]
 
     db.comments = [
       { id: 1, post_id: 1 },
