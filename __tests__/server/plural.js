@@ -703,18 +703,18 @@ describe('Server', () => {
           .expect(200))
     })
 
-    describe('GET /main.js', () => {
+    describe('GET /script.js', () => {
       test('should respond with js', () =>
         request(server)
-          .get('/main.js')
+          .get('/script.js')
           .expect('Content-Type', /javascript/)
           .expect(200))
     })
 
-    describe('GET /main.css', () => {
+    describe('GET /style.css', () => {
       test('should respond with css', () =>
         request(server)
-          .get('/main.css')
+          .get('/style.css')
           .expect('Content-Type', /css/)
           .expect(200))
     })
