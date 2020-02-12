@@ -18,6 +18,7 @@ body {
 
 header {
   border-bottom: 1px solid #eee;
+  background: #e5e9f0;
 }
 
 header a {
@@ -110,4 +111,16 @@ code {
   margin: 0rem 0.2rem;
   border-radius: 0.2rem;
   background: #e5e9f0;
+}
+
+sup {
+  padding: 3px 5px;
+  background: #e5e9f0;
+  color: #333;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+div#resources ul li {
+  display: flex;
 }
