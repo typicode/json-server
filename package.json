@@ -8,7 +8,6 @@
     "test": "test"
   },
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
     "start": "run-p start:**",
     "start:babel-node": "babel-node src/cli/bin db.json -r routes.json",
@@ -80,9 +79,6 @@
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
     "whatwg-fetch": "^3.0.0"
-  },
-  "resolutions": {
-    "graceful-fs": "4.2.3"
   },
   "repository": {
     "type": "git",
