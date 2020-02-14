@@ -188,6 +188,25 @@ describe('cli', () => {
     })
   })
 
+  describe('db.json -d 500 -j 500', () => {
+    beforeEach(done => {
+      child = cli([dbFile, '-d', 500, '-j', 500])
+      serverReady(PORT, done)
+    })
+
+    test('should jitter the response', done => {
+      const start = new Date()
+      request.get('/posts').expect(200, function(err) {
+        const end = new Date()
+        done(
+          end - start > 500 && end - start < 1000
+            ? err
+            : new Error("Request wasn't jittered")
+        )
+      })
+    })
+  })
+
   describe('db.json -s ../../__fixtures__/public -S /some/path/snapshots', () => {
     const snapshotsDir = path.join(osTmpdir(), 'snapshots')
     const publicDir = '../../__fixtures__/public'

@@ -8,6 +8,7 @@ const pause = require('connect-pause')
 const is = require('./utils/is')
 const load = require('./utils/load')
 const jsonServer = require('../server')
+const jitter = require('./utils/jitter')
 
 function prettyPrint(argv, object, rules) {
   const root = `http://${argv.host}:${argv.port}`
@@ -68,6 +69,10 @@ function createApp(db, routes, middlewares, argv) {
 
   if (argv.delay) {
     app.use(pause(argv.delay))
+  }
+
+  if (argv.jitter) {
+    app.use(jitter(argv.jitter))
   }
 
   router.db._.id = argv.id
