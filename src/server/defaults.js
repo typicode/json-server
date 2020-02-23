@@ -9,7 +9,7 @@ const bodyParser = require('./body-parser')
 
 module.exports = function(opts) {
   const userDir = path.join(process.cwd(), 'public')
-  const defaultDir = path.join(__dirname, '../front')
+  const defaultDir = path.join(__dirname, '../../public')
   const staticDir = fs.existsSync(userDir) ? userDir : defaultDir
 
   opts = Object.assign({ logger: true, static: staticDir }, opts)
