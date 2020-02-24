@@ -173,6 +173,8 @@ GET /posts?_page=7&_limit=20
 
 _10 items are returned by default_
 
+The total count of the items is available via `X-Total-Count` in the response.
+
 ### Sort
 
 Add `_sort` and `_order` (ascending order by default)
