@@ -1,9 +1,25 @@
 {
-  "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
-  ],
-  "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
-  ],
-  "profile": { "name": "typicode" }
+  "students":[
+    {
+      "id": 1,
+      "name": "Yash Sharma",
+      "email": "ys909@snu.edu.in",
+      "contact": "9119318727",
+      "atflag": "yes"
+    },
+    {
+      "id": 2,
+      "name": "Ishit Beswal",
+      "email": "ib370@snu.edu.in",
+      "contact": "9468866304",
+      "atflag": "no"
+    },
+    {
+      "id": 3,
+      "name": "Jai Sharma",
+      "email": "js768@snu.edu.in",
+      "contact": "7597394088",
+      "atflag": "yes"
+    }
+  ]
 }
