@@ -1,0 +1,79 @@
+[
+{
+    "sareeUniqueId": "4",
+    "sareeName": "VT ORGENZA SAREE",
+    "sareePrice": "1000RS",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos//bolly/orgenzaseagreen.jpg",
+    "sareeCategory": "replicas"
+},
+{
+    "sareeUniqueId": "5",
+    "sareeName": "BOLLY DS-20",
+    "sareePrice": "1050rs",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos/bolly/ds20.jpg",
+    "sareeCategory": "replicas"
+},
+{
+    "sareeUniqueId": "6",
+    "sareeName": "BOLLY GREY NET SAREE",
+    "sareePrice": "1550rs",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos/bolly/greynetkt3285.jpg",
+    "sareeCategory": "replicas"
+},
+{
+    "sareeUniqueId": "7",
+    "sareeName": "LUCKNOW CHICON",
+    "sareePrice": "2575rs",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos/mansahit/lucknowchicon/black.jpg",
+    "sareeCategory": "mansa"
+},
+{
+    "sareeUniqueId": "8",
+    "sareeName": "RAJTEX KRYSTILLA SILK",
+    "sareePrice": "2250rs",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos/rajtex/krystilasilkRAJTEX/blue.jpg",
+    "sareeCategory": "silk"
+},
+{
+    "sareeUniqueId": "9",
+    "sareeName": "RAJTEXT KUMBHI SILK",
+    "sareePrice": "2100rs",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos/rajtex/kumbhisilk/purple.jpg",
+    "sareeCategory": "silk"
+},
+{
+    "sareeUniqueId": "10",
+    "sareeName": "VICHATRA ART GICHA SILK",
+    "sareePrice": "1690rs",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos/vichatrasilk/golden.jpg",
+    "sareeCategory": "silk"
+},
+{
+    "sareeUniqueId": "11",
+    "sareeName": "LT Linen Embroidery",
+    "sareePrice": "1200rs",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos/lt/meghalinenembrdoidery/grey.jpg",
+    "sareeCategory": "bengal"
+},
+{
+    "sareeUniqueId": "12",
+    "sareeName": "LT printed linen",
+    "sareePrice": "900rs",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos/lt/silkroute/sr1.jpg",
+    "sareeCategory": "bengal"
+},
+{
+    "sareeUniqueId": "13",
+    "sareeName": "Bengal Handloom",
+    "sareePrice": "940rs",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos/bengal/handloom/whiteredpompom.jpg",
+    "sareeCategory": "bengal"
+},
+{
+    "sareeUniqueId": "14",
+    "sareeName": "Bengal Katha saree",
+    "sareePrice": "840rs",
+    "sareePhoto": "C:/Tarun Israni/mansaPhotos/bengal/katha/white.jpg",
+    "sareeCategory": "bengal"
+}
+]
