@@ -1,0 +1,22 @@
+[{
+"id": "1",
+"Title": "C++",
+"Author": "xyz",
+"ISBN": "346",
+"Publication": "16/04/2020",
+"Publisher": "xyz",
+"Price": 100,
+"Genre": "xyz",
+"Format": "xyz"
+},
+{
+"id": "2",
+"Title": "Java",
+"Author": "abc",
+"ISBN": "346",
+"Publication": "16/04/2020",
+"Publisher": "abc",
+"Price": 100,
+"Genre": "abc",
+"Format": "abc"
+}]
