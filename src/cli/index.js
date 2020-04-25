@@ -33,6 +33,10 @@ module.exports = function() {
         array: true,
         description: 'Paths to middleware files'
       },
+      midafter: {
+        alias: 'a',
+        description: 'Path to execute after proccess'
+      },
       static: {
         alias: 's',
         description: 'Set static files directory'

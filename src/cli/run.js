@@ -32,7 +32,7 @@ function prettyPrint(argv, object, rules) {
   console.log()
 }
 
-function createApp(db, routes, middlewares, argv) {
+function createApp(db, routes, middlewares, midafter, argv) {
   const app = jsonServer.create()
 
   const { foreignKeySuffix } = argv
@@ -63,7 +63,20 @@ function createApp(db, routes, middlewares, argv) {
   }
 
   if (middlewares) {
-    app.use(middlewares)
+    app.use(
+      middlewares.map(
+        m =>
+          function(req, res, next) {
+            m(req, res, next, router.db)
+          }
+      )
+    )
+  }
+
+  if (midafter) {
+    router.render = function(req, res) {
+      midafter(req, res)
+    }
   }
 
   if (argv.delay) {
@@ -120,11 +133,17 @@ module.exports = function(argv) {
         })
       }
 
+      let midafter
+      if (argv.midafter) {
+        console.log(chalk.gray('  Loading (after)', argv.midafter))
+        midafter = require(path.resolve(argv.midafter))
+      } // Done
+
       // Done
       console.log(chalk.gray('  Done'))
 
       // Create app and server
-      app = createApp(db, routes, middlewares, argv)
+      app = createApp(db, routes, middlewares, midafter, argv)
       server = app.listen(argv.port, argv.host)
 
       // Enhance with a destroy function
