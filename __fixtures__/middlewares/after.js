@@ -1,2 +1,2 @@
-const { parseAfter } = require("../helper/parse-response")
+const { parseAfter } = require('../helper/parse-response')
 module.exports = parseAfter

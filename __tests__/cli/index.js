@@ -16,7 +16,7 @@ const middlewareFiles = {
   jp: './../../__fixtures__/middlewares/jp.js',
   postbody: './../../__fixtures__/middlewares/postbody.js',
   before: './../../__fixtures__/middlewares/midleware-withdb.js',
-  after: './../../__fixtures__/middlewares/after.js',
+  after: './../../__fixtures__/middlewares/after.js'
 }
 
 const bin = path.join(__dirname, '../../lib/cli/bin')
@@ -314,30 +314,41 @@ describe('cli', () => {
   describe('after middleware', () => {
     beforeEach(done => {
       routesFile = tempWrite.sync(
-          JSON.stringify({ '/api/fullinfo?page=:pageNum&limit=:limitNum': '/fullinfo?_page=:pageNum&_limit=:limitNum' }),
-          'routes.json'
+        JSON.stringify({
+          '/api/fullinfo?page=:pageNum&limit=:limitNum':
+            '/fullinfo?_page=:pageNum&_limit=:limitNum'
+        }),
+        'routes.json'
       )
-      child = cli(['../../__fixtures__/seed.js', '-r', routesFile, '-m', middlewareFiles.before, '-a', middlewareFiles.after])
+      child = cli([
+        '../../__fixtures__/seed.js',
+        '-r',
+        routesFile,
+        '-m',
+        middlewareFiles.before,
+        '-a',
+        middlewareFiles.after
+      ])
       serverReady(PORT, done)
     })
 
     test('page and limit in request using custom routes', done => {
-      const limit = 40;
-      const page = 0;
+      const limit = 40
+      const page = 0
       request
-          .get(`/api/fullinfo?page=${page}&limit=${limit}`)
-          .expect(200)
-          .end(function(err, res) {
-            if (err) {
-              done(err)
-            } else {
-              expect(res.body.data).toHaveLength(limit)
-              expect(res.body.data[0].index).toBe(0)
-              expect(res.body.first).toBe(true)
-              expect(res.body.paging).toBe(page)
-              done()
-            }
-          });
+        .get(`/api/fullinfo?page=${page}&limit=${limit}`)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) {
+            done(err)
+          } else {
+            expect(res.body.data).toHaveLength(limit)
+            expect(res.body.data[0].index).toBe(0)
+            expect(res.body.first).toBe(true)
+            expect(res.body.paging).toBe(page)
+            done()
+          }
+        })
     })
   })
 })

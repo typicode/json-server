@@ -34,7 +34,7 @@ module.exports = function() {
       }
     ],
     fullinfo: Array(200)
-      .fill("")
+      .fill('')
       .map((x, index) => ({
         index,
         info1: Math.random()
@@ -53,5 +53,5 @@ module.exports = function() {
         randomInt2: Math.random(),
         randomInt3: Math.random()
       }))
-  };
-};
+  }
+}

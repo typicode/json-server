@@ -17,12 +17,12 @@ module.exports = {
   parseBefore: function(req, res, next, db) {
     const { query } = req
     if (
-      Object.prototype.hasOwnProperty.call(query, "_page") ||
-      Object.prototype.hasOwnProperty.call(query, "_limit") ||
-      Object.prototype.hasOwnProperty.call(query, "_pagination")
+      Object.prototype.hasOwnProperty.call(query, '_page') ||
+      Object.prototype.hasOwnProperty.call(query, '_limit') ||
+      Object.prototype.hasOwnProperty.call(query, '_pagination')
     ) {
       const { url } = req
-      const [id] = new RegExp("([^/?:&])+").exec(url)
+      const [id] = new RegExp('([^/?:&])+').exec(url)
       const content = db.get(id).value()
       if (content && Array.isArray(content)) {
         parsedSites[req.originalUrl] = getPaginationInfo(req.query, content)
