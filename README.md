@@ -66,6 +66,7 @@ See also:
   * [HTTPS](#https)
   * [Add custom routes](#add-custom-routes)
   * [Add middlewares](#add-middlewares)
+  * [Add after middleware](#add-after-middleware)
   * [CLI usage](#cli-usage)
   * [Module](#module)
     + [Simple example](#simple-example)
@@ -375,6 +376,25 @@ json-server db.json --middlewares ./hello.js
 json-server db.json --middlewares ./first.js ./second.js
 ```
 
+### Add after middleware
+
+After middlewares will be executed once all login in json-server was done.
+
+You can add your after middleware from the CLI using `--midafter` option:
+
+```js
+// after.js
+module.exports = (req, res) => {
+  res.jsonp({ ...res.locals.data, modified: true });
+}
+```
+
+```bash
+json-server db.json --midafter ./after.js
+```
+
+NOTE: If after middleware is specify it need to return response using `res.jsonp(...)` or server will not response. 
+
 ### CLI usage
 
 ```
@@ -387,6 +407,7 @@ Options:
   --watch, -w        Watch file(s)                                     [boolean]
   --routes, -r       Path to routes file
   --middlewares, -m  Paths to middleware files                           [array]
+  --midafter, -a     Path to execute after proccess
   --static, -s       Set static files directory
   --read-only, --ro  Allow only GET requests                           [boolean]
   --no-cors, --nc    Disable Cross-Origin Resource Sharing             [boolean]
