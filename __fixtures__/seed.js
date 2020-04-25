@@ -32,6 +32,26 @@ module.exports = function() {
         content:
           "Oh! The garbage chute was a really wonderful idea. What an incredible smell you've discovered! Let's get out of here! Get away from there... No! wait! Will you forget it? I already tried it. It's magnetically sealed! Put that thing away! You're going to get us all killed. Absolutely, Your Worship. Look, I had everything under control until you led us down here. You know, it's not going to take them long to figure out what happened to us. It could be worst... It's worst. There's something alive in here! That's your imagination. Something just moves past my leg! Look! Did you see that? What? Help!"
       }
-    ]
-  }
-}
+    ],
+    fullinfo: Array(200)
+      .fill("")
+      .map((x, index) => ({
+        index,
+        info1: Math.random()
+          .toString(36)
+          .slice(2),
+        info2: Math.random()
+          .toString(36)
+          .slice(2),
+        info3: Math.random()
+          .toString(36)
+          .slice(2),
+        info4: Math.random()
+          .toString(36)
+          .slice(2),
+        randomInt1: Math.random(),
+        randomInt2: Math.random(),
+        randomInt3: Math.random()
+      }))
+  };
+};
