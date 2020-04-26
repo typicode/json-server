@@ -408,7 +408,7 @@ Options:
   --watch, -w        Watch file(s)                                     [boolean]
   --routes, -r       Path to routes file
   --middlewares, -m  Paths to middleware files                           [array]
-  --midafter, -a     Path to execute after proccess
+  --render, -a       Path to execute after proccess
   --static, -s       Set static files directory
   --read-only, --ro  Allow only GET requests                           [boolean]
   --no-cors, --nc    Disable Cross-Origin Resource Sharing             [boolean]
