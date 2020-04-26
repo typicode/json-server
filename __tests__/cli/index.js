@@ -311,7 +311,7 @@ describe('cli', () => {
     })
   })
 
-  describe('after middleware', () => {
+  describe('render', () => {
     beforeEach(done => {
       routesFile = tempWrite.sync(
         JSON.stringify({
@@ -326,7 +326,7 @@ describe('cli', () => {
         routesFile,
         '-m',
         middlewareFiles.before,
-        '-a',
+        '--render',
         middlewareFiles.after
       ])
       serverReady(PORT, done)

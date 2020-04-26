@@ -66,7 +66,7 @@ See also:
   * [HTTPS](#https)
   * [Add custom routes](#add-custom-routes)
   * [Add middlewares](#add-middlewares)
-  * [Add after middleware](#add-after-middleware)
+  * [Add render](#add-render)
   * [CLI usage](#cli-usage)
   * [Module](#module)
     + [Simple example](#simple-example)
@@ -377,11 +377,11 @@ json-server db.json --middlewares ./hello.js
 json-server db.json --middlewares ./first.js ./second.js
 ```
 
-### Add after middleware
+### Add render
 
-After middlewares will be executed once all login in json-server was done.
+Render will be executed once all logic in json-server was done.
 
-You can add your after middleware from the CLI using `--midafter` option:
+You can add your render from the CLI using `--render` option:
 
 ```js
 // after.js
@@ -391,10 +391,10 @@ module.exports = (req, res) => {
 ```
 
 ```bash
-json-server db.json --midafter ./after.js
+json-server db.json --render ./after.js
 ```
 
-NOTE: If after middleware is specify it need to return response using `res.jsonp(...)` or server will not response. 
+NOTE: If render is specify it needs to return response using `res.jsonp(...)` or server will not response. 
 
 ### CLI usage
 

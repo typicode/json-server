@@ -33,9 +33,9 @@ module.exports = function() {
         array: true,
         description: 'Paths to middleware files'
       },
-      midafter: {
+      render: {
         alias: 'a',
-        description: 'Path to execute after proccess'
+        description: 'Path to execute after process'
       },
       static: {
         alias: 's',
