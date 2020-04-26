@@ -136,7 +136,7 @@ module.exports = function(argv) {
       // Load render
       let render
       if (argv.render) {
-        console.log(chalk.gray('  Loading (after)', argv.render))
+        console.log(chalk.gray('  Loading (render)', argv.render))
         render = require(path.resolve(argv.render))
       }
 
