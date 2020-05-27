@@ -1,0 +1,114 @@
+{
+	"Doctor": [
+		{
+			"ID": "1",
+			"Name": "Podiatrist",
+			"Specialists": "Podiatrists are specialists in the feet and the lower limbs. They treat and manage pain and diseases, as well as injuries, to help keep people active and pain free. A lot of common issues are treatable by podiatrists, such as bunions. They can also help with ongoing issues or injuries."
+		},
+		{
+			"ID": "2",
+			"Name": "General Practitioner",
+			"Specialists": "A general practitioner is trained to provide healthcare to patients of any sex or age. General practitioners often work as primary care physicians (PCPs), see their patients regularly, and are familiar with their medical backgrounds. Most people do (or should) see a PCP at least once a year. When you suspect something else is going on, your first stop is a PCP since they're responsible for your overall care and well-being. They can then refer you to the right specialist."
+		},
+		{
+			"ID": "3",
+			"Name": "Pediatrician",
+			"Specialists": "A pediatrician is a doctor that specializes in childhood medicine, or those under 18. Some pediatricians will see their patients until they are 21. Pediatricians oversee the health and development of babies and children. They administer vaccines. keep track of a child's growth, and are the first contact when a child a sick."
+		},
+		{
+			"ID": "4",
+			"Name": "Endocrinologist",
+			"Specialists": "Endocrinologists specialize in glands and all the hormones they produce. Endocrinologists commonly treat diabetes, thyroid dysfunction, and reproductive health. You may see an endocrinologist for any of the above, and will usually be referred by your PCP if you report symptoms or have related discrepancies in your blood work. Some endocrinologists do focus specifically on one area of the body. For example, a reproductive endocrinologists focuses on the reproductive system, and people often work with these doctors when seeking fertility treatments."
+		},
+		{
+			"ID": "5",
+			"Name": "Neurologist",
+			"Specialists": "A neurologist focuses on the anatomy, functions, and disorders of the nerves and nervous systems. Neurologists work with people who have had strokes and those with degenerative diseases of the nervous system, like multiple sclerosis. If you exhibit loss of motor of cognitive function, you could be referred to a neurologist."
+		},
+		{
+			"ID": "6",
+			"Name": "Rheumatologist",
+			"Specialists": "A rheumatologist is a specialist in internal medicine of joints, muscles, and bones. Another specialist on our list, an orthopedist, also works with the joints, muscles, and bones, but a rheumatologist is unique because they focus on the origin of the problem, and the body's overall movement and health. Orthopedists tend to focus on more acute areas of pain and injury. We'll get into more about orthopedists later. One of the main reasons to see a rheumatologist is because of arthritis, but they also work with patients who have tendinitis, lupus, gout, and more, to manage chronic pain."
+		},
+		{
+			"ID": "7",
+			"Name": "Allergist/Immunologist",
+			"Specialists": "Allergist/Immunologists are trained to treat allergies and disease of the immune system, such as asthma. If allergies can't be managed by over the counter medicines, you may see an allergist. You may also go to an allergist/immunologist if you need ongoing support managing an autoimmune disease, like Celiac disease."
+		},
+		{
+			"ID": "8",
+			"Name": "Psychiatrist",
+			"Specialists": "Psychiatrists focus exclusively on mental health. You may see a psychiatrist if you believe you have symptoms of mental illness. People usually seek out psychiatrists themselves, but some PCP's now are adding mental health screenings to yearly checkups, and may provide a referral. Psychiatrists can specialize in more than one mental illness, and can also specialize in treating substance abuse. Psychiatrists can informally specialize in specific age groups, though some informally prefer to work with different ages and on different illnesses as they gain experience with patients."
+		},
+		{
+			"ID": "9",
+			"Name": "Nephrologist",
+			"Specialists": "Nephrology is a specialty that focuses on diseases of the kidneys. Nephrologists deal with failure and serious chronic conditions of the kidneys. If your PCP suspects you have a kidney specific disease, they will refer you to a nephrologist."
+		},
+		{
+			"ID": "3",
+			"Name": "Pulmonologist",
+			"Specialists": "Pulmonologists focus on the the respiratory organs — the lungs, airway and respiratory muscles. the A PCP will refer you to a pulmonologist if you have a respiratory infection or a chronic issue, like COPD or sleep apnea."
+		},
+		{
+			"ID": "10",
+			"Name": "Surgeon",
+			"Specialists": "You might see a surgeon for a variety of reasons. Surgeries are typically scheduled in advance, except emergency surgery. Surgeries can be major or minor, and have varying recovering times. Surgeons can specialize in many areas of medicine. Common specializations are cardiac surgeons, orthopedic surgeons, and emergency surgeons."
+		},
+		{
+			"ID": "11",
+			"Name": "Emergency Physician",
+			"Specialists": "Emergency physicians are trained as physicians, and then go through additional training to master their skills in acute diagnosis in illness and injury. You will see an emergency physician if experiencing a medical emergency and in the emergency room in a hospital. Medical professionals assess a condition in order to determine the immediacy of a medical emergency, and then doctors diagnose, prescribe treatment, and decide whether or not a patient needs to be admitted to the hospital."
+		},
+		{
+			"ID": "12",
+			"Name": "Ophthalmologist",
+			"Specialists": "An ophthalmologist is a type of eye doctor who is trained and certified to provide eye care and perform oral surgery. You would see an ophthalmologist if your PCP or optometrist suspects you have a more serious eye disease, or might need surgery. Some people choose to see ophthalmologists for annual eye exams as well."
+		},
+		{
+			"ID": "13",
+			"Name": "Oncologist",
+			"Specialists": "Oncologists are doctors that deal with the prevention, diagnosis, and treatment of cancer. You will see an oncologist if your usual doctor suspects you have cancer. Your oncologist will order tests, confirm, diagnose, and stage your cancer. They will also develop and oversee your treatment plan. Many other people will be involved in a cancer care team, but an oncologist is the leader of that team."
+		},
+		{
+			"ID": "14",
+			"Name": "urologist",
+			"Specialists": "A urologist specializes in function and treatment of the urinary system. If your PCP thinks thinks you have symptoms a urinary disease, such as excessive urinating, they will refer you to a urologist. Urologists often work with other doctors to treat illnesses; for example, a urologist may be involved in treating prostate of bladder cancer alongside an oncologist."
+		},
+		{
+			"ID": "15",
+			"Name": "Otolaryngologist",
+			"Specialists": "Otolaryngologists are often referred to as ENTs, for Ear, Nose, and Throat. ENTs work with diseases of the ear, nose, and throat, hence the nickname. You may see an ENT for infections or for chronic issues like a deviated septum."
+		},
+		{
+			"ID": "16",
+			"Name": "Anesthesiologist",
+			"Specialists": "Anesthesiologists are pain managers. They oversee pain medications, and administer them during surgeries; we mostly know anesthesiologists as the ones who 'put us to sleep' for surgery, and administer a wide range of pain medicines. Though you're unlikely to see an anesthesiologist outside of the hospital, you'll work with one before and after surgery to make sure you're not in pain and your body is healthy overall. Some anesthesiologists do work with patients in the maintenance of chronic pain, and other specialize in different areas of medicine like pediatrics or obstetrics."
+		},
+		{
+			"ID": "17",
+			"Name": "Dermatologist",
+			"Specialists": "A dermatologist is a doctor specializing in the skin. Dermatologists treat chronic and short-term, including cancer, psoriasis, and acne. A primary care doctor would refer you to a dermatologist if a skin condition was beyond the scope of their understanding, or needed more advances care."
+		},
+		{
+			"ID": "18",
+			"Name": "Radiologist",
+			"Specialists": "Radiologists specialize in diagnosing and treating illnesses using medical imaging. Radiologists work with MRIs, CT scans, X-rays, and PET scans. They can decide what tests to run, oversee the tests, and review them to make a diagnosis. Radiologists often work with other care providers; for example, if you came into the ER with a head injury, you would see an emergency doctor, a radiologist, and possible others depending on the diagnosis and extent of the injury."
+		},
+		{
+			"ID": "19",
+			"Name": "Gastroenterologist",
+			"Specialists": "A gastroenterologist is a doctor who manages the treatment of diseases of the gastrointestinal tract and the liver. Persistent symptoms like stomach pain, heartburn, and diarrhea could send you to the gastroenterologist."
+		},
+		{
+			"ID": "20",
+			"Name": "Cardiologist",
+			"Specialists": "Cardiologists treat and diagnose problems with the heart and blood vessels. Cardiologists focus on preventative care, while a cardiac surgeon is responsible for surgery.Usually, a primary care physician will refer a patient to a cardiologist if the PCP suspects something isn’t right with the heart and cardiovascular system. The cardiologist can then run tests and decide on a treatment plan. Some sub-specialties include invasive or noninvasive cardiologists. Invasive means that they perform tests that are internal, while noninvasive cardiologists only perform tests that are external, like echocardiograms"
+		},
+		{
+			"ID": "21",
+			"Name": "Orthopedist",
+			"Specialists": "Orthopedic doctors treat musculoskeletal problems. They often work with injuries like broken bones, torn ligaments, etc. Orthopedists can also treat chronic issues in the hips, back, and neck, as well as treat arthritis.You’re the most likely to see an orthopedist if you’ve sustained an injury. Some injuries will heal on their own, but injuries that cause serious pain and greatly decreased mobility should be looked at by an orthopedist."
+		}
+	]
+}
