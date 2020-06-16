@@ -26,6 +26,14 @@ See also:
 
 <p>&nbsp;</p>
 
+<p align="center">
+  <a href="https://www.checklyhq.com/?utm_source=json-server" target="_blank">
+    <img src="https://i.imgur.com/qS8XyfG.png" height="70px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
+
 <h2 align="center">Bronze sponsors 🥉</h2>
 
 <p>&nbsp;</p>
