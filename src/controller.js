@@ -1,76 +1,137 @@
-const fetch = require("node-fetch");
+const shelveCategories = [
+  {
+    id: 1,
+    label: "Action",
+  },
+  {
+    id: 2,
+    label: "Epopea",
+  },
+  {
+    id: 3,
+    label: "Triler",
+  },
+];
 
-function exchangeCurrency(req, res) {
-  if (req.method === "GET") {
-    const from = req.query.from;
-    const to = req.query.to;
+const shelvesList = [
+  {
+    id: 1,
+    title: "Literatura pentru copii",
+    categories: [shelveCategories[1], shelveCategories[2]],
+    description: "some category",
+  },
+  {
+    id: 2,
+    title: "Literatura pentru adulti",
+    categories: [shelveCategories[0]],
+    description: "some category 2",
+  },
+];
 
-    if (from != null && to !== null) {
-      fetch(
-        `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${from}&to_currency=${to}&apikey=WVS7S95FAMLLH9Z6`
-      )
-        .then(res => res.json())
-        .then(json => res.status(200).jsonp(json))
-        .catch(() =>
-          res.status(500).jsonp({
-            error: "something is wrong with request"
-          })
-        );
+const booksList = [
+  {
+    id: 1,
+    title: "Scufita rosie",
+    shelve_id: 1,
+    category: shelveCategories[0],
+    description: "Scufita rosie book",
+  },
+  {
+    id: 2,
+    shelve_id: 1,
+    title: "Scufita rosie partea a 2",
+    category: shelveCategories[1],
+    description: "Scufita rosie book",
+  },
+  {
+    id: 3,
+    shelve_id: null,
+    title: "Scufita rosie III",
+    category: shelveCategories[2],
+    description: "Scufita rosie book",
+  },
+];
+
+const getShelveCategories = (labels) => {
+  let newShelveCategories = [];
+
+  const categoriesLabels = shelveCategories.map((cat) => cat.label);
+
+  labels.forEach((label) => {
+    if (categoriesLabels.includes(label)) {
+      // add from existent categories
+      newShelveCategories.push(category);
     } else {
-      res.status(500).jsonp({
-        error: "something is wrong with server"
+      // add new category to 'shelveCategories' object
+      shelveCategories.push({
+        id: shelveCategories.length + 1,
+        label,
       });
     }
+  });
+
+  return newShelveCategories;
+};
+
+function login(req, res) {
+  const { email, password } = req.body;
+
+  if (email === "test@mail.com" && password === "secret") {
+    res.sendStatus(403).json({
+      err: "invalid credentials",
+    });
+  } else {
+    res.status(200).json({
+      access_token: "ewdefewfdf4freg4543fr44",
+      expires_in: 3600,
+    });
   }
 }
 
-function exchangeCurrencyHistory(req, res) {
-  if (req.method === "GET") {
-    const fregvencyOptions = {
-      daily: "DIGITAL_CURRENCY_DAILY",
-      weekly: "DIGITAL_CURRENCY_WEEKLY",
-      monthly: "DIGITAL_CURRENCY_MONTHLY"
-    };
+function logout(_, res) {
+  res.status(200).json({
+    status: "ok man!",
+  });
+}
 
-    const from = req.query.from;
-    const to = req.query.to;
-    const frequency =
-      fregvencyOptions[req.query.frequency] || fregvencyOptions.daily;
+function getAccountDetails(_, res) {
+  res.status(200).json({
+    email: "test@mail.com",
+  });
+}
 
-    if (from != null && to !== null) {
-      fetch(
-        `https://www.alphavantage.co/query?function=${frequency}&symbol=${from}&market=${to}&apikey=WVS7S95FAMLLH9Z6`
-      )
-        .then(res => res.json())
-        .then(json => {
-          const data = json["Time Series (Digital Currency Daily)"];
+function getUserShelves(_, res) {
+  res.status(200).json({
+    itemsCount: shelvesList.length,
+    items: shelvesList,
+  });
+}
 
-          const rowData = Object.keys(data).map(key => {
-            return {
-              date: key,
-              open: data[key][`1a. open (${to})`],
-              high: data[key][`2a. high (${to})`],
-              low: data[key][`3a. low (${to})`],
-              close: data[key][`4a. close (${to})`]
-            };
-          });
+function addShelve(req, res) {
+  const { title, description, categories } = req.body;
 
-          res.status(200).jsonp(rowData);
-        })
-        .catch(() =>
-          res.status(500).jsonp({
-            error: "something is wrong with request"
-          })
-        );
-    } else {
-      res.status(500).jsonp({
-        error: "something is wrong with server"
-      });
-    }
-  }
+  const newShelve = {
+    id: shelvesList.length + 1,
+    title: title,
+    description: description,
+    categories: getShelveCategories(categories),
+  };
+
+  res.status(200).json(newShelve);
+}
+
+function getUserBooks(_, res) {
+  res.status(200).json({
+    itemsCount: booksList.length,
+    items: booksList,
+  });
 }
 
 module.exports = {
-  exchangeCurrency,
-  exchangeCurrencyHistory
+  login,
+  logout,
+  getAccountDetails,
+  getUserShelves,
+  getUserBooks,
+  addShelve,
 };
