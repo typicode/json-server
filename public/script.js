@@ -1,7 +1,3 @@
-import 'promise-polyfill/src/polyfill'
-import 'whatwg-fetch'
-import './style.css'
-
 function ResourceItem({ name, length }) {
   return `
     <li>
