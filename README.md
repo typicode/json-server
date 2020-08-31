@@ -27,10 +27,12 @@ See also:
 <p>&nbsp;</p>
 
 <p align="center">
-  <a href="https://www.checklyhq.com/?utm_source=json-server" target="_blank">
-    <img src="https://i.imgur.com/qS8XyfG.png" height="70px">
+  <a href="https://uibakery.io/frontend-visual-builder?utm_campaign=ui_bakery%20-%20github%20-%20logo%20-%20cacq%20-%20xx%20-%20traffic&utm_source=typicode_json-server&utm_medium=logo_sponsor&utm_content=frontend_builder" target="_blank">
+    <img src="https://i.imgur.com/IBf9g1K.png" height="70px">
   </a>
 </p>
+
+
 
 <p>&nbsp;</p>
 
