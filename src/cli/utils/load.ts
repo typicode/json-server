@@ -1,11 +1,11 @@
-const fs = require('fs')
-const path = require('path')
-const request = require('request')
-const low = require('lowdb')
-const FileAsync = require('lowdb/adapters/FileAsync')
-const Memory = require('lowdb/adapters/Memory')
-const is = require('./is')
-const chalk = require('chalk')
+import fs from 'fs'
+import path from 'path'
+import request from 'request'
+import low from 'lowdb'
+import FileAsync from 'lowdb/adapters/FileAsync'
+import Memory from 'lowdb/adapters/Memory'
+import {FILE, JS, URL} from './is'
+import chalk from 'chalk'
 
 const example = {
   posts: [{ id: 1, title: 'json-server', author: 'typicode' }],
@@ -13,9 +13,9 @@ const example = {
   profile: { name: 'typicode' }
 }
 
-module.exports = function(source) {
+export default (source: string): Promise<low.LowdbBase<any>> => {
   return new Promise((resolve, reject) => {
-    if (is.FILE(source)) {
+    if (FILE(source)) {
       if (!fs.existsSync(source)) {
         console.log(chalk.yellow(`  Oops, ${source} doesn't seem to exist`))
         console.log(chalk.yellow(`  Creating ${source} with some default data`))
@@ -24,7 +24,7 @@ module.exports = function(source) {
       }
 
       resolve(low(new FileAsync(source)))
-    } else if (is.URL(source)) {
+    } else if (URL(source)) {
       // Load remote data
       const opts = {
         url: source,
@@ -33,9 +33,9 @@ module.exports = function(source) {
 
       request(opts, (err, response) => {
         if (err) return reject(err)
-        resolve(low(new Memory()).setState(response.body))
+        resolve(low(new Memory(source)).setState(response.body))
       })
-    } else if (is.JS(source)) {
+    } else if (JS(source)) {
       // Clear cache
       const filename = path.resolve(source)
       delete require.cache[filename]
@@ -49,7 +49,7 @@ module.exports = function(source) {
 
       // Run dataFn to generate data
       const data = dataFn()
-      resolve(low(new Memory()).setState(data))
+      resolve(low(new Memory(source)).setState(data))
     } else {
       throw new Error(`Unsupported source ${source}`)
     }

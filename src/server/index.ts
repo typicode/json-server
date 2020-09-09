@@ -1,6 +1,6 @@
-const express = require('express')
+import express from 'express'
 
-module.exports = {
+export default {
   create: () => express().set('json spaces', 2),
   defaults: require('./defaults'),
   router: require('./router'),

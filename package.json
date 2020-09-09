@@ -15,6 +15,20 @@
     "prepublishOnly": "npm test && npm run build && pkg-ok"
   },
   "dependencies": {
+    "@types/compression": "^1.0.1",
+    "@types/cors": "^2.8.6",
+    "@types/errorhandler": "0.0.32",
+    "@types/express": "^4.17.2",
+    "@types/express-urlrewrite": "^1.2.1",
+    "@types/lodash": "^4.14.149",
+    "@types/lowdb": "^1.0.9",
+    "@types/method-override": "0.0.31",
+    "@types/morgan": "^1.7.37",
+    "@types/nanoid": "^2.1.0",
+    "@types/pluralize": "0.0.29",
+    "@types/request": "^2.48.4",
+    "@types/server-destroy": "^1.0.0",
+    "@types/update-notifier": "^2.5.0",
     "body-parser": "^1.19.0",
     "chalk": "^3.0.0",
     "compression": "^1.7.4",
@@ -34,6 +48,7 @@
     "pluralize": "^8.0.0",
     "request": "^2.88.2",
     "server-destroy": "^1.0.1",
+    "typescript": "^3.7.5",
     "update-notifier": "^4.0.0",
     "yargs": "^15.1.0"
   },

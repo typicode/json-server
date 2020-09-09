@@ -1,18 +1,21 @@
-const express = require('express')
-const write = require('./write')
-const getFullURL = require('./get-full-url')
-const delay = require('./delay')
+import express from 'express'
+import write from './write'
+import getFullURL from './get-full-url'
+import delay from './delay'
+import {Request, Response, Next} from "../utils"
+import low from "lowdb"
+import Opts from "./opts"
 
-module.exports = (db, name, opts) => {
+export default (db: low.LowdbSync<any>, name: string, opts: Opts) => {
   const router = express.Router()
   router.use(delay)
 
-  function show(req, res, next) {
+  function show(req: Request, res: Response, next: Next) {
     res.locals.data = db.get(name).value()
     next()
   }
 
-  function create(req, res, next) {
+  function create(req: Request, res: Response, next: Next) {
     if (opts._isFake) {
       res.locals.data = req.body
     } else {
@@ -27,7 +30,7 @@ module.exports = (db, name, opts) => {
     next()
   }
 
-  function update(req, res, next) {
+  function update(req: Request, res: Response, next: Next) {
     if (opts._isFake) {
       if (req.method === 'PUT') {
         res.locals.data = req.body

@@ -1,6 +1,6 @@
-const _ = require('lodash')
+import lodash from 'lodash'
 
-function validateKey(key) {
+function validateKey(key: string) {
   if (key.indexOf('/') !== -1) {
     const msg = [
       `Oops, found / character in database property '${key}'.`,
@@ -12,8 +12,8 @@ function validateKey(key) {
   }
 }
 
-module.exports = obj => {
-  if (_.isPlainObject(obj)) {
+const validateData = (obj: any) => {
+  if (lodash.isPlainObject(obj)) {
     Object.keys(obj).forEach(validateKey)
   } else {
     throw new Error(
@@ -22,3 +22,5 @@ module.exports = obj => {
     )
   }
 }
+
+export { validateData }

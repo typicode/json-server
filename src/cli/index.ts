@@ -1,9 +1,9 @@
-const updateNotifier = require('update-notifier')
-const yargs = require('yargs')
-const run = require('./run')
-const pkg = require('../../package.json')
+import updateNotifier from 'update-notifier'
+import yargs from 'yargs'
+import run from './run'
+import pkg from '../../package.json'
 
-module.exports = function() {
+export default function() {
   updateNotifier({ pkg }).notify()
 
   const argv = yargs

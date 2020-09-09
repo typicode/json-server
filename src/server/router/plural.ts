@@ -1,12 +1,14 @@
-const express = require('express')
-const _ = require('lodash')
-const pluralize = require('pluralize')
-const write = require('./write')
-const getFullURL = require('./get-full-url')
-const utils = require('../utils')
-const delay = require('./delay')
+import express from 'express'
+import _ from 'lodash'
+import pluralize from 'pluralize'
+import write from './write'
+import getFullURL from './get-full-url'
+import {getPage, Page, Request, Response, Next} from '../utils'
+import delay from './delay'
+import Opts from "./opts"
+import low from "lowdb"
 
-module.exports = (db, name, opts) => {
+export default (db: low.LowdbSync<any>, name: string, opts: Opts) => {
   // Create router
   const router = express.Router()
   router.use(delay)
@@ -48,9 +50,9 @@ module.exports = (db, name, opts) => {
   // GET /name?_end=&
   // GET /name?_start=&_end=&
   // GET /name?_embed=&_expand=
-  function list(req, res, next) {
+  function list(req: Request, res: Response, next: Next) {
     // Resource chain
-    let chain = db.get(name)
+    let chain: low.CollectionChain = db.get(name)
 
     // Remove q, _start, _end, ... from req.query to avoid filtering using those
     // parameters
@@ -172,8 +174,8 @@ module.exports = (db, name, opts) => {
       _page = parseInt(_page, 10)
       _page = _page >= 1 ? _page : 1
       _limit = parseInt(_limit, 10) || 10
-      const page = utils.getPage(chain.value(), _page, _limit)
-      const links = {}
+      const page: Page = getPage(chain.value(), _page, _limit)
+      const links: Page = {}
       const fullURL = getFullURL(req)
 
       if (page.first) {
@@ -228,7 +230,7 @@ module.exports = (db, name, opts) => {
 
   // GET /name/:id
   // GET /name/:id?_embed=&_expand
-  function show(req, res, next) {
+  function show(req: Request, res: Response, next: Next) {
     const _embed = req.query._embed
     const _expand = req.query._expand
     const resource = db
@@ -255,7 +257,7 @@ module.exports = (db, name, opts) => {
   }
 
   // POST /name
-  function create(req, res, next) {
+  function create(req: Request, res: Response, next: Next) {
     let resource
     if (opts._isFake) {
       const id = db
@@ -281,7 +283,7 @@ module.exports = (db, name, opts) => {
 
   // PUT /name/:id
   // PATCH /name/:id
-  function update(req, res, next) {
+  function update(req: Request, res: Response, next: Next) {
     const id = req.params.id
     let resource
 
@@ -315,7 +317,7 @@ module.exports = (db, name, opts) => {
   }
 
   // DELETE /name/:id
-  function destroy(req, res, next) {
+  function destroy(req: Request, res: Response, next: Next) {
     let resource
 
     if (opts._isFake) {

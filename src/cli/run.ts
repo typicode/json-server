@@ -1,15 +1,15 @@
-const fs = require('fs')
-const path = require('path')
-const jph = require('json-parse-helpfulerror')
-const _ = require('lodash')
-const chalk = require('chalk')
-const enableDestroy = require('server-destroy')
-const pause = require('connect-pause')
-const is = require('./utils/is')
-const load = require('./utils/load')
-const jsonServer = require('../server')
+import fs from 'fs'
+import path from 'path'
+import jph from 'json-parse-helpfulerror'
+import _ from 'lodash'
+import chalk from 'chalk'
+import enableDestroy from 'server-destroy'
+import pause from 'connect-pause'
+import {FILE, JS, URL} from './utils/is'
+import load from './utils/load'
+import jsonServer from '../server'
 
-function prettyPrint(argv, object, rules) {
+function prettyPrint(argv: Argv, object, rules) {
   const root = `http://${argv.host}:${argv.port}`
 
   console.log()
@@ -32,7 +32,7 @@ function prettyPrint(argv, object, rules) {
   console.log()
 }
 
-function createApp(db, routes, middlewares, argv) {
+function createApp(db, routes, middlewares, argv: Argv) {
   const app = jsonServer.create()
 
   const { foreignKeySuffix } = argv
@@ -42,12 +42,13 @@ function createApp(db, routes, middlewares, argv) {
     foreignKeySuffix ? { foreignKeySuffix } : undefined
   )
 
-  const defaultsOpts = {
+  const defaultsOpts: Argv = {
     logger: !argv.quiet,
     readOnly: argv.readOnly,
     noCors: argv.noCors,
     noGzip: argv.noGzip,
-    bodyParser: true
+    bodyParser: true,
+    static: ""
   }
 
   if (argv.static) {
@@ -77,7 +78,25 @@ function createApp(db, routes, middlewares, argv) {
   return app
 }
 
-module.exports = function(argv) {
+type Argv = {
+    host: string
+    port: number
+    watch: string
+    routes: string
+    snapshots: string
+    quiet: boolean
+    middlewares: Array<any>
+    delay: number
+    static: string
+    readOnly: boolean
+    noGzip: boolean
+    noCors: boolean
+    logger: boolean
+    bodyParser: boolean
+    foreignKeySuffix: string
+}
+
+export default function(argv: Argv) {
   const source = argv._[0]
   let app
   let server
@@ -134,7 +153,7 @@ module.exports = function(argv) {
       prettyPrint(argv, db.getState(), routes)
 
       // Catch and handle any error occurring in the server process
-      process.on('uncaughtException', error => {
+      process.on('uncaughtException', (error: RunError) => {
         if (error.errno === 'EADDRINUSE')
           console.log(
             chalk.red(
@@ -183,7 +202,7 @@ module.exports = function(argv) {
         const source = argv._[0]
 
         // Can't watch URL
-        if (is.URL(source)) throw new Error("Can't watch URL")
+        if (URL(source)) throw new Error("Can't watch URL")
 
         // Watch .js or .json file
         // Since lowdb uses atomic writing, directory is watched instead of file
@@ -195,7 +214,7 @@ module.exports = function(argv) {
           if (file) {
             const watchedFile = path.resolve(watchedDir, file)
             if (watchedFile === path.resolve(source)) {
-              if (is.FILE(watchedFile)) {
+              if (FILE(watchedFile)) {
                 let obj
                 try {
                   obj = jph.parse(fs.readFileSync(watchedFile))
@@ -244,4 +263,9 @@ module.exports = function(argv) {
       console.log(err)
       process.exit(1)
     })
+}
+
+type RunError = {
+    errno: string
+    port: number
 }

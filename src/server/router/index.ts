@@ -1,20 +1,20 @@
-const express = require('express')
-const methodOverride = require('method-override')
-const _ = require('lodash')
-const lodashId = require('lodash-id')
-const low = require('lowdb')
-const Memory = require('lowdb/adapters/Memory')
-const FileSync = require('lowdb/adapters/FileSync')
-const bodyParser = require('../body-parser')
-const validateData = require('./validate-data')
-const plural = require('./plural')
-const nested = require('./nested')
-const singular = require('./singular')
-const mixins = require('../mixins')
+import express from 'express'
+import methodOverride from 'method-override'
+import _ from 'lodash'
+import lodashId from 'lodash-id'
+import low from 'lowdb'
+import Memory from 'lowdb/adapters/Memory'
+import FileSync from 'lowdb/adapters/FileSync'
+import bodyParser from '../body-parser'
+import { validateData } from './validate-data'
+import plural from './plural'
+import nested from './nested'
+import singular from './singular'
+import {mixins} from '../mixins'
+import Opts from "./opts"
+import {Request, Response, Next} from "../utils"
 
-module.exports = (db, opts) => {
-  opts = Object.assign({ foreignKeySuffix: 'Id', _isFake: false }, opts)
-
+module.exports = (db, opts: Opts = { foreignKeySuffix: 'Id', _isFake: false }) => {
   if (typeof db === 'string') {
     db = low(new FileSync(db))
   } else if (!_.has(db, '__chain__') || !_.has(db, '__wrapped__')) {
@@ -76,7 +76,7 @@ module.exports = (db, opts) => {
     throw new Error(msg)
   }).value()
 
-  router.use((req, res) => {
+  router.use((req: Request, res: Response, next: Next) => {
     if (!res.locals.data) {
       res.status(404)
       res.locals.data = {}
@@ -85,7 +85,7 @@ module.exports = (db, opts) => {
     router.render(req, res)
   })
 
-  router.use((err, req, res, next) => {
+  router.use((err: any, req: Request, res: Response, next: Next) => {
     console.error(err.stack)
     res.status(500).send(err.stack)
   })

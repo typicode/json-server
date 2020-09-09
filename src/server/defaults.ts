@@ -1,13 +1,14 @@
-const fs = require('fs')
-const path = require('path')
-const express = require('express')
-const logger = require('morgan')
-const cors = require('cors')
-const compression = require('compression')
-const errorhandler = require('errorhandler')
-const bodyParser = require('./body-parser')
+import fs from 'fs'
+import path from 'path'
+import express from 'express'
+import logger from 'morgan'
+import cors from 'cors'
+import compression from 'compression'
+import errorhandler from 'errorhandler'
+import bodyParser from './body-parser'
+import {Request, Response, Next} from "./utils"
 
-module.exports = function(opts) {
+function x(opts: Options) {
   const userDir = path.join(process.cwd(), 'public')
   const defaultDir = path.join(__dirname, '../../public')
   const staticDir = fs.existsSync(userDir) ? userDir : defaultDir
@@ -46,7 +47,7 @@ module.exports = function(opts) {
 
   // No cache for IE
   // https://support.microsoft.com/en-us/kb/234067
-  arr.push((req, res, next) => {
+  arr.push((req: Request, res: Response, next: Next) => {
     res.header('Cache-Control', 'no-cache')
     res.header('Pragma', 'no-cache')
     res.header('Expires', '-1')
@@ -55,7 +56,7 @@ module.exports = function(opts) {
 
   // Read-only
   if (opts.readOnly) {
-    arr.push((req, res, next) => {
+    arr.push((req: Request, res: Response, next: Next) => {
       if (req.method === 'GET') {
         next() // Continue
       } else {
@@ -71,3 +72,14 @@ module.exports = function(opts) {
 
   return arr
 }
+
+type Options = {
+    readOnly: boolean;
+    noGzip: boolean;
+    noCors: boolean;
+    bodyParser: any;
+    logger: boolean;
+    static: string;
+}
+
+export { x }

@@ -1,15 +1,10 @@
-const nanoid = require('nanoid')
-const pluralize = require('pluralize')
-
-module.exports = {
-  getRemovable,
-  createId,
-  deepQuery
-}
+import nanoid from 'nanoid'
+import pluralize from 'pluralize'
+import Opts from "./router/opts"
 
 // Returns document ids that have unsatisfied relations
 // Example: a comment that references a post that doesn't exist
-function getRemovable(db, opts) {
+function getRemovable(db, opts: Opts) {
   const _ = this
   const removable = []
   _.each(db, (coll, collName) => {
@@ -52,11 +47,10 @@ function createId(coll) {
   }
 }
 
-function deepQuery(value, q) {
-  const _ = this
+function deepQuery(_: object, value: object, q) {
   if (value && q) {
     if (_.isArray(value)) {
-      for (let i = 0; i < value.length; i++) {
+      for (let i = 0; i < ((Array)value).length; i++) {
         if (_.deepQuery(value[i], q)) {
           return true
         }
@@ -76,4 +70,10 @@ function deepQuery(value, q) {
       return true
     }
   }
+}
+
+export {
+  getRemovable,
+  createId,
+  deepQuery
 }
