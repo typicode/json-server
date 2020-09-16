@@ -397,6 +397,7 @@ Options:
   --foreignKeySuffix, --fks  Set foreign key suffix, (e.g. _id as in post_id)
                                                                  [default: "Id"]
   --quiet, -q        Suppress log messages from output                 [boolean]
+  --generate, -g     Generate source file if missing                   [boolean]
   --help, -h         Show help                                         [boolean]
   --version, -v      Show version number                               [boolean]
 

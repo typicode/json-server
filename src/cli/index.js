@@ -76,6 +76,10 @@ module.exports = function() {
         alias: 'c',
         description: 'Path to config file',
         default: 'json-server.json'
+      },
+      generate: {
+        alias: 'g',
+        description: 'Generate source file if missing'
       }
     })
     .boolean('watch')
@@ -83,6 +87,7 @@ module.exports = function() {
     .boolean('quiet')
     .boolean('no-cors')
     .boolean('no-gzip')
+    .boolean('generate')
     .help('help')
     .alias('help', 'h')
     .version(pkg.version)

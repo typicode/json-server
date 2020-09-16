@@ -281,15 +281,28 @@ describe('cli', () => {
     })
   })
 
-  describe('non existent db.json', () => {
+  describe('non existent db.json with generate flag', () => {
     beforeEach(done => {
       fs.unlinkSync(dbFile)
-      child = cli([dbFile])
+      child = cli([dbFile, '--generate'])
       serverReady(PORT, done)
     })
 
     test("should create JSON file if it doesn't exist", done => {
       request.get('/posts').expect(200, done)
+    })
+  })
+
+  describe('non existent db.json without generate flag', () => {
+    test('should exit with an error', done => {
+      fs.unlinkSync(dbFile)
+      child = cli([dbFile])
+      child.on('exit', code => {
+        if (code === 1) {
+          return done()
+        }
+        return done(new Error('should exit with error code'))
+      })
     })
   })
 

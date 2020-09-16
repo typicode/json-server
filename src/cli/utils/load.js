@@ -13,14 +13,21 @@ const example = {
   profile: { name: 'typicode' }
 }
 
-module.exports = function(source) {
+module.exports = function(source, generateFileIfMissing) {
   return new Promise((resolve, reject) => {
     if (is.FILE(source)) {
       if (!fs.existsSync(source)) {
-        console.log(chalk.yellow(`  Oops, ${source} doesn't seem to exist`))
-        console.log(chalk.yellow(`  Creating ${source} with some default data`))
-        console.log()
-        fs.writeFileSync(source, JSON.stringify(example, null, 2))
+        const err = `  Oops, ${source} doesn't seem to exist`
+        if (generateFileIfMissing) {
+          console.log(chalk.yellow(err))
+          console.log(
+            chalk.yellow(`  Creating ${source} with some default data`)
+          )
+          console.log()
+          fs.writeFileSync(source, JSON.stringify(example, null, 2))
+        } else {
+          return reject(chalk.red(err))
+        }
       }
 
       resolve(low(new FileAsync(source)))

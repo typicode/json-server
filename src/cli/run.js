@@ -79,6 +79,7 @@ function createApp(db, routes, middlewares, argv) {
 
 module.exports = function(argv) {
   const source = argv._[0]
+  const generateFileIfMissing = argv.generate
   let app
   let server
 
@@ -103,7 +104,7 @@ module.exports = function(argv) {
     server = undefined
 
     // create db and load object, JSON file, JS or HTTP database
-    return load(source).then(db => {
+    return load(source, generateFileIfMissing).then(db => {
       // Load additional routes
       let routes
       if (argv.routes) {
