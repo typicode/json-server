@@ -32,7 +32,6 @@
     "nanoid": "^2.1.11",
     "please-upgrade-node": "^3.2.0",
     "pluralize": "^8.0.0",
-    "request": "^2.88.2",
     "server-destroy": "^1.0.1",
     "update-notifier": "^4.0.0",
     "yargs": "^15.1.0"
