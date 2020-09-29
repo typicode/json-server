@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-const request = require('request')
+const http = require('http')
+const https = require('https')
 const low = require('lowdb')
 const FileAsync = require('lowdb/adapters/FileAsync')
 const Memory = require('lowdb/adapters/Memory')
@@ -25,16 +26,25 @@ module.exports = function(source) {
 
       resolve(low(new FileAsync(source)))
     } else if (is.URL(source)) {
-      // Load remote data
-      const opts = {
-        url: source,
-        json: true
-      }
+      // Normalize the source into a URL object.
+      const sourceUrl = new URL(source)
+      // Pick the client based on the protocol scheme
+      const client = sourceUrl.protocol === 'https:' ? https : http
 
-      request(opts, (err, response) => {
-        if (err) return reject(err)
-        resolve(low(new Memory()).setState(response.body))
-      })
+      client
+        .get(sourceUrl, res => {
+          let dbData = ''
+          res.on('data', data => {
+            dbData += data
+          })
+
+          res.on('end', () => {
+            resolve(low(new Memory()).setState(JSON.parse(dbData)))
+          })
+        })
+        .on('error', error => {
+          return reject(error)
+        })
     } else if (is.JS(source)) {
       // Clear cache
       const filename = path.resolve(source)
