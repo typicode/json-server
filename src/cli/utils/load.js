@@ -27,7 +27,8 @@ module.exports = function(source) {
       // Normalize the source into a URL object.
       const sourceUrl = new URL(source)
       // Pick the client based on the protocol scheme
-      const client = sourceUrl.protocol === 'https:' ? require('https') : require('http')
+      const client =
+        sourceUrl.protocol === 'https:' ? require('https') : require('http')
 
       client
         .get(sourceUrl, res => {
