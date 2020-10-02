@@ -1,7 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const http = require('http')
-const https = require('https')
 const low = require('lowdb')
 const FileAsync = require('lowdb/adapters/FileAsync')
 const Memory = require('lowdb/adapters/Memory')
@@ -29,7 +27,7 @@ module.exports = function(source) {
       // Normalize the source into a URL object.
       const sourceUrl = new URL(source)
       // Pick the client based on the protocol scheme
-      const client = sourceUrl.protocol === 'https:' ? https : http
+      const client = sourceUrl.protocol === 'https:' ? require('https') : require('http')
 
       client
         .get(sourceUrl, res => {
