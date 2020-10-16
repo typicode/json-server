@@ -389,6 +389,7 @@ Options:
   --middlewares, -m  Paths to middleware files                           [array]
   --static, -s       Set static files directory
   --read-only, --ro  Allow only GET requests                           [boolean]
+  --immutable, -I    Make file(s) immutable                            [boolean]
   --no-cors, --nc    Disable Cross-Origin Resource Sharing             [boolean]
   --no-gzip, --ng    Disable GZIP Content-Encoding                     [boolean]
   --snapshots, -S    Set snapshots directory                      [default: "."]
@@ -573,6 +574,7 @@ Returns middlewares used by JSON Server.
   * `bodyParser` enable body-parser middleware (default: true)
   * `noCors` disable CORS (default: false)
   * `readOnly` accept only GET requests (default: false)
+  * `immutable` all requests is a GET request (default: false)
 
 __`jsonServer.router([path|object])`__
 
