@@ -86,7 +86,7 @@ See also:
 
 ## Getting started
 
-Install JSON Server 
+Install JSON Server
 
 ```
 npm install -g json-server
@@ -123,7 +123,7 @@ Also when doing requests, it's good to know that:
 - If you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
 - Your request body JSON should be object enclosed, just like the GET output. (for example `{"name": "Foobar"}`)
 - Id values are not mutable. Any `id` value in the body of your PUT or PATCH request will be ignored. Only a value set in a POST request will be respected, but only if not already taken.
-- A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will return a 2XX status code, but without changes being made to the data. 
+- A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will return a 2XX status code, but without changes being made to the data.
 
 ## Routes
 
@@ -555,6 +555,34 @@ Alternatively, you can also mount the router on `/api`.
 
 ```javascript
 server.use('/api', router)
+```
+
+#### Stopping a JSON Server
+
+When using JSON Server with a testing suite it is often necessary to start the
+server at the start of the test and stop it at the end. This differs from the
+above examples only in how server listen is called.
+
+```js
+const jsonServer = require('json-server')
+const server = jsonServer.create()
+const router = jsonServer.router('db.json')
+const middlewares = jsonServer.defaults()
+
+// JSON Server defaults
+server.use(middlewares)
+server.use(jsonServer.bodyParser)
+server.use(router)
+
+// Wrap the json server app in an http server so it can be turned off and on.
+let httpServer = require('http').createServer(server);
+
+// Turn it on with
+httpServer.listen(3000);
+
+// Turn it off with
+httpSever.close();
+
 ```
 
 #### API
