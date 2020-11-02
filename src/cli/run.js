@@ -157,6 +157,10 @@ module.exports = function(argv) {
         )
       )
 
+      console.log(
+        chalk.gray('  Type r + enter at any time to reload the database')
+      )
+
       // Support nohup
       // https://github.com/typicode/json-server/issues/221
       process.stdin.on('error', () => {
@@ -165,7 +169,9 @@ module.exports = function(argv) {
       })
       process.stdin.setEncoding('utf8')
       process.stdin.on('data', chunk => {
-        if (chunk.trim().toLowerCase() === 's') {
+        const cmd = chunk.trim().toLowerCase()
+
+        if (cmd === 's') {
           const filename = `db-${Date.now()}.json`
           const file = path.join(argv.snapshots, filename)
           const state = app.db.getState()
@@ -173,6 +179,11 @@ module.exports = function(argv) {
           console.log(
             `  Saved snapshot to ${path.relative(process.cwd(), file)}\n`
           )
+        }
+
+        if (cmd === 'r') {
+          console.log(chalk.gray(`  Reloading...`))
+          server && server.destroy(() => start())
         }
       })
 
