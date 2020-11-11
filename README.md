@@ -24,6 +24,12 @@ See also:
   </a>
 </p>
 
+<p align="center">
+  <a href="https://mockend.com/" target="_blank">
+    <img src="https://i.imgur.com/Gwaqv3q.png" height="70px">
+  </a>
+</p>
+
 <p>&nbsp;</p>
 
 <h2 align="center">Bronze sponsors 🥉</h2>
