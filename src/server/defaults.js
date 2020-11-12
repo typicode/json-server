@@ -64,6 +64,16 @@ module.exports = function(opts) {
     })
   }
 
+  // Immutable
+  if (opts.immutable) {
+    arr.push((req, res, next) => {
+      if (req.method !== 'GET') {
+        req.method = 'GET'
+      }
+      next()
+    })
+  }
+
   // Add middlewares
   if (opts.bodyParser) {
     arr.push(bodyParser)

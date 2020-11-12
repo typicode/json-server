@@ -41,6 +41,10 @@ module.exports = function() {
         alias: 'ro',
         description: 'Allow only GET requests'
       },
+      immutable: {
+        alias: 'I',
+        description: 'Make file(s) immutable'
+      },
       'no-cors': {
         alias: 'nc',
         description: 'Disable Cross-Origin Resource Sharing'
@@ -80,6 +84,7 @@ module.exports = function() {
     })
     .boolean('watch')
     .boolean('read-only')
+    .boolean('immutable')
     .boolean('quiet')
     .boolean('no-cors')
     .boolean('no-gzip')

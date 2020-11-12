@@ -145,6 +145,24 @@ describe('cli', () => {
     })
   })
 
+  describe('db.json --immutable', () => {
+    beforeEach(done => {
+      child = cli([dbFile, '--immutable'])
+      serverReady(PORT, done)
+    })
+
+    test('should allow get', done => {
+      request.get('/posts').expect(200, done)
+    })
+
+    test('should allow post', done => {
+      request
+        .post('/posts')
+        .send({ name: 'test' })
+        .expect(200, done)
+    })
+  })
+
   describe('db.json -m first-middleware.js second-middleware.js', () => {
     beforeEach(done => {
       child = cli([dbFile, '-m', middlewareFiles.en, middlewareFiles.jp])

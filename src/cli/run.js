@@ -45,6 +45,7 @@ function createApp(db, routes, middlewares, argv) {
   const defaultsOpts = {
     logger: !argv.quiet,
     readOnly: argv.readOnly,
+    immutable: argv.immutable,
     noCors: argv.noCors,
     noGzip: argv.noGzip,
     bodyParser: true
