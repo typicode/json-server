@@ -1,12 +1,12 @@
 const fs = require('fs')
 const path = require('path')
-const jph = require('json-parse-helpfulerror')
 const _ = require('lodash')
 const chalk = require('chalk')
 const enableDestroy = require('server-destroy')
 const pause = require('connect-pause')
 const is = require('./utils/is')
 const load = require('./utils/load')
+const wait = require('./utils/wait')
 const jsonServer = require('../server')
 
 function prettyPrint(argv, object, rules) {
@@ -195,30 +195,32 @@ module.exports = function(argv) {
           if (file) {
             const watchedFile = path.resolve(watchedDir, file)
             if (watchedFile === path.resolve(source)) {
-              if (is.FILE(watchedFile)) {
-                let obj
-                try {
-                  obj = jph.parse(fs.readFileSync(watchedFile))
-                  if (readError) {
-                    console.log(chalk.green(`  Read error has been fixed :)`))
-                    readError = false
+              // this checks for json only
+              wait(100).then(() => {
+                load(watchedFile).then(
+                  obj => {
+                    if (readError) {
+                      console.log(chalk.green(`  Read error has been fixed :)`))
+                      readError = false
+                    }
+                    const isDatabaseDifferent = !_.isEqual(
+                      obj,
+                      app.db.getState()
+                    )
+                    if (isDatabaseDifferent) {
+                      console.log(
+                        chalk.gray(`  ${source} has changed, reloading...`)
+                      )
+                      server && server.destroy(() => start())
+                    }
+                  },
+                  e => {
+                    readError = true
+                    console.log(chalk.red(`  Error reading ${watchedFile}`))
+                    console.error(e.message)
                   }
-                } catch (e) {
-                  readError = true
-                  console.log(chalk.red(`  Error reading ${watchedFile}`))
-                  console.error(e.message)
-                  return
-                }
-
-                // Compare .json file content with in memory database
-                const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
-                if (isDatabaseDifferent) {
-                  console.log(
-                    chalk.gray(`  ${source} has changed, reloading...`)
-                  )
-                  server && server.destroy(() => start())
-                }
-              }
+                )
+              })
             }
           }
         })
