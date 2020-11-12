@@ -60,6 +60,7 @@ See also:
   * [HTTPS](#https)
   * [Add custom routes](#add-custom-routes)
   * [Add middlewares](#add-middlewares)
+  * [Add render](#add-render)
   * [CLI usage](#cli-usage)
   * [Module](#module)
     + [Simple example](#simple-example)
@@ -358,8 +359,9 @@ You can add your middlewares from the CLI using `--middlewares` option:
 
 ```js
 // hello.js
-module.exports = (req, res, next) => {
+module.exports = (req, res, next, db) => {
   res.header('X-Hello', 'World')
+  res.header('X-World', db.get('world').value())
   next()
 }
 ```
@@ -368,6 +370,25 @@ module.exports = (req, res, next) => {
 json-server db.json --middlewares ./hello.js
 json-server db.json --middlewares ./first.js ./second.js
 ```
+
+### Add render
+
+Render will be executed once all logic in json-server was done.
+
+You can add your render from the CLI using `--render` option:
+
+```js
+// after.js
+module.exports = (req, res) => {
+  res.jsonp({ ...res.locals.data, modified: true });
+}
+```
+
+```bash
+json-server db.json --render ./after.js
+```
+
+NOTE: If render is specify it needs to return response using `res.jsonp(...)` or server will not response. 
 
 ### CLI usage
 
@@ -381,6 +402,7 @@ Options:
   --watch, -w        Watch file(s)                                     [boolean]
   --routes, -r       Path to routes file
   --middlewares, -m  Paths to middleware files                           [array]
+  --render, -a       Path to execute after proccess
   --static, -s       Set static files directory
   --read-only, --ro  Allow only GET requests                           [boolean]
   --no-cors, --nc    Disable Cross-Origin Resource Sharing             [boolean]

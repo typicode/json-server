@@ -33,6 +33,10 @@ module.exports = function() {
         array: true,
         description: 'Paths to middleware files'
       },
+      render: {
+        alias: 'a',
+        description: 'Path to execute after process'
+      },
       static: {
         alias: 's',
         description: 'Set static files directory'
