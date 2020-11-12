@@ -58,6 +58,10 @@ module.exports = function() {
         alias: 'd',
         description: 'Add delay to responses (ms)'
       },
+      jitter: {
+        alias: 'j',
+        description: 'Add random delay to each response (ms)'
+      },
       id: {
         alias: 'i',
         description: 'Set database id property (e.g. _id)',
