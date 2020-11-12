@@ -20,6 +20,11 @@ module.exports = function() {
         description: 'Set host',
         default: 'localhost'
       },
+      anyInterface: {
+        alias: 'a',
+        description: 'Binds to any network interface address (like 0.0.0.0)',
+        default: false
+      },
       watch: {
         alias: 'w',
         description: 'Watch file(s)'

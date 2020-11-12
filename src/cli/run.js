@@ -125,6 +125,10 @@ module.exports = function(argv) {
 
       // Create app and server
       app = createApp(db, routes, middlewares, argv)
+      if (argv.anyInterface) {
+        // listen on all interfaces
+        argv.host = '0.0.0.0'
+      }
       server = app.listen(argv.port, argv.host)
 
       // Enhance with a destroy function
