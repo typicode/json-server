@@ -4,6 +4,10 @@
   "description": "Get a full fake REST API with zero coding in less than 30 seconds",
   "main": "./lib/server/index.js",
   "bin": "./lib/cli/bin.js",
+  "files": [
+    "lib",
+    "public"
+  ],
   "scripts": {
     "postinstall": "husky install",
     "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
