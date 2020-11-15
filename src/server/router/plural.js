@@ -14,7 +14,7 @@ module.exports = (db, name, opts) => {
   // Embed function used in GET /name and GET /name/id
   function embed(resource, e) {
     e &&
-      [].concat(e).forEach(externalResource => {
+      [].concat(e).forEach((externalResource) => {
         if (db.get(externalResource).value) {
           const query = {}
           const singularResource = pluralize.singular(name)
@@ -30,7 +30,7 @@ module.exports = (db, name, opts) => {
   // Expand function used in GET /name and GET /name/id
   function expand(resource, e) {
     e &&
-      [].concat(e).forEach(innerResource => {
+      [].concat(e).forEach((innerResource) => {
         const plural = pluralize(innerResource)
         if (db.get(plural).value()) {
           const prop = `${innerResource}${opts.foreignKeySuffix}`
@@ -74,7 +74,7 @@ module.exports = (db, name, opts) => {
 
     // Automatically delete query parameters that can't be found
     // in the database
-    Object.keys(req.query).forEach(query => {
+    Object.keys(req.query).forEach((query) => {
       const arr = db.get(name).value()
       for (const i in arr) {
         if (
@@ -99,17 +99,18 @@ module.exports = (db, name, opts) => {
 
       q = q.toLowerCase()
 
-      chain = chain.filter(obj => {
+      chain = chain.filter((obj) => {
         for (const key in obj) {
           const value = obj[key]
           if (db._.deepQuery(value, q)) {
             return true
           }
         }
+        return false
       })
     }
 
-    Object.keys(req.query).forEach(key => {
+    Object.keys(req.query).forEach((key) => {
       // Don't take into account JSONP query parameters
       // jQuery adds a '_' query parameter too
       if (key !== 'callback' && key !== '_') {
@@ -121,16 +122,16 @@ module.exports = (db, name, opts) => {
         const isLike = /_like$/.test(key)
         const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
 
-        chain = chain.filter(element => {
+        chain = chain.filter((element) => {
           return arr
-            .map(function(value) {
+            .map(function (value) {
               // get item value based on path
               // i.e post.title -> 'foo'
               const elementValue = _.get(element, path)
 
               // Prevent toString() failing on undefined or null values
               if (elementValue === undefined || elementValue === null) {
-                return
+                return undefined
               }
 
               if (isRange) {
@@ -155,7 +156,7 @@ module.exports = (db, name, opts) => {
     // Sort
     if (_sort) {
       const _sortSet = _sort.split(',')
-      const _orderSet = (_order || '').split(',').map(s => s.toLowerCase())
+      const _orderSet = (_order || '').split(',').map((s) => s.toLowerCase())
       chain = chain.orderBy(_sortSet, _orderSet)
     }
 
@@ -217,7 +218,7 @@ module.exports = (db, name, opts) => {
     }
 
     // embed and expand
-    chain = chain.cloneDeep().forEach(function(element) {
+    chain = chain.cloneDeep().forEach(function (element) {
       embed(element, _embed)
       expand(element, _expand)
     })
@@ -231,10 +232,7 @@ module.exports = (db, name, opts) => {
   function show(req, res, next) {
     const _embed = req.query._embed
     const _expand = req.query._expand
-    const resource = db
-      .get(name)
-      .getById(req.params.id)
-      .value()
+    const resource = db.get(name).getById(req.params.id).value()
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
@@ -258,16 +256,10 @@ module.exports = (db, name, opts) => {
   function create(req, res, next) {
     let resource
     if (opts._isFake) {
-      const id = db
-        .get(name)
-        .createId()
-        .value()
+      const id = db.get(name).createId().value()
       resource = { ...req.body, id }
     } else {
-      resource = db
-        .get(name)
-        .insert(req.body)
-        .value()
+      resource = db.get(name).insert(req.body).value()
     }
 
     res.setHeader('Access-Control-Expose-Headers', 'Location')
@@ -286,10 +278,7 @@ module.exports = (db, name, opts) => {
     let resource
 
     if (opts._isFake) {
-      resource = db
-        .get(name)
-        .getById(id)
-        .value()
+      resource = db.get(name).getById(id).value()
 
       if (req.method === 'PATCH') {
         resource = { ...resource, ...req.body }
@@ -321,17 +310,12 @@ module.exports = (db, name, opts) => {
     if (opts._isFake) {
       resource = db.get(name).value()
     } else {
-      resource = db
-        .get(name)
-        .removeById(req.params.id)
-        .value()
+      resource = db.get(name).removeById(req.params.id).value()
 
       // Remove dependents documents
       const removable = db._.getRemovable(db.getState(), opts)
-      removable.forEach(item => {
-        db.get(item.name)
-          .removeById(item.id)
-          .value()
+      removable.forEach((item) => {
+        db.get(item.name).removeById(item.id).value()
       })
     }
 
@@ -344,10 +328,7 @@ module.exports = (db, name, opts) => {
 
   const w = write(db)
 
-  router
-    .route('/')
-    .get(list)
-    .post(create, w)
+  router.route('/').get(list).post(create, w)
 
   router
     .route('/:id')

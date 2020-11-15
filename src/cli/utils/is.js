@@ -1,7 +1,7 @@
 module.exports = {
   FILE,
   JS,
-  URL
+  URL,
 }
 
 function FILE(s) {

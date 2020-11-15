@@ -11,10 +11,10 @@ const chalk = require('chalk')
 const example = {
   posts: [{ id: 1, title: 'json-server', author: 'typicode' }],
   comments: [{ id: 1, body: 'some comment', postId: 1 }],
-  profile: { name: 'typicode' }
+  profile: { name: 'typicode' },
 }
 
-module.exports = function(source) {
+module.exports = function (source) {
   return new Promise((resolve, reject) => {
     if (is.FILE(source)) {
       if (!fs.existsSync(source)) {
@@ -32,9 +32,9 @@ module.exports = function(source) {
       const client = sourceUrl.protocol === 'https:' ? https : http
 
       client
-        .get(sourceUrl, res => {
+        .get(sourceUrl, (res) => {
           let dbData = ''
-          res.on('data', data => {
+          res.on('data', (data) => {
             dbData += data
           })
 
@@ -42,7 +42,7 @@ module.exports = function(source) {
             resolve(low(new Memory()).setState(JSON.parse(dbData)))
           })
         })
-        .on('error', error => {
+        .on('error', (error) => {
           return reject(error)
         })
     } else if (is.JS(source)) {

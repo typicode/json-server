@@ -12,7 +12,7 @@ describe('Fake server', () => {
 
     db.user = {
       name: 'foo',
-      email: 'foo@example.com'
+      email: 'foo@example.com',
     }
 
     server = jsonServer.create()
@@ -24,11 +24,7 @@ describe('Fake server', () => {
   describe('POST /:resource', () => {
     test('should not create resource', async () => {
       const user = { name: 'bar' }
-      await request(server)
-        .post('/user')
-        .send(user)
-        .expect(user)
-        .expect(201)
+      await request(server).post('/user').send(user).expect(user).expect(201)
       assert.notDeepStrictEqual(db.user, user)
     })
   })
@@ -36,11 +32,7 @@ describe('Fake server', () => {
   describe('PUT /:resource', () => {
     test('should not update resource', async () => {
       const user = { name: 'bar' }
-      await request(server)
-        .put('/user')
-        .send(user)
-        .expect(user)
-        .expect(200)
+      await request(server).put('/user').send(user).expect(user).expect(200)
       assert.notDeepStrictEqual(db.user, user)
     })
   })

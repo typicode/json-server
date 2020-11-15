@@ -5,5 +5,5 @@ module.exports = {
   defaults: require('./defaults'),
   router: require('./router'),
   rewriter: require('./rewriter'),
-  bodyParser: require('./body-parser')
+  bodyParser: require('./body-parser'),
 }

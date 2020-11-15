@@ -39,9 +39,7 @@ module.exports = (db, name, opts) => {
       if (req.method === 'PUT') {
         db.set(name, req.body).value()
       } else {
-        db.get(name)
-          .assign(req.body)
-          .value()
+        db.get(name).assign(req.body).value()
       }
 
       res.locals.data = db.get(name).value()
@@ -52,12 +50,7 @@ module.exports = (db, name, opts) => {
 
   const w = write(db)
 
-  router
-    .route('/')
-    .get(show)
-    .post(create, w)
-    .put(update, w)
-    .patch(update, w)
+  router.route('/').get(show).post(create, w).put(update, w).patch(update, w)
 
   return router
 }

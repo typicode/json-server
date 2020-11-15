@@ -14,7 +14,7 @@ let PORT = 3100
 const middlewareFiles = {
   en: './../../__fixtures__/middlewares/en.js',
   jp: './../../__fixtures__/middlewares/jp.js',
-  postbody: './../../__fixtures__/middlewares/postbody.js'
+  postbody: './../../__fixtures__/middlewares/postbody.js',
 }
 
 const bin = path.join(__dirname, '../../lib/cli/bin')
@@ -22,7 +22,7 @@ const bin = path.join(__dirname, '../../lib/cli/bin')
 function cli(args) {
   return cp.spawn('node', ['--', bin, '-p', PORT].concat(args), {
     cwd: __dirname,
-    stdio: ['pipe', process.stdout, process.stderr]
+    stdio: ['pipe', process.stdout, process.stderr],
   })
 }
 
@@ -36,7 +36,7 @@ describe('cli', () => {
     dbFile = tempWrite.sync(
       JSON.stringify({
         posts: [{ id: 1 }, { _id: 2 }],
-        comments: [{ id: 1, post_id: 1 }]
+        comments: [{ id: 1, post_id: 1 }],
       }),
       'db.json'
     )
@@ -55,16 +55,16 @@ describe('cli', () => {
   })
 
   describe('db.json', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       child = cli([dbFile])
       serverReady(PORT, done)
     })
 
-    test('should support JSON file', done => {
+    test('should support JSON file', (done) => {
       request.get('/posts').expect(200, done)
     })
 
-    test('should send CORS headers', done => {
+    test('should send CORS headers', (done) => {
       const origin = 'http://example.com'
 
       request
@@ -74,7 +74,7 @@ describe('cli', () => {
         .expect(200, done)
     })
 
-    test('should update JSON file', done => {
+    test('should update JSON file', (done) => {
       request
         .post('/posts')
         .send({ title: 'hello' })
@@ -89,29 +89,29 @@ describe('cli', () => {
   })
 
   describe('seed.js', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       child = cli(['../../__fixtures__/seed.js'])
       serverReady(PORT, done)
     })
 
-    test('should support JS file', done => {
+    test('should support JS file', (done) => {
       request.get('/posts').expect(200, done)
     })
   })
 
   describe('remote db', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       child = cli(['https://jsonplaceholder.typicode.com/db'])
       serverReady(PORT, done)
     })
 
-    test('should support URL file', done => {
+    test('should support URL file', (done) => {
       request.get('/posts').expect(200, done)
     })
   })
 
   describe('db.json -r routes.json -m middleware.js -i _id --foreignKeySuffix _id --read-only', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       child = cli([
         dbFile,
         '-r',
@@ -122,12 +122,12 @@ describe('cli', () => {
         '_id',
         '--read-only',
         '--foreignKeySuffix',
-        '_id'
+        '_id',
       ])
       serverReady(PORT, done)
     })
 
-    test('should use routes.json and _id as the identifier', done => {
+    test('should use routes.json and _id as the identifier', (done) => {
       request.get('/blog/posts/2').expect(200, done)
     })
 
@@ -136,22 +136,22 @@ describe('cli', () => {
       assert.strictEqual(response.body.length, 1)
     })
 
-    test('should apply middlewares', done => {
+    test('should apply middlewares', (done) => {
       request.get('/blog/posts/2').expect('X-Hello', 'World', done)
     })
 
-    test('should allow only GET requests', done => {
+    test('should allow only GET requests', (done) => {
       request.post('/blog/posts').expect(403, done)
     })
   })
 
   describe('db.json -m first-middleware.js second-middleware.js', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       child = cli([dbFile, '-m', middlewareFiles.en, middlewareFiles.jp])
       serverReady(PORT, done)
     })
 
-    test('should apply all middlewares', done => {
+    test('should apply all middlewares', (done) => {
       request
         .get('/posts')
         .expect('X-Hello', 'World')
@@ -160,28 +160,25 @@ describe('cli', () => {
   })
 
   describe('db.json -m postbody-middleware.js', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       child = cli([dbFile, '-m', middlewareFiles.postbody])
       serverReady(PORT, done)
     })
 
-    test('should have post body in middleware', done => {
-      request
-        .post('/posts')
-        .send({ name: 'test' })
-        .expect('name', 'test', done)
+    test('should have post body in middleware', (done) => {
+      request.post('/posts').send({ name: 'test' }).expect('name', 'test', done)
     })
   })
 
   describe('db.json -d 1000', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       child = cli([dbFile, '-d', 1000])
       serverReady(PORT, done)
     })
 
-    test('should delay response', done => {
+    test('should delay response', (done) => {
       const start = new Date()
-      request.get('/posts').expect(200, function(err) {
+      request.get('/posts').expect(200, function (err) {
         const end = new Date()
         done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
       })
@@ -192,7 +189,7 @@ describe('cli', () => {
     const snapshotsDir = path.join(osTmpdir(), 'snapshots')
     const publicDir = '../../__fixtures__/public'
 
-    beforeEach(done => {
+    beforeEach((done) => {
       rimraf.sync(snapshotsDir)
       mkdirp.sync(snapshotsDir)
 
@@ -203,7 +200,7 @@ describe('cli', () => {
       })
     })
 
-    test('should serve ../../__fixtures__/public', done => {
+    test('should serve ../../__fixtures__/public', (done) => {
       request.get('/').expect(/Hello/, done)
     })
 
@@ -213,12 +210,12 @@ describe('cli', () => {
   })
 
   describe('../../__fixtures__/seed.json --no-cors=true', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       child = cli(['../../__fixtures__/seed.js', '--no-cors=true'])
       serverReady(PORT, done)
     })
 
-    test('should not send Access-Control-Allow-Origin headers', done => {
+    test('should not send Access-Control-Allow-Origin headers', (done) => {
       const origin = 'http://example.com'
 
       request
@@ -239,16 +236,16 @@ describe('cli', () => {
   })
 
   describe('../../__fixtures__/seed.json --no-gzip=true', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       child = cli(['../../__fixtures__/seed.js', '--no-gzip=true'])
       serverReady(PORT, done)
     })
 
-    test('should not set Content-Encoding to gzip', done => {
+    test('should not set Content-Encoding to gzip', (done) => {
       request
         .get('/posts')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) {
             done(err)
           } else if ('content-encoding' in res.headers) {
@@ -261,19 +258,19 @@ describe('cli', () => {
   })
 
   describe('--watch db.json -r routes.json', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       child = cli([dbFile, '-r', routesFile, '--watch'])
       serverReady(PORT, done)
     })
 
-    test('should watch db file', done => {
+    test('should watch db file', (done) => {
       fs.writeFileSync(dbFile, JSON.stringify({ foo: [] }))
       setTimeout(() => {
         request.get('/foo').expect(200, done)
       }, 1000)
     })
 
-    test('should watch routes file', done => {
+    test('should watch routes file', (done) => {
       fs.writeFileSync(routesFile, JSON.stringify({ '/api/*': '/$1' }))
       setTimeout(() => {
         request.get('/api/posts').expect(200, done)
@@ -282,13 +279,13 @@ describe('cli', () => {
   })
 
   describe('non existent db.json', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       fs.unlinkSync(dbFile)
       child = cli([dbFile])
       serverReady(PORT, done)
     })
 
-    test("should create JSON file if it doesn't exist", done => {
+    test("should create JSON file if it doesn't exist", (done) => {
       request.get('/posts').expect(200, done)
     })
   })
@@ -298,9 +295,9 @@ describe('cli', () => {
       dbFile = tempWrite.sync(JSON.stringify({ 'a/b': [] }), 'db-error.json')
     })
 
-    test('should exit with an error', done => {
+    test('should exit with an error', (done) => {
       child = cli([dbFile])
-      child.on('exit', code => {
+      child.on('exit', (code) => {
         if (code === 1) {
           return done()
         }

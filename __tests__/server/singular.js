@@ -11,7 +11,7 @@ describe('Server', () => {
 
     db.user = {
       name: 'foo',
-      email: 'foo@example.com'
+      email: 'foo@example.com',
     }
 
     server = jsonServer.create()
@@ -22,31 +22,20 @@ describe('Server', () => {
 
   describe('GET /:resource', () => {
     test('should respond with corresponding resource', () =>
-      request(server)
-        .get('/user')
-        .expect(db.user)
-        .expect(200))
+      request(server).get('/user').expect(db.user).expect(200))
   })
 
   describe('POST /:resource', () => {
     test('should create resource', () => {
       const user = { name: 'bar' }
-      return request(server)
-        .post('/user')
-        .send(user)
-        .expect(user)
-        .expect(201)
+      return request(server).post('/user').send(user).expect(user).expect(201)
     })
   })
 
   describe('PUT /:resource', () => {
     test('should update resource', () => {
       const user = { name: 'bar' }
-      return request(server)
-        .put('/user')
-        .send(user)
-        .expect(user)
-        .expect(200)
+      return request(server).put('/user').send(user).expect(user).expect(200)
     })
   })
 

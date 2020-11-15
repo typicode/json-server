@@ -12,7 +12,7 @@ describe('Fake server', () => {
 
     db.posts = [
       { id: 1, body: 'foo' },
-      { id: 2, body: 'bar' }
+      { id: 2, body: 'bar' },
     ]
 
     db.comments = [
@@ -20,7 +20,7 @@ describe('Fake server', () => {
       { id: 2, body: 'bar', published: false, postId: 1, userId: 2 },
       { id: 3, body: 'baz', published: false, postId: 2, userId: 1 },
       { id: 4, body: 'qux', published: true, postId: 2, userId: 2 },
-      { id: 5, body: 'quux', published: false, postId: 2, userId: 1 }
+      { id: 5, body: 'quux', published: false, postId: 2, userId: 1 },
     ]
 
     server = jsonServer.create()
@@ -87,10 +87,7 @@ describe('Fake server', () => {
 
   describe('DELETE /:resource/:id', () => {
     test('should not destroy resource', async () => {
-      await request(server)
-        .del('/posts/1')
-        .expect({})
-        .expect(200)
+      await request(server).del('/posts/1').expect({}).expect(200)
       assert.strictEqual(db.posts.length, 2)
     })
   })

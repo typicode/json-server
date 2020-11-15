@@ -8,7 +8,7 @@ module.exports = {
         singleQuote: true,
         semi: false,
       },
-    ]
+    ],
   },
-  env: { jest: true }
+  env: { jest: true },
 }

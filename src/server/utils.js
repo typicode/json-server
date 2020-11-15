@@ -1,11 +1,11 @@
 module.exports = {
-  getPage
+  getPage,
 }
 
 function getPage(array, page, perPage) {
-  var obj = {}
-  var start = (page - 1) * perPage
-  var end = page * perPage
+  const obj = {}
+  const start = (page - 1) * perPage
+  const end = page * perPage
 
   obj.items = array.slice(start, end)
   if (obj.items.length === 0) {

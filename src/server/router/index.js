@@ -64,7 +64,7 @@ module.exports = (db, opts) => {
       return
     }
 
-    var sourceMessage = ''
+    const sourceMessage = ''
     // if (!_.isObject(source)) {
     //   sourceMessage = `in ${source}`
     // }

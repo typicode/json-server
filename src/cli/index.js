@@ -3,7 +3,7 @@ const yargs = require('yargs')
 const run = require('./run')
 const pkg = require('../../package.json')
 
-module.exports = function() {
+module.exports = function () {
   updateNotifier({ pkg }).notify()
 
   const argv = yargs
@@ -13,70 +13,70 @@ module.exports = function() {
       port: {
         alias: 'p',
         description: 'Set port',
-        default: 3000
+        default: 3000,
       },
       host: {
         alias: 'H',
         description: 'Set host',
-        default: 'localhost'
+        default: 'localhost',
       },
       watch: {
         alias: 'w',
-        description: 'Watch file(s)'
+        description: 'Watch file(s)',
       },
       routes: {
         alias: 'r',
-        description: 'Path to routes file'
+        description: 'Path to routes file',
       },
       middlewares: {
         alias: 'm',
         array: true,
-        description: 'Paths to middleware files'
+        description: 'Paths to middleware files',
       },
       static: {
         alias: 's',
-        description: 'Set static files directory'
+        description: 'Set static files directory',
       },
       'read-only': {
         alias: 'ro',
-        description: 'Allow only GET requests'
+        description: 'Allow only GET requests',
       },
       'no-cors': {
         alias: 'nc',
-        description: 'Disable Cross-Origin Resource Sharing'
+        description: 'Disable Cross-Origin Resource Sharing',
       },
       'no-gzip': {
         alias: 'ng',
-        description: 'Disable GZIP Content-Encoding'
+        description: 'Disable GZIP Content-Encoding',
       },
       snapshots: {
         alias: 'S',
         description: 'Set snapshots directory',
-        default: '.'
+        default: '.',
       },
       delay: {
         alias: 'd',
-        description: 'Add delay to responses (ms)'
+        description: 'Add delay to responses (ms)',
       },
       id: {
         alias: 'i',
         description: 'Set database id property (e.g. _id)',
-        default: 'id'
+        default: 'id',
       },
       foreignKeySuffix: {
         alias: 'fks',
         description: 'Set foreign key suffix (e.g. _id as in post_id)',
-        default: 'Id'
+        default: 'Id',
       },
       quiet: {
         alias: 'q',
-        description: 'Suppress log messages from output'
+        description: 'Suppress log messages from output',
       },
       config: {
         alias: 'c',
         description: 'Path to config file',
-        default: 'json-server.json'
-      }
+        default: 'json-server.json',
+      },
     })
     .boolean('watch')
     .boolean('read-only')

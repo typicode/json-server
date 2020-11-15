@@ -12,7 +12,7 @@ describe('utils', () => {
         current: 1,
         first: 1,
         next: 2,
-        last: 3
+        last: 3,
       })
     })
 
@@ -23,7 +23,7 @@ describe('utils', () => {
         first: 1,
         prev: 1,
         next: 3,
-        last: 3
+        last: 3,
       })
     })
 
@@ -33,25 +33,25 @@ describe('utils', () => {
         current: 3,
         first: 1,
         prev: 2,
-        last: 3
+        last: 3,
       })
     })
 
     test('should return an empty array if page is greater than the last page', () => {
       assert.deepStrictEqual(utils.getPage(array, 99, perPage), {
-        items: []
+        items: [],
       })
     })
 
     test('should return the array if perPage is greater than the array size', () => {
       assert.deepStrictEqual(utils.getPage(array, 1, 99), {
-        items: array
+        items: array,
       })
     })
 
     test('should return an empty array if the array is empty', () => {
       assert.deepStrictEqual(utils.getPage([], 1, 1), {
-        items: []
+        items: [],
       })
     })
   })

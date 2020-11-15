@@ -18,9 +18,9 @@ describe('mixins', () => {
         { id: 1, postId: 1 },
         // Comments below references a post that doesn't exist
         { id: 2, postId: 2 },
-        { id: 3, postId: 2 }
+        { id: 3, postId: 2 },
       ],
-      photos: [{ id: '1' }, { id: '2' }]
+      photos: [{ id: '1' }, { id: '2' }],
     }
   })
 
@@ -28,7 +28,7 @@ describe('mixins', () => {
     test('should return removable documents', () => {
       const expected = [
         { name: 'comments', id: 2 },
-        { name: 'comments', id: 3 }
+        { name: 'comments', id: 3 },
       ]
 
       assert.deepStrictEqual(
@@ -40,7 +40,7 @@ describe('mixins', () => {
     test('should support custom foreignKeySuffix', () => {
       const expected = [
         { name: 'comments', id: 2 },
-        { name: 'comments', id: 3 }
+        { name: 'comments', id: 3 },
       ]
 
       assert.deepStrictEqual(

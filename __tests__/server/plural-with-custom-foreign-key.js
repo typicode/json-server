@@ -13,13 +13,13 @@ describe('Server with custom foreign key', () => {
 
     db.posts = [
       { id: 1, body: 'foo' },
-      { id: 2, body: 'bar' }
+      { id: 2, body: 'bar' },
     ]
 
     db.comments = [
       { id: 1, post_id: 1 },
       { id: 2, post_id: 1 },
-      { id: 3, post_id: 2 }
+      { id: 3, post_id: 2 },
     ]
 
     server = jsonServer.create()
@@ -109,10 +109,7 @@ describe('Server with custom foreign key', () => {
 
   describe('DELETE /:resource/:id', () => {
     test('should respond with empty data, destroy resource and dependent resources', async () => {
-      await request(server)
-        .del('/posts/1')
-        .expect({})
-        .expect(200)
+      await request(server).del('/posts/1').expect({}).expect(200)
       assert.strictEqual(db.posts.length, 1)
       assert.strictEqual(db.comments.length, 1)
     })

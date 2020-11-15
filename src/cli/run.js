@@ -21,7 +21,7 @@ function prettyPrint(argv, object, rules) {
   if (rules) {
     console.log()
     console.log(chalk.bold('  Other routes'))
-    for (var rule in rules) {
+    for (const rule in rules) {
       console.log(`  ${rule} -> ${rules[rule]}`)
     }
   }
@@ -47,7 +47,7 @@ function createApp(db, routes, middlewares, argv) {
     readOnly: argv.readOnly,
     noCors: argv.noCors,
     noGzip: argv.noGzip,
-    bodyParser: true
+    bodyParser: true,
   }
 
   if (argv.static) {
@@ -77,7 +77,7 @@ function createApp(db, routes, middlewares, argv) {
   return app
 }
 
-module.exports = function(argv) {
+module.exports = function (argv) {
   const source = argv._[0]
   let app
   let server
@@ -103,7 +103,7 @@ module.exports = function(argv) {
     server = undefined
 
     // create db and load object, JSON file, JS or HTTP database
-    return load(source).then(db => {
+    return load(source).then((db) => {
       // Load additional routes
       let routes
       if (argv.routes) {
@@ -114,7 +114,7 @@ module.exports = function(argv) {
       // Load middlewares
       let middlewares
       if (argv.middlewares) {
-        middlewares = argv.middlewares.map(function(m) {
+        middlewares = argv.middlewares.map(function (m) {
           console.log(chalk.gray('  Loading', m))
           return require(path.resolve(m))
         })
@@ -134,7 +134,7 @@ module.exports = function(argv) {
       prettyPrint(argv, db.getState(), routes)
 
       // Catch and handle any error occurring in the server process
-      process.on('uncaughtException', error => {
+      process.on('uncaughtException', (error) => {
         if (error.errno === 'EADDRINUSE')
           console.log(
             chalk.red(
@@ -164,7 +164,7 @@ module.exports = function(argv) {
         console.log(`  Creating a snapshot from the CLI won't be possible`)
       })
       process.stdin.setEncoding('utf8')
-      process.stdin.on('data', chunk => {
+      process.stdin.on('data', (chunk) => {
         if (chunk.trim().toLowerCase() === 's') {
           const filename = `db-${Date.now()}.json`
           const file = path.join(argv.snapshots, filename)
@@ -240,7 +240,7 @@ module.exports = function(argv) {
         }
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err)
       process.exit(1)
     })

@@ -12,7 +12,7 @@ describe('Server', () => {
     '/blog/posts/:id/show': '/posts/:id',
     '/comments/special/:userId-:body': '/comments/?userId=:userId&body=:body',
     '/firstpostwithcomments': '/posts/1?_embed=comments',
-    '/articles\\?_id=:id': '/posts/:id'
+    '/articles\\?_id=:id': '/posts/:id',
   }
 
   beforeEach(() => {
@@ -20,18 +20,18 @@ describe('Server', () => {
 
     db.posts = [
       { id: 1, body: 'foo' },
-      { id: 2, body: 'bar' }
+      { id: 2, body: 'bar' },
     ]
 
     db.tags = [
       { id: 1, body: 'Technology' },
       { id: 2, body: 'Photography' },
-      { id: 3, body: 'photo' }
+      { id: 3, body: 'photo' },
     ]
 
     db.users = [
       { id: 1, username: 'Jim', tel: '0123' },
-      { id: 2, username: 'George', tel: '123' }
+      { id: 2, username: 'George', tel: '123' },
     ]
 
     db.comments = [
@@ -39,7 +39,7 @@ describe('Server', () => {
       { id: 2, body: 'bar', published: false, postId: 1, userId: 2 },
       { id: 3, body: 'baz', published: false, postId: 2, userId: 1 },
       { id: 4, body: 'qux', published: true, postId: 2, userId: 2 },
-      { id: 5, body: 'quux', published: false, postId: 2, userId: 1 }
+      { id: 5, body: 'quux', published: false, postId: 2, userId: 1 },
     ]
 
     db.buyers = [
@@ -51,11 +51,11 @@ describe('Server', () => {
       { id: 6, name: 'Frank', country: 'Belize', total: 10 },
       { id: 7, name: 'Grace', country: 'Argentina', total: 1 },
       { id: 8, name: 'Henry', country: 'Argentina', total: 2 },
-      { id: 9, name: 'Isabelle', country: 'Argentina', total: 3 }
+      { id: 9, name: 'Isabelle', country: 'Argentina', total: 3 },
     ]
 
     db.refs = [
-      { id: 'abcd-1234', url: 'http://example.com', postId: 1, userId: 1 }
+      { id: 'abcd-1234', url: 'http://example.com', postId: 1, userId: 1 },
     ]
 
     db.stringIds = [{ id: '1234' }]
@@ -65,7 +65,7 @@ describe('Server', () => {
     db.nested = [
       { resource: { name: 'dewey' } },
       { resource: { name: 'cheatem' } },
-      { resource: { name: 'howe' } }
+      { resource: { name: 'howe' } },
     ]
 
     db.list = [
@@ -83,7 +83,7 @@ describe('Server', () => {
       { id: 12 },
       { id: 13 },
       { id: 14 },
-      { id: 15 }
+      { id: 15 },
     ]
 
     server = jsonServer.create()
@@ -114,9 +114,7 @@ describe('Server', () => {
         .expect(200))
 
     test('should respond with 404 if resource is not found', () =>
-      request(server)
-        .get('/undefined')
-        .expect(404))
+      request(server).get('/undefined').expect(404))
   })
 
   describe('GET /:resource?attr=&attr=', () => {
@@ -277,7 +275,7 @@ describe('Server', () => {
           db.buyers[5],
           db.buyers[2],
           db.buyers[1],
-          db.buyers[0]
+          db.buyers[0],
         ])
         .expect(200))
   })
@@ -321,7 +319,7 @@ describe('Server', () => {
         '<http://localhost/list?_page=1&_limit=1>; rel="first"',
         '<http://localhost/list?_page=1&_limit=1>; rel="prev"',
         '<http://localhost/list?_page=3&_limit=1>; rel="next"',
-        '<http://localhost/list?_page=15&_limit=1>; rel="last"'
+        '<http://localhost/list?_page=15&_limit=1>; rel="last"',
       ].join(', ')
       return request(server)
         .get('/list?_page=2&_limit=1')
@@ -518,11 +516,11 @@ describe('Server', () => {
   })
 
   describe('GET /:resource>_delay=', () => {
-    test('should delay response', done => {
+    test('should delay response', (done) => {
       const start = new Date()
       request(server)
         .get('/posts?_delay=1100')
-        .expect(200, function(err) {
+        .expect(200, function (err) {
           const end = new Date()
           done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
         })
@@ -575,12 +573,12 @@ describe('Server', () => {
   })
 
   describe('POST /:resource?_delay=', () => {
-    test('should delay response', done => {
+    test('should delay response', (done) => {
       const start = new Date()
       request(server)
         .post('/posts?_delay=1100')
         .send({ body: 'foo', booleanValue: true, integerValue: 1 })
-        .expect(201, function(err) {
+        .expect(201, function (err) {
           const end = new Date()
           done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
         })
@@ -615,13 +613,13 @@ describe('Server', () => {
   })
 
   describe('PUT /:resource:id?_delay=', () => {
-    test('should delay response', done => {
+    test('should delay response', (done) => {
       const start = new Date()
       request(server)
         .put('/posts/1?_delay=1100')
         .set('Accept', 'application/json')
         .send({ id: 1, booleanValue: true, integerValue: 1 })
-        .expect(200, function(err) {
+        .expect(200, function (err) {
           const end = new Date()
           done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
         })
@@ -653,13 +651,13 @@ describe('Server', () => {
   })
 
   describe('PATCH /:resource:id?_delay=', () => {
-    test('should delay response', done => {
+    test('should delay response', (done) => {
       const start = new Date()
       request(server)
         .patch('/posts/1?_delay=1100')
         .send({ body: 'bar' })
         .send({ id: 1, booleanValue: true, integerValue: 1 })
-        .expect(200, function(err) {
+        .expect(200, function (err) {
           const end = new Date()
           done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
         })
@@ -668,10 +666,7 @@ describe('Server', () => {
 
   describe('DELETE /:resource/:id', () => {
     test('should respond with empty data, destroy resource and dependent resources', async () => {
-      await request(server)
-        .del('/posts/1')
-        .expect({})
-        .expect(200)
+      await request(server).del('/posts/1').expect({}).expect(200)
       assert.strictEqual(db.posts.length, 1)
       assert.strictEqual(db.comments.length, 3)
     })
@@ -685,12 +680,12 @@ describe('Server', () => {
   })
 
   describe('DELETE /:resource:id?_delay=', () => {
-    test('should delay response', done => {
+    test('should delay response', (done) => {
       const start = new Date()
       request(server)
         .del('/posts/1?_delay=1100')
         .send({ id: 1, booleanValue: true, integerValue: 1 })
-        .expect(200, function(err) {
+        .expect(200, function (err) {
           const end = new Date()
           done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
         })
@@ -740,37 +735,25 @@ describe('Server', () => {
 
   describe('Rewriter', () => {
     test('should rewrite using prefix', () =>
-      request(server)
-        .get('/api/posts/1')
-        .expect(db.posts[0]))
+      request(server).get('/api/posts/1').expect(db.posts[0]))
 
     test('should rewrite using params', () =>
-      request(server)
-        .get('/blog/posts/1/show')
-        .expect(db.posts[0]))
+      request(server).get('/blog/posts/1/show').expect(db.posts[0]))
 
     test('should rewrite using query without params', () => {
       const expectedPost = _.cloneDeep(db.posts[0])
       expectedPost.comments = [db.comments[0], db.comments[1]]
-      return request(server)
-        .get('/firstpostwithcomments')
-        .expect(expectedPost)
+      return request(server).get('/firstpostwithcomments').expect(expectedPost)
     })
 
     test('should rewrite using params and query', () =>
-      request(server)
-        .get('/comments/special/1-quux')
-        .expect([db.comments[4]]))
+      request(server).get('/comments/special/1-quux').expect([db.comments[4]]))
 
     test('should rewrite query params', () =>
-      request(server)
-        .get('/articles?_id=1')
-        .expect(db.posts[0]))
+      request(server).get('/articles?_id=1').expect(db.posts[0]))
 
     test('should expose routes', () =>
-      request(server)
-        .get('/__rules')
-        .expect(rewriterRules))
+      request(server).get('/__rules').expect(rewriterRules))
   })
 
   describe('router.render', () => {
@@ -791,7 +774,7 @@ describe('Server', () => {
   describe('router.db._.id', () => {
     beforeEach(() => {
       router.db.setState({
-        posts: [{ _id: 1 }]
+        posts: [{ _id: 1 }],
       })
 
       router.db._.id = '_id'

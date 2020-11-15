@@ -2,7 +2,7 @@ const express = require('express')
 const pluralize = require('pluralize')
 const delay = require('./delay')
 
-module.exports = opts => {
+module.exports = (opts) => {
   const router = express.Router()
   router.use(delay)
 
