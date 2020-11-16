@@ -24,11 +24,15 @@ See also:
   </a>
 </p>
 
+<p>&nbsp;</p>
+
 <p align="center">
   <a href="https://mockend.com/" target="_blank">
     <img src="https://mockend.com/banner.svg" height="70px">
   </a>
 </p>
+
+<p>&nbsp;</p>
 
 <p>&nbsp;</p>
 
