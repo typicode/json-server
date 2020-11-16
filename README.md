@@ -26,7 +26,7 @@ See also:
 
 <p align="center">
   <a href="https://mockend.com/" target="_blank">
-    <img src="https://i.imgur.com/Gwaqv3q.png" height="70px">
+    <img src="https://mockend.com/banner.svg" height="70px">
   </a>
 </p>
 
