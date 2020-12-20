@@ -31,6 +31,13 @@ module.exports = (db, name, opts) => {
   function expand(resource, e) {
     e &&
       [].concat(e).forEach((innerResource) => {
+        if (pluralize.isPlural(innerResource)) {
+          const correctInnerResource = pluralize.singular(innerResource)
+          throw new Error(
+            `${innerResource} - inner resource must be singular (_expand=${correctInnerResource})`
+          )
+        }
+
         const plural = pluralize(innerResource)
         if (db.get(plural).value()) {
           const prop = `${innerResource}${opts.foreignKeySuffix}`
