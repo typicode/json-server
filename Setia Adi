@@ -1,0 +1,7 @@
+{
+  "antrian": [
+    { "no": 1, "nama": "baba", "meja": 13 }
+  ],
+  "pesanan":
+  { "no": 1, "makanan": "martabak", "minuman": "teh hangat", "antrianId" :1}
+}
