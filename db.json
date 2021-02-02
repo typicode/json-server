@@ -5,5 +5,9 @@
   "comments": [
     { "id": 1, "body": "some comment", "postId": 1 }
   ],
-  "profile": { "name": "typicode" }
+  "profile": { "name": "typicode" },
+  "cards": [
+    {cardHolderName: 'Ananya', cardNo: '1234', cardExpDate: '5/12/2029', cardSecCode: '123', cardAmount: '1000'},
+    {cardHolderName: 'Aditya', cardNo: '4567', cardExpDate: '4/2/2030', cardSecCode: '789', cardAmount: '1500'},
+  ]
 }
