@@ -1,0 +1,35 @@
+
+module.exports = function () {
+  return {
+    posts: [
+      {
+    svg: roadmap1,
+    title: "Discover",
+    para: `Our goal is to fully understand each client's business and the environment in which it operates.We look to completely understand the target audience and how they will interact with the digital products we deliver.`,
+  },
+  {
+    svg: roadmap2,
+    title: "Strategy",
+    para: `Our goal is to fully understand each client's business and the environment in which it operates.We look to completely understand the target audience and how they will interact with the digital products we deliver.`,
+  },
+  {
+    svg: roadmap3,
+    title: "Design",
+    para: `Our goal is to fully understand each client's business and the environment in which it operates.We look to completely understand the target audience and how they will interact with the digital products we deliver.`,
+  },
+  {
+    svg: roadmap4,
+    title: "Build",
+    para: `Our goal is to fully understand each client's business and the environment in which it operates.We look to completely understand the target audience and how they will interact with the digital products we deliver.`,
+  },
+  {
+    svg: roadmap5,
+    title: "Deliver",
+    para: `Our goal is to fully understand each client's business and the environment in which it operates.We look to completely understand the target audience and how they will interact with the digital products we deliver.`,
+  },
+    ],
+  }
+}
+
+   
+
