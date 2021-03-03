@@ -83,8 +83,8 @@ module.exports = (db, opts) => {
     }
 
     router.render(req, res)
-	
-	next()
+
+    next()
   })
 
   router.use((err, req, res, next) => {
