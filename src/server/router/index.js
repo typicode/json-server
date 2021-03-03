@@ -76,13 +76,15 @@ module.exports = (db, opts) => {
     throw new Error(msg)
   }).value()
 
-  router.use((req, res) => {
+  router.use((req, res, next) => {
     if (!res.locals.data) {
       res.status(404)
       res.locals.data = {}
     }
 
     router.render(req, res)
+	
+	next()
   })
 
   router.use((err, req, res, next) => {
