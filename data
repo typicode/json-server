@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "Image":"", 
+    "DeviceName":"Equipment_NameA", 
+    "Vendor":"infy1",
+    "Location":"Hyderabad", 
+    "Model":"Ls00123", 
+    "Serial":"4523", 
+    "Description":"Laptop"
+  },
+  {
+    "id": 2,
+    "Image":"", 
+    "DeviceName":"Equipment_NameB", 
+    "Vendor":"infy2",
+    "Location":"Bnglr", 
+    "Model":"Aps00123", 
+    "Serial":"9877", 
+    "Description":"Laptop"
+  },
+  {
+    "id": 3,
+    "Image":"", 
+    "DeviceName":"Equipment_NameC", 
+    "Vendor":"infy2",
+    "Location":"pune", 
+    "Model":"BG00123", 
+    "Serial":"43663", 
+    "Description":"Laptop"
+  },
+ 
+  ]
