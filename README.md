@@ -602,6 +602,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 * [JSON Server GUI](https://github.com/naholyr/json-server-gui)
 * [JSON file generator](https://github.com/dfsq/json-server-init)
 * [JSON Server extension](https://github.com/maty21/json-server-extension)
+* [Tool to convert a mongodb dump (bson) to be used with json-server](https://jellehak.github.io/bsondb/) 
 
 ## License
 
