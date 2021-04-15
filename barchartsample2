@@ -1,0 +1,44 @@
+{
+	"BarChartModel": [{
+			"year": "Jan",
+			"financial": "50",
+			"color": "charts.ColorUtil.fromDartColor(Colors.greenAccent)"
+		},
+    {
+			"year": "Jan",
+			"financial": "80",
+			"color": "1"
+		},
+		{
+			"year": "Feb",
+			"financial": "60",
+			"color": "2"
+		},
+    {
+			"year": "Feb",
+			"financial": "90",
+			"color": "2"
+		},
+		{
+			"year": "Mar",
+			"financial": "90",
+			"color": "1"
+		},
+    {
+			"year": "Mar",
+			"financial": "130",
+			"color": "2"
+		},
+		{
+			"year": "Apr",
+			"financial": "150",
+			"color": "1"
+		},
+    {
+			"year": "Apr",
+			"financial": "180",
+			"color": "2"
+		}
+
+	]
+}
