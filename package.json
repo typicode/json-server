@@ -30,7 +30,7 @@
     "express": "^4.17.1",
     "express-urlrewrite": "^1.3.0",
     "json-parse-helpfulerror": "^1.0.3",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0",
     "method-override": "^3.0.0",
