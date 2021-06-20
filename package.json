@@ -9,7 +9,7 @@
     "public"
   ],
   "scripts": {
-    "postinstall": "husky install",
+    "prepare": "husky install",
     "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
     "start": "babel-node -- src/cli/bin db.json -r routes.json",
     "lint": "eslint . --ignore-path .gitignore",
@@ -17,8 +17,7 @@
     "build": "babel src -d lib",
     "toc": "markdown-toc -i README.md",
     "postversion": "git push && git push --tags",
-    "prepublish": "npm test && npm run build && pkg-ok && pinst --disable",
-    "postpublish": "pinst --enable"
+    "prepublish": "npm test && npm run build && pkg-ok"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -62,7 +61,6 @@
     "mkdirp": "^1.0.4",
     "npm-run-all": "^4.1.5",
     "os-tmpdir": "^2.0.0",
-    "pinst": "^2.1.6",
     "pkg-ok": "^2.3.1",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
