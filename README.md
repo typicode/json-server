@@ -41,7 +41,7 @@ See also:
 
 ## Sponsor
 
-__Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/typicode)_ :heart:
+__Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/typicode) :heart:
 
 ## Table of contents
 
