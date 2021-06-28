@@ -10,7 +10,8 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 
 See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
-* :hotel: [hotel - developer tool with local .localhost domain and https out of the box](https://github.com/typicode/hotel)
+* :owl: [lowdb - local JSON database](https://github.com/typicode/lowdb)
+* :x: :heavy_check_mark: [xv - the most minimalist test runner](https://github.com/typicode/xv)
 
 <p>&nbsp;</p>
 
@@ -37,6 +38,10 @@ See also:
 <p>&nbsp;</p>
 
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
+
+## Sponsor
+
+__Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/typicode)_ :heart:
 
 ## Table of contents
 
