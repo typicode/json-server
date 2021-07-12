@@ -39,7 +39,7 @@ See also:
 
 ---
 
-[From generating an API to importing a CSV into postgres, Retool’s range of 20+ developer utilities is a go-to resource when building apps. Check it out now](https://retool.com/utilities/)
+From generating an API to importing a CSV into postgres, Retool’s range of 20+ developer utilities is a go-to resource when building apps. [Check it out now](https://retool.com/utilities/)
 
 ---
 
