@@ -32,7 +32,7 @@ function prettyPrint(argv, object, rules) {
   console.log()
 }
 
-function createApp(db, routes, middlewares, argv) {
+function createApp(db, routes, middlewares, argv, render) {
   const app = jsonServer.create()
 
   const { foreignKeySuffix } = argv
@@ -52,6 +52,10 @@ function createApp(db, routes, middlewares, argv) {
 
   if (argv.static) {
     defaultsOpts.static = path.join(process.cwd(), argv.static)
+  }
+
+  if (render) {
+    router.render = render
   }
 
   const defaults = jsonServer.defaults(defaultsOpts)
@@ -120,11 +124,18 @@ module.exports = function (argv) {
         })
       }
 
+      // Load render method
+      let render
+      if (argv.render) {
+        console.log(chalk.gray('  Loading', argv.render))
+        render = require(path.resolve(argv.render))
+      }
+
       // Done
       console.log(chalk.gray('  Done'))
 
       // Create app and server
-      app = createApp(db, routes, middlewares, argv)
+      app = createApp(db, routes, middlewares, argv, render)
       server = app.listen(argv.port, argv.host)
 
       // Enhance with a destroy function
