@@ -72,6 +72,7 @@ function createApp(db, routes, middlewares, argv) {
 
   router.db._.id = argv.id
   app.db = router.db
+  app.config = _.omit(argv, ['_', '$0'])
   app.use(router)
 
   return app
