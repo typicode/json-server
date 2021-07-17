@@ -54,7 +54,7 @@ module.exports = (db, opts) => {
 
   // Create routes
   db.forEach((value, key) => {
-    if (_.isPlainObject(value)) {
+    if (_.isPlainObject(value) || typeof value === 'number') {
       router.use(`/${key}`, singular(db, key, opts))
       return
     }
@@ -71,13 +71,13 @@ module.exports = (db, opts) => {
 
     const msg =
       `Type of "${key}" (${typeof value}) ${sourceMessage} is not supported. ` +
-      `Use objects or arrays of objects.`
+      `Use number, objects or arrays of objects.`
 
     throw new Error(msg)
   }).value()
 
   router.use((req, res) => {
-    if (!res.locals.data) {
+    if (res.locals.data === undefined) {
       res.status(404)
       res.locals.data = {}
     }
