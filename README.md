@@ -446,6 +446,12 @@ const server = jsonServer.create()
 const router = jsonServer.router('db.json')
 const middlewares = jsonServer.defaults()
 
+/* Configure default values such as the static directory (default - 'public') as shown here.
+var middlewares = jsonServer.defaults({
+	'static': 'www'
+})
+*/
+
 server.use(middlewares)
 server.use(router)
 server.listen(3000, () => {
