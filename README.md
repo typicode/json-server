@@ -33,6 +33,8 @@ See also:
   </a>
 </p>
 
+<p>&nbsp;</p>
+
 <p align="center">
   <a href="https://www.deta.sh/?ref=typicode" target="_blank">
     <img src="https://jsonplaceholder.typicode.com/deta.svg" height="70px">
