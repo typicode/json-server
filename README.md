@@ -29,7 +29,13 @@ See also:
 
 <p align="center">
   <a href="https://mockend.com/" target="_blank">
-    <img src="https://mockend.com/static/banner.svg" height="70px">
+    <img src="https://jsonplaceholder.typicode.com/mockend.svg" height="70px">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://www.deta.sh/?ref=typicode" target="_blank">
+    <img src="https://jsonplaceholder.typicode.com/deta.svg" height="70px">
   </a>
 </p>
 
