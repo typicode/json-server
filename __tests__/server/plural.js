@@ -408,7 +408,6 @@ describe('Server', () => {
       request(server)
         .get('/posts/9001')
         .expect('Content-Type', /json/)
-        .expect({})
         .expect(404))
   })
 
@@ -608,7 +607,6 @@ describe('Server', () => {
         .put('/posts/9001')
         .send({ id: 1, body: 'bar' })
         .expect('Content-Type', /json/)
-        .expect({})
         .expect(404))
   })
 
@@ -646,7 +644,6 @@ describe('Server', () => {
         .patch('/posts/9001')
         .send({ body: 'bar' })
         .expect('Content-Type', /json/)
-        .expect({})
         .expect(404))
   })
 
@@ -675,7 +672,6 @@ describe('Server', () => {
       request(server)
         .del('/posts/9001')
         .expect('Content-Type', /json/)
-        .expect({})
         .expect(404))
   })
 

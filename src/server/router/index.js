@@ -79,7 +79,7 @@ module.exports = (db, opts) => {
   router.use((req, res) => {
     if (!res.locals.data) {
       res.status(404)
-      res.locals.data = {}
+      res.locals.data = {status_code: 404, error: 'Page not found'}
     }
 
     router.render(req, res)
