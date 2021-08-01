@@ -43,6 +43,14 @@ See also:
 
 <p>&nbsp;</p>
 
+<p>
+  <a href="https://uibakery.io/?utm_source=json_server&utm_medium=sponsor&utm_campaign=github" target="_blank">
+    <img src="https://jsonplaceholder.typicode.com/ui_bakery.jpg" height="70px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
+
 <p>&nbsp;</p>
 
 ---
