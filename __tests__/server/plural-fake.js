@@ -34,8 +34,7 @@ describe('Fake server', () => {
       request(server)
         .get('/posts/1/comments')
         .expect('Content-Type', /json/)
-        .expect([db.comments[0], db.comments[1]])
-        .expect(200))
+        .expect(200, [db.comments[0], db.comments[1]]))
   })
 
   describe('POST /:resource', () => {
@@ -46,8 +45,12 @@ describe('Fake server', () => {
         .expect('Access-Control-Expose-Headers', 'Location')
         .expect('Location', /posts\/3$/)
         .expect('Content-Type', /json/)
-        .expect({ id: 3, body: 'foo', booleanValue: true, integerValue: 1 })
-        .expect(201)
+        .expect(201, {
+          id: 3,
+          body: 'foo',
+          booleanValue: true,
+          integerValue: 1,
+        })
       assert.strictEqual(db.posts.length, 2)
     })
   })
@@ -61,8 +64,7 @@ describe('Fake server', () => {
         // body property omitted to test that the resource is replaced
         .send(post)
         .expect('Content-Type', /json/)
-        .expect(post)
-        .expect(200)
+        .expect(200, post)
       // TODO find a "supertest" way to test this
       // https://github.com/typicode/json-server/issues/396
       assert.deepStrictEqual(res.body, post)
@@ -78,8 +80,7 @@ describe('Fake server', () => {
         .patch('/posts/1')
         .send(partial)
         .expect('Content-Type', /json/)
-        .expect(post)
-        .expect(200)
+        .expect(200, post)
       assert.deepStrictEqual(res.body, post)
       assert.notDeepStrictEqual(db.posts[0], post)
     })
@@ -87,7 +88,7 @@ describe('Fake server', () => {
 
   describe('DELETE /:resource/:id', () => {
     test('should not destroy resource', async () => {
-      await request(server).del('/posts/1').expect({}).expect(200)
+      await request(server).del('/posts/1').expect(200, {})
       assert.strictEqual(db.posts.length, 2)
     })
   })

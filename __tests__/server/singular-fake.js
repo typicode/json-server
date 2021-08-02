@@ -24,7 +24,7 @@ describe('Fake server', () => {
   describe('POST /:resource', () => {
     test('should not create resource', async () => {
       const user = { name: 'bar' }
-      await request(server).post('/user').send(user).expect(user).expect(201)
+      await request(server).post('/user').send(user).expect(201, user)
       assert.notDeepStrictEqual(db.user, user)
     })
   })
@@ -32,7 +32,7 @@ describe('Fake server', () => {
   describe('PUT /:resource', () => {
     test('should not update resource', async () => {
       const user = { name: 'bar' }
-      await request(server).put('/user').send(user).expect(user).expect(200)
+      await request(server).put('/user').send(user).expect(200, user)
       assert.notDeepStrictEqual(db.user, user)
     })
   })
@@ -43,8 +43,7 @@ describe('Fake server', () => {
       await request(server)
         .patch('/user')
         .send(user)
-        .expect({ name: 'bar', email: 'foo@example.com' })
-        .expect(200)
+        .expect(200, { name: 'bar', email: 'foo@example.com' })
       assert.notDeepStrictEqual(db.user, user)
     })
   })
