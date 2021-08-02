@@ -39,7 +39,7 @@
     "pluralize": "^8.0.0",
     "server-destroy": "^1.0.1",
     "update-notifier": "^5.0.1",
-    "yargs": "^16.1.1"
+    "yargs": "^17.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
