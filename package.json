@@ -94,7 +94,7 @@
   },
   "homepage": "https://github.com/typicode/json-server",
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "jest": {
     "testURL": "http://localhost/"
