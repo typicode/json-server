@@ -42,6 +42,16 @@ module.exports = (db, name, opts) => {
       })
   }
 
+  // Returns resource without fields passed in e
+  function exclude(resource, fields) {
+    return _.omit(resource, fields)
+  }
+
+  // Returns resource with only fields passed in e
+  function only(resource, fields) {
+    return _.pick(resource, fields)
+  }
+
   // GET /name
   // GET /name?q=
   // GET /name?attr=&attr=
@@ -63,6 +73,8 @@ module.exports = (db, name, opts) => {
     let _limit = req.query._limit
     const _embed = req.query._embed
     const _expand = req.query._expand
+    const _exclude = req.query._exclude
+    const _only = req.query._only
     delete req.query.q
     delete req.query._start
     delete req.query._end
@@ -223,6 +235,19 @@ module.exports = (db, name, opts) => {
       expand(element, _expand)
     })
 
+    // Exclude or only
+    if (_only) {
+      const _fields = _only.split(',')
+      chain = chain.map(function (el) {
+        return only(el, _fields)
+      })
+    } else if (_exclude) {
+      const _fields = _exclude.split(',')
+      chain = chain.map(function (el) {
+        return exclude(el, _fields)
+      })
+    }
+
     res.locals.data = chain.value()
     next()
   }
@@ -232,11 +257,14 @@ module.exports = (db, name, opts) => {
   function show(req, res, next) {
     const _embed = req.query._embed
     const _expand = req.query._expand
+    const _exclude = req.query._exclude
+    const _only = req.query._only
+
     const resource = db.get(name).getById(req.params.id).value()
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
-      const clone = _.cloneDeep(resource)
+      let clone = _.cloneDeep(resource)
 
       // Embed other resources based on resource id
       // /posts/1?_embed=comments
@@ -245,6 +273,15 @@ module.exports = (db, name, opts) => {
       // Expand inner resources based on id
       // /posts/1?_expand=user
       expand(clone, _expand)
+
+      // Exclude or only
+      if (_only) {
+        const _fields = _only.split(',')
+        clone = only(clone, _fields)
+      } else if (_exclude) {
+        const _fields = _exclude.split(',')
+        clone = exclude(clone, _fields)
+      }
 
       res.locals.data = clone
     }

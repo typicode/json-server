@@ -86,6 +86,30 @@ describe('Server', () => {
       { id: 15 },
     ]
 
+    db.multipleNested = [
+      {
+        id: 1,
+        nested: {
+          id: 1000,
+          another: 'value1',
+        },
+      },
+      {
+        id: 2,
+        nested: {
+          id: 1001,
+          another: 'value2',
+        },
+      },
+      {
+        id: 3,
+        nested: {
+          id: 1002,
+          another: 'value2',
+        },
+      },
+    ]
+
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults())
@@ -478,6 +502,73 @@ describe('Server', () => {
           const end = new Date()
           done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
         })
+    })
+  })
+
+  describe('GET /:multipleNested&_exclude=', () => {
+    test('exclude simple fields', () => {
+      request(server)
+        .get('/multipleNested?_exclude=nested')
+        .expect('Content-Type', /json/)
+        .expect(200, [{ id: 1 }, { id: 2 }, { id: 2 }])
+    })
+    test('exclude nested fields', () => {
+      request(server)
+        .get('/multipleNested?_exclude=nested.another')
+        .expect('Content-Type', /json/)
+        .expect(200, [
+          { id: 1, nested: { id: 1000 } },
+          { id: 2, nested: { id: 1001 } },
+          { id: 3, nested: { id: 1002 } },
+        ])
+    })
+    test('exclude multiple fields', () => {
+      request(server)
+        .get('/multipleNested?_exclude=id,nested.another')
+        .expect('Content-Type', /json/)
+        .expect(200, [
+          { nested: { id: 1000 } },
+          { nested: { id: 1001 } },
+          { nested: { id: 1002 } },
+        ])
+    })
+  })
+
+  describe('GET /:multipleNested&_only=', () => {
+    test('only simple fields', () => {
+      request(server)
+        .get('/multipleNested?_only=id')
+        .expect('Content-Type', /json/)
+        .expect(200, [{ id: 1 }, { id: 2 }, { id: 2 }])
+    })
+    test('only nested fields', () => {
+      request(server)
+        .get('/multipleNested?_nested=nested.another')
+        .expect('Content-Type', /json/)
+        .expect(200, [
+          { nested: { another: 'value1' } },
+          { nested: { another: 'value2' } },
+          { nested: { another: 'value2' } },
+        ])
+    })
+    test('only multiple fields', () => {
+      request(server)
+        .get('/multipleNested?_only=id,nested.another')
+        .expect('Content-Type', /json/)
+        .expect(200, [
+          { id: 1, nested: { another: 'value1' } },
+          { id: 2, nested: { another: 'value2' } },
+          { id: 3, nested: { another: 'value2' } },
+        ])
+    })
+  })
+
+  describe('GET /:multipleNested&_only=&_exclude', () => {
+    test('use only and exclude', () => {
+      request(server)
+        .get('/multipleNested?_only=id&_exclude=nested.another')
+        .expect('Content-Type', /json/)
+        .expect(200, [{ id: 1 }, { id: 2 }, { id: 2 }])
     })
   })
 

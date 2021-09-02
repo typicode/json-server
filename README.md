@@ -280,6 +280,22 @@ GET  /posts/1/comments
 POST /posts/1/comments
 ```
 
+### Exclude returns fields
+
+To exclude fields from returns resources, add `_exclude`
+
+```http request
+GET /posts?_exclude=createdAt,author.email,comments
+```
+
+To exclude all fields from returns resources, except a few, add `_exclude`
+
+```http request
+GET /posts?_only=title,content,author.name
+```
+
+> :warning: `_only` param have priority on `_exclude`. If you pass `_only=...,_exlcude=...` `_exclude` will be ignored.
+
 ### Database
 
 ```
