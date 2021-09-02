@@ -51,18 +51,6 @@ See also:
 
 <p>&nbsp;</p>
 
-<p>&nbsp;</p>
-
----
-
-From generating an API to importing a CSV into postgres, Retool’s range of 20+ developer utilities is a go-to resource when building apps. [Check it out now](https://retool.com/utilities/)
-
----
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
 
 ## Sponsor
