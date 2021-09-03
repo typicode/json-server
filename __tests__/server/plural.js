@@ -86,6 +86,33 @@ describe('Server', () => {
       { id: 15 },
     ]
 
+    db.multipleNested = [
+      {
+        id: 1,
+        another: 1,
+        nested: {
+          id: 1000,
+          another: 'value1',
+        },
+      },
+      {
+        id: 2,
+        another: 2,
+        nested: {
+          id: 1001,
+          another: 'value2',
+        },
+      },
+      {
+        id: 3,
+        another: 2,
+        nested: {
+          id: 1002,
+          another: 'value2',
+        },
+      },
+    ]
+
     server = jsonServer.create()
     router = jsonServer.router(db)
     server.use(jsonServer.defaults())
@@ -478,6 +505,55 @@ describe('Server', () => {
           const end = new Date()
           done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
         })
+    })
+  })
+
+  describe('GET /:multipleNested&_unique=', () => {
+    test('unique fields', () => {
+      request(server)
+        .get('/multipleNested?_unique=another')
+        .expect('Content-Type', /json/)
+        .expect(200, [
+          {
+            id: 1,
+            another: 1,
+            nested: {
+              id: 1000,
+              another: 'value1',
+            },
+          },
+          {
+            id: 2,
+            another: 2,
+            nested: {
+              id: 1001,
+              another: 'value2',
+            },
+          },
+        ])
+    })
+    test('unique nested fields', () => {
+      request(server)
+        .get('/multipleNested?_unique=nested.another')
+        .expect('Content-Type', /json/)
+        .expect(200, [
+          {
+            id: 1,
+            another: 1,
+            nested: {
+              id: 1000,
+              another: 'value1',
+            },
+          },
+          {
+            id: 2,
+            another: 2,
+            nested: {
+              id: 1001,
+              another: 'value2',
+            },
+          },
+        ])
     })
   })
 

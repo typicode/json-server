@@ -63,6 +63,7 @@ module.exports = (db, name, opts) => {
     let _limit = req.query._limit
     const _embed = req.query._embed
     const _expand = req.query._expand
+    const _unique = req.query._unique
     delete req.query.q
     delete req.query._start
     delete req.query._end
@@ -222,6 +223,11 @@ module.exports = (db, name, opts) => {
       embed(element, _embed)
       expand(element, _expand)
     })
+
+    // Distinct
+    if (_unique) {
+      chain = chain.uniqBy(_unique)
+    }
 
     res.locals.data = chain.value()
     next()
