@@ -555,6 +555,21 @@ describe('Server', () => {
           },
         ])
     })
+    test('unique before pagination', () => {
+      request(server)
+        .get('/multipleNested?_unique=nested.another&_limit=2&_page=1')
+        .expect('Content-Type', /json/)
+        .expect(200, [
+          {
+            id: 2,
+            another: 2,
+            nested: {
+              id: 1001,
+              another: 'value2',
+            },
+          },
+        ])
+    })
   })
 
   describe('POST /:resource', () => {
