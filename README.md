@@ -51,6 +51,14 @@ See also:
 
 <p>&nbsp;</p>
 
+<p align="center">
+  <a href="https://flowdash.com" target="_blank">
+    <img src="https://jsonplaceholder.typicode.com/Flowdash-logo-text.png" height="70px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
+
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
 
 ## Sponsor
