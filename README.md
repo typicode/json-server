@@ -617,7 +617,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 ### Third-party tools
 
 * [Grunt JSON Server](https://github.com/tfiwm/grunt-json-server)
-* [Docker JSON Server](https://github.com/clue/docker-json-server)
+* [Docker JSON Server](https://github.com/isdzulqor/docker-json-server)
 * [JSON Server GUI](https://github.com/naholyr/json-server-gui)
 * [JSON file generator](https://github.com/dfsq/json-server-init)
 * [JSON Server extension](https://github.com/maty21/json-server-extension)
