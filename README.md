@@ -51,6 +51,20 @@ See also:
 
 <p>&nbsp;</p>
 
+<p>&nbsp;</p>
+
+<h2 align="center">Bronze sponsors 🥉</h2>
+
+<p>&nbsp;</p>
+
+<p align="center">
+  <a href="https://github.com/pankod/refine" target="_blank">
+    <img src="https://refine.dev/img/refine_logo.png" height="40px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
+
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
 
 ## Sponsor
