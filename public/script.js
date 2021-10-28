@@ -43,26 +43,35 @@ window
       (document.getElementById('resources').innerHTML = ResourcesBlock({ db }))
   )
 
-function CustomRoutesBlock({ customRoutes }) {
-  const rules = Object.keys(customRoutes)
-  if (rules.length) {
-    return `
-      <div>
-        <h1>Custom Routes</h1>
-        <table>
-          ${rules
-            .map(
-              (rule) =>
-                `<tr>
+function CustomRoutesList(rules, customRoutes) {
+  return rules
+    .map(
+      (rule) => `<tr>
               <td>${rule}</td>
               <td><code>⇢</code> ${customRoutes[rule]}</td>
             </tr>`
-            )
-            .join('')}
-        </table>
-      </div>
-    `
-  }
+    )
+    .join('')
+}
+
+function NoCustomRoutes() {
+  return `<p>No custom routes found</p>`
+}
+
+function CustomRoutesBlock({ customRoutes }) {
+  const rules = Object.keys(customRoutes)
+  return `
+    <div>
+      <h1>Custom Routes</h1>
+      <table>
+        ${
+          rules.length
+            ? CustomRoutesList(rules, customRoutes)
+            : NoCustomRoutes()
+        }
+      </table>
+    </div>
+  `
 }
 
 window
