@@ -11,7 +11,7 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
 * :owl: [lowdb - local JSON database](https://github.com/typicode/lowdb)
-* :x: :heavy_check_mark: [xv - the most minimalist test runner](https://github.com/typicode/xv)
+* ✅ [xv - a beautifully simple and capable test runner](https://github.com/typicode/xv)
 
 <p>&nbsp;</p>
 
@@ -59,7 +59,7 @@ See also:
 
 <p align="center">
   <a href="https://github.com/pankod/refine" target="_blank">
-    <img src="https://refine.dev/img/refine_logo.png" height="40px">
+    <img src="https://jsonplaceholder.typicode.com/refine-logo@2x.png" height="40px">
   </a>
 </p>
 
