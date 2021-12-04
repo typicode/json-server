@@ -1,0 +1,72 @@
+[
+    {
+      "titles": "Plaza España.",
+      "details": "Ubicacion: Está situado en el parque de María Luisa de la ciudad de Sevilla, Av. Isabel la Católica, 41004 Sevilla, España.",
+      "images": "https://static9.depositphotos.com/1038919/1181/i/600/depositphotos_11810481-stock-photo-bridge-of-plaza-de-espaa.jpg",
+      "rating": "10",
+      "rating2": "5.0"
+    },
+    {
+      "titles": "Setas de la Encarnación.",
+      "details": "Ubicacion: Esta obra está ubicada entre la plaza de la Encarnación y la plaza mayor de Sevilla, Pl. de la Encarnación, s/n, 41003 Sevilla, España.",
+      "images": "https://www.visitarsevilla.com/wp-content/uploads/2020/03/sevilla-12.jpg",
+      "rating": "8",
+      "rating2": "4.0"
+    },
+    {
+      "titles": "Iglesia san luis de los franceses.",
+      "details": "Ubicacion: Esta iglesia se encuentra ubicada en el número 27 de la calle San Luis, dividiendo los barrios de la Feria y San Julián en Sevilla, España.",
+      "images": "https://offloadmedia.feverup.com/sevillasecreta.co/wp-content/uploads/2016/09/20103007/san-luis-de-los-franceses.jpg",
+      "rating": "7",
+      "rating2": "3.5"
+    },
+    {
+      "titles": "Reales Alcazares.",
+      "details": "Ubicacion: Situado en los márgenes del Casco Antiguo, junto a la antigua judería (Barrio de Santa Cruz), Patio de Banderas, s/n, 41004 Sevilla, España.",
+      "images": "https://ep01.epimg.net/elviajero/imagenes/2020/10/22/actualidad/1603354702_198953_1603365325_noticia_normal.jpg",
+      "rating": "8",
+      "rating2": "4.0"
+    },
+    {
+      "titles": "Parque de María Luisa.",
+      "details": "Ubicacion: El parque se encuentra en pleno centro de Sevilla, P.º de las Delicias, s/n, 41013 Sevilla, España.",
+      "images": "https://media-cdn.tripadvisor.com/media/photo-s/12/6a/30/c5/fabulosa-arquitectura.jpg",
+      "rating": "9",
+      "rating2": "4.5"
+    },
+    {
+      "titles": "Museo de Bellas Artes.",
+      "details": "Ubicacion: Ubicado en el antiguo Convento de la Merced Calzada, Pl. del Museo, 9, 41001 Sevilla, España.",
+      "images": "https://static3-sevilla.abc.es/media/sevilla/2018/11/26/s/museo-bellas-artes-kVDE--1200x630@abc.JPG",
+      "rating": "8",
+      "rating2": "4.0"
+    },
+    {
+      "titles": "La Catedral de sevilla.",
+      "details": "Ubicacion: Se encuentra emplazada en el marco histórico de la ciudad, entre el barrio de la Santa Cruz y el río Guadalquivir.",
+      "images": "https://upload.wikimedia.org/wikipedia/commons/2/23/CatedraldeSevilla2.jpg",
+      "rating": "8",
+      "rating2": "4.0"
+    },
+    {
+      "titles": "La torre de Giralda.",
+      "details": "Ubicacion: Está situada en El Arenal, circa de Giraldillo, Av. de la Constitución, s/n, 41004 Sevilla, España.",
+      "images": "https://cdn.getyourguide.com/img/location/5e300281cb21f-wide.jpeg/88.jpg",
+      "rating": "7",
+      "rating2": "3.5"
+    },
+    {
+      "titles": "Plaza de toros de la Maestranza.",
+      "details": "Ubicacion: La plaza de toros de la Maestranza se encuentra en el barrio del Arenal de Sevilla, Andalucía, P.º de Cristóbal Colón, 12, 41001 Sevilla, España.",
+      "images": "https://s0.wklcdn.com/image_115/3453850/20792875/13024719Master.jpg",
+      "rating": "8",
+      "rating2": "4.0"
+    },
+    {
+      "titles": "Isla de la Cartuja.",
+      "details": "Ubicacion: La isla de la Cartuja es un terreno de la ciudad de Sevilla situado entre dos brazos del río Guadalquivir, uno río vivo y el otro una dársena.",
+      "images": "https://imgs-akamai.mnstatic.com/71/fa/71faae529da08ea62ae83481e4eec43a.jpg",
+      "rating": "7",
+      "rating2": "3.5"
+    }
+  ]
