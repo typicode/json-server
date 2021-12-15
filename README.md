@@ -484,6 +484,8 @@ const router = jsonServer.router(path.join(__dirname, 'db.json'))
 
 For an in-memory database, simply pass an object to `jsonServer.router()`.
 
+To add custom options (eg. `foreginKeySuffix`) pass in an object as the second argument to `jsonServer.router('db.json', { foreginKeySuffix: '_id' })`.
+
 Please note also that `jsonServer.router()` can be used in existing Express projects.
 
 #### Custom routes example
@@ -605,9 +607,11 @@ Returns middlewares used by JSON Server.
   * `noCors` disable CORS (default: false)
   * `readOnly` accept only GET requests (default: false)
 
-__`jsonServer.router([path|object])`__
+__`jsonServer.router([path|object], [options])`__
 
 Returns JSON Server router.
+
+* options (see [CLI usage](#cli-usage))
 
 ### Deployment
 
