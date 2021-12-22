@@ -45,10 +45,19 @@ function createId(coll) {
   if (_.isEmpty(coll)) {
     return 1
   } else {
-    let id = _(coll).maxBy(idProperty)[idProperty]
-
-    // Increment integer id or generate string id
-    return _.isFinite(id) ? ++id : nanoid(7)
+    try {
+      let id = _(coll).maxBy(idProperty)[idProperty]
+      // Increment integer id or generate string id
+      return _.isFinite(id) ? ++id : nanoid(7)
+    } catch (error) {
+      console.log(error)
+      console.log(`
+        No ID found on db record
+          This likely due to a pre-populated record in 'db.json' not having
+          an 'id' property for the record. See:
+          https://github.com/typicode/json-server/issues/798
+          `)
+    }
   }
 }
 
