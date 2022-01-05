@@ -340,6 +340,32 @@ describe('Server', () => {
         .expect(200, db.tags))
   })
 
+  describe('GET /:resource?attr_startsWith=', () => {
+    test('should respond with an array that start with text', () =>
+      request(server)
+        .get('/tags?body_startsWith=photo')
+        .expect('Content-Type', /json/)
+        .expect(200, [db.tags[1], db.tags[2]]))
+    test('should accept multiple parameters', () =>
+      request(server)
+        .get('/tags?body_startsWith=photo&body_startsWith=tech')
+        .expect('Content-Type', /json/)
+        .expect(200, db.tags))
+  })
+
+  describe('GET /:resource?attr_endsWith=', () => {
+    test('should respond with an array that end with text', () =>
+      request(server)
+        .get('/tags?body_endsWith=y')
+        .expect('Content-Type', /json/)
+        .expect(200, [db.tags[0], db.tags[1]]))
+    test('should accept multiple parameters', () =>
+      request(server)
+        .get('/tags?body_endsWith=gy&body_endsWith=hy')
+        .expect('Content-Type', /json/)
+        .expect(200, [db.tags[0], db.tags[1]]))
+  })
+
   describe('GET /:parent/:parentId/:resource', () => {
     test('should respond with json and corresponding nested resources', () =>
       request(server)

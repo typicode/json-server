@@ -84,7 +84,9 @@ module.exports = (db, name, opts) => {
           /_lte$/.test(query) ||
           /_gte$/.test(query) ||
           /_ne$/.test(query) ||
-          /_like$/.test(query)
+          /_like$/.test(query) ||
+          /_startsWith$/.test(query) ||
+          /_endsWith$/.test(query)
         )
           return
       }
@@ -120,7 +122,12 @@ module.exports = (db, name, opts) => {
         const isDifferent = /_ne$/.test(key)
         const isRange = /_lte$/.test(key) || /_gte$/.test(key)
         const isLike = /_like$/.test(key)
-        const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
+        const isStartsWith = /_startsWith$/.test(key)
+        const isEndsWith = /_endsWith$/.test(key)
+        const path = key.replace(
+          /(_lte|_gte|_ne|_like|_startsWith|_endsWith)$/,
+          ''
+        )
 
         chain = chain.filter((element) => {
           return arr
@@ -144,6 +151,21 @@ module.exports = (db, name, opts) => {
                 return value !== elementValue.toString()
               } else if (isLike) {
                 return new RegExp(value, 'i').test(elementValue.toString())
+              } else if (isStartsWith) {
+                return elementValue
+                  .toString()
+                  .toLowerCase()
+                  .startsWith(value.toLowerCase())
+              } else if (isEndsWith) {
+                const elementValueLowerCase = elementValue
+                  .toString()
+                  .toLowerCase()
+                return (
+                  elementValueLowerCase.substring(
+                    elementValueLowerCase.length - value.length,
+                    elementValueLowerCase.length
+                  ) === value.toLowerCase()
+                )
               } else {
                 return value === elementValue.toString()
               }
