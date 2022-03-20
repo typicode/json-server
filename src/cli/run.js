@@ -125,7 +125,10 @@ module.exports = function (argv) {
 
       // Create app and server
       app = createApp(db, routes, middlewares, argv)
-      server = app.listen(argv.port, argv.host)
+      server =
+        argv.host === 'localhost'
+          ? app.listen(argv.port)
+          : app.listen(argv.port, argv.host)
 
       // Enhance with a destroy function
       enableDestroy(server)
