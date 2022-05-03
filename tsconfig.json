@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "typeRoots": ["node_modules/@types"],
+    "types": [
+      "jest",
+      "node"
+    ],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "globals": {
+    "ts-jest": {
+      "compiler": "ttypescript"
+    }
+  }
+}
