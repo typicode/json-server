@@ -36,14 +36,6 @@ See also:
 <p>&nbsp;</p>
 
 <p align="center">
-  <a href="https://flowdash.com?utm_source=json_server&utm_medium=sponsor&utm_campaign=github" target="_blank">
-    <img src="https://jsonplaceholder.typicode.com/Flowdash-logo-text.png" height="70px">
-  </a>
-</p>
-
-<p>&nbsp;</p>
-
-<p align="center">
   <a href="https://megafamous.com/buy-instagram-followers" target="_blank">
     <img src="https://jsonplaceholder.typicode.com/megafamous.png" height="70px">
   </a>
