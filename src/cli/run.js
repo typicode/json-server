@@ -51,7 +51,7 @@ function createApp(db, routes, middlewares, argv) {
   }
 
   if (argv.static) {
-    defaultsOpts.static = path.join(process.cwd(), argv.static)
+    defaultsOpts.static = path.resolve(process.cwd(), argv.static)
   }
 
   const defaults = jsonServer.defaults(defaultsOpts)
