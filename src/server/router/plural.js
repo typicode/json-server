@@ -63,10 +63,12 @@ module.exports = (db, name, opts) => {
     let _limit = req.query._limit
     const _embed = req.query._embed
     const _expand = req.query._expand
+    const _need_num_sort = req.query._need_num_sort
     delete req.query.q
     delete req.query._start
     delete req.query._end
     delete req.query._sort
+    delete req.query._need_num_sort
     delete req.query._order
     delete req.query._limit
     delete req.query._embed
@@ -155,6 +157,17 @@ module.exports = (db, name, opts) => {
 
     // Sort
     if (_sort) {
+      if (_need_num_sort) {
+        chain = chain.map((obj) => {
+          for (const key in obj) {
+            const value = obj[key]
+            if (!isNaN(value)) {
+              obj[key] = parseInt(value)
+            }
+          }
+          return obj
+        })
+      }
       const _sortSet = _sort.split(',')
       const _orderSet = (_order || '').split(',').map((s) => s.toLowerCase())
       chain = chain.orderBy(_sortSet, _orderSet)
