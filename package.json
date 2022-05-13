@@ -69,7 +69,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/sensosirinx/json-server.git"
+    "url": "git://github.com/typicode/json-server.git"
   },
   "keywords": [
     "JSON",
