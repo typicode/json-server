@@ -18,6 +18,7 @@ module.exports = (db, opts) => {
       foreignKeySuffix: 'Id',
       _isFake: false,
       _noDataNext: false,
+      _noDbRoute: false,
     },
     opts
   )
@@ -52,9 +53,10 @@ module.exports = (db, opts) => {
   }
 
   // GET /db
-  router.get('/db', (req, res) => {
-    res.jsonp(db.getState())
-  })
+  !opts._noDbRoute &&
+    router.get('/db', (req, res) => {
+      res.jsonp(db.getState())
+    })
 
   // Handle /:parent/:parentId/:resource
   const keys = Object.keys(db.value()).map((key) => `/${key}`)
