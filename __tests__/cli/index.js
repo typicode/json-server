@@ -99,7 +99,7 @@ describe('cli', () => {
     })
   })
 
-  describe('remote db', () => {
+  describe.skip('remote db', () => {
     beforeEach((done) => {
       child = cli(['https://jsonplaceholder.typicode.com/db'])
       serverReady(PORT, done)

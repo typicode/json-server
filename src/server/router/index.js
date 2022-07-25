@@ -13,7 +13,14 @@ const singular = require('./singular')
 const mixins = require('../mixins')
 
 module.exports = (db, opts) => {
-  opts = Object.assign({ foreignKeySuffix: 'Id', _isFake: false }, opts)
+  opts = Object.assign(
+    {
+      foreignKeySuffix: 'Id',
+      _isFake: false,
+      _noDataNext: false,
+    },
+    opts
+  )
 
   if (typeof db === 'string') {
     db = low(new FileSync(db))
@@ -50,7 +57,10 @@ module.exports = (db, opts) => {
   })
 
   // Handle /:parent/:parentId/:resource
-  router.use(nested(opts))
+  const keys = Object.keys(db.value()).map((key) => `/${key}`)
+  opts._noDataNext && keys.length
+    ? router.use(keys, nested(opts))
+    : router.use(nested(opts))
 
   // Create routes
   db.forEach((value, key) => {
@@ -76,15 +86,18 @@ module.exports = (db, opts) => {
     throw new Error(msg)
   }).value()
 
-  router.use((req, res) => {
+  const render = (req, res) => {
     if (!res.locals.data) {
       res.status(404)
       res.locals.data = {}
     }
 
     router.render(req, res)
-  })
+  }
 
+  opts._noDataNext && keys.length
+    ? router.use(keys, render)
+    : router.use(render)
   router.use((err, req, res, next) => {
     console.error(err.stack)
     res.status(500).send(err.stack)
