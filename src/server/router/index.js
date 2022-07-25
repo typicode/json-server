@@ -60,9 +60,8 @@ module.exports = (db, opts) => {
 
   // Handle /:parent/:parentId/:resource
   const keys = Object.keys(db.value()).map((key) => `/${key}`)
-  opts._noDataNext && keys.length
-    ? router.use(keys, nested(opts))
-    : router.use(nested(opts))
+  opts._noDataNext && keys.length && router.use(keys, nested(opts))
+  !opts._noDataNext && router.use(nested(opts))
 
   // Create routes
   db.forEach((value, key) => {
@@ -97,9 +96,8 @@ module.exports = (db, opts) => {
     router.render(req, res)
   }
 
-  opts._noDataNext && keys.length
-    ? router.use(keys, render)
-    : router.use(render)
+  opts._noDataNext && keys.length && router.use(keys, render)
+  !opts._noDataNext && router.use(render)
   router.use((err, req, res, next) => {
     console.error(err.stack)
     res.status(500).send(err.stack)
