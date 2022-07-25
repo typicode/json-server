@@ -5,3 +5,6 @@ lib
 .DS_Store
 .idea
 db.json
+
+.history
+*.tgz
