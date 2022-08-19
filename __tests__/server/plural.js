@@ -313,6 +313,14 @@ describe('Server', () => {
         .expect(200, db.comments.slice(1, 3)))
   })
 
+  describe('GET /:resource?attr_gt=&attr_lt=', () => {
+    test('should respond with a limited array', () =>
+      request(server)
+        .get('/comments?id_gt=2&id_lt=3')
+        .expect('Content-Type', /json/)
+        .expect(200, db.comments.slice(2, 2)))
+  })
+
   describe('GET /:resource?attr_ne=', () => {
     test('should respond with a limited array', () =>
       request(server)
