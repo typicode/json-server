@@ -17,7 +17,7 @@ module.exports = function (opts) {
       noGzip: undefined,
       noCors: undefined,
       readOnly: undefined,
-      bodyParser: undefined,
+      bodyParser: undefined, // true / false / object
       logger: true,
       static: staticDir,
     },
@@ -75,8 +75,11 @@ module.exports = function (opts) {
   }
 
   // Add middlewares
-  if (opts.bodyParser) {
+  if (opts.bodyParser && typeof opts.bodyParser !== `object`) {
     arr.push(bodyParser)
+  }
+  if (opts.bodyParser && typeof opts.bodyParser === `object`) {
+    arr.push(opts.bodyParser)
   }
 
   return arr

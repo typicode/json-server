@@ -19,6 +19,7 @@ module.exports = (db, opts) => {
       _isFake: false,
       _noDataNext: false,
       _noDbRoute: false,
+      bodyParser: undefined,
     },
     opts
   )
@@ -34,7 +35,7 @@ module.exports = (db, opts) => {
 
   // Add middlewares
   router.use(methodOverride())
-  router.use(bodyParser)
+  router.use(typeof opts.bodyParser === `object` ? opts.bodyParser : bodyParser)
 
   validateData(db.getState())
 
