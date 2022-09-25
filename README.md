@@ -109,7 +109,7 @@ __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/
 
 ## İlk adım
 
-JSON Server yükleyiniz. 
+JSON Server yükleyiniz
 
 ```
 npm install -g json-server
