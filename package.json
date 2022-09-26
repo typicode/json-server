@@ -1,75 +1,117 @@
 {
-  "name": "json-server",
-  "version": "0.17.0",
-  "description": "Get a full fake REST API with zero coding in less than 30 seconds",
-  "main": "./lib/server/index.js",
-  "bin": "./lib/cli/bin.js",
-  "files": [
-    "lib",
-    "public"
-  ],
-  "scripts": {
-    "prepare": "husky install",
-    "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
-    "start": "babel-node -- src/cli/bin db.json -r routes.json",
-    "lint": "eslint . --ignore-path .gitignore",
-    "fix": "npm run lint -- --fix",
-    "build": "babel src -d lib",
-    "toc": "markdown-toc -i README.md",
-    "postversion": "git push && git push --tags",
-    "prepublish": "npm test && npm run build"
+  "_from": "json-server",
+  "_id": "json-server@0.15.1",
+  "_inBundle": false,
+  "_integrity": "sha512-6Vc6tC1uLasnMd6Ksnq+4gSQcRqLuSJ/yLoIG4fr4P8f5dAR1gbCqgaVRlk8jfRune0NXcrfDrz7liwAD2WEeQ==",
+  "_location": "/json-server",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "json-server",
+    "name": "json-server",
+    "escapedName": "json-server",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
   },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/json-server/-/json-server-0.15.1.tgz",
+  "_shasum": "5d77575f1e15db20a361e0ed0a64bfbc3df11171",
+  "_spec": "json-server",
+  "_where": "C:\\Users\\lukas\\Desktop\\hangular",
+  "author": {
+    "name": "Typicode",
+    "email": "typicode@gmail.com"
+  },
+  "bin": {
+    "json-server": "./lib/cli/bin.js"
+  },
+  "bugs": {
+    "url": "https://github.com/typicode/json-server/issues"
+  },
+  "bundleDependencies": false,
   "dependencies": {
     "body-parser": "^1.19.0",
-    "chalk": "^4.1.2",
+    "chalk": "^2.4.2",
     "compression": "^1.7.4",
     "connect-pause": "^0.1.1",
     "cors": "^2.8.5",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
-    "express-urlrewrite": "^1.4.0",
+    "express-urlrewrite": "^1.2.0",
     "json-parse-helpfulerror": "^1.0.3",
     "lodash": "^4.17.21",
-    "lodash-id": "^0.14.1",
+    "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0",
     "method-override": "^3.0.0",
-    "morgan": "^1.10.0",
-    "nanoid": "^3.1.23",
+    "morgan": "^1.9.1",
+    "nanoid": "^2.1.0",
+    "object-assign": "^4.1.1",
     "please-upgrade-node": "^3.2.0",
     "pluralize": "^8.0.0",
+    "request": "^2.88.0",
     "server-destroy": "^1.0.1",
-    "update-notifier": "^5.1.0",
-    "yargs": "^17.0.1"
+    "update-notifier": "^3.0.1",
+    "yargs": "^14.0.0"
   },
+  "deprecated": false,
+  "description": "Serves JSON files through REST routes.",
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.3",
-    "@babel/node": "^7.12.6",
-    "@babel/preset-env": "^7.12.1",
-    "cross-env": "^7.0.2",
-    "eslint": "^7.13.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-standard": "^16.0.1",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.1.4",
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/plugin-transform-regenerator": "^7.4.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "cross-env": "^5.2.1",
+    "css-loader": "^3.2.0",
+    "eslint": "^6.3.0",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.1.0",
-    "husky": "^6.0.0",
-    "jest": "^26.6.3",
+    "eslint-plugin-standard": "^4.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "husky": "^3.0.5",
+    "jest": "^24.9.0",
     "markdown-toc": "^1.2.0",
-    "mkdirp": "^1.0.4",
+    "mini-css-extract-plugin": "^0.8.0",
+    "mkdirp": "^0.5.1",
     "npm-run-all": "^4.1.5",
     "os-tmpdir": "^2.0.0",
-    "prettier": "^2.3.2",
-    "rimraf": "^3.0.2",
+    "pkg-ok": "^2.3.1",
+    "prettier": "^1.18.2",
+    "promise-polyfill": "^8.1.3",
+    "rimraf": "^3.0.0",
     "server-ready": "^0.3.1",
-    "supertest": "^6.0.1",
-    "temp-write": "^4.0.0"
+    "supertest": "^4.0.2",
+    "temp-write": "^4.0.0",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.7",
+    "whatwg-fetch": "^3.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/typicode/json-server.git"
+  "directories": {
+    "test": "test"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "homepage": "https://github.com/typicode/json-server",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
+  "jest": {
+    "testURL": "http://localhost/"
   },
   "keywords": [
     "JSON",
@@ -87,16 +129,23 @@
     "dummy",
     "sandbox"
   ],
-  "author": "Typicode <typicode@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/typicode/json-server/issues"
+  "main": "./lib/server/index.js",
+  "name": "json-server",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/typicode/json-server.git"
   },
-  "homepage": "https://github.com/typicode/json-server",
-  "engines": {
-    "node": ">=12"
+  "scripts": {
+    "build": "babel src -d lib && webpack -p",
+    "fix": "npm run lint -- --fix",
+    "lint": "eslint . --ignore-path .gitignore",
+    "prepublishOnly": "npm test && npm run build && pkg-ok",
+    "start": "run-p start:**",
+    "start:babel-node": "babel-node src/cli/bin db.json -r routes.json",
+    "start:webpack": "webpack -d --watch",
+    "test": "npm run build && cross-env NODE_ENV=test jest && npm run lint",
+    "toc": "markdown-toc -i README.md"
   },
-  "jest": {
-    "testURL": "http://localhost/"
-  }
+  "version": "0.15.1"
 }
