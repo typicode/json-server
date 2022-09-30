@@ -225,7 +225,7 @@ _Works exactly as [Array.slice](https://developer.mozilla.org/en/docs/Web/JavaSc
 
 ### Operators
 
-Add `_gte`, `gt`, `lt`, `_lte` for getting a range
+Add `_gte`, `_gt`, `_lt` or `_lte` for getting a range
 
 ```
 GET /posts?views_gte=10&views_lte=20
