@@ -2,7 +2,7 @@
 
 Changes for 0.15.1+ can now be found in https://github.com/typicode/json-server/releases
 
-## 0.15.0
+## 0.17.1
 
 ```bash
 # Support range with lt and gt
