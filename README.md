@@ -631,6 +631,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 * [JSON Server GUI](https://github.com/naholyr/json-server-gui)
 * [JSON file generator](https://github.com/dfsq/json-server-init)
 * [JSON Server extension](https://github.com/maty21/json-server-extension)
+* [JSON Server with Authentication](https://github.com/sumn2u/hai-server)
 
 ## License
 
