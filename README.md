@@ -96,7 +96,7 @@ __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/
     + [Simple example](#simple-example)
     + [Custom routes example](#custom-routes-example)
     + [Access control example](#access-control-example)
-    + [Custom output example](#custom-output-example)
+    + [Custom router example](#custom-router-example)
     + [Rewriter example](#rewriter-example)
     + [Mounting JSON Server on another endpoint example](#mounting-json-server-on-another-endpoint-example)
     + [API](#api)
@@ -539,29 +539,26 @@ server.listen(3000, () => {
   console.log('JSON Server is running')
 })
 ```
-#### Custom output example
 
-To modify responses, overwrite `router.render` method:
+#### Custom router example
 
-```javascript
-// In this example, returned resources will be wrapped in a body property
-router.render = (req, res) => {
-  res.jsonp({
-    body: res.locals.data
-  })
-}
-```
-
-You can set your own status code for the response:
-
+You can modify responses using Express Router
 
 ```javascript
-// In this example we simulate a server side error response
-router.render = (req, res) => {
-  res.status(500).jsonp({
-    error: "error message here"
+server = jsonServer.create()
+
+customRouter = express.Router()
+router = jsonServer.router(db, { customRouter })
+
+server.use(jsonServer.defaults())
+server.use(router)
+
+customRouter.post('/posts', (req, res) => {
+  res.jsonp({ 
+    ...res.locals.data, 
+    customData: 'hello' 
   })
-}
+})
 ```
 
 #### Rewriter example
