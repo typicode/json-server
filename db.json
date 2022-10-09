@@ -1,0 +1,24 @@
+{
+  "bike-request": [
+    {
+      "id": "",
+      "name": "",
+      "date": "",
+      "email": "",
+      "phone": "",
+      "size": "",
+      "color": "",
+      "count": ""
+    },
+    {
+      "name": "Test",
+      "date": "2022-10-02",
+      "email": "Test@intro.ua",
+      "phone": "+380501234567",
+      "size": 1,
+      "color": 1,
+      "count": 1,
+      "id": "gqTzd_-"
+    }
+  ]
+}
