@@ -9,7 +9,7 @@ function FILE(s) {
 }
 
 function JS(s) {
-  return !URL(s) && /\.js$/.test(s)
+  return !URL(s) && /\.c?js$/.test(s)
 }
 
 function URL(s) {

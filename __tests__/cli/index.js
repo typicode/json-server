@@ -99,6 +99,17 @@ describe('cli', () => {
     })
   })
 
+  describe('seed.cjs', () => {
+    beforeEach((done) => {
+      child = cli(['../../__fixtures__/seed.cjs'])
+      serverReady(PORT, done)
+    })
+
+    test('should support CommonJS file', (done) => {
+      request.get('/posts').expect(200, done)
+    })
+  })
+
   describe('remote db', () => {
     beforeEach((done) => {
       child = cli(['https://jsonplaceholder.typicode.com/db'])
