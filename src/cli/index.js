@@ -1,11 +1,8 @@
-const updateNotifier = require('update-notifier')
 const yargs = require('yargs')
 const run = require('./run')
 const pkg = require('../../package.json')
 
 module.exports = function () {
-  updateNotifier({ pkg }).notify()
-
   const argv = yargs
     .config('config')
     .usage('$0 [options] <source>')
