@@ -49,7 +49,11 @@ module.exports = (db, opts) => {
   router.db = db
 
   // Expose render
-  router.render = (req, res) => {
+  router.render = (req, res, next) => {
+    if (!res.locals.data) {
+      res.status(404)
+      res.locals.data = {}
+    }
     res.jsonp(res.locals.data)
   }
 
@@ -60,9 +64,7 @@ module.exports = (db, opts) => {
     })
 
   // Handle /:parent/:parentId/:resource
-  const keys = Object.keys(db.value()).map((key) => `/${key}`)
-  opts._noDataNext && keys.length && router.use(keys, nested(opts))
-  !opts._noDataNext && router.use(nested(opts))
+  router.use(nested(opts))
 
   // Create routes
   db.forEach((value, key) => {
@@ -88,17 +90,14 @@ module.exports = (db, opts) => {
     throw new Error(msg)
   }).value()
 
-  const render = (req, res) => {
-    if (!res.locals.data) {
-      res.status(404)
-      res.locals.data = {}
+  router.use((req, res, next) => {
+    if (opts._noDataNext && !res.locals.data) {
+      next()
+    } else {
+      router.render(req, res, next)
     }
+  })
 
-    router.render(req, res)
-  }
-
-  opts._noDataNext && keys.length && router.use(keys, render)
-  !opts._noDataNext && router.use(render)
   router.use((err, req, res, next) => {
     console.error(err.stack)
     res.status(500).send(err.stack)

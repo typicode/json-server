@@ -1,4 +1,5 @@
 **/*.log
+__tests__/**/db-*.json
 node_modules
 tmp
 lib

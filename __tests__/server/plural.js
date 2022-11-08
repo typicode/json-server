@@ -2,6 +2,8 @@ const assert = require('assert')
 const _ = require('lodash')
 const request = require('supertest')
 const jsonServer = require('../../src/server')
+const { parseArgv } = require('../../src/server/utils')
+const cliArg = parseArgv(process.env.arg)
 
 describe('Server', () => {
   let server
@@ -87,7 +89,7 @@ describe('Server', () => {
     ]
 
     server = jsonServer.create()
-    router = jsonServer.router(db)
+    router = jsonServer.router(db, cliArg)
     server.use(jsonServer.defaults())
     server.use(jsonServer.rewriter(rewriterRules))
     server.use(router)
@@ -95,7 +97,10 @@ describe('Server', () => {
 
   describe('GET /db', () => {
     test('should respond with json and full database', () =>
-      request(server).get('/db').expect('Content-Type', /json/).expect(200, db))
+      request(server)
+        .get('/db')
+        .expect('Content-Type', /json/)
+        .expect(...(cliArg._noDbRoute ? [404, {}] : [200, db])))
   })
 
   describe('GET /:resource', () => {
@@ -370,7 +375,7 @@ describe('Server', () => {
     test('should respond with 404 if resource is not found', () =>
       request(server)
         .get('/posts/9001')
-        .expect('Content-Type', /json/)
+        .expect('Content-Type', cliArg._noDataNext ? /html/ : /json/)
         .expect(404, {}))
   })
 
@@ -567,7 +572,7 @@ describe('Server', () => {
       request(server)
         .put('/posts/9001')
         .send({ id: 1, body: 'bar' })
-        .expect('Content-Type', /json/)
+        .expect('Content-Type', cliArg._noDataNext ? /html/ : /json/)
         .expect(404, {}))
   })
 
@@ -603,7 +608,7 @@ describe('Server', () => {
       request(server)
         .patch('/posts/9001')
         .send({ body: 'bar' })
-        .expect('Content-Type', /json/)
+        .expect('Content-Type', cliArg._noDataNext ? /html/ : /json/)
         .expect(404, {}))
   })
 
@@ -631,7 +636,7 @@ describe('Server', () => {
     test('should respond with 404 if resource is not found', () =>
       request(server)
         .del('/posts/9001')
-        .expect('Content-Type', /json/)
+        .expect('Content-Type', cliArg._noDataNext ? /html/ : /json/)
         .expect(404, {}))
   })
 

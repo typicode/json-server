@@ -77,6 +77,16 @@ module.exports = function () {
         description: 'Path to config file',
         default: 'json-server.json',
       },
+      _noDbRoute: {
+        type: 'boolean',
+        description: 'Do not use the /db route',
+        default: false,
+      },
+      _noDataNext: {
+        type: 'boolean',
+        description: 'Enter a middleware when there is no data',
+        default: false,
+      },
     })
     .boolean('watch')
     .boolean('read-only')

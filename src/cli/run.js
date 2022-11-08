@@ -35,14 +35,11 @@ function prettyPrint(argv, object, rules) {
 function createApp(db, routes, middlewares, argv) {
   const app = jsonServer.create()
 
-  const { foreignKeySuffix } = argv
-
-  const router = jsonServer.router(
-    db,
-    foreignKeySuffix ? { foreignKeySuffix } : undefined
-  )
+  const router = jsonServer.router(db, argv)
 
   const defaultsOpts = {
+    _noDataNext: argv._noDataNext,
+    _noDbRoute: argv._noDbRoute,
     logger: !argv.quiet,
     readOnly: argv.readOnly,
     noCors: argv.noCors,

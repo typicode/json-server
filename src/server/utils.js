@@ -1,5 +1,25 @@
 module.exports = {
+  parseArgv,
   getPage,
+}
+
+function parseArgv(arr) {
+  arr = typeof arr === 'string' ? arr.trim().split(/\s+/) : arr
+  return (arr || process.argv.slice(2)).reduce((acc, arg) => {
+    let [k, ...v] = arg.split(`=`)
+    v = v.join(`=`)
+    acc[k] =
+      v === ``
+        ? true
+        : /^(true|false)$/.test(v)
+        ? v === `true`
+        : /[\d|.]+/.test(v)
+        ? isNaN(Number(v))
+          ? v
+          : Number(v)
+        : v
+    return acc
+  }, {})
 }
 
 function getPage(array, page, perPage) {
