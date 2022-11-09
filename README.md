@@ -1,3 +1,59 @@
+This code is modified based on [typicode/json-server](https://github.com/typicode/json-server). Used to change some features, if these features are liked, they will apply to typicode for a merge.
+
+### Install
+
+``` sh
+npm i @wll8/json-server 
+# or npm i -g @wll8/json-server
+```
+
+### jsonServer.defaults
+Now you can customize the size of the request body
+
+``` js
+jsonServer.defaults({
+  bodyParser: [
+    bodyParser.json({
+      limit: `100mb`,
+      extended: false,
+    }),
+    bodyParser.urlencoded({
+      extended: false,
+    }),
+  ]
+})
+```
+
+- issues: [#38](https://github.com/typicode/json-server/pull/38), [#37](https://github.com/typicode/json-server/pull/37)
+
+### express
+At present, it seems that json-server relies heavily on express and is inconvenient to upgrade, so using its dependencies directly will make me install one less package
+
+``` js
+const {lib: { express }} = jsonServer
+```
+
+  
+### options._noRemoveDependents
+After deleting data, do not clean up data that are not related to each other
+
+- type: boolean
+- Defaults: false
+- issues: [#885](https://github.com/typicode/json-server/issues/885)
+
+### options._noDataNext
+Allows entry to the next route when there is no data, which makes it work seamlessly with other programs
+
+- type: boolean
+- Defaults: false
+- issues: [#1330](https://github.com/typicode/json-server/issues/1330)
+
+### options._noDbRoute
+Assuming a db.json data breach poses a risk, it can be turned off with this option
+
+- type: boolean
+- Defaults: false
+
 # JSON Server [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg?branch=master)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
 Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)

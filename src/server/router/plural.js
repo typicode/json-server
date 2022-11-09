@@ -313,10 +313,12 @@ module.exports = (db, name, opts) => {
       resource = db.get(name).removeById(req.params.id).value()
 
       // Remove dependents documents
-      const removable = db._.getRemovable(db.getState(), opts)
-      removable.forEach((item) => {
-        db.get(item.name).removeById(item.id).value()
-      })
+      if (opts._noRemoveDependents === false) {
+        const removable = db._.getRemovable(db.getState(), opts)
+        removable.forEach((item) => {
+          db.get(item.name).removeById(item.id).value()
+        })
+      }
     }
 
     if (resource) {

@@ -630,7 +630,7 @@ describe('Server', () => {
     test('should respond with empty data, destroy resource and dependent resources', async () => {
       await request(server).del('/posts/1').expect(200, {})
       assert.strictEqual(db.posts.length, 1)
-      assert.strictEqual(db.comments.length, 3)
+      assert.strictEqual(db.comments.length, cliArg._noRemoveDependents ? 5 : 3)
     })
 
     test('should respond with 404 if resource is not found', () =>

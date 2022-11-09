@@ -84,6 +84,11 @@ module.exports = function () {
         description: 'Enter a middleware when there is no data',
         default: false,
       },
+      _noRemoveDependents: {
+        type: 'boolean',
+        description: 'Do not clear data without dependencies',
+        default: false,
+      },
     })
     .boolean('watch')
     .boolean('read-only')

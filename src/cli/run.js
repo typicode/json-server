@@ -38,6 +38,7 @@ function createApp(db, routes, middlewares, argv) {
   const router = jsonServer.router(db, argv)
 
   const defaultsOpts = {
+    _noRemoveDependents: argv._noRemoveDependents,
     _noDataNext: argv._noDataNext,
     _noDbRoute: argv._noDbRoute,
     logger: !argv.quiet,

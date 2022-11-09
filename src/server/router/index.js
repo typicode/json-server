@@ -17,6 +17,7 @@ module.exports = (db, opts) => {
     {
       foreignKeySuffix: 'Id',
       _isFake: false,
+      _noRemoveDependents: false,
       _noDataNext: false,
       _noDbRoute: false,
       bodyParser: undefined,
