@@ -58,6 +58,7 @@ module.exports = (db, name, opts) => {
     let _start = req.query._start
     let _end = req.query._end
     let _page = req.query._page
+    const _first = req.query._first
     const _sort = req.query._sort
     const _order = req.query._order
     let _limit = req.query._limit
@@ -71,6 +72,7 @@ module.exports = (db, name, opts) => {
     delete req.query._limit
     delete req.query._embed
     delete req.query._expand
+    delete req.query._first
 
     // Automatically delete query parameters that can't be found
     // in the database
@@ -222,6 +224,10 @@ module.exports = (db, name, opts) => {
       embed(element, _embed)
       expand(element, _expand)
     })
+
+    if (_first) {
+      chain = chain.first()
+    }
 
     res.locals.data = chain.value()
     next()

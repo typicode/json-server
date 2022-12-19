@@ -208,6 +208,16 @@ describe('Server', () => {
         .expect(200, db.comments.slice(0, 2)))
   })
 
+  describe('GET /:resource?_first=true', () => {
+    test('should respond with the first matching resource', () => {
+      const buyer = db.buyers[3]
+      return request(server)
+        .get('/buyers?country=Belize&_sort=total&_order=desc,desc&_first=true')
+        .expect('Content-Type', /json/)
+        .expect(200, buyer)
+    })
+  })
+
   describe('GET /:resource?_sort=', () => {
     test('should respond with json and sort on a field', () =>
       request(server)
