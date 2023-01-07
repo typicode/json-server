@@ -1,0 +1,36 @@
+{
+  "students" : [
+    {
+       "id": "1",
+       "name": "John",
+       "location": "India",
+       "phone": 1234567890,
+       "cources":[
+       "Java",
+       "Selenium"
+    ]
+    },
+ 
+    {
+       "id": "2",
+       "name": "Kim",
+       "location": "US",
+       "phone": 9987654321,
+       "cources":[
+       "Python",
+       "Appium"
+    ]
+    },
+    {
+       "id": "3",
+       "name": "Smith",
+       "location": "Canada",
+       "phone": 165498765,
+       "cources":[
+       "C#",
+       "RestAPI"
+    ]
+   }
+
+  ]
+}
