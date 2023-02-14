@@ -17,7 +17,7 @@ module.exports = (obj) => {
     Object.keys(obj).forEach(validateKey)
   } else {
     throw new Error(
-      `Data must be an object. Found ${typeof obj}.` +
+      `Data must be an object. Found ${Array.isArray(obj) ? 'array' : typeof obj}.` +
         'See https://github.com/typicode/json-server for example.'
     )
   }
