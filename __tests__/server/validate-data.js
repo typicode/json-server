@@ -7,7 +7,10 @@ describe('validateData', () => {
   })
 
   test('should throw an error if data is an array', () => {
-    assert.throws(() => validateData([]), /Data must be an object. Found array./)
+    assert.throws(
+      () => validateData([]),
+      /Data must be an object. Found array./
+    )
   })
 
   test("shouldn't throw an error", () => {
