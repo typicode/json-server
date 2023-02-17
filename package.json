@@ -47,7 +47,7 @@
     "@babel/node": "^7.12.6",
     "@babel/preset-env": "^7.12.1",
     "cross-env": "^7.0.2",
-    "cypress": "^12.4.1",
+    "cypress": "^12.5.1",
     "eslint": "^7.13.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.1",

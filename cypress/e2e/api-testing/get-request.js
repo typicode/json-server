@@ -24,9 +24,9 @@ describe("Get Request", () => {
             expect(body[1]).has.property("author", "Sabi");
             //expect(body[0]).has.property("author", "typicode 1")  // Assertion failed
 
-            body.forEach(function(item) {
+            body.forEach(function (item) {
                 expect(item).to.have.all.keys("id", "title", "author");
-                cy.log("Author: " + item["author"] + " & Title: " + item["title"] );
+                cy.log("Author: " + item["author"] + " & Title: " + item["title"]);
             });
         })
     });

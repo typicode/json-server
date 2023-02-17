@@ -2,16 +2,19 @@
 
 //const { response } = require("express");
 
+//Make unique title by generating a unique string.
+
 describe("Post  Request", () => {
     var titleOfPosts = new Array();
+    let randomTitle = Math.random().toString(36).substring(1) + Math.random().toString(36).substring(1);
 
     it("Create a new post via /posts API", () => {
         cy.request({
             method: "POST",
             url: "http://localhost:3000/posts",
             body: {
-                title: "Want ot learn automation testing?",
-                author: "Sabi Anjum"
+                title: randomTitle,
+                author: "Sabi M"
             }
         }).then(response => {
             expect(response.status).to.eql(201);
@@ -27,14 +30,13 @@ describe("Post  Request", () => {
             }
         }).then(response => {
             let body = JSON.parse(JSON.stringify(response.body))
-            body.forEach(function(item) {
+            body.forEach(function (item) {
                 titleOfPosts.push(item["title"]);
-
-                
             });
+            
         }).then(() => {
-            var latestPost = titleOfPosts[titleOfPosts.length -1]
-            expect(latestPost).to.equal("Want ot learn automation testing?")
+            var latestPost = titleOfPosts[titleOfPosts.length - 1]
+            expect(latestPost).to.equal(randomTitle)
         })
     });
 })
