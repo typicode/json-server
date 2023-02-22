@@ -38,6 +38,7 @@
     "please-upgrade-node": "^3.2.0",
     "pluralize": "^8.0.0",
     "server-destroy": "^1.0.1",
+    "standard": "^17.0.0",
     "yargs": "^17.0.1"
   },
   "devDependencies": {

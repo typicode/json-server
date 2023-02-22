@@ -40,7 +40,7 @@ module.exports = function (opts) {
       logger('dev', {
         skip: (req) =>
           process.env.NODE_ENV === 'test' || req.path === '/favicon.ico',
-      })
+      }),
     )
   }
 
