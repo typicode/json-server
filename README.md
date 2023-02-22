@@ -43,6 +43,14 @@ See also:
 
 <p>&nbsp;</p>
 
+<p align="center">
+  <a href="http://asocks.com/c/TFw5bz" target="_blank">
+    <img src="https://jsonplaceholder.typicode.com/asocks.png" height="70px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
+
 <p>&nbsp;</p>
 
 <h2 align="center">Silver sponsors 🥈</h2>
