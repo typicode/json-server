@@ -15,6 +15,9 @@ function prettyPrint(argv, object, rules) {
   console.log()
   console.log(chalk.bold('  Resources'))
   for (const prop in object) {
+    // skip printing $schema nodes
+    if (prop === '$schema') continue
+
     console.log(`  ${root}/${prop}`)
   }
 

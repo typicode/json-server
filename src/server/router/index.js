@@ -54,6 +54,11 @@ module.exports = (db, opts) => {
 
   // Create routes
   db.forEach((value, key) => {
+    if (key === '$schema') {
+      // ignore $schema
+      return
+    }
+
     if (_.isPlainObject(value)) {
       router.use(`/${key}`, singular(db, key, opts))
       return
