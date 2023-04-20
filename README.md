@@ -371,7 +371,7 @@ Create a `routes.json` file. Pay attention to start every route with `/`.
   "/api/*": "/$1",
   "/:resource/:id/show": "/:resource/:id",
   "/posts/:category": "/posts?category=:category",
-  "/articles\\?id=:id": "/posts/:id"
+  "/articles?id=:id": "/posts/:id"
 }
 ```
 
