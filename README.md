@@ -624,6 +624,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 ### Video
 
 * [Creating Demo APIs with json-server on egghead.io](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
+* [Make your own mock API (super simple)](https://www.youtube.com/watch?v=FLnxgSZ0DG4)
 
 ### Articles
 
@@ -633,6 +634,7 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 * [Create a Mock REST API in Seconds for Prototyping your Frontend](https://coligo.io/create-mock-rest-api-with-json-server/)
 * [No API? No Problem! Rapid Development via Mock APIs](https://medium.com/@housecor/rapid-development-via-mock-apis-e559087be066#.93d7w8oro)
 * [Zero Code REST With json-server](https://dzone.com/articles/zero-code-rest-with-json-server)
+* [JSON Server (json-server) tutorial](https://www.digitalocean.com/community/tutorials/json-server)
 
 ### Third-party tools
 
