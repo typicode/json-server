@@ -326,6 +326,23 @@ module.exports = (db, name, opts) => {
     next()
   }
 
+  // DELETE /name/all
+  function destroyAll(req, res, next) {
+    const resource = db.getById(name).remove()
+
+    // Remove dependents documents
+    const removable = db._.getRemovable(db.getState(), opts)
+    removable.forEach((item) => {
+      db.get(item.name).removeById(item.id).value()
+    })
+
+    if (resource) {
+      res.locals.data = {}
+    }
+
+    next()
+  }
+
   const w = write(db)
 
   router.route('/').get(list).post(create, w)
@@ -336,6 +353,7 @@ module.exports = (db, name, opts) => {
     .put(update, w)
     .patch(update, w)
     .delete(destroy, w)
+    .delete(destroyAll, w)
 
   return router
 }
