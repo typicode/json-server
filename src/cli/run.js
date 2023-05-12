@@ -168,6 +168,11 @@ module.exports = function (argv) {
       })
       process.stdin.setEncoding('utf8')
       process.stdin.on('data', (chunk) => {
+        // ctrl+c or ctrl+d
+        if (chunk === '\x03' || chunk === '\x04') {
+          await app.close().finally(() => process.exit(1))
+          return
+        }
         if (chunk.trim().toLowerCase() === 's') {
           const filename = `db-${Date.now()}.json`
           const file = path.join(argv.snapshots, filename)
