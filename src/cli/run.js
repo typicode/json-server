@@ -170,7 +170,7 @@ module.exports = function (argv) {
       process.stdin.on('data', async (chunk) => {
         // ctrl+c or ctrl+d
         if (chunk === '\x03' || chunk === '\x04') {
-          await app.close().finally(() => process.exit(1))
+          await server.destroy(() => process.exit(0))
           return
         }
         if (chunk.trim().toLowerCase() === 's') {
