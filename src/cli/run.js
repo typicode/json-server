@@ -167,7 +167,7 @@ module.exports = function (argv) {
         console.log(`  Creating a snapshot from the CLI won't be possible`)
       })
       process.stdin.setEncoding('utf8')
-      process.stdin.on('data', (chunk) => {
+      process.stdin.on('data', async (chunk) => {
         // ctrl+c or ctrl+d
         if (chunk === '\x03' || chunk === '\x04') {
           await app.close().finally(() => process.exit(1))
