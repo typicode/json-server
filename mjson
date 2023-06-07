@@ -1,0 +1,122 @@
+[
+{
+  id: 1,
+  name: 'PK',
+  rating: '8.2',
+  release: '2014'
+},
+{
+  id: 2,
+  name: 'Dhoom3',
+  rating: '5.2',
+  release: '2013'
+},
+{
+  id: 3,
+  name: 'Aashiqui',
+  rating: '7.2',
+  release: '2013'
+},
+{
+  id: 4,
+  name: 'Krish3',
+  rating: '6.2',
+  release: '2015'
+},
+{
+  id: 5,
+  name: 'Raone',
+  rating: '6.2',
+  release: '2011'
+},
+{
+  id: 6,
+  name: 'Don2',
+  rating: '7.2',
+  release: '2012'
+},
+{
+  id: 7,
+  name: 'Simba',
+  rating: '5.8',
+  release: '2018'
+},
+{
+  id: 8,
+  name: 'Avatar',
+  rating: '8.5',
+  release: '2009'
+},
+{
+  id: 9,
+  name: 'Dune',
+  rating: '8.2',
+  release: '2021'
+},
+{
+  id: 10,
+  name: 'Spiderman2',
+  rating: '8.2',
+  release: '2018'
+},
+{
+  id: 11,
+  name: 'Pathaan',
+  rating: '7.2',
+  release: '2023'
+},
+{
+  id: 12,
+  name: 'KGF2',
+  rating: '8.2',
+  release: '2022'
+},
+{
+  id: 13,
+  name: 'RRR',
+  rating: '8.2',
+  release: '2022'
+},
+{
+  id: 14,
+  name: 'FastX',
+  rating: '5.2',
+  release: '2023'
+},
+{
+  id: 15,
+  name: 'Rambo',
+  rating: '6.2',
+  release: '1990'
+},
+{
+  id: 16,
+  name: 'Hulk',
+  rating: '7.2',
+  release: '2012'
+},
+{
+  id: 17,
+  name: 'Ironman',
+  rating: '8.2',
+  release: '2008'
+},
+{
+  id: 18,
+  name: 'Avenger',
+  rating: '8.2',
+  release: '2015'
+},
+{
+  id: 19,
+  name: 'KingKong',
+  rating: '8.2',
+  release: '2002'
+},
+{
+  id: 20,
+  name: 'Intersteller',
+  rating: '8.2',
+  release: '2016'
+}
+]
