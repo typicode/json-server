@@ -1,6 +1,6 @@
 {
   "name": "json-server",
-  "version": "0.17.3",
+  "version": "0.17.4",
   "description": "Get a full fake REST API with zero coding in less than 30 seconds",
   "main": "./lib/server/index.js",
   "bin": "./lib/cli/bin.js",
@@ -17,7 +17,7 @@
     "build": "babel src -d lib",
     "toc": "markdown-toc -i README.md",
     "postversion": "git push && git push --tags",
-    "prepublish": "npm test && npm run build"
+    "prepublish": "npm lint & npm test && npm run build"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
