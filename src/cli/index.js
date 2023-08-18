@@ -25,6 +25,10 @@ module.exports = function () {
         alias: 'r',
         description: 'Path to routes file',
       },
+      'custom-renderer': {
+        alias: 'cr',
+        description: 'Path to custom renderer file',
+      },
       middlewares: {
         alias: 'm',
         array: true,

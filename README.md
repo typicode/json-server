@@ -83,6 +83,7 @@ __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/
   * [HTTPS](#https)
   * [Add custom routes](#add-custom-routes)
   * [Add middlewares](#add-middlewares)
+  * [Add custom renderer](#add-custom-renderer)
   * [CLI usage](#cli-usage)
   * [Module](#module)
     + [Simple example](#simple-example)
@@ -392,6 +393,25 @@ json-server db.json --middlewares ./hello.js
 json-server db.json --middlewares ./first.js ./second.js
 ```
 
+### Add custom renderer
+
+You can add your custom renderer from the CLI using `--custom-renderer` option:
+
+```js
+// renderer.js
+module.exports = (req, res) => {
+    res.jsonp({
+        isError: false,
+        message: "The Request successful.",
+        result: res.locals.data,
+    })
+}
+```
+
+```bash
+json-server db.json --custom-renderer ./renderer.js
+```
+
 ### CLI usage
 
 ```
@@ -413,6 +433,7 @@ Options:
   --id, -i           Set database id property (e.g. _id)         [default: "id"]
   --foreignKeySuffix, --fks  Set foreign key suffix, (e.g. _id as in post_id)
                                                                  [default: "Id"]
+  --custom-renderer, --cr       Path to custom renderer file                          
   --quiet, -q        Suppress log messages from output                 [boolean]
   --help, -h         Show help                                         [boolean]
   --version, -v      Show version number                               [boolean]
