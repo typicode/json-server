@@ -401,6 +401,8 @@ You can add your custom renderer from the CLI using `--custom-renderer` option:
 // renderer.js
 module.exports = (req, res) => {
     res.jsonp({
+        version: "v1",
+        statusCode: 200,
         isError: false,
         message: "The Request successful.",
         result: res.locals.data,
