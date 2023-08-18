@@ -1,6 +1,6 @@
 {
   "name": "json-server",
-  "version": "0.17.3",
+  "version": "61.17.3",
   "description": "Get a full fake REST API with zero coding in less than 30 seconds",
   "main": "./lib/server/index.js",
   "bin": "./lib/cli/bin.js",
@@ -69,7 +69,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/typicode/json-server.git"
+    "url": "git://github.com/muslumozturk61/json-server.git"
   },
   "keywords": [
     "JSON",
