@@ -35,6 +35,15 @@ See also:
 
 <p>&nbsp;</p>
 
+<p align="center">
+  <a href="https://www.peopleperhour.com/hourlie/develop-a-website-using-react-js/943413?ref=member
+" target="_blank">
+    <img src="https://jsonplaceholder.typicode.com/sc.png" height="70px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
+
 <p>&nbsp;</p>
 
 <h2 align="center">Silver sponsors 🥈</h2>
