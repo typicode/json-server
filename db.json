@@ -1,0 +1,186 @@
+  {
+  "blogs": [
+    {
+      "id": 1,
+      "title": "Beautiful Vue",
+      "post": "Vue is famous for its intuitive design and shallow learning curve. This means it’s easy to train staff in, even non-frontend devs and designers.Since developers will be up-and-running with Vue quickly, training costs will be kept to a minimum.Vue provides a powerful solution for complex single-page applications but also scales down nicely for smaller projects where only basic page functionality needs to be added.",
+      "name": "ardneham",
+      "url": "https://hrcdn.net/s3_pub/istreet-assets/onLMJSWBCg0mIYR3AVCj3w/vue-logo.png",
+      "categories": [
+        "Tech",
+        "Design"
+      ],
+      "comments": [
+        {
+          "name": "john",
+          "comment": "good one. vue is great",
+          "time": "2019-01-11T02:53:57.534Z",
+          "rating": 4
+        },
+        {
+          "name": "Doe",
+          "comment": "Great post. vue is better.",
+          "time": "2019-01-10T19:20:39.647Z",
+          "rating": 5
+        }
+      ],
+      "time": "2019-01-11T06:40:18.056Z"
+    },
+    {
+      "id": 2,
+      "title": "Jalebi Foodie's heaven",
+      "post": "Jalebi, also known as zulbia and zalabia, is a sweet popular food in some parts of the Indian subcontinent, West Asia, North Africa, and East Africa. It is made by deep-frying maida flour (plain flour or all-purpose flour) batter in pretzel or circular shapes, which are then soaked in sugar syrup.",
+      "name": "J Bai",
+      "url": "https://hrcdn.net/s3_pub/istreet-assets/IUqgeJBAXsbfY0ZQOdyThw/jalebi.png",
+      "categories": [
+        "Food"
+      ],
+      "comments": [
+        {
+          "name": "Jon",
+          "comment": "Sweet Fooooooood.",
+          "time": "2019-01-11T02:35:36.345Z",
+          "rating": 2
+        },
+        {
+          "name": "Does",
+          "comment": "Not a good post.",
+          "time": "2019-01-11T05:41:52.798Z",
+          "rating": 1
+        }
+      ],
+      "time": "2019-01-11T00:14:57.514Z"
+    },
+    {
+      "id": 3,
+      "title": "Self development",
+      "post": "Personal development is a lifelong process. It is a way for people to assess their skills and qualities, consider their aims in life and set goals in order to realise and maximise their potential. This page helps you to identify the skills you need to set life goals which can enhance your employability prospects, raise your confidence, and lead to a more fulfilling, higher quality life. Plan to make relevant, positive and effective life choices and decisions for your future to enable personal empowerment",
+      "name": "Cat Dom",
+      "url": "https://hrcdn.net/s3_pub/istreet-assets/mPJ8AuDOaJL1ekFWjnfD5g/self.png",
+      "categories": [
+        "Self"
+      ],
+      "comments": [
+        {
+          "name": "jom",
+          "comment": "yooo awesome post...",
+          "time": "2019-01-11T05:42:49.519Z",
+          "rating": 4
+        },
+        {
+          "name": "Mandov",
+          "comment": "could have been better.",
+          "time": "2019-01-11T03:57:47.140Z",
+          "rating": 2
+        }
+      ],
+      "time": "2019-01-11T08:27:16.713Z"
+    },
+    {
+      "id": 4,
+      "title": "Diabetes",
+      "post": "Diabetes is a condition that impairs the body's ability to process blood glucose, otherwise known as blood sugar.In the United States, the estimated number of people over 18 years of age with diagnosed and undiagnosed diabetes is 30.2 million. The figure represents between 27.9 and 32.7 percent of the population.Without ongoing, careful management, diabetes can lead to a buildup of sugars in the blood, which can increase the risk of dangerous complications, including stroke and heart disease.",
+      "name": "kaboor",
+      "url": "https://hrcdn.net/s3_pub/istreet-assets/uXmcKERqEd3Il3DatM0QnQ/health.png",
+      "categories": [
+        "Health"
+      ],
+      "comments": [],
+      "time": "2019-01-11T01:38:07.021Z"
+    },
+    {
+      "id": 5,
+      "title": "Marvel",
+      "post": "Marvel Comics is the brand name and primary imprint of Marvel Worldwide Inc., formerly Marvel Publishing, Inc. and Marvel Comics Group, a publisher of American comic books and related media. In 2009, The Walt Disney Company acquired Marvel Entertainment, Marvel Worldwide's parent company.",
+      "name": "Peter",
+      "url": "https://hrcdn.net/s3_pub/istreet-assets/MUZ2patHmy_IdHXxuRBh8Q/cartoon.png",
+      "categories": [
+        "Comics"
+      ],
+      "comments": [
+        {
+          "name": "parker",
+          "comment": "Marvel is amazing.",
+          "time": "2019-01-10T19:12:23.945Z",
+          "rating": 3
+        }
+      ],
+      "time": "2019-01-11T11:16:33.629Z"
+    },
+    {
+      "id": 6,
+      "title": "Time travel",
+      "post": "Time travel is the concept of movement between certain points in time, analogous to movement between different points in space by an object or a person, typically using a hypothetical device known as a time machine. Time travel is a widely-recognized concept in philosophy and fiction.",
+      "name": "Okerien",
+      "url": "https://hrcdn.net/s3_pub/istreet-assets/ojeGaBnya6j2UunYc1Qchw/time-travel.png",
+      "categories": [
+        "Fiction"
+      ],
+      "comments": [
+        {
+          "name": "Damora",
+          "comment": "Time travelling is scary",
+          "time": "2019-01-10T18:27:28.348Z",
+          "rating": 4
+        },
+        {
+          "name": "Koorg",
+          "comment": "Time travel is fake",
+          "time": "2019-01-11T11:29:31.156Z",
+          "rating": 1
+        }
+      ],
+      "time": "2019-01-10T14:16:14.855Z"
+    },
+    {
+      "id": 7,
+      "title": "Facebook's Impact ",
+      "post": "Facebook is a very popular social networking site with over eight hundred million users. As an avid user of Facebook myself, I find it hard to believe that at one point it didn't exist. In fact, it has become so much a part of people's lives that you can learn their life story just by checking their page. Their friends, likes and dislikes, relationship status, phone number, address, everything. Sounds a little dangerous. There are positive and negative effects that Facebook has on people, and they can be quite significant",
+      "name": "Zuken",
+      "url": "https://hrcdn.net/s3_pub/istreet-assets/ZbCdL-B7tTsP-PLzLlEBvw/facebook.png",
+      "categories": [
+        "Social Media"
+      ],
+      "comments": [
+        {
+          "name": "Mark",
+          "comment": "So true. sad but true.",
+          "time": "2019-01-11T11:44:19.454Z",
+          "rating": 4
+        },
+        {
+          "name": "Greg",
+          "comment": "Great one. good job.",
+          "time": "2019-01-10T14:03:56.195Z",
+          "rating": 5
+        }
+      ],
+      "time": "2019-01-11T02:13:33.950Z"
+    },
+    {
+      "id": 8,
+      "title": "Vuex Store",
+      "post": "Vuex is a state management pattern + library for Vue.js applications. It serves as a centralized store for all the components in an application, with rules ensuring that the state can only be mutated in a predictable fashion. It also integrates with Vue's official devtools extension to provide advanced features such as zero-config time-travel debugging and state snapshot export / import.",
+      "name": "ramuk",
+      "url": "https://hrcdn.net/s3_pub/istreet-assets/wElHxbEa1z22SH8mOZuWcw/vuex-flow.png",
+      "categories": [
+        "Tech"
+      ],
+      "comments": [
+        {
+          "name": "Deam",
+          "comment": "State mgmnt is great",
+          "time": "2019-01-11T05:52:30.811Z",
+          "rating": 3
+        },
+        {
+          "name": "Dev",
+          "comment": "great post waiting for another.",
+          "time": "2019-01-11T10:53:28.390Z",
+          "rating": 4
+        }
+      ],
+      "time": "2019-01-10T13:12:41.214Z"
+    }
+  ]
+}
