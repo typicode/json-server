@@ -29,6 +29,12 @@ function prettyPrint(argv, object, rules) {
     }
   }
 
+  if (argv.delay) {
+    console.log()
+    console.log(chalk.bold('  Delay'))
+    console.log(`  ${argv.delay} ms`)
+  }
+
   console.log()
   console.log(chalk.bold('  Home'))
   console.log(`  ${root}`)
