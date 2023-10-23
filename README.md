@@ -20,14 +20,6 @@ See also:
 <p>&nbsp;</p>
 
 <p align="center">
-  <a href="https://tryretool.com/?utm_source=sponsor&utm_campaign=typicode" target="_blank">
-    <img src="https://i.imgur.com/IBItATn.png" height="70px">
-  </a>
-</p>
-
-<p>&nbsp;</p>
-
-<p align="center">
   <a href="https://mockend.com/" target="_blank">
     <img src="https://jsonplaceholder.typicode.com/mockend.svg" height="70px">
   </a>
