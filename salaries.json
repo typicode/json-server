@@ -1,0 +1,30 @@
+[{
+        "_id":"s1",
+        "nomsal":"Alami",
+        "prenomsal":"Sara",
+        "fonction":"Technicien",
+        "service":{
+            "codeser":"1",
+            "nomser":"Informatique"
+        }
+    },
+    {
+        "_id":"s2",
+        "nomsal":"Tahiri",
+        "prenomsal":"Karim",
+        "fonction":"Technicien",
+        "service":{
+            "codeser":"1",
+            "nomser":"Informatique"
+        }
+    },
+    {
+        "_id":"s3",
+        "nomsal":"EL KADDOURI",
+        "prenomsal":"Yasser",
+        "fonction":"Technicien",
+        "service":{
+            "codeser":"1",
+            "nomser":"Informatique"
+        }
+    }]
