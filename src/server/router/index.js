@@ -85,6 +85,8 @@ module.exports = (db, opts) => {
     if (!res.locals.data) {
       res.status(404)
       res.locals.data = {}
+    } else {
+      res.status(200)
     }
 
     router.render(req, res)
