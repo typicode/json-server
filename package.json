@@ -1,0 +1,48 @@
+{
+  "name": "json-server",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "exports": "./lib/index.js",
+  "types": "lib",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "css": "tailwindcss -i ./views/input.css -o ./public/output.css",
+    "watch-ts": "tsx watch src/bin.ts db.json",
+    "watch-css": "npm run css -- --watch",
+    "dev": "concurrently npm:watch-*",
+    "build": "rm -rf lib && tsc && npm run css",
+    "test": "node --import tsx/esm  --test src/**/*.test.ts",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "SEE LICENSE IN ./LICENSE",
+  "devDependencies": {
+    "@sindresorhus/tsconfig": "^5.0.0",
+    "@types/node": "^20.10.0",
+    "@typicode/eslint-config": "^1.2.0",
+    "concurrently": "^8.2.2",
+    "get-port": "^7.0.0",
+    "husky": "^8.0.3",
+    "tailwindcss": "^3.3.5",
+    "tempy": "^3.1.0",
+    "tsx": "^4.5.0",
+    "type-fest": "^4.8.2",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "@tinyhttp/app": "^2.2.1",
+    "chokidar": "^3.5.3",
+    "dot-prop": "^8.0.2",
+    "eta": "^3.1.1",
+    "inflection": "^3.0.0",
+    "lowdb": "^6.1.1",
+    "milliparsec": "^2.3.0",
+    "sirv": "^2.0.3",
+    "sort-on": "^6.0.0",
+    "zod": "^3.22.4"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "extends": "@typicode",
+  "env":{
+    "browser": true,
+    "node": true
+  }
+}
