@@ -11,6 +11,7 @@ import { z } from 'zod'
 import { Data, Service } from './service.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
+const isProduction = process.env['NODE_ENV'] === 'production'
 
 export type AppOptions = {
   logger?: boolean
@@ -19,7 +20,7 @@ export type AppOptions = {
 
 const eta = new Eta({
   views: join(__dirname, '../views'),
-  cache: true
+  cache: isProduction
 })
 
 function dataHandler(req, res, next) {
@@ -47,7 +48,7 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
   options
     .static
     ?.map((path) => isAbsolute(path) ? path : join(process.cwd(), path))
-    .forEach((dir) => app.use(sirv(dir)))
+    .forEach((dir) => app.use(sirv(dir, { dev: !isProduction })))
 
   app.get('/', (_req, res) => res.send(eta.render('index.html', { data: db.data })))
 
