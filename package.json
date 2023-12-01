@@ -22,6 +22,7 @@
   "license": "SEE LICENSE IN ./LICENSE",
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
+    "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20.10.0",
     "@typicode/eslint-config": "^1.2.0",
     "concurrently": "^8.2.2",
