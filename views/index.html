@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/output.css" rel="stylesheet" />
-  </head>
-  <body class="container mx-auto font-sans">
-    <header>
-      <h1>JSON Server</h1>
-      <a href="https://github.com/typicode/json-server">GitHub</a>
-      <a href="https://github.com/sponsors/typicode">Donate</a>
-    </header>
-    <main>
-      <h2>Routes</h2>
-      <ul class="font-mono">
-        <% Object.entries(it.data).forEach(function([name]) { %>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/output.css" rel="stylesheet" />
+</head>
+
+<body class="container mx-auto prose">
+  <header>
+    <h1>JSON Server [alpha]</h1>
+  </header>
+  <main>
+    <h2>Routes</h2>
+    <ul class="font-mono">
+      <% Object.entries(it.data).forEach(function([name]) { %>
         <li>
-          <a href="<%= name %>"><%= name %></a>
+          <a href="<%= name %>">
+            /<%= name %>
+          </a>
         </li>
         <% }) %>
-      </ul>
-      <h2>Sponsors</h2>
-    </main>
-  </body>
+    </ul>
+  </main>
+  <footer class="space-x-4">
+    <a href="https://github.com/typicode/json-server">🐱 GitHub</a>
+    <a href="https://github.com/sponsors/typicode">♥ Sponsor</a>
+  </footer>
+</body>
+
 </html>
