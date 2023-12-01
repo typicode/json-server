@@ -54,7 +54,7 @@ await new Promise<void>((resolve, reject) => {
 
 import {createWriteStream} from 'fs'
 
-test('app', async (test) => {
+test('createApp', async () => {
   // URLs
   const POSTS = '/posts'
   const POST_1 = '/posts/1'
