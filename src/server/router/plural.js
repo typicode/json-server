@@ -34,10 +34,9 @@ module.exports = (db, name, opts) => {
         const plural = pluralize(innerResource)
         if (db.get(plural).value()) {
           const prop = `${innerResource}${opts.foreignKeySuffix}`
-          resource[innerResource] = db
-            .get(plural)
-            .getById(resource[prop])
-            .value()
+          resource[innerResource] = _.has(resource, prop)
+            ? db.get(plural).getById(resource[prop]).value()
+            : {};
         }
       })
   }
