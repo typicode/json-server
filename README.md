@@ -15,7 +15,7 @@ See also:
 
 <p>&nbsp;</p>
 
-<h2 align="center">Gold sponsors 🥇</h2>
+<h2 align="center">Gold sponsors</h2>
 
 <p>&nbsp;</p>
 
@@ -27,13 +27,25 @@ See also:
 
 <p>&nbsp;</p>
 
-<h2 align="center">Silver sponsors 🥈</h2>
+<h2 align="center">Silver sponsors</h2>
 
 <p>&nbsp;</p>
 
 <p align="center">
   <a href="https://cased.com" target="_blank">
     <img src="https://user-images.githubusercontent.com/5502029/194441951-b7dca49d-efd6-496d-900b-288004717f11.png" height="55px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
+
+<h2 align="center">Bronze sponsors</h2>
+
+<p>&nbsp;</p>
+
+<p align="center">
+  <a href="https://www.storyblok.com/" target="_blank">
+    <img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="40px">
   </a>
 </p>
 
