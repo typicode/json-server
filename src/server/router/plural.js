@@ -81,6 +81,8 @@ module.exports = (db, name, opts) => {
           _.has(arr[i], query) ||
           query === 'callback' ||
           query === '_' ||
+          /_is_null$/.test(query) ||
+          /_is_not_null$/.test(query) ||
           /_lte$/.test(query) ||
           /_gte$/.test(query) ||
           /_ne$/.test(query) ||
@@ -117,22 +119,30 @@ module.exports = (db, name, opts) => {
         // Always use an array, in case req.query is an array
         const arr = [].concat(req.query[key])
 
+        const isNull = /_is_null$/.test(key)
+        const isNotNull = /_is_not_null$/.test(key)
         const isDifferent = /_ne$/.test(key)
         const isRange = /_lte$/.test(key) || /_gte$/.test(key)
         const isLike = /_like$/.test(key)
-        const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
+        const path = key.replace(
+          /(_is_null|_is_not_null|_lte|_gte|_ne|_like)$/,
+          '',
+        )
 
         chain = chain.filter((element) => {
           return arr
-            .map(function (value) {
+            .map((value) => {
               // get item value based on path
               // i.e post.title -> 'foo'
               const elementValue = _.get(element, path)
+              const isElementValueNull =
+                typeof elementValue === 'undefined' || elementValue === null
+
+              if (isNull) return isElementValueNull
+              if (isNotNull) return !isElementValueNull
 
               // Prevent toString() failing on undefined or null values
-              if (elementValue === undefined || elementValue === null) {
-                return undefined
-              }
+              if (isElementValueNull) return undefined
 
               if (isRange) {
                 const isLowerThan = /_gte$/.test(key)

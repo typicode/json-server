@@ -42,6 +42,13 @@ describe('Server', () => {
       { id: 5, body: 'quux', published: false, postId: 2, userId: 1 },
     ]
 
+    db.todos = [
+      { id: 1, completeDate: null },
+      { id: 2, completeDate: null },
+      { id: 3, completeDate: '2022-11-20T13:02:47.210Z' },
+      { id: 4, completeDate: '2023-12-05T17:58:17.420Z' },
+    ]
+
     db.buyers = [
       { id: 1, name: 'Aileen', country: 'Colombia', total: 100 },
       { id: 2, name: 'Barney', country: 'Colombia', total: 200 },
@@ -303,6 +310,22 @@ describe('Server', () => {
         .expect('Access-Control-Expose-Headers', 'X-Total-Count, Link')
         .expect(200, db.list.slice(1, 2))
     })
+  })
+
+  describe('GET /:resource?attr_is_null', () => {
+    test('should respond with null value array', () =>
+      request(server)
+        .get('/todos?completeDate_is_null')
+        .expect('Content-Type', /json/)
+        .expect(200, db.todos.slice(0, 2)))
+  })
+
+  describe('GET /:resource?attr_is_not_null', () => {
+    test('should respond with non-null value array', () =>
+      request(server)
+        .get('/todos?completeDate_is_not_null')
+        .expect('Content-Type', /json/)
+        .expect(200, db.todos.slice(2)))
   })
 
   describe('GET /:resource?attr_gte=&attr_lte=', () => {

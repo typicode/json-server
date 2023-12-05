@@ -105,7 +105,7 @@ __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/
 
 ## Getting started
 
-Install JSON Server 
+Install JSON Server
 
 ```
 npm install -g json-server
@@ -142,7 +142,7 @@ Also when doing requests, it's good to know that:
 - If you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
 - Your request body JSON should be object enclosed, just like the GET output. (for example `{"name": "Foobar"}`)
 - Id values are not mutable. Any `id` value in the body of your PUT or PATCH request will be ignored. Only a value set in a POST request will be respected, but only if not already taken.
-- A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will return a 2XX status code, but without changes being made to the data. 
+- A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will return a 2XX status code, but without changes being made to the data.
 
 ## Routes
 
@@ -237,6 +237,18 @@ Add `_like` to filter (RegExp supported)
 
 ```
 GET /posts?title_like=server
+```
+
+Add `_is_null` for getting a null value
+
+```
+GET /todos?completeDate_is_null
+```
+
+Add `_is_not_null` for getting a non-null value
+
+```
+GET /todos?completeDate_is_not_null
 ```
 
 ### Full-text search
