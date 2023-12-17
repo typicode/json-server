@@ -2,6 +2,13 @@
 
 Changes for 0.15.1+ can now be found in https://github.com/typicode/json-server/releases
 
+## 0.17.1
+
+```bash
+# Support range with lt and gt
+GET /products?price_gt=50&price_lt=100
+```
+
 ## 0.15.0 - 2019-05-21
 
 * __Breaking__ Require Node 8
@@ -42,7 +49,7 @@ Changes for 0.15.1+ can now be found in https://github.com/typicode/json-server/
 
 Re-include `body-parser` in `jsonServer.defaults()`
 
-If you're using JSON Server in an Express server and experience issues, you can disable it by passing 
+If you're using JSON Server in an Express server and experience issues, you can disable it by passing
 
 ```js
 jsonServer.defaults({ bodyParser: false })

@@ -81,8 +81,8 @@ module.exports = (db, name, opts) => {
           _.has(arr[i], query) ||
           query === 'callback' ||
           query === '_' ||
-          /_lte$/.test(query) ||
-          /_gte$/.test(query) ||
+          /_lte*$/.test(query) ||
+          /_gte*$/.test(query) ||
           /_ne$/.test(query) ||
           /_like$/.test(query)
         )
@@ -118,9 +118,9 @@ module.exports = (db, name, opts) => {
         const arr = [].concat(req.query[key])
 
         const isDifferent = /_ne$/.test(key)
-        const isRange = /_lte$/.test(key) || /_gte$/.test(key)
+        const isRange = /_lte*$/.test(key) || /_gte*$/.test(key)
         const isLike = /_like$/.test(key)
-        const path = key.replace(/(_lte|_gte|_ne|_like)$/, '')
+        const path = key.replace(/(_lte*|_gte*|_ne|_like)$/, '')
 
         chain = chain.filter((element) => {
           return arr
@@ -135,11 +135,17 @@ module.exports = (db, name, opts) => {
               }
 
               if (isRange) {
-                const isLowerThan = /_gte$/.test(key)
+                if (/_gte|_lte$/.test(key)) {
+                  const isLowerThan = /_gte$/.test(key)
 
-                return isLowerThan
-                  ? value <= elementValue
-                  : value >= elementValue
+                  return isLowerThan
+                    ? value <= elementValue
+                    : value >= elementValue
+                } else {
+                  const isLower = /_gt$/.test(key)
+
+                  return isLower ? value < elementValue : value > elementValue
+                }
               } else if (isDifferent) {
                 return value !== elementValue.toString()
               } else if (isLike) {
