@@ -63,6 +63,7 @@ __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/
   * [Paginate](#paginate)
   * [Sort](#sort)
   * [Slice](#slice)
+  * [First](#first)
   * [Operators](#operators)
   * [Full-text search](#full-text-search)
   * [Relationships](#relationships)
@@ -92,12 +93,11 @@ __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/
   * [Articles](#articles)
   * [Third-party tools](#third-party-tools)
 - [License](#license)
-
 <!-- tocstop -->
 
 ## Getting started
 
-Install JSON Server 
+Install JSON Server
 
 ```
 npm install -g json-server
@@ -134,7 +134,7 @@ Also when doing requests, it's good to know that:
 - If you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
 - Your request body JSON should be object enclosed, just like the GET output. (for example `{"name": "Foobar"}`)
 - Id values are not mutable. Any `id` value in the body of your PUT or PATCH request will be ignored. Only a value set in a POST request will be respected, but only if not already taken.
-- A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will return a 2XX status code, but without changes being made to the data. 
+- A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will return a 2XX status code, but without changes being made to the data.
 
 ## Routes
 
@@ -210,6 +210,22 @@ GET /posts/1/comments?_start=20&_limit=10
 ```
 
 _Works exactly as [Array.slice](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) (i.e. `_start` is inclusive and `_end` exclusive)_
+
+### First
+
+Add `_first=true`
+
+```
+GET /posts?_first=true
+```
+
+more useful when combined with other filters.
+
+Example: get the first post by the author
+
+```
+GET /posts?author=typicode&_sort=title&_first=true
+```
 
 ### Operators
 
