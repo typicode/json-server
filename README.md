@@ -1,14 +1,14 @@
 # JSON Server [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg?branch=master)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
-Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)
+30 saniyeden daha kısa sürede sıfır kodlama ile tam bir sahte REST API edinin.
 
 Created with <3 for front-end developers who need a quick back-end for prototyping and mocking.
 
-* [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
-* [JSONPlaceholder - Live running version](https://jsonplaceholder.typicode.com)
-* [__My JSON Server__ - no installation required, use your own data](https://my-json-server.typicode.com)
+* [Egghead.io free video tutorial - Json-server ile demo API oluşturma](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
+* [JSONPlaceholder - Mevcut olarak yayında bulunan site.](https://jsonplaceholder.typicode.com)
+* [__My JSON Server__ - Kurulum gerektirmez. Sadece kendi verilerinizi kullanınız.](https://my-json-server.typicode.com)
 
-See also:
+Ayrıca şunlara göz atabilirsiniz:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
 * :owl: [lowdb - local JSON database](https://github.com/typicode/lowdb)
 * ✅ [xv - a beautifully simple and capable test runner](https://github.com/typicode/xv)
@@ -51,7 +51,7 @@ See also:
 
 __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/typicode) :heart:
 
-## Table of contents
+## İçindekiler
 
 <!-- toc -->
 
@@ -95,15 +95,15 @@ __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/
 
 <!-- tocstop -->
 
-## Getting started
+## İlk adım
 
-Install JSON Server 
+JSON Server yükleyiniz
 
 ```
 npm install -g json-server
 ```
 
-Create a `db.json` file with some data
+`db.json` dosyasını oluşturunuz.
 
 ```json
 {
@@ -116,20 +116,20 @@ Create a `db.json` file with some data
   "profile": { "name": "typicode" }
 }
 ```
-
-Start JSON Server
+J
+SON Server başlatma
 
 ```bash
 json-server --watch db.json
 ```
 
-Now if you go to [http://localhost:3000/posts/1](http://localhost:3000/posts/1), you'll get
+Artık hazırsınız! Şimdi şuraya gidin. [http://localhost:3000/posts/1](http://localhost:3000/posts/1)
 
 ```json
 { "id": 1, "title": "json-server", "author": "typicode" }
 ```
 
-Also when doing requests, it's good to know that:
+Ayrıca istekleri yaparken, şunlara göz atmalısınız:
 
 - If you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
 - Your request body JSON should be object enclosed, just like the GET output. (for example `{"name": "Foobar"}`)
