@@ -15,7 +15,8 @@
     "dev": "concurrently npm:watch-*",
     "build": "rm -rf lib && tsc && npm run css",
     "test": "node --import tsx/esm  --test src/**/*.test.ts",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepack": "npm run build"
   },
   "keywords": [],
   "author": "",
