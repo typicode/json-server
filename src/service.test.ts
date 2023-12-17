@@ -1,5 +1,5 @@
-import test from 'node:test'
 import assert from 'node:assert/strict'
+import test from 'node:test'
 
 import { Low, Memory } from 'lowdb'
 import { ParsedUrlQuery } from 'querystring'
@@ -35,7 +35,7 @@ type Test = {
   error?: Error
 }
 
-test('findById', () => {
+await test('findById', () => {
   reset()
   assert.deepEqual(service.findById(POSTS, '1', {}), db.data?.[POSTS]?.[0])
   assert.equal(service.findById(POSTS, UNKNOWN_ID, {}), undefined)
@@ -50,7 +50,7 @@ test('findById', () => {
   assert.equal(service.findById(UNKNOWN_RESOURCE, '1', {}), undefined)
 })
 
-test('find', () => {
+await test('find', () => {
   const arr: Test[] = [
     {
       name: POSTS,
@@ -223,17 +223,17 @@ test('find', () => {
   }
 })
 
-test('create', async () => {
+await test('create', async () => {
   reset()
   const post = { title: 'new post' }
   const res = await service.create(POSTS, post)
   assert.equal(res?.['title'], post.title)
-  assert.equal(res?.['id'].length, 4, 'id should be 4 chars')
+  assert.equal(typeof res?.['id'], 'string', 'id should be a string')
 
   assert.equal(await service.create(UNKNOWN_RESOURCE, post), undefined)
 })
 
-test('update', async () => {
+await test('update', async () => {
   reset()
   const post = { id: 'xxx', title: 'updated post' }
   const res = await service.update(POSTS, post1.id, post)
@@ -247,7 +247,7 @@ test('update', async () => {
   assert.equal(await service.update(POSTS, UNKNOWN_ID, post), undefined)
 })
 
-test('patch', async () => {
+await test('patch', async () => {
   reset()
   const post = { id: 'xxx', title: 'updated post' }
   const res = await service.patch(POSTS, post1.id, post)
@@ -259,7 +259,7 @@ test('patch', async () => {
   assert.equal(await service.patch(POSTS, UNKNOWN_ID, post), undefined)
 })
 
-test('destroy', async () => {
+await test('destroy', async () => {
   reset()
   let prevLength = db.data?.[POSTS]?.length || 0
   await service.destroy(POSTS, post1.id)

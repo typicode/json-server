@@ -1,12 +1,11 @@
-import test from 'node:test'
 import assert from 'node:assert/strict'
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { promisify } from 'node:util'
+import test from 'node:test'
 
+import getPort from 'get-port'
 import { Low, Memory } from 'lowdb'
 import { temporaryDirectory } from 'tempy'
-import getPort from 'get-port'
 
 import { createApp } from './app.js'
 import { Data } from './service.js'
@@ -26,7 +25,6 @@ type HTTPMethods =
   | 'POST'
   | 'PUT'
   | 'OPTIONS'
-
 
 const port = await getPort()
 
@@ -52,9 +50,7 @@ await new Promise<void>((resolve, reject) => {
   }
 })
 
-import {createWriteStream} from 'fs'
-
-test('createApp', async () => {
+await test('createApp', async () => {
   // URLs
   const POSTS = '/posts'
   const POST_1 = '/posts/1'
@@ -101,7 +97,11 @@ test('createApp', async () => {
   for (const tc of arr) {
     const response = await fetch(`http://localhost:${port}${tc.url}`, {
       method: tc.method,
-    });
-    assert.equal(response.status, tc.statusCode, `${response.status} !== ${tc.statusCode} ${tc.method} ${tc.url} failed`);
+    })
+    assert.equal(
+      response.status,
+      tc.statusCode,
+      `${response.status} !== ${tc.statusCode} ${tc.method} ${tc.url} failed`,
+    )
   }
 })

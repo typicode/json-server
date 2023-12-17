@@ -5,27 +5,14 @@ import inflection from 'inflection'
 import { Low } from 'lowdb'
 import sortOn from 'sort-on'
 
-export type Item = {
-  id: string
-  [key: string]: unknown
-}
 export type Headers = Record<string, string>
 
-export type Data = { [key: string]: Item[] }
+export type Item = Record<string, unknown>
 
-function isItem(obj: unknown): obj is Item {
-  if (typeof obj !== 'object' || obj === null) {
-    return false
-  }
+export type Data = Record<string, Item[]>
 
-  const item = obj as Record<string, unknown>
-  return (
-    'id' in item &&
-    typeof item['id'] === 'string' &&
-    Object.keys(item).every(
-      (key) => key === 'id' || typeof item[key] !== 'function',
-    )
-  )
+export function isItem(obj: unknown): obj is Item {
+  return typeof obj === 'object' && obj !== null
 }
 
 export function isData(obj: unknown): obj is Record<string, Item[]> {
@@ -79,7 +66,7 @@ function include(
     }
     const foreignKey = `${related}Id`
     const relatedItem = relatedData.find((relatedItem: Item) => {
-      return relatedItem.id === item[foreignKey]
+      return relatedItem['id'] === item[foreignKey]
     })
     return { ...item, [related]: relatedItem }
   }
@@ -91,7 +78,7 @@ function include(
 
   const foreignKey = `${inflection.singularize(name)}Id`
   const relatedItems = relatedData.filter(
-    (relatedItem: Item) => relatedItem[foreignKey] === item.id,
+    (relatedItem: Item) => relatedItem[foreignKey] === item['id'],
   )
 
   return { ...item, [related]: relatedItems }
@@ -149,7 +136,7 @@ export class Service {
     id: string,
     query: { _include?: string[] },
   ): Item | undefined {
-    let item = this.#get(name)?.find((item) => item.id === id)
+    let item = this.#get(name)?.find((item) => item['id'] === id)
     query._include?.forEach((related) => {
       if (item !== undefined) item = include(this.#db, name, item, related)
     })
@@ -339,12 +326,12 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined) return
 
-    const index = items.findIndex((item) => item.id === id)
+    const index = items.findIndex((item) => item['id'] === id)
     if (index === -1) return
 
     const item = items.at(index)
     if (item) {
-      const nextItem = { ...body, id: item.id }
+      const nextItem = { ...body, id: item['id'] }
       items.splice(index, 1, nextItem)
       await this.#db.write()
       return nextItem
@@ -360,12 +347,12 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined) return
 
-    const index = items.findIndex((item) => item.id === id)
+    const index = items.findIndex((item) => item['id'] === id)
     if (index === -1) return
 
     const item = items.at(index)
     if (item) {
-      const nextItem = { ...item, ...body, id: item.id }
+      const nextItem = { ...item, ...body, id: item['id'] }
       items.splice(index, 1, nextItem)
       await this.#db.write()
       return nextItem
@@ -381,7 +368,7 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined) return
 
-    const index = items.findIndex((item) => item.id === id)
+    const index = items.findIndex((item) => item['id'] === id)
     if (index === -1) return
     const item = items.splice(index, 1)[0]
 

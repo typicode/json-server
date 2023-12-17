@@ -6,7 +6,8 @@
   "exports": "./lib/index.js",
   "types": "lib",
   "files": [
-    "lib"
+    "lib",
+    "public"
   ],
   "scripts": {
     "css": "tailwindcss -i ./views/input.css -o ./public/output.css",
@@ -15,8 +16,9 @@
     "dev": "concurrently npm:watch-*",
     "build": "rm -rf lib && tsc && npm run css",
     "test": "node --import tsx/esm  --test src/**/*.test.ts",
+    "lint": "eslint src --ext .ts --ignore-path .gitignore",
     "prepare": "husky install",
-    "prepack": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [],
   "author": "",

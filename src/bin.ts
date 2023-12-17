@@ -70,7 +70,7 @@ const db = new Low<Data>(observer, {})
 await db.read()
 
 // Create app
-const app = await createApp(db, { logger: false, static: values.static })
+const app = createApp(db, { logger: false, static: values.static })
 
 function routes(db: Low<Data>): string[] {
   return Object.keys(db.data).map((key) => `http://${host}:${port}/${key}`)

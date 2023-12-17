@@ -2,13 +2,12 @@ import { dirname, isAbsolute, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { App } from '@tinyhttp/app'
-import { Low } from 'lowdb'
-import sirv from 'sirv'
-import { json } from 'milliparsec'
 import { Eta } from 'eta'
-import { z } from 'zod'
+import { Low } from 'lowdb'
+import { json } from 'milliparsec'
+import sirv from 'sirv'
 
-import { Data, Service } from './service.js'
+import { Data, isItem, Service } from './service.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const isProduction = process.env['NODE_ENV'] === 'production'
@@ -20,18 +19,8 @@ export type AppOptions = {
 
 const eta = new Eta({
   views: join(__dirname, '../views'),
-  cache: isProduction
+  cache: isProduction,
 })
-
-function dataHandler(req, res, next) {
-  const { data } = res.locals
-  if (data === undefined) {
-    res.sendStatus(404)
-  } else {
-    if (req.method === 'POST') res.status(201)
-    res.json(data)
-  }
-}
 
 export function createApp(db: Low<Data>, options: AppOptions = {}) {
   // Create service
@@ -45,12 +34,13 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   // Static files
   app.use(sirv(join(__dirname, '../public')))
-  options
-    .static
-    ?.map((path) => isAbsolute(path) ? path : join(process.cwd(), path))
+  options.static
+    ?.map((path) => (isAbsolute(path) ? path : join(process.cwd(), path)))
     .forEach((dir) => app.use(sirv(dir, { dev: !isProduction })))
 
-  app.get('/', (_req, res) => res.send(eta.render('index.html', { data: db.data })))
+  app.get('/', (_req, res) =>
+    res.send(eta.render('index.html', { data: db.data })),
+  )
 
   app.get('/:name', (req, res, next) => {
     const { name = '' } = req.params
@@ -66,19 +56,25 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   app.post('/:name', async (req, res, next) => {
     const { name = '' } = req.params
-    res.locals['data'] = await service.create(name, req.body)
+    if (isItem(req.body)) {
+      res.locals['data'] = await service.create(name, req.body)
+    }
     next()
   })
 
   app.put('/:name/:id', async (req, res, next) => {
     const { name = '', id = '' } = req.params
-    res.locals['data'] = await service.update(name, id, req.body)
+    if (isItem(req.body)) {
+      res.locals['data'] = await service.update(name, id, req.body)
+    }
     next()
   })
 
   app.patch('/:name/:id', async (req, res, next) => {
     const { name = '', id = '' } = req.params
-    res.locals['data'] = await service.patch(name, id, req.body)
+    if (isItem(req.body)) {
+      res.locals['data'] = await service.patch(name, id, req.body)
+    }
     next()
   })
 
@@ -88,7 +84,15 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     next()
   })
 
-  app.use('/:name', dataHandler)
+  app.use('/:name', (req, res) => {
+    const { data } = res.locals
+    if (data === undefined) {
+      res.sendStatus(404)
+    } else {
+      if (req.method === 'POST') res.status(201)
+      res.json(data)
+    }
+  })
 
   return app
 }
