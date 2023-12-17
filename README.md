@@ -31,14 +31,6 @@ See also:
 
 <p>&nbsp;</p>
 
-<p align="center">
-  <a href="https://cased.com" target="_blank">
-    <img src="https://user-images.githubusercontent.com/5502029/194441951-b7dca49d-efd6-496d-900b-288004717f11.png" height="55px">
-  </a>
-</p>
-
-<p>&nbsp;</p>
-
 <h2 align="center">Bronze sponsors</h2>
 
 <p>&nbsp;</p>
