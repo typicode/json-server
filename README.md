@@ -97,6 +97,9 @@ __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/
 
 ## Getting started
 
+> [!NOTE]
+> Try JSON Server `v1-alpha` [here](https://github.com/typicode/json-server/tree/v1)
+
 Install JSON Server 
 
 ```
