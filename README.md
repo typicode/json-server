@@ -15,12 +15,12 @@ Create a `db.json` file or run `json-server db.json` to create one with some def
 ```json
 {
   "posts": [
-    { "id": "1", "title": "string" },
-    { "id": "2", "title": "some post" }
+    { "id": "1", "title": "a title" },
+    { "id": "2", "title": "another title" }
   ],
   "comments": [
-    { "id": "1", "text": "some text", "postId": "1" },
-    { "id": "2", "text": "some text", "postId": "1" }
+    { "id": "1", "text": "a comment about post 1", "postId": "1" },
+    { "id": "2", "text": "another comment about post 1", "postId": "1" }
   ]
 }
 ```

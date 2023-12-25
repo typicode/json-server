@@ -15,7 +15,7 @@
     "watch-css": "npm run css -- --watch",
     "dev": "concurrently npm:watch-*",
     "build": "rm -rf lib && tsc && npm run css",
-    "test": "node --import tsx/esm  --test src/**/*.test.ts",
+    "test": "npm run css && node --import tsx/esm  --test src/*.test.ts",
     "lint": "eslint src --ext .ts --ignore-path .gitignore",
     "prepare": "husky install",
     "prepublishOnly": "npm run build"
