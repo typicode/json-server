@@ -7,7 +7,7 @@
 Install `json-server`
 
 ```shell
-npm install json-server
+npm install json-server@alpha
 ```
 
 Create a `db.json` file or run `json-server db.json` to create one with some default resources
