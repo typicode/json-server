@@ -4,12 +4,12 @@ import { extname, join } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import { watch } from 'chokidar'
-import { Low } from 'lowdb'
-import { JSONFile } from 'lowdb/node'
+import JSON5 from 'json5'
+import { Adapter, Low } from 'lowdb'
+import { DataFile, JSONFile } from 'lowdb/node'
 import { PackageJson } from 'type-fest'
 
 import { createApp } from './app.js'
-import { JSON5File } from './JSON5File.js'
 import { Observer } from './Observer.js'
 import { Data } from './service.js'
 
@@ -64,9 +64,12 @@ const port = parseInt(values.port ?? process.env['PORT'] ?? '3000')
 const host = values.host ?? process.env['HOST'] ?? 'localhost'
 
 // Set up database
-let adapter: JSONFile<Data> | JSON5File<Data>
+let adapter: Adapter<Data>
 if (extname(file) === '.json5') {
-  adapter = new JSON5File<Data>(file)
+  adapter = new DataFile<Data>(file, {
+    parse: JSON5.parse,
+    stringify: JSON5.stringify,
+  })
 } else {
   adapter = new JSONFile<Data>(file)
 }
