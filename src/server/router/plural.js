@@ -272,9 +272,13 @@ module.exports = (db, name, opts) => {
   }
 
   // PUT /name/:id
+  // PUT /name/:id?_embed=&_expand
   // PATCH /name/:id
+  // PATCH /name/:id?_embed=&_expand
   function update(req, res, next) {
     const id = req.params.id
+    const _embed = req.query._embed
+    const _expand = req.query._expand
     let resource
 
     if (opts._isFake) {
@@ -297,7 +301,18 @@ module.exports = (db, name, opts) => {
     }
 
     if (resource) {
-      res.locals.data = resource
+      // Clone resource to avoid making changes to the underlying object
+      const clone = _.cloneDeep(resource)
+
+      // Embed other resources based on resource id
+      // /posts/1?_embed=comments
+      embed(clone, _embed)
+
+      // Expand inner resources based on id
+      // /posts/1?_expand=user
+      expand(clone, _expand)
+
+      res.locals.data = clone
     }
 
     next()
