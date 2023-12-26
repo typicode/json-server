@@ -26,27 +26,27 @@
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
     "@tailwindcss/typography": "^0.5.10",
-    "@types/node": "^20.10.0",
+    "@types/node": "^20.10.5",
     "@typicode/eslint-config": "^1.2.0",
     "concurrently": "^8.2.2",
     "get-port": "^7.0.0",
     "husky": "^8.0.3",
-    "tailwindcss": "^3.3.5",
+    "tailwindcss": "^3.4.0",
     "tempy": "^3.1.0",
-    "tsx": "^4.5.0",
-    "type-fest": "^4.8.2",
-    "typescript": "^5.3.2"
+    "tsx": "^4.7.0",
+    "type-fest": "^4.8.3",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "@tinyhttp/app": "^2.2.1",
     "chokidar": "^3.5.3",
     "dot-prop": "^8.0.2",
-    "eta": "^3.1.1",
+    "eta": "^3.2.0",
     "inflection": "^3.0.0",
     "json5": "^2.2.3",
-    "lowdb": "^6.1.1",
+    "lowdb": "^7.0.0",
     "milliparsec": "^2.3.0",
-    "sirv": "^2.0.3",
+    "sirv": "^2.0.4",
     "sort-on": "^6.0.0",
     "zod": "^3.22.4"
   }
