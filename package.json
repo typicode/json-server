@@ -43,6 +43,7 @@
     "dot-prop": "^8.0.2",
     "eta": "^3.1.1",
     "inflection": "^3.0.0",
+    "json5": "^2.2.3",
     "lowdb": "^6.1.1",
     "milliparsec": "^2.3.0",
     "sirv": "^2.0.3",

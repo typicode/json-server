@@ -12,6 +12,9 @@ npm install json-server
 
 Create a `db.json` file or run `json-server db.json` to create one with some default resources
 
+> [!TIP]
+> You can also use [json5](https://json5.org/) format by creating a `db.json5` instead
+
 ```json
 {
   "posts": [
@@ -27,6 +30,11 @@ Create a `db.json` file or run `json-server db.json` to create one with some def
 
 ```shell
 json-server db.json
+curl -H "Accept: application/json" -X GET http://localhost:3000/posts/1
+{
+  "id": "1",
+  "title": "a title"
+}
 ```
 
 Run `json-server --help` for a list of options

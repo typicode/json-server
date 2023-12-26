@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { readFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { extname, join } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import { watch } from 'chokidar'
@@ -9,7 +9,8 @@ import { JSONFile } from 'lowdb/node'
 import { PackageJson } from 'type-fest'
 
 import { createApp } from './app.js'
-import { Observer } from './observer.js'
+import { JSON5File } from './JSON5File.js'
+import { Observer } from './Observer.js'
 import { Data } from './service.js'
 
 // Parse args
@@ -63,7 +64,12 @@ const port = parseInt(values.port ?? process.env['PORT'] ?? '3000')
 const host = values.host ?? process.env['HOST'] ?? 'localhost'
 
 // Set up database
-const adapter = new JSONFile<Data>(file)
+let adapter: JSONFile<Data> | JSON5File<Data>
+if (extname(file) === '.json5') {
+  adapter = new JSON5File<Data>(file)
+} else {
+  adapter = new JSONFile<Data>(file)
+}
 const observer = new Observer(adapter)
 
 const db = new Low<Data>(observer, {})
