@@ -21,6 +21,7 @@ describe('Server', () => {
     db.posts = [
       { id: 1, body: 'foo' },
       { id: 2, body: 'bar' },
+      { id: 3, body: 'baz' },
     ]
 
     db.tags = [
@@ -40,6 +41,7 @@ describe('Server', () => {
       { id: 3, body: 'baz', published: false, postId: 2, userId: 1 },
       { id: 4, body: 'qux', published: true, postId: 2, userId: 2 },
       { id: 5, body: 'quux', published: false, postId: 2, userId: 1 },
+      { id: 6, body: 'd.ot', published: false, postId: 3, userId: 2 },
     ]
 
     db.buyers = [
@@ -52,6 +54,7 @@ describe('Server', () => {
       { id: 7, name: 'Grace', country: 'Argentina', total: 1 },
       { id: 8, name: 'Henry', country: 'Argentina', total: 2 },
       { id: 9, name: 'Isabelle', country: 'Argentina', total: 3 },
+      { id: 10, name: 'John', country: 'Argentina', total: 3.3 },
     ]
 
     db.refs = [
@@ -131,6 +134,18 @@ describe('Server', () => {
         .expect('Content-Type', /json/)
         .expect(200, [db.comments[0], db.comments[1]]))
 
+    test('should support dot character on string filtering', () =>
+      request(server)
+        .get('/comments?body=d.ot')
+        .expect('Content-Type', /json/)
+        .expect(200, [db.comments[5]]))
+
+    test('should support dot character on number filtering', () =>
+      request(server)
+        .get('/buyers?total=3.3')
+        .expect('Content-Type', /json/)
+        .expect(200, [db.buyers[9]]))
+
     test('should support deep filter', () =>
       request(server)
         .get('/deep?a.b=1')
@@ -195,7 +210,12 @@ describe('Server', () => {
       request(server)
         .get('/comments?published=false')
         .expect('Content-Type', /json/)
-        .expect(200, [db.comments[1], db.comments[2], db.comments[4]]))
+        .expect(200, [
+          db.comments[1],
+          db.comments[2],
+          db.comments[4],
+          db.comments[5],
+        ]))
   })
 
   describe('GET /:resource?_end=', () => {
@@ -244,6 +264,7 @@ describe('Server', () => {
         .get('/buyers?_sort=country,total&_order=asc,desc')
         .expect('Content-Type', /json/)
         .expect(200, [
+          db.buyers[9],
           db.buyers[8],
           db.buyers[7],
           db.buyers[6],
@@ -379,6 +400,7 @@ describe('Server', () => {
       const posts = _.cloneDeep(db.posts)
       posts[0].comments = [db.comments[0], db.comments[1]]
       posts[1].comments = [db.comments[2], db.comments[3], db.comments[4]]
+      posts[2].comments = [db.comments[5]]
       return request(server)
         .get('/posts?_embed=comments')
         .expect('Content-Type', /json/)
@@ -393,6 +415,8 @@ describe('Server', () => {
       posts[0].refs = [db.refs[0]]
       posts[1].comments = [db.comments[2], db.comments[3], db.comments[4]]
       posts[1].refs = []
+      posts[2].comments = [db.comments[5]]
+      posts[2].refs = []
       return request(server)
         .get('/posts?_embed=comments&_embed=refs')
         .expect('Content-Type', /json/)
@@ -487,15 +511,15 @@ describe('Server', () => {
         .post('/posts')
         .send({ body: 'foo', booleanValue: true, integerValue: 1 })
         .expect('Access-Control-Expose-Headers', 'Location')
-        .expect('Location', /posts\/3$/)
+        .expect('Location', /posts\/4$/)
         .expect('Content-Type', /json/)
         .expect(201, {
-          id: 3,
+          id: 4,
           body: 'foo',
           booleanValue: true,
           integerValue: 1,
         })
-      assert.strictEqual(db.posts.length, 3)
+      assert.strictEqual(db.posts.length, 4)
     })
 
     test('should support x-www-form-urlencoded', async () => {
@@ -506,12 +530,12 @@ describe('Server', () => {
         .expect('Content-Type', /json/)
         // x-www-form-urlencoded will convert to string
         .expect(201, {
-          id: 3,
+          id: 4,
           body: 'foo',
           booleanValue: 'true',
           integerValue: '1',
         })
-      assert.strictEqual(db.posts.length, 3)
+      assert.strictEqual(db.posts.length, 4)
     })
 
     test('should respond with json, create a resource and generate string id', async () => {
@@ -530,7 +554,7 @@ describe('Server', () => {
         .post('/posts/1/comments')
         .send({ body: 'foo' })
         .expect('Content-Type', /json/)
-        .expect(201, { id: 6, postId: '1', body: 'foo' }))
+        .expect(201, { id: 7, postId: '1', body: 'foo' }))
   })
 
   describe('POST /:resource?_delay=', () => {
@@ -624,8 +648,8 @@ describe('Server', () => {
   describe('DELETE /:resource/:id', () => {
     test('should respond with empty data, destroy resource and dependent resources', async () => {
       await request(server).del('/posts/1').expect(200, {})
-      assert.strictEqual(db.posts.length, 1)
-      assert.strictEqual(db.comments.length, 3)
+      assert.strictEqual(db.posts.length, 2)
+      assert.strictEqual(db.comments.length, 4)
     })
 
     test('should respond with 404 if resource is not found', () =>
