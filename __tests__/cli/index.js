@@ -38,12 +38,12 @@ describe('cli', () => {
         posts: [{ id: 1 }, { _id: 2 }],
         comments: [{ id: 1, post_id: 1 }],
       }),
-      'db.json',
+      'db.json'
     )
 
     routesFile = tempWrite.sync(
       JSON.stringify({ '/blog/*': '/$1' }),
-      'routes.json',
+      'routes.json'
     )
 
     ++PORT
