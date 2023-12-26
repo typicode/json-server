@@ -2,18 +2,15 @@
 
 [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
-## Usage
-
-Install `json-server`
+## Install
 
 ```shell
 npm install json-server@alpha
 ```
 
-Create a `db.json` file or run `json-server db.json` to create one with some default resources
+## Usage
 
-> [!TIP]
-> You can also use [json5](https://json5.org/) format by creating a `db.json5` instead
+Create a `db.json` or `db.json5` file
 
 ```json
 {
@@ -28,8 +25,15 @@ Create a `db.json` file or run `json-server db.json` to create one with some def
 }
 ```
 
+Pass it to JSON Server CLI
+
 ```shell
 json-server db.json
+```
+
+Get a REST API
+
+```shell
 curl -H "Accept: application/json" -X GET http://localhost:3000/posts/1
 {
   "id": "1",
@@ -45,7 +49,8 @@ Run `json-server --help` for a list of options
 GET    /posts
 GET    /posts/:id
 POST   /posts
-PUT    /posts
+PUT    /posts/:id
+PATCH  /posts/:id
 DELETE /posts/:id
 ```
 
