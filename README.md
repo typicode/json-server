@@ -49,7 +49,9 @@ See also:
 
 ## Sponsor
 
-__Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/typicode) :heart:
+__Please help me build OSS__ :heart:
+
+[![Sponsor](https://github.com/szepeviktor/.github/raw/master/.github/assets/github-like-sponsor-button.svg)](https://github.com/sponsors/typicode)
 
 ## Table of contents
 
