@@ -175,6 +175,8 @@ GET /comments?author.name=typicode
 
 ### Paginate
 
+We provide `one-based` page index of the displayed list of items.
+
 Use `_page` and optionally `_limit` to paginate returned data.
 
 In the `Link` header you'll get `first`, `prev`, `next` and `last` links.
