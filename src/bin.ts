@@ -48,6 +48,7 @@ Options:
   -s, --static <dir> Static files directory (multiple allowed)
   --help  Show this message
 `)
+  process.exit()
 }
 
 if (values.version) {
@@ -62,12 +63,6 @@ if (values.version) {
 const file = positionals[0] ?? ''
 const port = parseInt(values.port ?? process.env['PORT'] ?? '3000')
 const host = values.host ?? process.env['HOST'] ?? 'localhost'
-
-// Check file
-if (file === '') {
-  console.log('No file specified')
-  process.exit(1)
-}
 
 if (!existsSync(file)) {
   console.log(`File ${file} not found`)
@@ -125,5 +120,6 @@ if (process.env['NODE_ENV'] !== 'production') {
 
 app.listen(port, () => {
   console.log(`Started on :${port}`)
+  console.log(`Watching ${file}...`)
   console.log(routes(db).join('\n'))
 })
