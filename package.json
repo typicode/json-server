@@ -3,7 +3,6 @@
   "version": "1.0.0-alpha.5",
   "description": "",
   "type": "module",
-  "exports": "./lib/index.js",
   "types": "lib",
   "files": [
     "lib",
@@ -21,7 +20,7 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [],
-  "author": "",
+  "author": "typicode <typicode@gmail.com>",
   "license": "SEE LICENSE IN ./LICENSE",
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
