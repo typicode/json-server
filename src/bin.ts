@@ -10,7 +10,7 @@ import { DataFile, JSONFile } from 'lowdb/node'
 import { PackageJson } from 'type-fest'
 
 import { createApp } from './app.js'
-import { Observer } from './Observer.js'
+import { Observer } from './observer.js'
 import { Data } from './service.js'
 
 // Parse args
