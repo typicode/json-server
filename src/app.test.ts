@@ -65,6 +65,9 @@ await test('createApp', async () => {
     { method: 'GET', url: '/output.css', statusCode: 200 },
     { method: 'GET', url: `/${file}`, statusCode: 200 },
 
+    // CORS
+    { method: 'OPTIONS', url: POSTS, statusCode: 204 },
+
     // API
     { method: 'GET', url: POSTS, statusCode: 200 },
     { method: 'GET', url: POST_1, statusCode: 200 },

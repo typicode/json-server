@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@tinyhttp/app": "^2.2.1",
+    "@tinyhttp/cors": "^2.0.0",
     "chokidar": "^3.5.3",
     "dot-prop": "^8.0.2",
     "eta": "^3.2.0",

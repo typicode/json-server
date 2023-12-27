@@ -2,6 +2,7 @@ import { dirname, isAbsolute, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { App } from '@tinyhttp/app'
+import { cors } from '@tinyhttp/cors'
 import { Eta } from 'eta'
 import { Low } from 'lowdb'
 import { json } from 'milliparsec'
@@ -29,14 +30,17 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
   // Create app
   const app = new App()
 
-  // Body parser
-  app.use(json())
-
   // Static files
   app.use(sirv(join(__dirname, '../public'), { dev: !isProduction }))
   options.static
     ?.map((path) => (isAbsolute(path) ? path : join(process.cwd(), path)))
     .forEach((dir) => app.use(sirv(dir, { dev: !isProduction })))
+
+  // CORS
+  app.use(cors()).options('*', cors())
+
+  // Body parser
+  app.use(json())
 
   app.get('/', (_req, res) =>
     res.send(eta.render('index.html', { data: db.data })),
