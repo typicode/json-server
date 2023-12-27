@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import { parseArgs } from 'node:util'
 
@@ -41,7 +41,7 @@ const { values, positionals } = parseArgs({
 })
 
 if (values.help || positionals.length === 0) {
-  console.log(`Usage: json-server [options] [file]
+  console.log(`Usage: json-server [options] <file>
 Options:
   -p, --port <port>  Port (default: 3000)
   -h, --host <host>  Host (default: localhost)
@@ -59,9 +59,20 @@ if (values.version) {
 }
 
 // App args and options
-const file = positionals[0] ?? 'db.json'
+const file = positionals[0] ?? ''
 const port = parseInt(values.port ?? process.env['PORT'] ?? '3000')
 const host = values.host ?? process.env['HOST'] ?? 'localhost'
+
+// Check file
+if (file === '') {
+  console.log('No file specified')
+  process.exit(1)
+}
+
+if (!existsSync(file)) {
+  console.log(`File ${file} not found`)
+  process.exit(1)
+}
 
 // Set up database
 let adapter: Adapter<Data>
@@ -95,8 +106,8 @@ if (process.env['NODE_ENV'] !== 'production') {
   observer.onWriteEnd = () => {
     writing = false
   }
-  observer.onReadStart = () => console.log(`reloading ${file}...`)
-  observer.onReadEnd = () => console.log('reloaded')
+  observer.onReadStart = () => console.log(`Reloading ${file}...`)
+  observer.onReadEnd = () => console.log('Reloaded')
   watch(file).on('change', () => {
     // Do no reload if the file is being written to by the app
     if (!writing) {
@@ -114,5 +125,5 @@ if (process.env['NODE_ENV'] !== 'production') {
 
 app.listen(port, () => {
   console.log(`Started on :${port}`)
-  console.log(routes(db))
+  console.log(routes(db).join('\n'))
 })

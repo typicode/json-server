@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "css": "tailwindcss -i ./views/input.css -o ./public/output.css",
-    "watch-ts": "tsx watch src/bin.ts db.json",
+    "watch-ts": "tsx watch src/bin.ts fixtures/db.json",
     "watch-css": "npm run css -- --watch",
     "dev": "concurrently npm:watch-*",
     "build": "rm -rf lib && tsc && npm run css",

@@ -7,26 +7,32 @@
   <link href="/output.css" rel="stylesheet" />
 </head>
 
-<body class="container mx-auto prose">
+<body class="container mx-auto prose pt-6 bg-white text-gray-900">
   <header>
-    <h1>JSON Server [alpha]</h1>
+    <nav class="mx-auto flex items-center justify-between">
+      <strong>JSON Server {:.:}</strong>
+      <div class="flex gap-x-6">
+        <a href="https://github.com/typicode/json-server">
+          <span class="ml-2">GitHub</span>
+        </a>
+        <a href="https://github.com/sponsors/typicode">
+          <span class="ml-2">Sponsor</span>
+        </a>
+      </div>
+    </nav>
   </header>
-  <main>
-    <h2>Routes</h2>
-    <ul class="font-mono">
-      <% Object.entries(it.data).forEach(function([name]) { %>
-        <li>
-          <a href="<%= name %>">
-            /<%= name %>
-          </a>
-        </li>
-        <% }) %>
-    </ul>
+  <main class="my-12">
+    <% if (Object.keys(it.data).length === 0) { %>
+      <p>No resources found in JSON file</p>
+    <% } %>
+    <% Object.entries(it.data).forEach(function([name]) { %>
+      <div class="py-1">
+        <a href="<%= name %>">
+          /<%= name %>
+        </a>
+      </div>
+    <% }) %>
   </main>
-  <footer class="space-x-4">
-    <a href="https://github.com/typicode/json-server">🐱 GitHub</a>
-    <a href="https://github.com/sponsors/typicode">♥ Sponsor</a>
-  </footer>
 </body>
 
 </html>
