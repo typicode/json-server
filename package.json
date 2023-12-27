@@ -1,6 +1,6 @@
 {
   "name": "json-server",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "",
   "type": "module",
   "exports": "./lib/index.js",
