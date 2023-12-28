@@ -115,7 +115,7 @@ DELETE /posts/1
 DELETE /posts/1?_include=comments
 ```
 
-# Serving static files
+## Serving static files
 
 If you create a `./public` directory, JSON Serve will serve its content in addition to the REST API. You can add custom directories using `-s/--static` option.
 
@@ -123,3 +123,9 @@ If you create a `./public` directory, JSON Serve will serve its content in addit
 json-server -s ./static
 json-server -s ./static -s ./node_modules
 ```
+
+## License
+
+This project uses the [Fair Source License](https://fair.io/). Note: Only organizations with 3+ users  need to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. This license helps keep the project sustainable and healthy, benefiting everyone.
+
+For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
