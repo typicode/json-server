@@ -120,6 +120,7 @@ if (process.env['NODE_ENV'] !== 'production') {
 
 app.listen(port, () => {
   console.log(`Started on :${port}`)
-  console.log(`Watching ${file}...`)
+  console.log(`http://localhost:${port}/`)
   console.log(routes(db).join('\n'))
+  console.log(`Watching ${file}...`)
 })
