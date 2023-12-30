@@ -1,10 +1,6 @@
 {
   "extends": "@sindresorhus/tsconfig",
   "compilerOptions": {
-    "module": "nodenext",
-    "incremental": true,
     "outDir": "./lib",
-    "skipLibCheck": true,
-    "resolveJsonModule": true
   }
 }
