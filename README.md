@@ -10,7 +10,7 @@ npm install json-server@alpha
 
 ## Usage
 
-Create a `db.json` or `db.json5` file
+Create a `db.json` (or `db.json5`) file
 
 ```json
 {
@@ -28,13 +28,13 @@ Create a `db.json` or `db.json5` file
 Pass it to JSON Server CLI
 
 ```shell
-json-server db.json
+$ json-server db.json
 ```
 
 Get a REST API
 
 ```shell
-curl -H "Accept: application/json" -X GET http://localhost:3000/posts/1
+$ curl -H "Accept: application/json" -X GET http://localhost:3000/posts/1
 {
   "id": "1",
   "title": "a title"
@@ -58,7 +58,7 @@ DELETE /posts/:id
 
 ### Comparison
 
-- ` ` →`==`
+- ` ` → `==`
 - `lt` → `<`
 - `lte` → `<=`
 - `gt` → `>`
@@ -97,9 +97,16 @@ GET /posts?_page=1&_per_page=25
 GET /posts?_sort=id,-views
 ```
 
-### Nested fields
+### Nested and array fields
 
-- `x.y.z`
+- `x.y.z_...`
+- `x.y.z[i]_...`
+
+```
+GET /posts?author.name=foo
+GET /posts?author.email=foo
+GET /posts?names[0]=foo
+```
 
 ### Include
 

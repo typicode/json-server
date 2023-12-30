@@ -10,21 +10,41 @@ const defaultData = { posts: [] }
 const adapter = new Memory<Data>()
 const db = new Low<Data>(adapter, defaultData)
 const service = new Service(db)
+
 const POSTS = 'posts'
 const COMMENTS = 'comments'
 const UNKNOWN_RESOURCE = 'xxx'
 const UNKNOWN_ID = 'xxx'
-const post1 = { id: '1', title: 'a', views: 100, author: { name: 'foo' } }
-const post2 = { id: '2', title: 'b', views: 200, author: { name: 'bar' } }
-const post3 = { id: '3', title: 'c', views: 300, author: { name: 'baz' } }
+
+const post1 = {
+  id: '1',
+  title: 'a',
+  views: 100,
+  author: { name: 'foo' },
+  tags: ['foo', 'bar'],
+}
+const post2 = {
+  id: '2',
+  title: 'b',
+  views: 200,
+  author: { name: 'bar' },
+  tags: ['bar'],
+}
+const post3 = {
+  id: '3',
+  title: 'c',
+  views: 300,
+  author: { name: 'baz' },
+  tags: ['foo'],
+}
 const comment1 = { id: '1', title: 'a', postId: '1' }
 const items = 3
+
 function reset() {
-  const post1 = { id: '1', title: 'a', views: 100, author: { name: 'foo' } }
-  const post2 = { id: '2', title: 'b', views: 200, author: { name: 'bar' } }
-  const post3 = { id: '3', title: 'c', views: 300, author: { name: 'baz' } }
-  const comment1 = { id: '1', title: 'a', postId: '1' }
-  db.data = { posts: [post1, post2, post3], comments: [comment1] }
+  db.data = structuredClone({
+    posts: [post1, post2, post3],
+    comments: [comment1],
+  })
 }
 
 type Test = {
@@ -50,7 +70,7 @@ await test('findById', () => {
   assert.equal(service.findById(UNKNOWN_RESOURCE, '1', {}), undefined)
 })
 
-await test('find', () => {
+await test('find', async (t) => {
   const arr: Test[] = [
     {
       name: POSTS,
@@ -75,6 +95,11 @@ await test('find', () => {
       name: POSTS,
       params: { 'author.name': post1.author.name },
       res: [post1],
+    },
+    {
+      name: POSTS,
+      params: { 'tags[0]': 'foo' },
+      res: [post1, post3],
     },
     {
       name: POSTS,
@@ -213,13 +238,15 @@ await test('find', () => {
     },
   ]
   for (const tc of arr) {
-    if (tc.data) {
-      db.data = tc.data
-    } else {
-      reset()
-    }
+    await t.test(`${tc.name} ${JSON.stringify(tc.params)}`, () => {
+      if (tc.data) {
+        db.data = tc.data
+      } else {
+        reset()
+      }
 
-    assert.deepEqual(service.find(tc.name, tc.params), tc.res)
+      assert.deepEqual(service.find(tc.name, tc.params), tc.res)
+    })
   }
 })
 

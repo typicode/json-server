@@ -50,7 +50,7 @@ await new Promise<void>((resolve, reject) => {
   }
 })
 
-await test('createApp', async () => {
+await test('createApp', async (t) => {
   // URLs
   const POSTS = '/posts'
   const POST_1 = '/posts/1'
@@ -98,13 +98,15 @@ await test('createApp', async () => {
   ]
 
   for (const tc of arr) {
-    const response = await fetch(`http://localhost:${port}${tc.url}`, {
-      method: tc.method,
+    await t.test(`${tc.method} ${tc.url}`, async () => {
+      const response = await fetch(`http://localhost:${port}${tc.url}`, {
+        method: tc.method,
+      })
+      assert.equal(
+        response.status,
+        tc.statusCode,
+        `${response.status} !== ${tc.statusCode} ${tc.method} ${tc.url} failed`,
+      )
     })
-    assert.equal(
-      response.status,
-      tc.statusCode,
-      `${response.status} !== ${tc.statusCode} ${tc.method} ${tc.url} failed`,
-    )
   }
 })
