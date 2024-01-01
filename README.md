@@ -44,25 +44,13 @@ $ curl -H "Accept: application/json" -X GET http://localhost:3000/posts/1
 
 Run `json-server --help` for a list of options
 
-## Sponsors
-
-### Gold
-
-<p align="center">
-  <a href="https://mockend.com/" target="_blank">
-    <img src="https://jsonplaceholder.typicode.com/mockend.svg" height="70px">
-  </a>
-</p>
-
-### Bronze
-
-<p align="center">
-  <a href="https://www.storyblok.com/" target="_blank">
-    <img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="40px">
-  </a>
-</p>
+| Sponsors |
+|  :---:  |
+| <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="70px"></a> |
+| <a href="https://www.storyblok.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="40px"></a> |
 
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
+
 
 ## Routes
 
