@@ -108,18 +108,18 @@ GET /posts?author.email=foo
 GET /posts?names[0]=foo
 ```
 
-### Include
+### Embed
 
 ```
-GET /posts?_include=comments
-GET /comments?_include=post
+GET /posts?_embed=comments
+GET /comments?_embed=post
 ```
 
 ## Delete
 
 ```
 DELETE /posts/1
-DELETE /posts/1?_include=comments
+DELETE /posts/1?_embed=comments
 ```
 
 ## Serving static files

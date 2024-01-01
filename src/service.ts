@@ -134,10 +134,10 @@ export class Service {
   findById(
     name: string,
     id: string,
-    query: { _include?: string[] },
+    query: { _embed?: string[] },
   ): Item | undefined {
     let item = this.#get(name)?.find((item) => item['id'] === id)
-    query._include?.forEach((related) => {
+    query._embed?.forEach((related) => {
       if (item !== undefined) item = include(this.#db, name, item, related)
     })
     return item
@@ -148,7 +148,7 @@ export class Service {
     query: {
       [key: string]: unknown
     } & {
-      _include?: string[]
+      _embed?: string[]
       _sort?: string
       _start?: number
       _end?: number
@@ -163,7 +163,7 @@ export class Service {
     if (items === undefined) return
 
     // Include
-    query._include?.forEach((related) => {
+    query._embed?.forEach((related) => {
       if (items !== undefined)
         items = items.map((item) => include(this.#db, name, item, related))
     })

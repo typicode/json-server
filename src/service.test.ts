@@ -59,11 +59,11 @@ await test('findById', () => {
   reset()
   assert.deepEqual(service.findById(POSTS, '1', {}), db.data?.[POSTS]?.[0])
   assert.equal(service.findById(POSTS, UNKNOWN_ID, {}), undefined)
-  assert.deepEqual(service.findById(POSTS, '1', { _include: ['comments'] }), {
+  assert.deepEqual(service.findById(POSTS, '1', { _embed: ['comments'] }), {
     ...post1,
     comments: [comment1],
   })
-  assert.deepEqual(service.findById(COMMENTS, '1', { _include: ['post'] }), {
+  assert.deepEqual(service.findById(COMMENTS, '1', { _embed: ['post'] }), {
     ...comment1,
     post: post1,
   })
@@ -220,7 +220,7 @@ await test('find', async (t) => {
     },
     {
       name: POSTS,
-      params: { _include: ['comments'] },
+      params: { _embed: ['comments'] },
       res: [
         { ...post1, comments: [comment1] },
         { ...post2, comments: [] },
@@ -229,7 +229,7 @@ await test('find', async (t) => {
     },
     {
       name: COMMENTS,
-      params: { _include: ['post'] },
+      params: { _embed: ['post'] },
       res: [{ ...comment1, post: post1 }],
     },
     {
