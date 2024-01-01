@@ -26,12 +26,13 @@ export function isData(obj: unknown): obj is Record<string, Item[]> {
   )
 }
 
-enum Operator {
+enum Condition {
   lt = 'lt',
   lte = 'lte',
   gt = 'gt',
   gte = 'gte',
   ne = 'ne',
+  includes = 'includes',
   default = '',
 }
 
@@ -45,20 +46,11 @@ export type PaginatedItems = {
   data: Item[]
 }
 
-function isOperator(value: string): value is Operator {
-  return Object.values<string>(Operator).includes(value)
+function isCondition(value: string): value is Condition {
+  return Object.values<string>(Condition).includes(value)
 }
 
-type Condition = {
-  [key: string]: [Operator, string | string[]]
-}
-
-function include(
-  db: Low<Data>,
-  name: string,
-  item: Item,
-  related: string,
-): Item {
+function embed(db: Low<Data>, name: string, item: Item, related: string): Item {
   if (inflection.singularize(related) === related) {
     const relatedData = db.data[inflection.pluralize(related)] as Item[]
     if (!relatedData) {
@@ -138,7 +130,7 @@ export class Service {
   ): Item | undefined {
     let item = this.#get(name)?.find((item) => item['id'] === id)
     query._embed?.forEach((related) => {
-      if (item !== undefined) item = include(this.#db, name, item, related)
+      if (item !== undefined) item = embed(this.#db, name, item, related)
     })
     return item
   }
@@ -165,7 +157,7 @@ export class Service {
     // Include
     query._embed?.forEach((related) => {
       if (items !== undefined)
-        items = items.map((item) => include(this.#db, name, item, related))
+        items = items.map((item) => embed(this.#db, name, item, related))
     })
 
     // Return list if no query params
@@ -174,15 +166,15 @@ export class Service {
     }
 
     // Convert query params to conditions
-    const conds: Condition = {}
+    const conds: Record<string, [Condition, string | string[]]> = {}
     for (const [key, value] of Object.entries(query)) {
       if (value === undefined || typeof value !== 'string') {
         continue
       }
-      const re = /_(lt|lte|gt|gte|ne)$/
+      const re = /_(lt|lte|gt|gte|ne|includes)$/
       const reArr = re.exec(key)
       const op = reArr?.at(1)
-      if (op && isOperator(op)) {
+      if (op && isCondition(op)) {
         const field = key.replace(re, '')
         conds[field] = [op, value]
         continue
@@ -193,17 +185,18 @@ export class Service {
         )
       )
         continue
-      conds[key] = [Operator.default, value]
+      conds[key] = [Condition.default, value]
     }
 
     // Loop through conditions and filter items
     const res = items.filter((item: Item) => {
       for (const [key, [op, paramValue]] of Object.entries(conds)) {
         if (paramValue && !Array.isArray(paramValue)) {
-          const itemValue = getProperty(item, key)
+          // https://github.com/sindresorhus/dot-prop/issues/95
+          const itemValue: unknown = getProperty(item, key)
           switch (op) {
             // item_gt=value
-            case Operator.gt: {
+            case Condition.gt: {
               if (
                 !(
                   typeof itemValue === 'number' &&
@@ -215,7 +208,7 @@ export class Service {
               break
             }
             // item_gte=value
-            case Operator.gte: {
+            case Condition.gte: {
               if (
                 !(
                   typeof itemValue === 'number' &&
@@ -227,7 +220,7 @@ export class Service {
               break
             }
             // item_lt=value
-            case Operator.lt: {
+            case Condition.lt: {
               if (
                 !(
                   typeof itemValue === 'number' &&
@@ -239,7 +232,7 @@ export class Service {
               break
             }
             // item_lte=value
-            case Operator.lte: {
+            case Condition.lte: {
               if (
                 !(
                   typeof itemValue === 'number' &&
@@ -251,12 +244,21 @@ export class Service {
               break
             }
             // item_ne=value
-            case Operator.ne: {
+            case Condition.ne: {
               if (!(itemValue != paramValue)) return false
               break
             }
+            // item_includes=value (array)
+            case Condition.includes: {
+              if (
+                !(Array.isArray(itemValue) && itemValue.includes(paramValue))
+              ) {
+                return false
+              }
+              break
+            }
             // item=value
-            case Operator.default: {
+            case Condition.default: {
               if (!(itemValue == paramValue)) return false
             }
           }
@@ -264,8 +266,12 @@ export class Service {
       }
       return true
     })
+
+    // Sort
     const sort = query._sort || ''
     const sorted = sortOn(res, sort.split(','))
+
+    // Slice
     const start = query._start
     const end = query._end
     const limit = query._limit
@@ -275,6 +281,8 @@ export class Service {
     if (start && limit) {
       return sorted.slice(start, start + limit)
     }
+
+    // Paginate
     let page = query._page
     const perPage = query._per_page || 10
     if (page) {
@@ -303,6 +311,7 @@ export class Service {
         data,
       }
     }
+
     return sorted.slice(start, end)
   }
 

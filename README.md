@@ -56,7 +56,7 @@ DELETE /posts/:id
 
 ## Params
 
-### Comparison
+### Conditions
 
 - ` ` → `==`
 - `lt` → `<`
@@ -64,9 +64,11 @@ DELETE /posts/:id
 - `gt` → `>`
 - `gte` → `>=`
 - `ne` → `!=`
+- `includes` → `Array.prototype.includes`
 
 ```
 GET /posts?views_gt=9000
+GET /posts?tags_includes=typescript
 ```
 
 ### Range
