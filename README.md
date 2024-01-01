@@ -101,8 +101,8 @@ GET /posts?_sort=id,-views
 
 ### Nested and array fields
 
-- `x.y.z_...`
-- `x.y.z[i]_...`
+- `x.y.z...`
+- `x.y.z[i]...`
 
 ```
 GET /posts?author.name=foo
