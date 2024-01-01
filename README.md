@@ -2,7 +2,6 @@
 
 [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
-
 ## Install
 
 ```shell
@@ -44,13 +43,12 @@ $ curl -H "Accept: application/json" -X GET http://localhost:3000/posts/1
 
 Run `json-server --help` for a list of options
 
-| Sponsors |
-|  :---:  |
-| <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="70px"></a> |
+|                                                                                    Sponsors                                                                                    |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                         <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="70px"></a>                          |
 | <a href="https://www.storyblok.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="40px"></a> |
 
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
-
 
 ## Routes
 
@@ -146,6 +144,6 @@ json-server -s ./static -s ./node_modules
 
 ## License
 
-This project uses the [Fair Source License](https://fair.io/). Note: Only organizations with 3+ users  need to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. This license helps keep the project sustainable and healthy, benefiting everyone.
+This project uses the [Fair Source License](https://fair.io/). Note: Only organizations with 3+ users need to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. This license helps keep the project sustainable and healthy, benefiting everyone.
 
 For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
