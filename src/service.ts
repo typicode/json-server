@@ -5,8 +5,6 @@ import inflection from 'inflection'
 import { Low } from 'lowdb'
 import sortOn from 'sort-on'
 
-export type Headers = Record<string, string>
-
 export type Item = Record<string, unknown>
 
 export type Data = Record<string, Item[]>
