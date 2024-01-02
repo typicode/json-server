@@ -317,7 +317,7 @@ export class Service {
     return item
   }
 
-  private async updateOrPatch(
+  async #updateOrPatch(
     name: string,
     id: string,
     body: Omit<Item, 'id'> = {},
@@ -342,7 +342,7 @@ export class Service {
     id: string,
     body: Omit<Item, 'id'> = {},
   ): Promise<Item | undefined> {
-    return this.updateOrPatch(name, id, body, false)
+    return this.#updateOrPatch(name, id, body, false)
   }
 
   async patch(
@@ -350,7 +350,7 @@ export class Service {
     id: string,
     body: Omit<Item, 'id'> = {},
   ): Promise<Item | undefined> {
-    return this.updateOrPatch(name, id, body, true)
+    return this.#updateOrPatch(name, id, body, true)
   }
 
   async destroy(
