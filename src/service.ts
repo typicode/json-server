@@ -30,7 +30,6 @@ enum Condition {
   gt = 'gt',
   gte = 'gte',
   ne = 'ne',
-  includes = 'includes',
   default = '',
 }
 
@@ -246,15 +245,6 @@ export class Service {
               if (!(itemValue != paramValue)) return false
               break
             }
-            // item_includes=value (array)
-            case Condition.includes: {
-              if (
-                !(Array.isArray(itemValue) && itemValue.includes(paramValue))
-              ) {
-                return false
-              }
-              break
-            }
             // item=value
             case Condition.default: {
               if (!(itemValue == paramValue)) return false
@@ -333,17 +323,14 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined) return
 
-    const index = items.findIndex((item) => item['id'] === id)
-    if (index === -1) return
+    const item = items.find((item) => item['id'] === id)
+    if (!item) return
 
-    const item = items.at(index)
-    if (item) {
-      const nextItem = { ...body, id: item['id'] }
-      items.splice(index, 1, nextItem)
-      await this.#db.write()
-      return nextItem
-    }
-    return
+    const nextItem = { ...body, id }
+    const index = items.indexOf(item)
+    items.splice(index, 1, nextItem)
+    await this.#db.write()
+    return nextItem
   }
 
   async patch(
@@ -354,17 +341,14 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined) return
 
-    const index = items.findIndex((item) => item['id'] === id)
-    if (index === -1) return
+    const item = items.find((item) => item['id'] === id)
+    if (!item) return
 
-    const item = items.at(index)
-    if (item) {
-      const nextItem = { ...item, ...body, id: item['id'] }
-      items.splice(index, 1, nextItem)
-      await this.#db.write()
-      return nextItem
-    }
-    return
+    const nextItem = { ...item, ...body, id: item['id'] }
+    const index = items.indexOf(item)
+    items.splice(index, 1, nextItem)
+    await this.#db.write()
+    return nextItem
   }
 
   async destroy(
@@ -375,9 +359,10 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined) return
 
-    const index = items.findIndex((item) => item['id'] === id)
-    if (index === -1) return
-    const item = items.splice(index, 1)[0]
+    const item = items.find((item) => item['id'] === id)
+    if (!item) return
+    const index = items.indexOf(item)
+    items.splice(index, 1)[0]
 
     nullifyForeignKey(this.#db, name, id)
     deleteDependents(this.#db, name, dependents)

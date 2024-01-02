@@ -103,11 +103,6 @@ await test('find', async (t) => {
     },
     {
       name: POSTS,
-      params: { tags_includes: 'bar' },
-      res: [post1, post2],
-    },
-    {
-      name: POSTS,
       params: { id: UNKNOWN_ID, views: post1.views.toString() },
       res: [],
     },
