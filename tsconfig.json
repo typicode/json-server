@@ -1,0 +1,6 @@
+{
+  "extends": "@sindresorhus/tsconfig",
+  "compilerOptions": {
+    "outDir": "./lib",
+  }
+}

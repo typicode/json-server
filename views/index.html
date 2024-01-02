@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/output.css" rel="stylesheet" />
+</head>
+
+<body class="container mx-auto prose dark:prose-invert dark:bg-slate-900 pt-6 bg-white text-slate-900">
+  <header>
+    <nav class="mx-auto flex items-center justify-between">
+      <strong>JSON Server (* ^ω^)</strong>
+      <div class="flex gap-x-6">
+        <a href="https://github.com/typicode/json-server">
+          <span class="ml-2">GitHub</span>
+        </a>
+        <a href="https://github.com/sponsors/typicode">
+          <span class="ml-2">♡ Sponsor</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+  <main class="my-12">
+    <% if (Object.keys(it.data).length === 0) { %>
+      <p>No resources found in JSON file</p>
+    <% } %>
+    <% Object.entries(it.data).forEach(function([name]) { %>
+      <div class="py-1">
+        <a href="<%= name %>">/<%= name %></a>
+        <span class="text-gray-500">- <%= it.data[name].length %></span>
+      </div>
+    <% }) %>
+  </main>
+</body>
+
+</html>

@@ -1,7 +1,8 @@
 **/*.log
-node_modules
-tmp
-lib
 .DS_Store
 .idea
+lib
+node_modules
+public/output.css
+tmp
 db.json
