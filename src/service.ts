@@ -309,10 +309,32 @@ export class Service {
   ): Promise<Item | undefined> {
     const items = this.#get(name)
     if (items === undefined) return
-    const nextData = { id: randomBytes(2).toString('hex'), ...data }
-    items.push(nextData)
+
+    const item = { id: randomBytes(2).toString('hex'), ...data }
+    items.push(item)
+
     await this.#db.write()
-    return nextData
+    return item
+  }
+
+  private async updateOrPatch(
+    name: string,
+    id: string,
+    body: Omit<Item, 'id'> = {},
+    isPatch: boolean,
+  ): Promise<Item | undefined> {
+    const items = this.#get(name)
+    if (items === undefined) return
+
+    const item = items.find((item) => item['id'] === id)
+    if (!item) return
+
+    const nextItem = isPatch ? { ...item, ...body, id } : { ...body, id }
+    const index = items.indexOf(item)
+    items.splice(index, 1, nextItem)
+
+    await this.#db.write()
+    return nextItem
   }
 
   async update(
@@ -320,17 +342,7 @@ export class Service {
     id: string,
     body: Omit<Item, 'id'> = {},
   ): Promise<Item | undefined> {
-    const items = this.#get(name)
-    if (items === undefined) return
-
-    const item = items.find((item) => item['id'] === id)
-    if (!item) return
-
-    const nextItem = { ...body, id }
-    const index = items.indexOf(item)
-    items.splice(index, 1, nextItem)
-    await this.#db.write()
-    return nextItem
+    return this.updateOrPatch(name, id, body, false)
   }
 
   async patch(
@@ -338,17 +350,7 @@ export class Service {
     id: string,
     body: Omit<Item, 'id'> = {},
   ): Promise<Item | undefined> {
-    const items = this.#get(name)
-    if (items === undefined) return
-
-    const item = items.find((item) => item['id'] === id)
-    if (!item) return
-
-    const nextItem = { ...item, ...body, id: item['id'] }
-    const index = items.indexOf(item)
-    items.splice(index, 1, nextItem)
-    await this.#db.write()
-    return nextItem
+    return this.updateOrPatch(name, id, body, true)
   }
 
   async destroy(
