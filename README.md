@@ -40,7 +40,7 @@ $ json-server db.json
 Get a REST API
 
 ```shell
-$ curl -H "Accept: application/json" -X GET http://localhost:3000/posts/1
+$ curl http://localhost:3000/posts/1
 {
   "id": "1",
   "title": "a title"
