@@ -66,10 +66,26 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     next()
   })
 
+  app.put('/:name', async (req, res, next) => {
+    const { name = '' } = req.params
+    if (isItem(req.body)) {
+      res.locals['data'] = await service.update(name, req.body)
+    }
+    next()
+  })
+
   app.put('/:name/:id', async (req, res, next) => {
     const { name = '', id = '' } = req.params
     if (isItem(req.body)) {
-      res.locals['data'] = await service.update(name, id, req.body)
+      res.locals['data'] = await service.updateById(name, id, req.body)
+    }
+    next()
+  })
+
+  app.patch('/:name', async (req, res, next) => {
+    const { name = '' } = req.params
+    if (isItem(req.body)) {
+      res.locals['data'] = await service.patch(name, req.body)
     }
     next()
   })
@@ -77,14 +93,14 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
   app.patch('/:name/:id', async (req, res, next) => {
     const { name = '', id = '' } = req.params
     if (isItem(req.body)) {
-      res.locals['data'] = await service.patch(name, id, req.body)
+      res.locals['data'] = await service.patchById(name, id, req.body)
     }
     next()
   })
 
   app.delete('/:name/:id', async (req, res, next) => {
     const { name = '', id = '' } = req.params
-    res.locals['data'] = await service.destroy(name, id)
+    res.locals['data'] = await service.destroyById(name, id)
     next()
   })
 

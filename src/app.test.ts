@@ -38,6 +38,7 @@ const db = new Low<Data>(new Memory<Data>(), {})
 db.data = {
   posts: [{ id: '1', title: 'foo' }],
   comments: [{ id: '1', postId: '1' }],
+  object: { f1: 'foo' },
 }
 const app = createApp(db, { static: [tmpDir] })
 
@@ -58,6 +59,8 @@ await test('createApp', async (t) => {
   const COMMENTS = '/comments'
   const POST_COMMENTS = '/comments?postId=1'
   const NOT_FOUND = '/not-found'
+  const OBJECT = '/object'
+  const OBJECT_1 = '/object/1'
 
   const arr: Test[] = [
     // Static
@@ -74,25 +77,35 @@ await test('createApp', async (t) => {
     { method: 'GET', url: POST_NOT_FOUND, statusCode: 404 },
     { method: 'GET', url: COMMENTS, statusCode: 200 },
     { method: 'GET', url: POST_COMMENTS, statusCode: 200 },
+    { method: 'GET', url: OBJECT, statusCode: 200 },
+    { method: 'GET', url: OBJECT_1, statusCode: 404 },
     { method: 'GET', url: NOT_FOUND, statusCode: 404 },
 
     { method: 'POST', url: POSTS, statusCode: 201 },
     { method: 'POST', url: POST_1, statusCode: 404 },
     { method: 'POST', url: POST_NOT_FOUND, statusCode: 404 },
+    { method: 'POST', url: OBJECT, statusCode: 404 },
+    { method: 'POST', url: OBJECT_1, statusCode: 404 },
     { method: 'POST', url: NOT_FOUND, statusCode: 404 },
 
     { method: 'PUT', url: POSTS, statusCode: 404 },
     { method: 'PUT', url: POST_1, statusCode: 200 },
+    { method: 'PUT', url: OBJECT, statusCode: 200 },
+    { method: 'PUT', url: OBJECT_1, statusCode: 404 },
     { method: 'PUT', url: POST_NOT_FOUND, statusCode: 404 },
     { method: 'PUT', url: NOT_FOUND, statusCode: 404 },
 
     { method: 'PATCH', url: POSTS, statusCode: 404 },
     { method: 'PATCH', url: POST_1, statusCode: 200 },
+    { method: 'PATCH', url: OBJECT, statusCode: 200 },
+    { method: 'PATCH', url: OBJECT_1, statusCode: 404 },
     { method: 'PATCH', url: POST_NOT_FOUND, statusCode: 404 },
     { method: 'PATCH', url: NOT_FOUND, statusCode: 404 },
 
     { method: 'DELETE', url: POSTS, statusCode: 404 },
     { method: 'DELETE', url: POST_1, statusCode: 200 },
+    { method: 'DELETE', url: OBJECT, statusCode: 404 },
+    { method: 'DELETE', url: OBJECT_1, statusCode: 404 },
     { method: 'DELETE', url: POST_NOT_FOUND, statusCode: 404 },
     { method: 'DELETE', url: NOT_FOUND, statusCode: 404 },
   ]

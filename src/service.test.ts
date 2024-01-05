@@ -13,6 +13,8 @@ const service = new Service(db)
 
 const POSTS = 'posts'
 const COMMENTS = 'comments'
+const OBJECT = 'object'
+
 const UNKNOWN_RESOURCE = 'xxx'
 const UNKNOWN_ID = 'xxx'
 
@@ -40,10 +42,15 @@ const post3 = {
 const comment1 = { id: '1', title: 'a', postId: '1' }
 const items = 3
 
+const obj = {
+  f1: 'foo',
+}
+
 function reset() {
   db.data = structuredClone({
     posts: [post1, post2, post3],
     comments: [comment1],
+    object: obj,
   })
 }
 
@@ -57,6 +64,8 @@ type Test = {
 
 await test('findById', () => {
   reset()
+  if (!Array.isArray(db.data?.[POSTS]))
+    throw new Error('posts should be an array')
   assert.deepEqual(service.findById(POSTS, '1', {}), db.data?.[POSTS]?.[0])
   assert.equal(service.findById(POSTS, UNKNOWN_ID, {}), undefined)
   assert.deepEqual(service.findById(POSTS, '1', { _embed: ['comments'] }), {
@@ -236,6 +245,10 @@ await test('find', async (t) => {
       name: UNKNOWN_RESOURCE,
       res: undefined,
     },
+    {
+      name: OBJECT,
+      res: obj,
+    },
   ]
   for (const tc of arr) {
     await t.test(`${tc.name} ${JSON.stringify(tc.params)}`, () => {
@@ -262,43 +275,64 @@ await test('create', async () => {
 
 await test('update', async () => {
   reset()
+  const obj = { f1: 'bar' }
+  const res = await service.update(OBJECT, obj)
+  assert.equal(res, obj)
+
+  assert.equal(
+    await service.update(UNKNOWN_RESOURCE, obj),
+    undefined,
+    'should ignore unknown resources',
+  )
+  assert.equal(
+    await service.update(POSTS, {}),
+    undefined,
+    'should ignore arrays',
+  )
+})
+
+await test('updateById', async () => {
+  reset()
   const post = { id: 'xxx', title: 'updated post' }
-  const res = await service.update(POSTS, post1.id, post)
+  const res = await service.updateById(POSTS, post1.id, post)
   assert.equal(res?.['id'], post1.id, 'id should not change')
   assert.equal(res?.['title'], post.title)
 
   assert.equal(
-    await service.update(UNKNOWN_RESOURCE, post1.id, post),
+    await service.updateById(UNKNOWN_RESOURCE, post1.id, post),
     undefined,
   )
-  assert.equal(await service.update(POSTS, UNKNOWN_ID, post), undefined)
+  assert.equal(await service.updateById(POSTS, UNKNOWN_ID, post), undefined)
 })
 
-await test('patch', async () => {
+await test('patchById', async () => {
   reset()
   const post = { id: 'xxx', title: 'updated post' }
-  const res = await service.patch(POSTS, post1.id, post)
+  const res = await service.patchById(POSTS, post1.id, post)
   assert.notEqual(res, undefined)
   assert.equal(res?.['id'], post1.id)
   assert.equal(res?.['title'], post.title)
 
-  assert.equal(await service.patch(UNKNOWN_RESOURCE, post1.id, post), undefined)
-  assert.equal(await service.patch(POSTS, UNKNOWN_ID, post), undefined)
+  assert.equal(
+    await service.patchById(UNKNOWN_RESOURCE, post1.id, post),
+    undefined,
+  )
+  assert.equal(await service.patchById(POSTS, UNKNOWN_ID, post), undefined)
 })
 
 await test('destroy', async () => {
   reset()
-  let prevLength = db.data?.[POSTS]?.length || 0
-  await service.destroy(POSTS, post1.id)
+  let prevLength = Number(db.data?.[POSTS]?.length) || 0
+  await service.destroyById(POSTS, post1.id)
   assert.equal(db.data?.[POSTS]?.length, prevLength - 1)
   assert.deepEqual(db.data?.[COMMENTS], [{ ...comment1, postId: null }])
 
   reset()
   prevLength = db.data?.[POSTS]?.length || 0
-  await service.destroy(POSTS, post1.id, [COMMENTS])
+  await service.destroyById(POSTS, post1.id, [COMMENTS])
   assert.equal(db.data[POSTS].length, prevLength - 1)
   assert.equal(db.data[COMMENTS].length, 0)
 
-  assert.equal(await service.destroy(UNKNOWN_RESOURCE, post1.id), undefined)
-  assert.equal(await service.destroy(POSTS, UNKNOWN_ID), undefined)
+  assert.equal(await service.destroyById(UNKNOWN_RESOURCE, post1.id), undefined)
+  assert.equal(await service.destroyById(POSTS, UNKNOWN_ID), undefined)
 })

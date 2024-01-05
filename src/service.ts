@@ -7,7 +7,7 @@ import sortOn from 'sort-on'
 
 export type Item = Record<string, unknown>
 
-export type Data = Record<string, Item[]>
+export type Data = Record<string, Item[] | Item>
 
 export function isItem(obj: unknown): obj is Item {
   return typeof obj === 'object' && obj !== null
@@ -33,6 +33,10 @@ enum Condition {
   default = '',
 }
 
+function isCondition(value: string): value is Condition {
+  return Object.values<string>(Condition).includes(value)
+}
+
 export type PaginatedItems = {
   first: number
   prev: number | null
@@ -41,10 +45,6 @@ export type PaginatedItems = {
   pages: number
   items: number
   data: Item[]
-}
-
-function isCondition(value: string): value is Condition {
-  return Object.values<string>(Condition).includes(value)
 }
 
 function embed(db: Low<Data>, name: string, item: Item, related: string): Item {
@@ -81,11 +81,13 @@ function nullifyForeignKey(db: Low<Data>, name: string, id: string) {
     if (key === name) return
 
     // Nullify
-    items.forEach((item) => {
-      if (item[foreignKey] === id) {
-        item[foreignKey] = null
-      }
-    })
+    if (Array.isArray(items)) {
+      items.forEach((item) => {
+        if (item[foreignKey] === id) {
+          item[foreignKey] = null
+        }
+      })
+    }
   })
 }
 
@@ -97,7 +99,9 @@ function deleteDependents(db: Low<Data>, name: string, dependents: string[]) {
     if (key === name || !dependents.includes(key)) return
 
     // Delete if foreign key is null
-    db.data[key] = items.filter((item) => item[foreignKey] !== null)
+    if (Array.isArray(items)) {
+      db.data[key] = items.filter((item) => item[foreignKey] !== null)
+    }
   })
 }
 
@@ -108,12 +112,8 @@ export class Service {
     this.#db = db
   }
 
-  #get(name: string): Item[] | undefined {
+  #get(name: string): Item[] | Item | undefined {
     return this.#db.data[name]
-  }
-
-  list(): string[] {
-    return Object.keys(this.#db?.data || {})
   }
 
   has(name: string): boolean {
@@ -125,11 +125,17 @@ export class Service {
     id: string,
     query: { _embed?: string[] },
   ): Item | undefined {
-    let item = this.#get(name)?.find((item) => item['id'] === id)
-    query._embed?.forEach((related) => {
-      if (item !== undefined) item = embed(this.#db, name, item, related)
-    })
-    return item
+    const value = this.#get(name)
+
+    if (Array.isArray(value)) {
+      let item = value.find((item) => item['id'] === id)
+      query._embed?.forEach((related) => {
+        if (item !== undefined) item = embed(this.#db, name, item, related)
+      })
+      return item
+    }
+
+    return
   }
 
   find(
@@ -145,15 +151,16 @@ export class Service {
       _page?: number
       _per_page?: number
     } = {},
-  ): Item[] | PaginatedItems | undefined {
+  ): Item[] | PaginatedItems | Item | undefined {
     let items = this.#get(name)
 
-    // Not found
-    if (items === undefined) return
+    if (!Array.isArray(items)) {
+      return items
+    }
 
     // Include
     query._embed?.forEach((related) => {
-      if (items !== undefined)
+      if (items !== undefined && Array.isArray(items))
         items = items.map((item) => embed(this.#db, name, item, related))
     })
 
@@ -168,7 +175,7 @@ export class Service {
       if (value === undefined || typeof value !== 'string') {
         continue
       }
-      const re = /_(lt|lte|gt|gte|ne|includes)$/
+      const re = /_(lt|lte|gt|gte|ne)$/
       const reArr = re.exec(key)
       const op = reArr?.at(1)
       if (op && isCondition(op)) {
@@ -308,7 +315,7 @@ export class Service {
     data: Omit<Item, 'id'> = {},
   ): Promise<Item | undefined> {
     const items = this.#get(name)
-    if (items === undefined) return
+    if (items === undefined || !Array.isArray(items)) return
 
     const item = { id: randomBytes(2).toString('hex'), ...data }
     items.push(item)
@@ -319,12 +326,26 @@ export class Service {
 
   async #updateOrPatch(
     name: string,
+    body: Item = {},
+    isPatch: boolean,
+  ): Promise<Item | undefined> {
+    const item = this.#get(name)
+    if (item === undefined || Array.isArray(item)) return
+
+    const nextItem = (this.#db.data[name] = isPatch ? { item, ...body } : body)
+
+    await this.#db.write()
+    return nextItem
+  }
+
+  async #updateOrPatchById(
+    name: string,
     id: string,
-    body: Omit<Item, 'id'> = {},
+    body: Item = {},
     isPatch: boolean,
   ): Promise<Item | undefined> {
     const items = this.#get(name)
-    if (items === undefined) return
+    if (items === undefined || !Array.isArray(items)) return
 
     const item = items.find((item) => item['id'] === id)
     if (!item) return
@@ -337,32 +358,40 @@ export class Service {
     return nextItem
   }
 
-  async update(
-    name: string,
-    id: string,
-    body: Omit<Item, 'id'> = {},
-  ): Promise<Item | undefined> {
-    return this.#updateOrPatch(name, id, body, false)
+  async update(name: string, body: Item = {}): Promise<Item | undefined> {
+    return this.#updateOrPatch(name, body, false)
   }
 
-  async patch(
-    name: string,
-    id: string,
-    body: Omit<Item, 'id'> = {},
-  ): Promise<Item | undefined> {
-    return this.#updateOrPatch(name, id, body, true)
+  async patch(name: string, body: Item = {}): Promise<Item | undefined> {
+    return this.#updateOrPatch(name, body, true)
   }
 
-  async destroy(
+  async updateById(
+    name: string,
+    id: string,
+    body: Item = {},
+  ): Promise<Item | undefined> {
+    return this.#updateOrPatchById(name, id, body, false)
+  }
+
+  async patchById(
+    name: string,
+    id: string,
+    body: Item = {},
+  ): Promise<Item | undefined> {
+    return this.#updateOrPatchById(name, id, body, true)
+  }
+
+  async destroyById(
     name: string,
     id: string,
     dependents: string[] = [],
   ): Promise<Item | undefined> {
     const items = this.#get(name)
-    if (items === undefined) return
+    if (items === undefined || !Array.isArray(items)) return
 
     const item = items.find((item) => item['id'] === id)
-    if (!item) return
+    if (item === undefined) return
     const index = items.indexOf(item)
     items.splice(index, 1)[0]
 

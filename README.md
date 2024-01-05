@@ -24,7 +24,10 @@ Create a `db.json` (or `db.json5`) file
   "comments": [
     { "id": "1", "text": "a comment about post 1", "postId": "1" },
     { "id": "2", "text": "another comment about post 1", "postId": "1" }
-  ]
+  ],
+  "profile": {
+    "name": "typicode"
+  }
 }
 ```
 
@@ -62,6 +65,12 @@ POST   /posts
 PUT    /posts/:id
 PATCH  /posts/:id
 DELETE /posts/:id
+```
+
+```
+GET   /profile
+PUT   /profile
+PATCH /profile
 ```
 
 ## Params
