@@ -3,6 +3,7 @@
   "version": "1.0.0-alpha.12",
   "description": "",
   "type": "module",
+  "bin": "./lib/bin.js",
   "types": "lib",
   "files": [
     "lib",
