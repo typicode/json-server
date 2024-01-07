@@ -49,6 +49,8 @@ $ curl http://localhost:3000/posts/1
 
 Run `json-server --help` for a list of options
 
+## Sponsors ✨
+
 |                                                                                    Sponsors                                                                                    |
 | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 |                         <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="70px"></a>                          |
@@ -58,6 +60,8 @@ Run `json-server --help` for a list of options
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
 
 ## Routes
+
+Based on the example `db.json`, you'll get the following routes:
 
 ```
 GET    /posts
