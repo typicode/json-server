@@ -68,8 +68,10 @@ await test('constructor', () => {
   new Service(db)
   if (Array.isArray(db.data['posts'])) {
     const id = db.data['posts']?.at(1)?.['id']
-    assert.ok(id instanceof String, 'id should be a string')
-    assert.ok(id.length > 0, 'id should not be empty')
+    assert.ok(
+      typeof id === 'string' && id.length > 0,
+      `id should be a non empty string but was: ${String(id)}`,
+    )
   }
 })
 
