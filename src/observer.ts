@@ -7,7 +7,7 @@ export class Observer<T> {
   onReadStart = function () {
     return
   }
-  onReadEnd = function () {
+  onReadEnd: (data: T | null) => void = function () {
     return
   }
   onWriteStart = function () {
@@ -24,7 +24,7 @@ export class Observer<T> {
   async read() {
     this.onReadStart()
     const data = await this.#adapter.read()
-    this.onReadEnd()
+    this.onReadEnd(data)
     return data
   }
 

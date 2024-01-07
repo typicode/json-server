@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import { parseArgs } from 'node:util'
 
+import chalk from 'chalk'
 import { watch } from 'chokidar'
 import JSON5 from 'json5'
 import { Adapter, Low } from 'lowdb'
@@ -65,7 +66,7 @@ const port = parseInt(values.port ?? process.env['PORT'] ?? '3000')
 const host = values.host ?? process.env['HOST'] ?? 'localhost'
 
 if (!existsSync(file)) {
-  console.log(`File ${file} not found`)
+  console.log(chalk.red(`File ${file} not found`))
   process.exit(1)
 }
 
@@ -87,13 +88,45 @@ await db.read()
 // Create app
 const app = createApp(db, { logger: false, static: values.static })
 
-function routes(db: Low<Data>): string[] {
-  return Object.keys(db.data).map((key) => `http://${host}:${port}/${key}`)
+function logRoutes(data: Data) {
+  console.log(
+    [
+      chalk.bold('Endpoints:'),
+      ...Object.keys(data).map(
+        (key) => `${chalk.gray(`http://${host}:${port}/`)}${chalk.blue(key)}`,
+      ),
+    ].join('\n'),
+  )
 }
+
+const kaomojis = ['♡⸜(˶˃ ᵕ ˂˶)⸝♡', '♡( ◡‿◡ )', '( ˶ˆ ᗜ ˆ˵ )', '(˶ᵔ ᵕ ᵔ˶)']
+
+// Get system current language
+
+app.listen(port, () => {
+  console.log(
+    [
+      chalk.bold(`JSON Server started on PORT :${port}`),
+      chalk.gray('Press CTRL-C to stop'),
+      chalk.gray(`Watching ${file}...`),
+      '',
+      chalk.magenta(kaomojis[Math.floor(Math.random() * kaomojis.length)]),
+      '',
+      chalk.bold('Index:'),
+      chalk.gray(`http://localhost:${port}/`),
+      '',
+      chalk.bold('Static files:'),
+      chalk.gray('Serving ./public directory if it exists'),
+      '',
+    ].join('\n'),
+  )
+  logRoutes(db.data)
+})
 
 // Watch file for changes
 if (process.env['NODE_ENV'] !== 'production') {
   let writing = false // true if the file is being written to by the app
+  let prevEndpoints = ''
 
   observer.onWriteStart = () => {
     writing = true
@@ -101,26 +134,32 @@ if (process.env['NODE_ENV'] !== 'production') {
   observer.onWriteEnd = () => {
     writing = false
   }
-  observer.onReadStart = () => console.log(`Reloading ${file}...`)
-  observer.onReadEnd = () => console.log('Reloaded')
+  observer.onReadStart = () => {
+    prevEndpoints = JSON.stringify(Object.keys(db.data).sort())
+  }
+
+  observer.onReadEnd = (data) => {
+    if (data === null) {
+      return
+    }
+
+    const nextEndpoints = JSON.stringify(Object.keys(data).sort())
+    if (prevEndpoints !== nextEndpoints) {
+      console.log()
+      logRoutes(data)
+    }
+  }
   watch(file).on('change', () => {
     // Do no reload if the file is being written to by the app
     if (!writing) {
-      db.read()
-        .then(() => routes(db))
-        .catch((e) => {
-          if (e instanceof SyntaxError) {
-            return console.log(e.message)
-          }
-          console.log(e)
-        })
+      db.read().catch((e) => {
+        if (e instanceof SyntaxError) {
+          return console.log(
+            chalk.red(['', `Error parsing ${file}`, e.message].join('\n')),
+          )
+        }
+        console.log(e)
+      })
     }
   })
 }
-
-app.listen(port, () => {
-  console.log(`Started on :${port}`)
-  console.log(`http://localhost:${port}/`)
-  console.log(routes(db).join('\n'))
-  console.log(`Watching ${file}...`)
-})
