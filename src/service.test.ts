@@ -67,10 +67,15 @@ await test('constructor', () => {
   const db = new Low<Data>(adapter, defaultData)
   new Service(db)
   if (Array.isArray(db.data['posts'])) {
-    const id = db.data['posts']?.at(1)?.['id']
+    const id0 = db.data['posts']?.at(0)?.['id']
+    const id1 = db.data['posts']?.at(1)?.['id']
     assert.ok(
-      typeof id === 'string' && id.length > 0,
-      `id should be a non empty string but was: ${String(id)}`,
+      typeof id1 === 'string' && id1.length > 0,
+      `id should be a non empty string but was: ${String(id1)}`,
+    )
+    assert.ok(
+      typeof id0 === 'string' && id0 === '1',
+      `id should not change if already set but was: ${String(id0)}`,
     )
   }
 })
