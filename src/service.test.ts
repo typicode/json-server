@@ -6,7 +6,7 @@ import { ParsedUrlQuery } from 'querystring'
 
 import { Data, Item, PaginatedItems, Service } from './service.js'
 
-const defaultData = { posts: [] }
+const defaultData = { posts: [], comments: [], object: {} }
 const adapter = new Memory<Data>()
 const db = new Low<Data>(adapter, defaultData)
 const service = new Service(db)
@@ -61,6 +61,17 @@ type Test = {
   res: Item | Item[] | PaginatedItems | undefined
   error?: Error
 }
+
+await test('constructor', () => {
+  const defaultData = { posts: [{ id: '1' }, {}], object: {} } satisfies Data
+  const db = new Low<Data>(adapter, defaultData)
+  new Service(db)
+  if (Array.isArray(db.data['posts'])) {
+    const id = db.data['posts']?.at(1)?.['id']
+    assert.ok(id instanceof String, 'id should be a string')
+    assert.ok(id.length > 0, 'id should not be empty')
+  }
+})
 
 await test('findById', () => {
   reset()

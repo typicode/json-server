@@ -105,10 +105,35 @@ function deleteDependents(db: Low<Data>, name: string, dependents: string[]) {
   })
 }
 
+function randomId(): string {
+  return randomBytes(2).toString('hex')
+}
+
+function ensureItemsHaveIds(items: Item[]): Item[] {
+  return items.map((item) => {
+    if (item['id'] === undefined) {
+      return { ...item, id: randomId() }
+    }
+    return item
+  })
+}
+
+// Ensure all items have an id
+function ensureAllItemsHaveIds(data: Data): Data {
+  return Object.entries(data).reduce(
+    (acc, [key, value]) => ({
+      ...acc,
+      [key]: Array.isArray(value) ? ensureItemsHaveIds(value) : value,
+    }),
+    {},
+  )
+}
+
 export class Service {
   #db: Low<Data>
 
   constructor(db: Low<Data>) {
+    db.data = ensureAllItemsHaveIds(db.data)
     this.#db = db
   }
 
@@ -317,7 +342,7 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined || !Array.isArray(items)) return
 
-    const item = { id: randomBytes(2).toString('hex'), ...data }
+    const item = { id: randomId(), ...data }
     items.push(item)
 
     await this.#db.write()
