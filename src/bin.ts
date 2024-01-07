@@ -101,7 +101,10 @@ function logRoutes(data: Data) {
 
 const kaomojis = ['♡⸜(˶˃ ᵕ ˂˶)⸝♡', '♡( ◡‿◡ )', '( ˶ˆ ᗜ ˆ˵ )', '(˶ᵔ ᵕ ᵔ˶)']
 
-// Get system current language
+function randomItem(items: string[]): string {
+  const index = Math.floor(Math.random() * items.length)
+  return items.at(index) ?? ''
+}
 
 app.listen(port, () => {
   console.log(
@@ -110,7 +113,7 @@ app.listen(port, () => {
       chalk.gray('Press CTRL-C to stop'),
       chalk.gray(`Watching ${file}...`),
       '',
-      chalk.magenta(kaomojis[Math.floor(Math.random() * kaomojis.length)]),
+      chalk.magenta(randomItem(kaomojis)),
       '',
       chalk.bold('Index:'),
       chalk.gray(`http://localhost:${port}/`),
