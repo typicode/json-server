@@ -3,7 +3,9 @@
   "version": "1.0.0-alpha.13",
   "description": "",
   "type": "module",
-  "bin": "./lib/bin.js",
+  "bin": {
+    "json-server": "lib/bin.js"
+  },
   "types": "lib",
   "files": [
     "lib",
