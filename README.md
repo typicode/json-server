@@ -34,7 +34,7 @@ Create a `db.json` (or `db.json5`) file
 Pass it to JSON Server CLI
 
 ```shell
-$ json-server db.json
+$ npx json-server db.json
 ```
 
 Get a REST API
