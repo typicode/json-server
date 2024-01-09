@@ -9,14 +9,15 @@
   "types": "lib",
   "files": [
     "lib",
-    "public"
+    "public",
+    "views"
   ],
   "scripts": {
     "css": "tailwindcss -i ./views/input.css -o ./public/output.css",
     "watch-ts": "tsx watch src/bin.ts fixtures/db.json",
     "watch-css": "npm run css -- --watch",
     "dev": "concurrently npm:watch-*",
-    "build": "rm -rf lib && tsc && npm run css && mkdir lib/views && cp views/index.html lib/views/index.html",
+    "build": "rm -rf lib && tsc && npm run css",
     "test": "npm run css && node --import tsx/esm --test src/*.test.ts",
     "lint": "eslint src --ext .ts --ignore-path .gitignore",
     "prepare": "husky install",
@@ -28,19 +29,19 @@
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
     "@tailwindcss/typography": "^0.5.10",
-    "@types/node": "^20.10.5",
+    "@types/node": "^20.10.7",
     "@typicode/eslint-config": "^1.2.0",
     "concurrently": "^8.2.2",
     "get-port": "^7.0.0",
     "husky": "^8.0.3",
-    "tailwindcss": "^3.4.0",
+    "tailwindcss": "^3.4.1",
     "tempy": "^3.1.0",
     "tsx": "^4.7.0",
-    "type-fest": "^4.8.3",
+    "type-fest": "^4.9.0",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@tinyhttp/app": "^2.2.1",
+    "@tinyhttp/app": "^2.2.3",
     "@tinyhttp/cors": "^2.0.0",
     "chalk": "^5.3.0",
     "chokidar": "^3.5.3",
