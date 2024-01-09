@@ -37,10 +37,16 @@ const { values, positionals } = parseArgs({
     version: {
       type: 'boolean',
     },
+    // Deprecated
+    watch: {
+      type: 'boolean',
+      short: 'w',
+    },
   },
   allowPositionals: true,
 })
 
+// --help
 if (values.help || positionals.length === 0) {
   console.log(`Usage: json-server [options] <file>
 Options:
@@ -52,12 +58,22 @@ Options:
   process.exit()
 }
 
+// --version
 if (values.version) {
   const pkg = JSON.parse(
     readFileSync(join(__dirname, '../package.json'), 'utf8'),
   ) as PackageJson
   console.log(pkg.version)
   process.exit()
+}
+
+// Handle --watch
+if (values.watch) {
+  console.log(
+    chalk.yellow(
+      '--watch/-w can be omitted, JSON Server 1+ watches for file changes by default',
+    ),
+  )
 }
 
 // App args and options
