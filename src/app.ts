@@ -19,7 +19,7 @@ export type AppOptions = {
 }
 
 const eta = new Eta({
-  views: join(__dirname, '../views'),
+  views: join(__dirname, 'views'),
   cache: isProduction,
 })
 
