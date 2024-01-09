@@ -28,7 +28,10 @@
     <% Object.entries(it.data).forEach(function([name]) { %>
       <div class="py-1">
         <a href="<%= name %>">/<%= name %></a>
-        <span class="text-gray-500">- <%= it.data[name].length %></span>
+        <span class="text-gray-500">
+          <% if (Array.isArray(it.data[name])) { %>
+           - <%= it.data[name].length %> items</span>
+          <% } %>
       </div>
     <% }) %>
   </main>
