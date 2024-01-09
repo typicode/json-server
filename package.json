@@ -16,7 +16,7 @@
     "watch-ts": "tsx watch src/bin.ts fixtures/db.json",
     "watch-css": "npm run css -- --watch",
     "dev": "concurrently npm:watch-*",
-    "build": "rm -rf lib && tsc && npm run css",
+    "build": "rm -rf lib && tsc && npm run css && mkdir lib/views && cp views/index.html lib/views/index.html",
     "test": "npm run css && node --import tsx/esm --test src/*.test.ts",
     "lint": "eslint src --ext .ts --ignore-path .gitignore",
     "prepare": "husky install",
