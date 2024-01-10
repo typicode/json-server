@@ -12,6 +12,9 @@
     "public",
     "views"
   ],
+  "engines": {
+    "node": ">=18.3"
+  },
   "scripts": {
     "css": "tailwindcss -i ./views/input.css -o ./public/output.css",
     "watch-ts": "tsx watch src/bin.ts fixtures/db.json",
