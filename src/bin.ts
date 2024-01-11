@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import { parseArgs } from 'node:util'
 
@@ -16,6 +16,7 @@ import { Data } from './service.js'
 
 function help() {
   console.log(`Usage: json-server [options] <file>
+
 Options:
   -p, --port <port>  Port (default: 3000)
   -h, --host <host>  Host (default: localhost)
@@ -114,6 +115,11 @@ if (!existsSync(file)) {
   process.exit(1)
 }
 
+// Handle empty string JSON file
+if (readFileSync(file, 'utf-8').trim() === '') {
+  writeFileSync(file, '{}')
+}
+
 // Set up database
 let adapter: Adapter<Data>
 if (extname(file) === '.json5') {
@@ -133,13 +139,19 @@ await db.read()
 const app = createApp(db, { logger: false, static: staticArr })
 
 function logRoutes(data: Data) {
+  console.log(chalk.bold('Endpoints:'))
+  if (Object.keys(data).length === 0) {
+    console.log(
+      chalk.gray(`No endpoints found, try adding some data to ${file}`),
+    )
+    return
+  }
   console.log(
-    [
-      chalk.bold('Endpoints:'),
-      ...Object.keys(data).map(
+    Object.keys(data)
+      .map(
         (key) => `${chalk.gray(`http://${host}:${port}/`)}${chalk.blue(key)}`,
-      ),
-    ].join('\n'),
+      )
+      .join('\n'),
   )
 }
 
