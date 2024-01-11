@@ -14,72 +14,100 @@ import { createApp } from './app.js'
 import { Observer } from './observer.js'
 import { Data } from './service.js'
 
-// Parse args
-const { values, positionals } = parseArgs({
-  args: process.argv.slice(2),
-  options: {
-    port: {
-      type: 'string',
-      short: 'p',
-    },
-    host: {
-      type: 'string',
-      short: 'h',
-    },
-    static: {
-      type: 'string',
-      short: 's',
-      multiple: true,
-    },
-    help: {
-      type: 'boolean',
-    },
-    version: {
-      type: 'boolean',
-    },
-    // Deprecated
-    watch: {
-      type: 'boolean',
-      short: 'w',
-    },
-  },
-  allowPositionals: true,
-})
-
-// --help
-if (values.help || positionals.length === 0) {
+function help() {
   console.log(`Usage: json-server [options] <file>
 Options:
   -p, --port <port>  Port (default: 3000)
   -h, --host <host>  Host (default: localhost)
   -s, --static <dir> Static files directory (multiple allowed)
-  --help  Show this message
+  --help             Show this message
+  --version          Show version number
 `)
-  process.exit()
 }
 
-// --version
-if (values.version) {
-  const pkg = JSON.parse(
-    readFileSync(join(__dirname, '../package.json'), 'utf8'),
-  ) as PackageJson
-  console.log(pkg.version)
-  process.exit()
+// Parse args
+function args(): {
+  file: string
+  port: number
+  host: string
+  static: string[]
+} {
+  try {
+    const { values, positionals } = parseArgs({
+      options: {
+        port: {
+          type: 'string',
+          short: 'p',
+          default: process.env['PORT'] ?? '3000',
+        },
+        host: {
+          type: 'string',
+          short: 'h',
+          default: process.env['HOST'] ?? 'localhost',
+        },
+        static: {
+          type: 'string',
+          short: 's',
+          multiple: true,
+          default: [],
+        },
+        help: {
+          type: 'boolean',
+        },
+        version: {
+          type: 'boolean',
+        },
+        // Deprecated
+        watch: {
+          type: 'boolean',
+          short: 'w',
+        },
+      },
+      allowPositionals: true,
+    })
+
+    // --version
+    if (values.version) {
+      const pkg = JSON.parse(
+        readFileSync(join(__dirname, '../package.json'), 'utf8'),
+      ) as PackageJson
+      console.log(pkg.version)
+      process.exit()
+    }
+
+    // Handle --watch
+    if (values.watch) {
+      console.log(
+        chalk.yellow(
+          '--watch/-w can be omitted, JSON Server 1+ watches for file changes by default',
+        ),
+      )
+    }
+
+    if (values.help || positionals.length === 0) {
+      help()
+      process.exit()
+    }
+
+    // App args and options
+    return {
+      file: positionals[0] ?? '',
+      port: parseInt(values.port as string),
+      host: values.host as string,
+      static: values.static as string[],
+    }
+  } catch (e) {
+    if ((e as NodeJS.ErrnoException).code === 'ERR_PARSE_ARGS_UNKNOWN_OPTION') {
+      console.log(chalk.red((e as NodeJS.ErrnoException).message.split('.')[0]))
+      help()
+      process.exit(1)
+    } else {
+      throw e
+    }
+  }
 }
 
-// Handle --watch
-if (values.watch) {
-  console.log(
-    chalk.yellow(
-      '--watch/-w can be omitted, JSON Server 1+ watches for file changes by default',
-    ),
-  )
-}
-
-// App args and options
-const file = positionals[0] ?? ''
-const port = parseInt(values.port ?? process.env['PORT'] ?? '3000')
-const host = values.host ?? process.env['HOST'] ?? 'localhost'
+const { file, port, host, static: staticArr } = args()
 
 if (!existsSync(file)) {
   console.log(chalk.red(`File ${file} not found`))
@@ -102,7 +130,7 @@ const db = new Low<Data>(observer, {})
 await db.read()
 
 // Create app
-const app = createApp(db, { logger: false, static: values.static })
+const app = createApp(db, { logger: false, static: staticArr })
 
 function logRoutes(data: Data) {
   console.log(
