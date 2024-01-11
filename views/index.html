@@ -10,18 +10,19 @@
 <body class="container mx-auto prose dark:prose-invert dark:bg-slate-900 pt-6 bg-white text-slate-900">
   <header>
     <nav class="mx-auto flex items-center justify-between">
-      <strong>JSON Server (* ^ω^)</strong>
+      <strong>JSON Server</strong>
       <div class="flex gap-x-6">
         <a href="https://github.com/typicode/json-server">
-          <span class="ml-2">GitHub</span>
+          <span class="ml-2">Docs</span>
         </a>
-        <a href="https://github.com/sponsors/typicode">
+        <a href="https://github.com/sponsors/typicode" class="text-red-500 font-semibold">
           <span class="ml-2">♡ Sponsor</span>
         </a>
       </div>
     </nav>
   </header>
   <main class="my-12">
+    <p class="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-transparent bg-clip-text">✧*｡٩(ˊᗜˋ*)و✧*｡</p>
     <% if (Object.keys(it.data).length === 0) { %>
       <p>No resources found in JSON file</p>
     <% } %>
