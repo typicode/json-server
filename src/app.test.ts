@@ -54,8 +54,10 @@ await new Promise<void>((resolve, reject) => {
 await test('createApp', async (t) => {
   // URLs
   const POSTS = '/posts'
+  const POSTS_WITH_COMMENTS = '/posts?_embed=comments'
   const POST_1 = '/posts/1'
   const POST_NOT_FOUND = '/posts/-1'
+  const POST_WITH_COMMENTS = '/posts/1?_embed=comments'
   const COMMENTS = '/comments'
   const POST_COMMENTS = '/comments?postId=1'
   const NOT_FOUND = '/not-found'
@@ -73,8 +75,10 @@ await test('createApp', async (t) => {
 
     // API
     { method: 'GET', url: POSTS, statusCode: 200 },
+    { method: 'GET', url: POSTS_WITH_COMMENTS, statusCode: 200 },
     { method: 'GET', url: POST_1, statusCode: 200 },
     { method: 'GET', url: POST_NOT_FOUND, statusCode: 404 },
+    { method: 'GET', url: POST_WITH_COMMENTS, statusCode: 200 },
     { method: 'GET', url: COMMENTS, statusCode: 200 },
     { method: 'GET', url: POST_COMMENTS, statusCode: 200 },
     { method: 'GET', url: OBJECT, statusCode: 200 },

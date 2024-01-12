@@ -47,6 +47,10 @@ export type PaginatedItems = {
   data: Item[]
 }
 
+function ensureArray(arg: string | string[] = []): string[] {
+  return Array.isArray(arg) ? arg : [arg]
+}
+
 function embed(db: Low<Data>, name: string, item: Item, related: string): Item {
   if (inflection.singularize(related) === related) {
     const relatedData = db.data[inflection.pluralize(related)] as Item[]
@@ -148,13 +152,13 @@ export class Service {
   findById(
     name: string,
     id: string,
-    query: { _embed?: string[] },
+    query: { _embed?: string[] | string },
   ): Item | undefined {
     const value = this.#get(name)
 
     if (Array.isArray(value)) {
       let item = value.find((item) => item['id'] === id)
-      query._embed?.forEach((related) => {
+      ensureArray(query._embed).forEach((related) => {
         if (item !== undefined) item = embed(this.#db, name, item, related)
       })
       return item
@@ -184,9 +188,10 @@ export class Service {
     }
 
     // Include
-    query._embed?.forEach((related) => {
-      if (items !== undefined && Array.isArray(items))
+    ensureArray(query._embed).forEach((related) => {
+      if (items !== undefined && Array.isArray(items)) {
         items = items.map((item) => embed(this.#db, name, item, related))
+      }
     })
 
     // Return list if no query params
@@ -209,11 +214,18 @@ export class Service {
         continue
       }
       if (
-        ['_sort', '_start', '_end', '_limit', '_page', '_per_page'].includes(
-          key,
-        )
-      )
+        [
+          '_embed',
+          '_sort',
+          '_start',
+          '_end',
+          '_limit',
+          '_page',
+          '_per_page',
+        ].includes(key)
+      ) {
         continue
+      }
       conds[key] = [Condition.default, value]
     }
 
