@@ -1,6 +1,6 @@
 {
   "name": "json-server",
-  "version": "1.0.0-alpha.18",
+  "version": "1.0.0-alpha.19",
   "description": "",
   "type": "module",
   "bin": {
