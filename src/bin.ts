@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
-import { extname, join } from 'node:path'
+import { extname } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import chalk from 'chalk'
@@ -10,6 +10,7 @@ import { Adapter, Low } from 'lowdb'
 import { DataFile, JSONFile } from 'lowdb/node'
 import { PackageJson } from 'type-fest'
 
+import { fileURLToPath } from 'node:url'
 import { createApp } from './app.js'
 import { Observer } from './observer.js'
 import { Data } from './service.js'
@@ -70,7 +71,10 @@ function args(): {
     // --version
     if (values.version) {
       const pkg = JSON.parse(
-        readFileSync(join(__dirname, '../package.json'), 'utf8'),
+        readFileSync(
+          fileURLToPath(new URL('../package.json', import.meta.url)),
+          'utf-8',
+        ),
       ) as PackageJson
       console.log(pkg.version)
       process.exit()
