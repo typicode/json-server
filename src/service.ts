@@ -113,31 +113,31 @@ function randomId(): string {
   return randomBytes(2).toString('hex')
 }
 
-function ensureItemsHaveIds(items: Item[]): Item[] {
-  return items.map((item) => {
-    if (item['id'] === undefined) {
-      return { ...item, id: randomId() }
+function fixItemsIds(items: Item[]) {
+  items.forEach((item) => {
+    if (typeof item['id'] === 'number') {
+      item['id'] = item['id'].toString()
     }
-    return item
+    if (item['id'] === undefined) {
+      item['id'] = randomId()
+    }
   })
 }
 
 // Ensure all items have an id
-function ensureAllItemsHaveIds(data: Data): Data {
-  return Object.entries(data).reduce(
-    (acc, [key, value]) => ({
-      ...acc,
-      [key]: Array.isArray(value) ? ensureItemsHaveIds(value) : value,
-    }),
-    {},
-  )
+function fixAllItemsIds(data: Data) {
+  Object.values(data).forEach((value) => {
+    if (Array.isArray(value)) {
+      fixItemsIds(value)
+    }
+  })
 }
 
 export class Service {
   #db: Low<Data>
 
   constructor(db: Low<Data>) {
-    db.data = ensureAllItemsHaveIds(db.data)
+    fixAllItemsIds(db.data)
     this.#db = db
   }
 

@@ -196,7 +196,6 @@ if (process.env['NODE_ENV'] !== 'production') {
   observer.onReadStart = () => {
     prevEndpoints = JSON.stringify(Object.keys(db.data).sort())
   }
-
   observer.onReadEnd = (data) => {
     if (data === null) {
       return
