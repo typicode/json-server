@@ -13,6 +13,8 @@ import { PackageJson } from 'type-fest'
 import { createApp } from './app.js'
 import { Observer } from './observer.js'
 import { Data } from './service.js'
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 function help() {
   console.log(`Usage: json-server [options] <file>
@@ -69,6 +71,8 @@ function args(): {
 
     // --version
     if (values.version) {
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname = dirname(__filename);
       const pkg = JSON.parse(
         readFileSync(join(__dirname, '../package.json'), 'utf8'),
       ) as PackageJson
