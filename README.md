@@ -13,7 +13,7 @@ npm install json-server
 
 ## Usage
 
-Create a `db.json` (or `db.json5`) file
+Create a `db.json` or `db.json5` file
 
 ```json
 {
@@ -33,7 +33,7 @@ Create a `db.json` (or `db.json5`) file
 
 <details>
 
-<summary>`db.json5`</summary>
+<summary>View db.json5 example</summary>
 
 ```json5
 {
@@ -50,6 +50,8 @@ Create a `db.json` (or `db.json5`) file
   },
 }
 ```
+
+You can read more about JSON5 format [here](https://github.com/json5/json5).
 
 </details>
 
