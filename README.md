@@ -31,6 +31,28 @@ Create a `db.json` (or `db.json5`) file
 }
 ```
 
+<details>
+
+<summary>`db.json5`</summary>
+
+```json5
+{
+  posts: [
+    { id: '1', title: 'a title' },
+    { id: '2', title: 'another title' },
+  ],
+  comments: [
+    { id: '1', text: 'a comment about post 1', postId: '1' },
+    { id: '2', text: 'another comment about post 1', postId: '1' },
+  ],
+  profile: {
+    name: 'typicode',
+  },
+}
+```
+
+</details>
+
 Pass it to JSON Server CLI
 
 ```shell
