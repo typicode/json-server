@@ -22,6 +22,7 @@ Options:
   -p, --port <port>  Port (default: 3000)
   -h, --host <host>  Host (default: localhost)
   -s, --static <dir> Static files directory (multiple allowed)
+  --read-only        Allow only GET requests (default: false) 
   --help             Show this message
   --version          Show version number
 `)
@@ -33,6 +34,7 @@ function args(): {
   port: number
   host: string
   static: string[]
+  "read-only": boolean
 } {
   try {
     const { values, positionals } = parseArgs({
@@ -64,6 +66,10 @@ function args(): {
           type: 'boolean',
           short: 'w',
         },
+        'read-only': {
+          type: 'boolean',
+          default: false,
+        },
       },
       allowPositionals: true,
     })
@@ -88,18 +94,23 @@ function args(): {
         ),
       )
     }
+    if (values['read-only']) {
+      console.log(
+        chalk.gray("Server will start in read-only mode so server will allow only GET requests come")
+      )
+    }
 
     if (values.help || positionals.length === 0) {
       help()
       process.exit()
     }
-
     // App args and options
     return {
       file: positionals[0] ?? '',
       port: parseInt(values.port as string),
       host: values.host as string,
       static: values.static as string[],
+      'read-only': values['read-only'] as boolean
     }
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ERR_PARSE_ARGS_UNKNOWN_OPTION') {
@@ -112,7 +123,7 @@ function args(): {
   }
 }
 
-const { file, port, host, static: staticArr } = args()
+const { file, port, host, static: staticArr, "read-only": readOnly } = args()
 
 if (!existsSync(file)) {
   console.log(chalk.red(`File ${file} not found`))
@@ -140,7 +151,7 @@ const db = new Low<Data>(observer, {})
 await db.read()
 
 // Create app
-const app = createApp(db, { logger: false, static: staticArr })
+const app = createApp(db, { logger: false, static: staticArr, isReadOnly: readOnly })
 
 function logRoutes(data: Data) {
   console.log(chalk.bold('Endpoints:'))

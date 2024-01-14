@@ -16,6 +16,7 @@ const isProduction = process.env['NODE_ENV'] === 'production'
 export type AppOptions = {
   logger?: boolean
   static?: string[]
+  isReadOnly?: boolean
 }
 
 const eta = new Eta({
@@ -41,6 +42,22 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   // Body parser
   app.use(json())
+
+  app.use((req, res, next) => {
+    if (options.isReadOnly) {
+      if (req.method === 'GET') {
+        next()
+      }
+      else {
+        //Send status 403 because of --read-only flag!
+        res.sendStatus(403) // Forbidden
+        return
+      }
+    }
+    else {
+      next()
+    }
+  })
 
   app.get('/', (_req, res) =>
     res.send(eta.render('index.html', { data: db.data })),
