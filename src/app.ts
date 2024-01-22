@@ -110,7 +110,7 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   app.delete('/:name/:id', async (req, res, next) => {
     const { name = '', id = '' } = req.params
-    res.locals['data'] = await service.destroyById(name, id)
+    res.locals['data'] = await service.destroyById(name, id, req.query['dependent'])
     next()
   })
 

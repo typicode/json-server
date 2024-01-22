@@ -171,7 +171,7 @@ export class Service {
     name: string,
     query: {
       [key: string]: unknown
-      _embed?: string[]
+      _embed?: string | string[]
       _sort?: string
       _start?: number
       _end?: number
@@ -424,7 +424,7 @@ export class Service {
   async destroyById(
     name: string,
     id: string,
-    dependents: string[] = [],
+    dependent?: string | string[],
   ): Promise<Item | undefined> {
     const items = this.#get(name)
     if (items === undefined || !Array.isArray(items)) return
@@ -435,6 +435,7 @@ export class Service {
     items.splice(index, 1)[0]
 
     nullifyForeignKey(this.#db, name, id)
+    const dependents = ensureArray(dependent)
     deleteDependents(this.#db, name, dependents)
 
     await this.#db.write()

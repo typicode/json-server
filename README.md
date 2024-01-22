@@ -169,7 +169,7 @@ GET /comments?_embed=post
 
 ```
 DELETE /posts/1
-DELETE /posts/1?_embed=comments
+DELETE /posts/1?_dependent=comments
 ```
 
 ## Serving static files
