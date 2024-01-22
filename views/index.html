@@ -31,7 +31,7 @@
         <a href="<%= name %>">/<%= name %></a>
         <span class="text-gray-500">
           <% if (Array.isArray(it.data[name])) { %>
-           - <%= it.data[name].length %> items</span>
+           - <%= it.data[name].length %> <%= it.data[name].length > 1 ? 'items' : 'item' %></span>
           <% } %>
       </div>
     <% }) %>
