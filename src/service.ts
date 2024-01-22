@@ -171,7 +171,6 @@ export class Service {
     name: string,
     query: {
       [key: string]: unknown
-    } & {
       _embed?: string[]
       _sort?: string
       _start?: number
@@ -307,11 +306,14 @@ export class Service {
     const start = query._start
     const end = query._end
     const limit = query._limit
-    if (start === undefined && limit) {
-      return sorted.slice(0, limit)
+    if (start !== undefined) {
+      if (end !== undefined) {
+        return sorted.slice(start, end)
+      }
+      return sorted.slice(start, start + (limit || 0))
     }
-    if (start && limit) {
-      return sorted.slice(start, start + limit)
+    if (limit !== undefined) {
+      return sorted.slice(0, limit)
     }
 
     // Paginate

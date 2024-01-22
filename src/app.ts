@@ -48,7 +48,17 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   app.get('/:name', (req, res, next) => {
     const { name = '' } = req.params
-    res.locals['data'] = service.find(name, req.query)
+    const query = Object.fromEntries(Object.entries(req.query)
+      .map(([key, value]) => {
+        if (['_start', '_end', '_limit', '_page', '_per_page'].includes(key) && typeof value === 'string') {
+          return [key, parseInt(value)]
+        } else {
+          return [key, value]
+        }
+      })
+      .filter(([_, value]) => !Number.isNaN(value))
+    )
+    res.locals['data'] = service.find(name, query)
     next()
   })
 
