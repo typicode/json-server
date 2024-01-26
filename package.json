@@ -32,15 +32,15 @@
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
     "@tailwindcss/typography": "^0.5.10",
-    "@types/node": "^20.11.0",
+    "@types/node": "^20.11.7",
     "@typicode/eslint-config": "^1.2.0",
     "concurrently": "^8.2.2",
     "get-port": "^7.0.0",
-    "husky": "^8.0.3",
+    "husky": "^9.0.6",
     "tailwindcss": "^3.4.1",
     "tempy": "^3.1.0",
     "tsx": "^4.7.0",
-    "type-fest": "^4.9.0",
+    "type-fest": "^4.10.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {
