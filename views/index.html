@@ -4,36 +4,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="/output.css" rel="stylesheet" />
+  <style>
+    html {
+      font-size: 16px;
+      line-height: 1.5;
+      background-color: #fff;
+    }
+
+    body {
+      margin: 0 auto;
+      max-width: 720px;
+      padding: 0 16px;
+      font-family: sans-serif;
+    }
+
+    a {
+      color: #db2777;
+      text-decoration: none;
+    }
+
+    header {
+      margin-bottom: 32px;
+      padding: 16px 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    nav div a {
+      margin-left: 16px;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Dark mode styles */
+    @media (prefers-color-scheme: dark) {
+      html {
+        background-color: #1e293b;
+        color: #fff;
+      }
+
+      a {
+
+      }
+    }
+
+  </style>
 </head>
 
-<body class="container mx-auto prose dark:prose-invert dark:bg-slate-900 pt-6 bg-white text-slate-900">
+<body>
   <header>
-    <nav class="mx-auto flex items-center justify-between">
+    <nav>
       <strong>JSON Server</strong>
-      <div class="flex gap-x-6">
-        <a href="https://github.com/typicode/json-server">
-          <span class="ml-2">Docs</span>
-        </a>
-        <a href="https://github.com/sponsors/typicode" class="text-red-500 font-semibold">
-          <span class="ml-2">♡ Sponsor</span>
-        </a>
+      <div>
+        <a href="https://github.com/typicode/json-server">Docs</a>
+        <a href="https://github.com/sponsors/typicode">♡ Sponsor</a>
       </div>
     </nav>
   </header>
   <main class="my-12">
     <p class="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-transparent bg-clip-text">✧*｡٩(ˊᗜˋ*)و✧*｡</p>
-    <% if (Object.keys(it.data).length === 0) { %>
+    <% if (Object.keys(it.data).length===0) { %>
       <p>No resources found in JSON file</p>
     <% } %>
     <% Object.entries(it.data).forEach(function([name]) { %>
-      <div class="py-1">
-        <a href="<%= name %>">/<%= name %></a>
-        <span class="text-gray-500">
-          <% if (Array.isArray(it.data[name])) { %>
-           - <%= it.data[name].length %> <%= it.data[name].length > 1 ? 'items' : 'item' %></span>
+      <ul>
+        <li>
+          <a href="<%= name %>">/<%= name %></a>
+          <span>
+            <% if (Array.isArray(it.data[name])) { %>
+              - <%= it.data[name].length %>
+                <%= it.data[name].length> 1 ? 'items' : 'item' %>
+          </span>
           <% } %>
-      </div>
+        </li>
+      </ul>
     <% }) %>
   </main>
 </body>
