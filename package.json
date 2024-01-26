@@ -9,21 +9,17 @@
   "types": "lib",
   "files": [
     "lib",
-    "public",
     "views"
   ],
   "engines": {
     "node": ">=18.3"
   },
   "scripts": {
-    "css": "tailwindcss -i ./views/input.css -o ./public/output.css",
-    "watch-ts": "tsx watch src/bin.ts fixtures/db.json",
-    "watch-css": "npm run css -- --watch",
-    "dev": "concurrently npm:watch-*",
-    "build": "rm -rf lib && tsc && npm run css",
-    "test": "npm run css && node --import tsx/esm --test src/*.test.ts",
+    "dev": "tsx watch src/bin.ts fixtures/db.json",
+    "build": "rm -rf lib && tsc",
+    "test": "node --import tsx/esm --test src/*.test.ts",
     "lint": "eslint src --ext .ts --ignore-path .gitignore",
-    "prepare": "husky install",
+    "prepare": "husky",
     "prepublishOnly": "npm run build"
   },
   "keywords": [],
@@ -37,7 +33,6 @@
     "concurrently": "^8.2.2",
     "get-port": "^7.0.0",
     "husky": "^9.0.6",
-    "tailwindcss": "^3.4.1",
     "tempy": "^3.1.0",
     "tsx": "^4.7.0",
     "type-fest": "^4.10.1",
