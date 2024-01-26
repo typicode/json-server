@@ -31,7 +31,7 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
   const app = new App()
 
   // Static files
-  app.use(sirv(join(__dirname, '../public'), { dev: !isProduction }))
+  app.use(sirv('public', { dev: !isProduction }))
   options.static
     ?.map((path) => (isAbsolute(path) ? path : join(process.cwd(), path)))
     .forEach((dir) => app.use(sirv(dir, { dev: !isProduction })))

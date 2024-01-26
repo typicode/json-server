@@ -1,0 +1,1 @@
+<!-- Testing automatic serving of files from the 'public/' directory -->

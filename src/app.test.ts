@@ -67,7 +67,7 @@ await test('createApp', async (t) => {
   const arr: Test[] = [
     // Static
     { method: 'GET', url: '/', statusCode: 200 },
-    { method: 'GET', url: '/output.css', statusCode: 200 },
+    { method: 'GET', url: '/test.html', statusCode: 200 },
     { method: 'GET', url: `/${file}`, statusCode: 200 },
 
     // CORS
