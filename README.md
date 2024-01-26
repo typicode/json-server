@@ -18,8 +18,8 @@ Create a `db.json` or `db.json5` file
 ```json
 {
   "posts": [
-    { "id": "1", "title": "a title" },
-    { "id": "2", "title": "another title" }
+    { "id": "1", "title": "a title", "views": 100 },
+    { "id": "2", "title": "another title", "views": 200 }
   ],
   "comments": [
     { "id": "1", "text": "a comment about post 1", "postId": "1" },
@@ -38,8 +38,8 @@ Create a `db.json` or `db.json5` file
 ```json5
 {
   posts: [
-    { id: '1', title: 'a title' },
-    { id: '2', title: 'another title' },
+    { id: '1', title: 'a title', views: 100 },
+    { id: '2', title: 'another title', views: 200 },
   ],
   comments: [
     { id: '1', text: 'a comment about post 1', postId: '1' },
@@ -153,9 +153,9 @@ GET /posts?_sort=id,-views
 - `x.y.z[i]...`
 
 ```
-GET /posts?author.name=foo
-GET /posts?author.email=foo
-GET /posts?tags[0]=foo
+GET /foo?a.b=bar
+GET /foo?x.y_lt=100
+GET /foo?arr[0]=bar
 ```
 
 ### Embed
