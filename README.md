@@ -132,11 +132,11 @@ GET /posts?_start=10&_limit=10
 
 ### Paginate
 
-- `page`
-- `per_page` (default = 10)
+- `_page`
+- `_limit` (default = 10)
 
 ```
-GET /posts?_page=1&_per_page=25
+GET /posts?_page=1&_limit=25
 ```
 
 ### Sort
