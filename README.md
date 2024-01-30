@@ -183,6 +183,12 @@ json-server -s ./static
 json-server -s ./static -s ./node_modules
 ```
 
+## Notable differences with v0.17
+
+- ìd` is always a string and will be generated for you if missing
+- use `_per_page` with `_page` instead of `_limit`for pagination
+- use Chrome's `Network tab > throtling` to delay requests instead of `--delay` CLI option
+
 ## License
 
 This project uses the [Fair Source License](https://fair.io/). Note: Only organizations with 3+ users need to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. This license helps keep the project sustainable and healthy, benefiting everyone.
