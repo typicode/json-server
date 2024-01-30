@@ -185,7 +185,7 @@ json-server -s ./static -s ./node_modules
 
 ## Notable differences with v0.17
 
-- ìd` is always a string and will be generated for you if missing
+- `id` is always a string and will be generated for you if missing
 - use `_per_page` with `_page` instead of `_limit`for pagination
 - use Chrome's `Network tab > throtling` to delay requests instead of `--delay` CLI option
 
