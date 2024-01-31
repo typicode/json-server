@@ -25,6 +25,10 @@
   "keywords": [],
   "author": "typicode <typicode@gmail.com>",
   "license": "SEE LICENSE IN ./LICENSE",
+  "repository": {
+		"type": "git",
+		"url": "git+https://github.com/typicode/json-server.git"
+	},
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
     "@tailwindcss/typography": "^0.5.10",
