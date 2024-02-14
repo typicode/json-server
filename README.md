@@ -101,7 +101,9 @@ __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/
 Install JSON Server 
 
 ```
-npm install -g json-server
+npm install -g json-server@0.17.4    # NPM
+yarn global add json-server@0.17.4   # Yarn
+pnpm add -g json-server@0.17.4       # PNPM
 ```
 
 Create a `db.json` file with some data
