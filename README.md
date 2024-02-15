@@ -1,9 +1,9 @@
-> [!IMPORTANT]
-> Viewing alpha v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0)
-
 # json-server
 
 [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
+
+> [!IMPORTANT]
+> Viewing alpha v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0)
 
 ## Install
 
@@ -82,6 +82,13 @@ Run `json-server --help` for a list of options
 |  <a href="https://betterstack.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/44679f8f-9671-470d-b77e-26d90b90cbdc" height="40px"></a>  |
 
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
+
+## Sponsorware
+
+> [!NOTE]
+> This project uses the [Fair Source License](https://fair.io/). Only organizations with 3+ users are kindly asked to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. __This license helps keep the project sustainable and healthy, benefiting everyone.__
+> 
+> For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
 
 ## Routes
 
@@ -188,9 +195,3 @@ json-server -s ./static -s ./node_modules
 - `id` is always a string and will be generated for you if missing
 - use `_per_page` with `_page` instead of `_limit`for pagination
 - use Chrome's `Network tab > throtling` to delay requests instead of `--delay` CLI option
-
-## License
-
-This project uses the [Fair Source License](https://fair.io/). Note: Only organizations with 3+ users need to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. This license helps keep the project sustainable and healthy, benefiting everyone.
-
-For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
