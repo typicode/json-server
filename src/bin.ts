@@ -22,6 +22,7 @@ Options:
   -p, --port <port>  Port (default: 3000)
   -h, --host <host>  Host (default: localhost)
   -s, --static <dir> Static files directory (multiple allowed)
+  -q, --quiet        Suppress log messages
   --help             Show this message
   --version          Show version number
 `)
@@ -33,6 +34,7 @@ function args(): {
   port: number
   host: string
   static: string[]
+  quiet: boolean
 } {
   try {
     const { values, positionals } = parseArgs({
@@ -52,6 +54,11 @@ function args(): {
           short: 's',
           multiple: true,
           default: [],
+        },
+        quiet: {
+          type: 'boolean',
+          short: 'q',
+          default: false,
         },
         help: {
           type: 'boolean',
@@ -97,9 +104,10 @@ function args(): {
     // App args and options
     return {
       file: positionals[0] ?? '',
-      port: parseInt(values.port as string),
-      host: values.host as string,
-      static: values.static as string[],
+      port: parseInt(values.port),
+      host: values.host,
+      static: values.static,
+      quiet: values.quiet,
     }
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ERR_PARSE_ARGS_UNKNOWN_OPTION') {
@@ -112,7 +120,7 @@ function args(): {
   }
 }
 
-const { file, port, host, static: staticArr } = args()
+const { file, port, host, static: staticArr, quiet } = args()
 
 if (!existsSync(file)) {
   console.log(chalk.red(`File ${file} not found`))
@@ -140,7 +148,7 @@ const db = new Low<Data>(observer, {})
 await db.read()
 
 // Create app
-const app = createApp(db, { logger: false, static: staticArr })
+const app = createApp(db, { loggerEnabled: !quiet, static: staticArr })
 
 function logRoutes(data: Data) {
   console.log(chalk.bold('Endpoints:'))
