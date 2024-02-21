@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import { App } from '@tinyhttp/app'
 import { cors } from '@tinyhttp/cors'
+import { logger } from '@tinyhttp/logger'
 import { Eta } from 'eta'
 import { Low } from 'lowdb'
 import { json } from 'milliparsec'
@@ -14,7 +15,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const isProduction = process.env['NODE_ENV'] === 'production'
 
 export type AppOptions = {
-  logger?: boolean
+  loggerEnabled?: boolean
   static?: string[]
 }
 
@@ -41,6 +42,10 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   // Body parser
   app.use(json())
+
+  if (options.loggerEnabled) {
+    app.use(logger())
+  }
 
   app.get('/', (_req, res) =>
     res.send(eta.render('index.html', { data: db.data })),
