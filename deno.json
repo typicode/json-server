@@ -1,4 +1,7 @@
 {
+  "tasks": {
+    "test": ""
+  },
   "imports": {
     "sort-on": "npm:sort-on",
     "sirv": "npm:sirv",
@@ -7,11 +10,12 @@
     "lowdb/node": "npm:lowdb/node",
     "json5": "npm:json5",
     "inflection": "npm:inflection",
-    "eta": "https://deno.land/x/eta@v3.2.0",
+    "eta": "npm:eta",
     "dot-prop": "npm:dot-prop",
     "chokidar": "npm:chokidar",
     "chalk": "npm:chalk@5.3.0",
     "@tinyhttp/app": "npm:@tinyhttp/app",
-    "@tinyhttp/cors": "npm:@tinyhttp/cors"
+    "@tinyhttp/cors": "npm:@tinyhttp/cors",
+    "get-port": "https://deno.land/x/port@1.0.0/mod.ts"
   }
 }
