@@ -1,6 +1,8 @@
 {
   "tasks": {
-    "test": "deno test -A"
+    "test": "deno test -A",
+    "start": "deno run -A main.ts",
+    "dev": "deno run -A main.ts -p 3000 fixtures/db.json"
   },
   "imports": {
     "sort-on": "npm:sort-on",
@@ -16,7 +18,9 @@
     "chalk": "npm:chalk@5.3.0",
     "@tinyhttp/app": "npm:@tinyhttp/app",
     "@tinyhttp/cors": "npm:@tinyhttp/cors",
-    "get-port": "https://deno.land/x/port@1.0.0/mod.ts"
+    "get-port": "https://deno.land/x/port@1.0.0/mod.ts",
+    "type-fest": "npm:type-fest",
+    "tempy": "npm:tempy"
   },
   "exclude": [
     "node_modules"
