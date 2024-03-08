@@ -2,8 +2,9 @@
 
 [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
-> [!IMPORTANT]
-> Viewing alpha v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0)
+> [!IMPORTANT] Viewing alpha v1 documentation – usable but expect breaking
+> changes. For stable version, see
+> [here](https://github.com/typicode/json-server/tree/v0)
 
 ## Install
 
@@ -85,10 +86,14 @@ Run `json-server --help` for a list of options
 
 ## Sponsorware
 
-> [!NOTE]
-> This project uses the [Fair Source License](https://fair.io/). Only organizations with 3+ users are kindly asked to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. __This license helps keep the project sustainable and healthy, benefiting everyone.__
-> 
-> For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
+> [!NOTE] This project uses the [Fair Source License](https://fair.io/). Only
+> organizations with 3+ users are kindly asked to contribute a small amount
+> through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage.
+> **This license helps keep the project sustainable and healthy, benefiting
+> everyone.**
+>
+> For more information, FAQs, and the rationale behind this, visit
+> [https://fair.io/](https://fair.io/).
 
 ## Routes
 
@@ -115,7 +120,7 @@ PATCH /profile
 
 ### Conditions
 
-- ` ` → `==`
+- `` → `==`
 - `lt` → `<`
 - `lte` → `<=`
 - `gt` → `>`
@@ -181,7 +186,8 @@ DELETE /posts/1?_dependent=comments
 
 ## Serving static files
 
-If you create a `./public` directory, JSON Serve will serve its content in addition to the REST API.
+If you create a `./public` directory, JSON Serve will serve its content in
+addition to the REST API.
 
 You can also add custom directories using `-s/--static` option.
 
@@ -194,4 +200,5 @@ json-server -s ./static -s ./node_modules
 
 - `id` is always a string and will be generated for you if missing
 - use `_per_page` with `_page` instead of `_limit`for pagination
-- use Chrome's `Network tab > throtling` to delay requests instead of `--delay` CLI option
+- use Chrome's `Network tab > throtling` to delay requests instead of `--delay`
+  CLI option

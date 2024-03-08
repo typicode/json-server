@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "test": ""
+    "test": "deno test -A"
   },
   "imports": {
     "sort-on": "npm:sort-on",
@@ -17,5 +17,8 @@
     "@tinyhttp/app": "npm:@tinyhttp/app",
     "@tinyhttp/cors": "npm:@tinyhttp/cors",
     "get-port": "https://deno.land/x/port@1.0.0/mod.ts"
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
