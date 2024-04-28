@@ -33,11 +33,16 @@ module.exports = (db, name, opts) => {
       [].concat(e).forEach((innerResource) => {
         const plural = pluralize(innerResource)
         if (db.get(plural).value()) {
-          const prop = `${innerResource}${opts.foreignKeySuffix}`
-          resource[innerResource] = db
-            .get(plural)
-            .getById(resource[prop])
-            .value()
+          // Search for `<resourceName>` before `<resourceName>Id` key in the resource
+          // if `<resourceName>` not found, then look for `<resourceName>Id`
+          // we need this for hasMany relationship, e.g. `posts/3?_expand=tags`
+          // here will search first for `tags` key inside `resource` before looking for `tagsId`  
+          const prop = Object.keys(resource).includes(innerResource) ? innerResource : `${innerResource}${opts.foreignKeySuffix}`;
+
+          // Now just check if its value is an array, e.g. `"tags": [1, 2]` or just `"userId": 3`
+          resource[innerResource] = (Array.isArray(resource[prop]))
+            ? resource[prop].reduce((acc, id) => [...acc, db.get(plural).getById(id).value()], [])
+            : resource[innerResource] = db.get(plural).getById(resource[prop]).value();
         }
       })
   }
