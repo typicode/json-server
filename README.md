@@ -5,6 +5,8 @@
 > [!IMPORTANT]
 > Viewing alpha v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0)
 
+👋 _Hey! Using React, Vue or Astro? Check my new project [MistCSS](https://github.com/typicode/mistcss) to write 50% less code._
+
 ## Install
 
 ```shell
