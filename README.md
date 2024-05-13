@@ -3,7 +3,7 @@
 [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
 > [!IMPORTANT]
-> Viewing alpha v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0)
+> Viewing beta v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0)
 
 👋 _Hey! Using React, Vue or Astro? Check my new project [MistCSS](https://github.com/typicode/mistcss) to write 50% less code._
 
@@ -92,7 +92,7 @@ Run `json-server --help` for a list of options
 
 > [!NOTE]
 > This project uses the [Fair Source License](https://fair.io/). Only organizations with 3+ users are kindly asked to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. __This license helps keep the project sustainable and healthy, benefiting everyone.__
-> 
+>
 > For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
 
 ## Routes
