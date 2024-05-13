@@ -285,12 +285,26 @@ export class Service {
             }
             // item_ne=value
             case Condition.ne: {
-              if (!(itemValue != paramValue)) return false
+              switch (typeof itemValue) {
+                case 'number':
+                  return itemValue !== parseInt(paramValue)
+                case 'string':
+                  return itemValue !== paramValue
+                case 'boolean':
+                  return itemValue !== (paramValue === 'true')
+              }
               break
             }
             // item=value
             case Condition.default: {
-              if (!(itemValue == paramValue)) return false
+              switch (typeof itemValue) {
+                case 'number':
+                  return itemValue === parseInt(paramValue)
+                case 'string':
+                  return itemValue === paramValue
+                case 'boolean':
+                  return itemValue === (paramValue === 'true')
+              }
             }
           }
         }

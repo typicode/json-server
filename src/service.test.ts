@@ -21,6 +21,7 @@ const post1 = {
   id: '1',
   title: 'a',
   views: 100,
+  published: true,
   author: { name: 'foo' },
   tags: ['foo', 'bar'],
 }
@@ -28,6 +29,7 @@ const post2 = {
   id: '2',
   title: 'b',
   views: 200,
+  published: false,
   author: { name: 'bar' },
   tags: ['bar'],
 }
@@ -35,6 +37,7 @@ const post3 = {
   id: '3',
   title: 'c',
   views: 300,
+  published: false,
   author: { name: 'baz' },
   tags: ['foo'],
 }
@@ -183,7 +186,16 @@ await test('find', async (t) => {
         params: { _sort: '-views,id' },
         res: [post3, post2, post1],
       },
-
+      {
+        name: POSTS,
+        params: { published: 'true' },
+        res: [post1],
+      },
+      {
+        name: POSTS,
+        params: { published: 'false' },
+        res: [post2, post3],
+      },
       {
         name: POSTS,
         params: { _start: 0, _end: 2 },
