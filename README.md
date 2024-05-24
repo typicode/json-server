@@ -77,13 +77,20 @@ Run `json-server --help` for a list of options
 
 ## Sponsors ✨
 
-|                                                                                    Sponsors                                                                                    |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|                         <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="80px"></a>                          |
-| <a href="https://www.storyblok.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="40px"></a> |
-|  <a href="https://betterstack.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/44679f8f-9671-470d-b77e-26d90b90cbdc" height="40px"></a>  |
-| <a href="https://www.globalsoftwarecompanies.com" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/d0bb2e9b-9b74-4d91-9c9e-f3c87e152918" height="40px"></a>  |
-| <a href="https://beeceptor.com/?utm_source=json-server"><img src="https://github.com/typicode/json-server/assets/5502029/57b852a6-60b9-426b-986e-a148e82783c2" height="40px"></a> |
+| Sponsors |
+| :---: |
+| <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="100px"></a> |
+
+| Sponsors |
+| :---: |
+| <a href="https://konghq.com/"><img src="https://github.com/typicode/json-server/assets/5502029/e8d8ecb2-3c45-4f60-92d0-a060b820fa7f" height="75px"></a> |
+
+| Sponsors | |
+| :---: | :---: |
+| <a href="https://www.storyblok.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="35px"></a> | <a href="https://betterstack.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/44679f8f-9671-470d-b77e-26d90b90cbdc" height="35px"></a> |
+| <a href="https://www.globalsoftwarecompanies.com" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/d0bb2e9b-9b74-4d91-9c9e-f3c87e152918" height="35px"></a> | <a href="https://beeceptor.com/?utm_source=json-server"><img src="https://github.com/typicode/json-server/assets/5502029/57b852a6-60b9-426b-986e-a148e82783c2" height="35px"></a> |
+
+
 
 
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
