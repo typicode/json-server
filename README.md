@@ -83,7 +83,7 @@ Run `json-server --help` for a list of options
 
 | Sponsors |
 | :---: |
-| <a href="https://konghq.com/"><img src="https://github.com/typicode/json-server/assets/5502029/e8d8ecb2-3c45-4f60-92d0-a060b820fa7f" height="75px"></a> |
+| <a href="https://konghq.com/products/kong-konnect/register?utm_medium=referral&utm_source=github&utm_campaign=platform&utm_content=json-server"><img src="https://github.com/typicode/json-server/assets/5502029/e8d8ecb2-3c45-4f60-92d0-a060b820fa7f" height="75px"></a> |
 
 | Sponsors | |
 | :---: | :---: |
