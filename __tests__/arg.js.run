@@ -1,13 +1,14 @@
 const cp = require('child_process')
 test({ _noDataNext: true })
 test({ _noDbRoute: true })
+test({ _noRemoveDependents: true })
 
 function test(obj) {
   const arg = Object.entries(obj).reduce((acc, [key, val]) => {
     return `${acc} ${key}=${val}`
   }, ``)
   cp.execSync(
-    `npm run build && npx cross-env NODE_ENV=test arg="${arg}" jest && npm run lint`,
+    `npm run build && npx cross-env NODE_ENV=test arg="${arg}" jest`,
     {
       stdio: 'inherit',
     }

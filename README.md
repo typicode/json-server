@@ -1,29 +1,78 @@
+This code is modified based on [typicode/json-server](https://github.com/typicode/json-server). Used to change some features, if these features are liked, they will apply to typicode for a merge.
+
+### Install
+
+``` sh
+npm i @wll8/json-server 
+# or npm i -g @wll8/json-server
+```
+
+### jsonServer.defaults
+Now you can customize the size of the request body
+
+``` js
+jsonServer.defaults({
+  bodyParser: [
+    bodyParser.json({
+      limit: `100mb`,
+      extended: false,
+    }),
+    bodyParser.urlencoded({
+      extended: false,
+    }),
+  ]
+})
+```
+
+- issues: [#38](https://github.com/typicode/json-server/pull/38), [#37](https://github.com/typicode/json-server/pull/37)
+
+### express
+At present, it seems that json-server relies heavily on express and is inconvenient to upgrade, so using its dependencies directly will make me install one less package
+
+``` js
+const {lib: { express }} = jsonServer
+```
+
+  
+### options._noRemoveDependents
+After deleting data, do not clean up data that are not related to each other
+
+- type: boolean
+- Defaults: false
+- issues: [#885](https://github.com/typicode/json-server/issues/885)
+
+### options._noDataNext
+Allows entry to the next route when there is no data, which makes it work seamlessly with other programs
+
+- type: boolean
+- Defaults: false
+- issues: [#1330](https://github.com/typicode/json-server/issues/1330)
+
+### options._noDbRoute
+Assuming a db.json data breach poses a risk, it can be turned off with this option
+
+- type: boolean
+- Defaults: false
+
 # JSON Server [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg?branch=master)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
 Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)
 
 Created with <3 for front-end developers who need a quick back-end for prototyping and mocking.
 
-* [Egghead.io free video tutorial - Creating demo APIs with json-server](https://egghead.io/lessons/nodejs-creating-demo-apis-with-json-server)
+> [!NOTE]
+> Try JSON Server `v1-alpha` [here](https://github.com/typicode/json-server) 🚀
+
 * [JSONPlaceholder - Live running version](https://jsonplaceholder.typicode.com)
 * [__My JSON Server__ - no installation required, use your own data](https://my-json-server.typicode.com)
 
 See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
 * :owl: [lowdb - local JSON database](https://github.com/typicode/lowdb)
-* ✅ [xv - a beautifully simple and capable test runner](https://github.com/typicode/xv)
 
 <p>&nbsp;</p>
 
-<h2 align="center">Gold sponsors 🥇</h2>
-
-<p>&nbsp;</p>
-
-<p align="center">
-  <a href="https://tryretool.com/?utm_source=sponsor&utm_campaign=typicode" target="_blank">
-    <img src="https://i.imgur.com/IBItATn.png" height="70px">
-  </a>
-</p>
+<h2 align="center">Gold sponsors</h2>
 
 <p>&nbsp;</p>
 
@@ -35,23 +84,17 @@ See also:
 
 <p>&nbsp;</p>
 
-<p align="center">
-  <a href="https://megafamous.com/buy-instagram-followers" target="_blank">
-    <img src="https://jsonplaceholder.typicode.com/megafamous.png" height="70px">
-  </a>
-</p>
+<h2 align="center">Silver sponsors</h2>
 
 <p>&nbsp;</p>
 
-<p>&nbsp;</p>
-
-<h2 align="center">Silver sponsors 🥈</h2>
+<h2 align="center">Bronze sponsors</h2>
 
 <p>&nbsp;</p>
 
 <p align="center">
-  <a href="https://cased.com" target="_blank">
-    <img src="https://user-images.githubusercontent.com/5502029/194441951-b7dca49d-efd6-496d-900b-288004717f11.png" height="55px">
+  <a href="https://www.storyblok.com/" target="_blank">
+    <img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="40px">
   </a>
 </p>
 
@@ -114,7 +157,9 @@ __Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/
 Install JSON Server 
 
 ```
-npm install -g json-server
+npm install -g json-server@0.17.4    # NPM
+yarn global add json-server@0.17.4   # Yarn
+pnpm add -g json-server@0.17.4       # PNPM
 ```
 
 Create a `db.json` file with some data
@@ -348,7 +393,7 @@ module.exports = () => {
 $ json-server index.js
 ```
 
-__Tip__ use modules like [Faker](https://github.com/Marak/faker.js), [Casual](https://github.com/boo1ean/casual), [Chance](https://github.com/victorquinn/chancejs) or [JSON Schema Faker](https://github.com/json-schema-faker/json-schema-faker).
+__Tip__ use modules like [Faker](https://github.com/faker-js/faker), [Casual](https://github.com/boo1ean/casual), [Chance](https://github.com/victorquinn/chancejs) or [JSON Schema Faker](https://github.com/json-schema-faker/json-schema-faker).
 
 ### HTTPS
 
@@ -363,7 +408,7 @@ Create a `routes.json` file. Pay attention to start every route with `/`.
   "/api/*": "/$1",
   "/:resource/:id/show": "/:resource/:id",
   "/posts/:category": "/posts?category=:category",
-  "/articles\\?id=:id": "/posts/:id"
+  "/articles?id=:id": "/posts/:id"
 }
 ```
 
@@ -622,7 +667,6 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 * [Node Module Of The Week - json-server](http://nmotw.in/json-server/)
 * [ng-admin: Add an AngularJS admin GUI to any RESTful API](http://marmelab.com/blog/2014/09/15/easy-backend-for-your-restful-api.html)
 * [Fast prototyping using Restangular and Json-server](https://glebbahmutov.com/blog/fast-prototyping-restangular-and-json-server/)
-* [Create a Mock REST API in Seconds for Prototyping your Frontend](https://coligo.io/create-mock-rest-api-with-json-server/)
 * [No API? No Problem! Rapid Development via Mock APIs](https://medium.com/@housecor/rapid-development-via-mock-apis-e559087be066#.93d7w8oro)
 * [Zero Code REST With json-server](https://dzone.com/articles/zero-code-rest-with-json-server)
 

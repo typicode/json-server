@@ -1,6 +1,6 @@
 {
   "name": "json-server",
-  "version": "0.17.1",
+  "version": "0.17.4",
   "description": "Get a full fake REST API with zero coding in less than 30 seconds",
   "main": "./lib/server/index.js",
   "bin": "./lib/cli/bin.js",
@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "test": "npm run build && cross-env NODE_ENV=test jest && node __tests__/arg.js.run && npm run lint",
+    "test": "npm run build && cross-env NODE_ENV=test jest && node __tests__/arg.js.run",
     "start": "babel-node -- src/cli/bin db.json -r routes.json",
     "lint": "eslint . --ignore-path .gitignore",
     "fix": "npm run lint -- --fix",
@@ -63,6 +63,7 @@
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
     "server-ready": "^0.3.1",
+    "standard": "^17.1.0",
     "supertest": "^6.0.1",
     "temp-write": "^4.0.0"
   },

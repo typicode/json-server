@@ -17,6 +17,7 @@ module.exports = (db, opts) => {
     {
       foreignKeySuffix: 'Id',
       _isFake: false,
+      _noRemoveDependents: false,
       _noDataNext: false,
       _noDbRoute: false,
       bodyParser: undefined,
@@ -68,6 +69,11 @@ module.exports = (db, opts) => {
 
   // Create routes
   db.forEach((value, key) => {
+    if (key === '$schema') {
+      // ignore $schema
+      return
+    }
+
     if (_.isPlainObject(value)) {
       router.use(`/${key}`, singular(db, key, opts))
       return
