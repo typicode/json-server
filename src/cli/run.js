@@ -15,6 +15,9 @@ function prettyPrint(argv, object, rules) {
   console.log()
   console.log(chalk.bold('  Resources'))
   for (const prop in object) {
+    // skip printing $schema nodes
+    if (prop === '$schema') continue
+
     console.log(`  ${root}/${prop}`)
   }
 
@@ -35,7 +38,10 @@ function prettyPrint(argv, object, rules) {
 function createApp(db, routes, middlewares, argv) {
   const app = jsonServer.create()
 
-  const router = jsonServer.router(db, argv)
+  const router = jsonServer.router(
+    db,
+    argv,
+  )
 
   const defaultsOpts = {
     _noRemoveDependents: argv._noRemoveDependents,
@@ -136,8 +142,8 @@ module.exports = function (argv) {
         if (error.errno === 'EADDRINUSE')
           console.log(
             chalk.red(
-              `Cannot bind to the port ${error.port}. Please specify another port number either through --port argument or through the json-server.json configuration file`
-            )
+              `Cannot bind to the port ${error.port}. Please specify another port number either through --port argument or through the json-server.json configuration file`,
+            ),
           )
         else console.log('Some error occurred', error)
         process.exit(1)
@@ -151,8 +157,8 @@ module.exports = function (argv) {
       // Snapshot
       console.log(
         chalk.gray(
-          '  Type s + enter at any time to create a snapshot of the database'
-        )
+          '  Type s + enter at any time to create a snapshot of the database',
+        ),
       )
 
       // Support nohup
@@ -169,7 +175,7 @@ module.exports = function (argv) {
           const state = app.db.getState()
           fs.writeFileSync(file, JSON.stringify(state, null, 2), 'utf-8')
           console.log(
-            `  Saved snapshot to ${path.relative(process.cwd(), file)}\n`
+            `  Saved snapshot to ${path.relative(process.cwd(), file)}\n`,
           )
         }
       })
@@ -212,7 +218,7 @@ module.exports = function (argv) {
                 const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
                 if (isDatabaseDifferent) {
                   console.log(
-                    chalk.gray(`  ${source} has changed, reloading...`)
+                    chalk.gray(`  ${source} has changed, reloading...`),
                   )
                   server && server.destroy(() => start())
                 }
@@ -229,7 +235,7 @@ module.exports = function (argv) {
               const watchedFile = path.resolve(watchedDir, file)
               if (watchedFile === path.resolve(argv.routes)) {
                 console.log(
-                  chalk.gray(`  ${argv.routes} has changed, reloading...`)
+                  chalk.gray(`  ${argv.routes} has changed, reloading...`),
                 )
                 server && server.destroy(() => start())
               }

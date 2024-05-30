@@ -15,7 +15,7 @@ function ResourceList({ db }) {
           ResourceItem({
             name,
             length: Array.isArray(db[name]) && db[name].length,
-          })
+          }),
         )
         .join('')}
     </ul>
@@ -40,7 +40,7 @@ window
   .then((response) => response.json())
   .then(
     (db) =>
-      (document.getElementById('resources').innerHTML = ResourcesBlock({ db }))
+      (document.getElementById('resources').innerHTML = ResourcesBlock({ db })),
   )
 
 function CustomRoutesBlock({ customRoutes }) {
@@ -56,7 +56,7 @@ function CustomRoutesBlock({ customRoutes }) {
                 `<tr>
               <td>${rule}</td>
               <td><code>⇢</code> ${customRoutes[rule]}</td>
-            </tr>`
+            </tr>`,
             )
             .join('')}
         </table>
@@ -72,5 +72,5 @@ window
     (customRoutes) =>
       (document.getElementById('custom-routes').innerHTML = CustomRoutesBlock({
         customRoutes,
-      }))
+      })),
   )

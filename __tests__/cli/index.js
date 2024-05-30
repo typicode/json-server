@@ -38,12 +38,12 @@ describe('cli', () => {
         posts: [{ id: 1 }, { _id: 2 }],
         comments: [{ id: 1, post_id: 1 }],
       }),
-      'db.json'
+      'db.json',
     )
 
     routesFile = tempWrite.sync(
       JSON.stringify({ '/blog/*': '/$1' }),
-      'routes.json'
+      'routes.json',
     )
 
     ++PORT
@@ -99,7 +99,18 @@ describe('cli', () => {
     })
   })
 
-  describe.skip('remote db', () => {
+  describe('seed.cjs', () => {
+    beforeEach((done) => {
+      child = cli(['../../__fixtures__/seed.cjs'])
+      serverReady(PORT, done)
+    })
+
+    test('should support CommonJS file', (done) => {
+      request.get('/posts').expect(200, done)
+    })
+  })
+
+  describe('remote db', () => {
     beforeEach((done) => {
       child = cli(['https://jsonplaceholder.typicode.com/db'])
       serverReady(PORT, done)

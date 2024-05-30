@@ -53,7 +53,7 @@ module.exports = function (source) {
 
       if (typeof dataFn !== 'function') {
         throw new Error(
-          'The database is a JavaScript file but the export is not a function.'
+          'The database is a JavaScript file but the export is not a function.',
         )
       }
 

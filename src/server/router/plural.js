@@ -165,7 +165,7 @@ module.exports = (db, name, opts) => {
       res.setHeader('X-Total-Count', chain.size())
       res.setHeader(
         'Access-Control-Expose-Headers',
-        `X-Total-Count${_page ? ', Link' : ''}`
+        `X-Total-Count${_page ? ', Link' : ''}`,
       )
     }
 
@@ -180,28 +180,28 @@ module.exports = (db, name, opts) => {
       if (page.first) {
         links.first = fullURL.replace(
           `page=${page.current}`,
-          `page=${page.first}`
+          `page=${page.first}`,
         )
       }
 
       if (page.prev) {
         links.prev = fullURL.replace(
           `page=${page.current}`,
-          `page=${page.prev}`
+          `page=${page.prev}`,
         )
       }
 
       if (page.next) {
         links.next = fullURL.replace(
           `page=${page.current}`,
-          `page=${page.next}`
+          `page=${page.next}`,
         )
       }
 
       if (page.last) {
         links.last = fullURL.replace(
           `page=${page.current}`,
-          `page=${page.last}`
+          `page=${page.last}`,
         )
       }
 

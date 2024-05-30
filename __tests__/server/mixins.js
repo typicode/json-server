@@ -33,7 +33,7 @@ describe('mixins', () => {
 
       assert.deepStrictEqual(
         _.getRemovable(db, { foreignKeySuffix: 'Id' }),
-        expected
+        expected,
       )
     })
 
@@ -45,7 +45,7 @@ describe('mixins', () => {
 
       assert.deepStrictEqual(
         _.getRemovable(db, { foreignKeySuffix: 'Id' }),
-        expected
+        expected,
       )
     })
   })

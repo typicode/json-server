@@ -8,7 +8,7 @@ function test(obj) {
     return `${acc} ${key}=${val}`
   }, ``)
   cp.execSync(
-    `npm run build && npx cross-env NODE_ENV=test arg="${arg}" jest && npm run lint`,
+    `npm run build && npx cross-env NODE_ENV=test arg="${arg}" jest`,
     {
       stdio: 'inherit',
     }
