@@ -80,6 +80,8 @@ Run `json-server --help` for a list of options
 | Sponsors |
 | :---: |
 | <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="100px"></a> |
+| <a href="https://zuplo.com"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github.com/typicode/json-server/assets/5502029/bb7abea9-fc54-4612-b7ab-0221c60b8ac7"><img alt="scalar" src="https://github.com/typicode/json-server/assets/5502029/51f5afed-7ba0-41bf-b9f2-ef9d8ab9dff7"></picture></a> |
+
 
 | Sponsors |
 | :---: |
