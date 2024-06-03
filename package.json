@@ -45,6 +45,7 @@
   "dependencies": {
     "@tinyhttp/app": "^2.2.3",
     "@tinyhttp/cors": "^2.0.0",
+    "@tinyhttp/logger": "^2.0.0",
     "chalk": "^5.3.0",
     "chokidar": "^3.5.3",
     "dot-prop": "^8.0.2",
