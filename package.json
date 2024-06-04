@@ -1,6 +1,6 @@
 {
   "name": "json-server",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "",
   "type": "module",
   "bin": {
@@ -26,29 +26,29 @@
   "author": "typicode <typicode@gmail.com>",
   "license": "SEE LICENSE IN ./LICENSE",
   "repository": {
-		"type": "git",
-		"url": "git+https://github.com/typicode/json-server.git"
-	},
+    "type": "git",
+    "url": "git+https://github.com/typicode/json-server.git"
+  },
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
-    "@tailwindcss/typography": "^0.5.10",
-    "@types/node": "^20.11.7",
-    "@typicode/eslint-config": "^1.2.0",
+    "@tailwindcss/typography": "^0.5.13",
+    "@types/node": "^20.14.1",
+    "@typicode/eslint-config": "^2.0.0",
     "concurrently": "^8.2.2",
-    "get-port": "^7.0.0",
-    "husky": "^9.0.6",
+    "get-port": "^7.1.0",
+    "husky": "^9.0.11",
     "tempy": "^3.1.0",
-    "tsx": "^4.7.0",
-    "type-fest": "^4.10.1",
-    "typescript": "^5.3.3"
+    "tsx": "^4.11.2",
+    "type-fest": "^4.18.3",
+    "typescript": "^5.4.5"
   },
   "dependencies": {
     "@tinyhttp/app": "^2.2.3",
     "@tinyhttp/cors": "^2.0.0",
     "chalk": "^5.3.0",
-    "chokidar": "^3.5.3",
-    "dot-prop": "^8.0.2",
-    "eta": "^3.2.0",
+    "chokidar": "^3.6.0",
+    "dot-prop": "^9.0.0",
+    "eta": "^3.4.0",
     "inflection": "^3.0.0",
     "json5": "^2.2.3",
     "lowdb": "^7.0.1",
