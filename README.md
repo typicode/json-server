@@ -194,7 +194,7 @@ DELETE /posts/1?_dependent=comments
 
 ## Serving static files
 
-If you create a `./public` directory, JSON Serve will serve its content in addition to the REST API.
+If you create a `./public` directory, JSON Server will serve its content in addition to the REST API.
 
 You can also add custom directories using `-s/--static` option.
 
