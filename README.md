@@ -26,6 +26,10 @@ See also:
   </a>
 </p>
 
+<p align="center">
+  <a href="https://zuplo.link/json-server-gh"><img src="https://github.com/typicode/json-server/assets/5502029/928b7526-0fdf-46ae-80d9-27fa0ef5f430"></a> |
+</p>
+
 <p>&nbsp;</p>
 
 <h2 align="center">Silver sponsors</h2>
