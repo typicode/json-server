@@ -69,7 +69,8 @@ Get a REST API
 $ curl http://localhost:3000/posts/1
 {
   "id": "1",
-  "title": "a title"
+  "title": "a title",
+  "views": 100
 }
 ```
 
