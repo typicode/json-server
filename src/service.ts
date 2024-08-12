@@ -228,8 +228,7 @@ export class Service {
       conds[key] = [Condition.default, value]
     }
 
-    // Loop through conditions and filter items
-    const res = items.filter((item: Item) => {
+    const reccursiveFilter = (item: Item, conds: Record<string, [Condition, string | string[]]>): boolean => {
       for (const [key, [op, paramValue]] of Object.entries(conds)) {
         if (paramValue && !Array.isArray(paramValue)) {
           // https://github.com/sindresorhus/dot-prop/issues/95
@@ -301,7 +300,9 @@ export class Service {
                 case 'number':
                   return itemValue === parseInt(paramValue)
                 case 'string':
-                  return itemValue === paramValue
+                  const conditions = {...conds}
+                  delete conditions[key]
+                  return itemValue === paramValue && reccursiveFilter(item, conditions)
                 case 'boolean':
                   return itemValue === (paramValue === 'true')
               }
@@ -310,6 +311,11 @@ export class Service {
         }
       }
       return true
+    }
+    
+    // Loop through conditions and filter items
+    const res = items.filter((item: Item) => {
+      return reccursiveFilter(item, conds)
     })
 
     // Sort
