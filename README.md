@@ -90,7 +90,8 @@ Run `json-server --help` for a list of options
 | Sponsors | |
 | :---: | :---: |
 | <a href="https://www.storyblok.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="35px"></a> | <a href="https://betterstack.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/44679f8f-9671-470d-b77e-26d90b90cbdc" height="35px"></a> |
-| <a href="https://route4me.com"><img src="https://github.com/user-attachments/assets/4eab0bac-119e-4b27-8183-8b136190b776" height="35px" alt="Delivery Routing Software and Route Optimization Software"></a> |
+| <a href="https://route4me.com"><img src="https://github.com/user-attachments/assets/4eab0bac-119e-4b27-8183-8b136190b776" height="35px" alt="Delivery Routing Software and Route Optimization Software"></a> | <a href="https://www.speechanddebate.org"><img src="https://github.com/user-attachments/assets/cc7980e4-2147-4499-8de4-4d0c265d0c07" height="35px"></a> |
+
 
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
 
