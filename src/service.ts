@@ -199,7 +199,7 @@ export class Service {
     }
 
     // Convert query params to conditions
-    const conds: Record<string, [Condition, string | string[]]> = {}
+    const conds: [string, Condition, string | string[]][] = []
     for (const [key, value] of Object.entries(query)) {
       if (value === undefined || typeof value !== 'string') {
         continue
@@ -209,7 +209,7 @@ export class Service {
       const op = reArr?.at(1)
       if (op && isCondition(op)) {
         const field = key.replace(re, '')
-        conds[field] = [op, value]
+        conds.push([field, op, value])
         continue
       }
       if (
@@ -225,12 +225,13 @@ export class Service {
       ) {
         continue
       }
-      conds[key] = [Condition.default, value]
+      conds.push([key, Condition.default, value])
     }
 
     // Loop through conditions and filter items
-    const res = items.filter((item: Item) => {
-      for (const [key, [op, paramValue]] of Object.entries(conds)) {
+    let filtered = items
+    for (const [key, op, paramValue] of conds) {
+      filtered = filtered.filter((item: Item) => {
         if (paramValue && !Array.isArray(paramValue)) {
           // https://github.com/sindresorhus/dot-prop/issues/95
           const itemValue: unknown = getProperty(item, key)
@@ -308,13 +309,13 @@ export class Service {
             }
           }
         }
-      }
-      return true
-    })
+        return true
+      })
+    }
 
     // Sort
     const sort = query._sort || ''
-    const sorted = sortOn(res, sort.split(','))
+    const sorted = sortOn(filtered, sort.split(','))
 
     // Slice
     const start = query._start
