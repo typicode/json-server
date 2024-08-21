@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import { App } from '@tinyhttp/app'
 import { cors } from '@tinyhttp/cors'
+import { logger, LogLevel } from '@tinyhttp/logger'
 import { Eta } from 'eta'
 import { Low } from 'lowdb'
 import { json } from 'milliparsec'
@@ -41,6 +42,13 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   // Body parser
   app.use(json())
+
+  // Logger
+  if (options.logger) app.use(logger({
+    methods: ['GET', 'POST'],
+    timestamp: { format: 'HH:mm:ss' },
+    output: { callback: console.log, color: false, level: LogLevel.warn }
+  }))
 
   app.get('/', (_req, res) =>
     res.send(eta.render('index.html', { data: db.data })),

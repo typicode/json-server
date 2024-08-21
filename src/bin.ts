@@ -24,6 +24,7 @@ Options:
   -s, --static <dir> Static files directory (multiple allowed)
   --help             Show this message
   --version          Show version number
+  -l, --logger       Enable log (default: false)
 `)
 }
 
@@ -33,6 +34,7 @@ function args(): {
   port: number
   host: string
   static: string[]
+  logger: boolean
 } {
   try {
     const { values, positionals } = parseArgs({
@@ -58,6 +60,11 @@ function args(): {
         },
         version: {
           type: 'boolean',
+        },
+        logger: {
+          type: 'boolean',
+          short: 'l',
+          default: false,
         },
         // Deprecated
         watch: {
@@ -100,6 +107,7 @@ function args(): {
       port: parseInt(values.port as string),
       host: values.host as string,
       static: values.static as string[],
+      logger: values.logger as boolean,
     }
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ERR_PARSE_ARGS_UNKNOWN_OPTION') {
@@ -112,7 +120,7 @@ function args(): {
   }
 }
 
-const { file, port, host, static: staticArr } = args()
+const { file, port, host, static: staticArr, logger } = args()
 
 if (!existsSync(file)) {
   console.log(chalk.red(`File ${file} not found`))
@@ -140,7 +148,7 @@ const db = new Low<Data>(observer, {})
 await db.read()
 
 // Create app
-const app = createApp(db, { logger: false, static: staticArr })
+const app = createApp(db, { logger: logger, static: staticArr })
 
 function logRoutes(data: Data) {
   console.log(chalk.bold('Endpoints:'))
