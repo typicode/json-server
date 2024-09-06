@@ -1,0 +1,31 @@
+{
+  "maintenanceRequest": {
+    "store": "اسم الفرع",
+    "address": "العنوان",
+    "contactPerson": {
+      "name": "اسم الشخص للتواصل",
+      "phone": "رقم الهاتف",
+      "email": "البريد الإلكتروني"
+    },
+    "requestDetails": {
+      "date": "2024-09-06",
+      "maintenanceType": "كهرباء",
+      "maintenanceType": "سباكه",
+      "maintenanceType": "كشافات",
+      "maintenanceType": "انذار حريق",
+      "maintenanceType": "وحدات التخزين",
+      "maintenanceType": "وحدات العرض",
+      "maintenanceType": "الابواب زجاج",
+      "maintenanceType": "الباب الشطر",
+      "maintenanceType": "الدهانات",
+      "maintenanceType": "إخري", 
+      "problemDescription": "وصف المشكلة هنا",
+      "requestPriority": "مرتفعة",
+      "preferredTime": "صباحاً"
+    },
+    "attachments": {
+      "imageUpload": "url_of_the_image_here",
+      "additionalNotes": "ملاحظات إضافية هنا"
+    }
+  }
+}
