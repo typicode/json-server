@@ -11,7 +11,7 @@ import { createApp } from './app.js'
 import { Data } from './service.js'
 
 type Test = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   method: HTTPMethods
   url: string
   statusCode: number

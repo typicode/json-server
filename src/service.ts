@@ -447,7 +447,7 @@ export class Service {
     const item = items.find((item) => item['id'] === id)
     if (item === undefined) return
     const index = items.indexOf(item)
-    items.splice(index, 1)[0]
+    items.splice(index, 1)
 
     nullifyForeignKey(this.#db, name, id)
     const dependents = ensureArray(dependent)
