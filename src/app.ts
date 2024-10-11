@@ -16,6 +16,7 @@ const isProduction = process.env['NODE_ENV'] === 'production'
 export type AppOptions = {
   logger?: boolean
   static?: string[]
+  chunk?: number
 }
 
 const eta = new Eta({
@@ -80,16 +81,15 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     const { name = '' } = req.params
 
     const interval = 200;
-    const size = 2;
 
     const data = service.find(name) as Item[];
     if (!data.length) {
       return res.sendStatus(404)
     }
 
-    for (let i = 0; i < data.length; i += size) {
+    for (let i = 0; i < data.length; i += options.chunk!) {
       setTimeout(() => {
-        const payload = JSON.stringify(data.slice(i, size + i))
+        const payload = JSON.stringify(data.slice(i, options.chunk! + i))
         res.write(`data: ${payload}\n\n`);
         res.flushHeaders();
 
