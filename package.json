@@ -4,7 +4,7 @@
   "description": "txt",
   "type": "module",
   "bin": {
-    "json-server": "pages/app.tsx"
+    "json-server": "/pages/app.tsx"
   },
   "types": "lib",
   "files": [
@@ -12,12 +12,12 @@
     "views"
   ],
   "engines": {
-    "node": ">=18.3"
+    "node": "18.3"
   },
   "scripts": {
     "dev": "tsx watch src/bin.ts fixtures/db.json",
     "build": "rm -rf lib && tsc",
-    "test": "node --import tsx/esm --test src/*.test.ts",
+    "test": "node --import tsx/esm --test src/bin.ts",
     "lint": "eslint src --ext .ts --ignore-path .gitignore",
     "prepare": "husky",
     "prepublishOnly": "npm run build"
