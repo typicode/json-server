@@ -1,4 +1,4 @@
-{
+z{
   "name": "json-server",
   "version": "1.0.0-beta.0",
   "description": "",
@@ -26,9 +26,9 @@
   "author": "typicode <typicode@gmail.com>",
   "license": "SEE LICENSE IN ./LICENSE",
   "repository": {
-		"type": "git",
-		"url": "git+https://github.com/typicode/json-server.git"
-	},
+    "type": "git",
+    "url": "git+https://github.com/typicode/json-server.git"
+  },
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
     "@tailwindcss/typography": "^0.5.10",
@@ -54,6 +54,12 @@
     "lowdb": "^7.0.1",
     "milliparsec": "^2.3.0",
     "sirv": "^2.0.4",
-    "sort-on": "^6.0.0"
+    "sort-on": "^6.0.0",
+    "wagmi": "^1.2.5",
+    "@rainbow-me/rainbowkit": "^0.7.0",
+    "ethers": "^6.6.0",
+    "next": "13.5.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
