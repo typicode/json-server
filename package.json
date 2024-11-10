@@ -58,7 +58,7 @@
     "sirv": "^2.0.4",
     "sort-on": "^6.0.0",
     "wagmi": "^1.2.5",
-    "rainbowkit": "^0.7.0",
+    "@rainbow-me/rainbowkit": "^0.8.0",    
     "ethers": "^6.6.0",
     "next": "13.5.0",
     "react": "18.2.0",
