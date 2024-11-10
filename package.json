@@ -22,12 +22,12 @@
     "prepare": "husky",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [],
-  "author": "typicode <typicode@gmail.com>",
-  "license": "SEE LICENSE IN ./LICENSE",
+  "keywords": [banana, chain, nft],
+  "author": "monkeymike.eth",
+  "license": "not for use by anyone buy author",
   "repository": {
 		"type": "git",
-		"url": "git+https://github.com/typicode/json-server.git"
+		"url": "git+https://github.com/mon-key-mike/json-server.git"
 	},
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
