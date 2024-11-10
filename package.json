@@ -22,7 +22,7 @@
     "prepare": "husky",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [banana, chain, nft],
+  "keywords": [{"banana", "chain", "nft"}],
   "author": "monkeymike.eth",
   "license": "not for use by anyone buy author",
   "repository": {
