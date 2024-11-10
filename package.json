@@ -1,10 +1,10 @@
 {
   "name": "json-server",
-  "version": "1.0.0-beta.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "txt",
   "type": "module",
   "bin": {
-    "json-server": "lib/bin.js"
+    "json-server": "pages/app.tsx"
   },
   "types": "lib",
   "files": [
