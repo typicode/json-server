@@ -62,7 +62,7 @@
       "wagmi":"0.9.0",
       "@rainbow-me/rainbowkit":"^0.8.0",
       "ethers":"^6.6.0",
-      "next":"13.6.0",
+      "next":"15.0.3",
       "react":"18.2.0",
       "react-dom":"18.2.0"
    }
