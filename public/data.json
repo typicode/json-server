@@ -1,0 +1,21 @@
+{
+  "title": "ApeChain Bridge",
+  "description": "Welcome to ApeChain Bridge on Caldera Curtis Testnet. Connect to transfer and manage assets across Sepolia and Arbitrum testnets.",
+  "features": [
+    {
+      "id": 1,
+      "name": "Cross-Chain Compatibility",
+      "details": "Seamlessly transfer assets between Sepolia and Arbitrum testnets."
+    },
+    {
+      "id": 2,
+      "name": "Secure Transactions",
+      "details": "Enhanced security measures for smooth, safe transactions."
+    },
+    {
+      "id": 3,
+      "name": "Real-Time Display",
+      "details": "Get real-time updates and interactions with Caldera Curtis Testnet."
+    }
+  ]
+}
