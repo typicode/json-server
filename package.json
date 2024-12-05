@@ -33,6 +33,7 @@
     "@eslint/js": "^9.11.0",
     "@sindresorhus/tsconfig": "^6.0.0",
     "@tailwindcss/typography": "^0.5.15",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.5.5",
     "concurrently": "^9.0.1",
     "eslint": "^9.11.0",
@@ -57,6 +58,7 @@
     "json5": "^2.2.3",
     "lowdb": "^7.0.1",
     "milliparsec": "^4.0.0",
+    "morgan": "^1.10.0",
     "sirv": "^2.0.4",
     "sort-on": "^6.1.0"
   }
