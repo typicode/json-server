@@ -7,7 +7,7 @@ import { Eta } from 'eta'
 import { Low } from 'lowdb'
 import { json } from 'milliparsec'
 import sirv from 'sirv'
-
+import morgan from 'morgan'
 import { Data, isItem, Service } from './service.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -50,7 +50,7 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
   // Body parser
   // @ts-expect-error expected
   app.use(json())
-
+  app.use(morgan('tiny'))
   app.get('/', (_req, res) =>
     res.send(eta.render('index.html', { data: db.data })),
   )
