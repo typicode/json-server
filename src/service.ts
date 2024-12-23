@@ -31,6 +31,7 @@ enum Condition {
   gte = 'gte',
   ne = 'ne',
   in = 'in',
+  like = 'like',
   default = '',
 }
 
@@ -199,7 +200,7 @@ export class Service {
       return items
     }
 
-    // Convert query params to conditions
+// Convert query params to conditions
     const conds: [string, Condition, string | string[]][] = []
     for (const [key, value] of Object.entries(query)) {
       if (value === undefined || typeof value !== 'string') {
@@ -228,23 +229,35 @@ export class Service {
         continue
       }
 
+      // Handle SQL-like search patterns
+      if (value.includes('%')) {
+        const values = value.split('|') // Split on "|"
+        conds.push([key, Condition.like, values]) // Use the "like" condition
+        continue
+      }
+
       // Handle "1|2" values
       if (value.includes('|')) {
         const values = value.split('|') // Split into array
         conds.push([key, Condition.in, values]) // Use a custom "in" condition
         continue
       }
+
       conds.push([key, Condition.default, value])
     }
-    // Loop through conditions and filter items
+
+// Filter items
     let filtered = items
     for (const [key, op, paramValue] of conds) {
       filtered = filtered.filter((item) => {
-        const itemValue = getProperty(item, key); // Retrieve the item's value for the current key
+        const itemValue = getProperty(item, key)
 
-        // Handle the "in" condition (array of possible values)
-        if (op === Condition.in && Array.isArray(paramValue)) {
-          return paramValue.includes(String(itemValue)); // Match any of the values in the array
+        // Handle "LIKE" condition
+        if (op === Condition.like && Array.isArray(paramValue)) {
+          return paramValue.some((pattern) => {
+            const regex = new RegExp(`^${pattern.replace(/%/g, '.*')}$`, 'i')
+            return regex.test(String(itemValue))
+          })
         }
 
         // Handle other conditions
