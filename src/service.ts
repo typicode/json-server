@@ -30,6 +30,7 @@ enum Condition {
   gt = 'gt',
   gte = 'gte',
   ne = 'ne',
+  in = 'in',
   default = '',
 }
 
@@ -204,114 +205,108 @@ export class Service {
       if (value === undefined || typeof value !== 'string') {
         continue
       }
+
       const re = /_(lt|lte|gt|gte|ne)$/
       const reArr = re.exec(key)
       const op = reArr?.at(1)
+
       if (op && isCondition(op)) {
         const field = key.replace(re, '')
         conds.push([field, op, value])
         continue
       }
-      if (
-        [
-          '_embed',
-          '_sort',
-          '_start',
-          '_end',
-          '_limit',
-          '_page',
-          '_per_page',
-        ].includes(key)
-      ) {
+
+      if ([
+        '_embed',
+        '_sort',
+        '_start',
+        '_end',
+        '_limit',
+        '_page',
+        '_per_page',
+      ].includes(key)) {
+        continue
+      }
+
+      // Handle "1|2" values
+      if (value.includes('|')) {
+        const values = value.split('|') // Split into array
+        conds.push([key, Condition.in, values]) // Use a custom "in" condition
         continue
       }
       conds.push([key, Condition.default, value])
     }
-
     // Loop through conditions and filter items
     let filtered = items
     for (const [key, op, paramValue] of conds) {
-      filtered = filtered.filter((item: Item) => {
+      filtered = filtered.filter((item) => {
+        const itemValue = getProperty(item, key); // Retrieve the item's value for the current key
+
+        // Handle the "in" condition (array of possible values)
+        if (op === Condition.in && Array.isArray(paramValue)) {
+          return paramValue.includes(String(itemValue)); // Match any of the values in the array
+        }
+
+        // Handle other conditions
         if (paramValue && !Array.isArray(paramValue)) {
-          // https://github.com/sindresorhus/dot-prop/issues/95
-          const itemValue: unknown = getProperty(item, key)
           switch (op) {
-            // item_gt=value
+              // Greater than (gt)
             case Condition.gt: {
-              if (
-                !(
-                  typeof itemValue === 'number' &&
-                  itemValue > parseInt(paramValue)
-                )
-              ) {
-                return false
+              if (!(typeof itemValue === 'number' && itemValue > parseInt(paramValue))) {
+                return false;
               }
-              break
+              break;
             }
-            // item_gte=value
+              // Greater than or equal to (gte)
             case Condition.gte: {
-              if (
-                !(
-                  typeof itemValue === 'number' &&
-                  itemValue >= parseInt(paramValue)
-                )
-              ) {
-                return false
+              if (!(typeof itemValue === 'number' && itemValue >= parseInt(paramValue))) {
+                return false;
               }
-              break
+              break;
             }
-            // item_lt=value
+              // Less than (lt)
             case Condition.lt: {
-              if (
-                !(
-                  typeof itemValue === 'number' &&
-                  itemValue < parseInt(paramValue)
-                )
-              ) {
-                return false
+              if (!(typeof itemValue === 'number' && itemValue < parseInt(paramValue))) {
+                return false;
               }
-              break
+              break;
             }
-            // item_lte=value
+              // Less than or equal to (lte)
             case Condition.lte: {
-              if (
-                !(
-                  typeof itemValue === 'number' &&
-                  itemValue <= parseInt(paramValue)
-                )
-              ) {
-                return false
+              if (!(typeof itemValue === 'number' && itemValue <= parseInt(paramValue))) {
+                return false;
               }
-              break
+              break;
             }
-            // item_ne=value
+              // Not equal (ne)
             case Condition.ne: {
               switch (typeof itemValue) {
                 case 'number':
-                  return itemValue !== parseInt(paramValue)
+                  return itemValue !== parseInt(paramValue);
                 case 'string':
-                  return itemValue !== paramValue
+                  return itemValue !== paramValue;
                 case 'boolean':
-                  return itemValue !== (paramValue === 'true')
+                  return itemValue !== (paramValue === 'true');
               }
-              break
+              break;
             }
-            // item=value
+              // Default equality check
             case Condition.default: {
               switch (typeof itemValue) {
                 case 'number':
-                  return itemValue === parseInt(paramValue)
+                  return itemValue === parseInt(paramValue);
                 case 'string':
-                  return itemValue === paramValue
+                  return itemValue === paramValue;
                 case 'boolean':
-                  return itemValue === (paramValue === 'true')
+                  return itemValue === (paramValue === 'true');
               }
             }
           }
         }
-        return true
-      })
+        return true; // If no condition applies, keep the item
+      });
     }
+
 
     // Sort
     const sort = query._sort || ''
