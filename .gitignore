@@ -1,7 +1,6 @@
 **/*.log
 .DS_Store
 .idea
-lib
 node_modules
 public/output.css
 tmp
