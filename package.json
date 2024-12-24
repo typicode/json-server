@@ -16,7 +16,7 @@
   },
   "scripts": {
     "dev": "tsx watch src/bin.ts fixtures/db.json",
-    "build": "rm -rf lib && tsc",
+    "build": "rimraf -rf lib && tsc",
     "test": "node --import tsx/esm --test src/*.test.ts",
     "lint": "eslint src",
     "prepare": "husky && npm run build",
@@ -43,7 +43,8 @@
     "tsx": "^4.19.1",
     "type-fest": "^4.26.1",
     "typescript": "^5.6.2",
-    "typescript-eslint": "^8.6.0"
+    "typescript-eslint": "^8.6.0",
+    "rimraf": "^5.0.0"
   },
   "dependencies": {
     "@tinyhttp/app": "^2.4.0",
