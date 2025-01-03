@@ -212,7 +212,7 @@ json-server --middleware logger.mjs
 // logger.mjs
 import chalk from 'chalk';
 
-export default (req, res, next) => {
+export default (req, _res, next) => {
   const currentDate = new Date().toISOString();
   console.log(chalk.green(req.method), chalk.yellow(req.url), chalk.blue(`${currentDate}`));
 
