@@ -18,6 +18,7 @@
     "dev": "tsx watch src/bin.ts fixtures/db.json",
     "build": "rm -rf lib && tsc",
     "test": "node --import tsx/esm --test src/*.test.ts",
+    "logger": "tsx watch src/bin.ts fixtures/db.json --middleware=middleware/logger.mjs",
     "lint": "eslint src",
     "prepare": "husky",
     "prepublishOnly": "npm run build"
