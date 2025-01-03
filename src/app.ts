@@ -39,7 +39,6 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   // Use middleware if specified
   if (options.middleware) {
-    console.log('app.ts: Using middleware', options.middleware)
     app.use(options.middleware)
   }
 
