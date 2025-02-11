@@ -105,10 +105,10 @@ function args(): {
     // App args and options
     return {
       file: positionals[0] ?? '',
-      port: parseInt(values.port),
-      host: values.host,
-      static: values.static,
-      middleware: values.middleware,
+      port: parseInt(values.port as string),
+      host: values.host as string,
+      static: values.static as string[],
+      middleware: values.middleware as string[],
     }
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ERR_PARSE_ARGS_UNKNOWN_OPTION') {
