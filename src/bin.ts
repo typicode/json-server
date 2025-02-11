@@ -131,12 +131,12 @@ if (!existsSync(file)) {
 // Load middlewares if specified
 const middlewareFunctions = await Promise.all(
   middlewarePaths.map(async p => {
-    if (!existsSync(p)){
+    const resolvedPath = resolve(process.cwd(), p)
+    if (!existsSync(resolvedPath)){
       console.error(`Middleware file not found: ${resolvedPath}`)
       return process.exit(1)
     }
-    console.log(chalk.gray(`Loading middleware from ${middlewarePaths}`))
-    const resolvedPath = resolve(process.cwd(), p)
+    console.log(chalk.gray(`Loading middleware from ${resolvedPath}`))
     const middlewareModule = await import(resolvedPath)
     return middlewareModule.default || middlewareModule
   })
