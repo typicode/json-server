@@ -16,7 +16,7 @@ const isProduction = process.env['NODE_ENV'] === 'production'
 export type AppOptions = {
   logger?: boolean
   static?: string[]
-  middleware?: (req: unknown, res: unknown, next: unknown) => void
+  middlewares?: ((req: unknown, res: unknown, next: unknown) => void)[]
 }
 
 const eta = new Eta({
@@ -38,9 +38,7 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     .forEach((dir) => app.use(sirv(dir, { dev: !isProduction })))
 
   // Use middleware if specified
-  if (options.middleware) {
-    app.use(options.middleware)
-  }
+  options.middlewares?.forEach(m => app.use(m));
 
   // CORS
   app

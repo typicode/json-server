@@ -204,64 +204,19 @@ json-server -s ./static -s ./node_modules
 
 ## Middleware
 
-```sh
-json-server --middleware logger.mjs
-```
+You can add your middlewares from the CLI using `--middleware` option:
 
 ```js
-// logger.mjs
-import chalk from 'chalk';
-
-export default (req, _res, next) => {
-  const currentDate = new Date().toISOString();
-  console.log(chalk.green(req.method), chalk.yellow(req.url), chalk.blue(`${currentDate}`));
-
-  // Check if the request body is already parsed
-  if (req.body && Object.keys(req.body).length > 0) {
-    console.log(chalk.magenta('Body:'), req.body);
-  } else {
-    // Manually parse the request body if not already parsed
-    let body = '';
-    req.on('data', (chunk) => {
-      body += chunk.toString();
-    });
-    req.on('end', () => {
-      if (body) {
-        try {
-          const parsedBody = JSON.parse(body);
-          console.log(chalk.magenta('Body:'), parsedBody);
-        } catch (error) {
-          console.log(chalk.red('Failed to parse body'), error);
-        }
-      }
-      next();
-    });
-    return;
-  }
-
-  next();
-};
+// hello.js
+module.exports = (req, res, next) => {
+  res.header('X-Hello', 'World')
+  next()
+}
 ```
 
-This will output:
-
-```sh
-Index:
-http://localhost:3000/
-
-Static files:
-Serving ./public directory if it exists
-
-Endpoints:
-http://localhost:3000/posts
-http://localhost:3000/comments
-http://localhost:3000/profile
-
-PATCH /posts/1 2025-01-03T08:25:13.138Z
-Body: { title: 'foo', body: 'bar', userId: 1 }
-POST /posts 2025-01-03T08:25:18.661Z
-Body: { title: 'foo', body: 'bar', userId: 1 }
-GET /posts 2025-01-03T08:25:20.159Z
+```bash
+json-server db.json --middleware ./hello.js
+json-server db.json --middleware ./first.js ./second.js
 ```
 
 ## Notable differences with v0.17

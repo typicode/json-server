@@ -22,7 +22,7 @@ Options:
   -p, --port <port>        Port (default: 3000)
   -h, --host <host>        Host (default: localhost)
   -s, --static <dir>       Static files directory (multiple allowed)
-  --middleware <file>      Middleware file
+  --middleware, -m <file>  Paths to middleware files (multiple allowed)
   --help                   Show this message
   --version                Show version number
 `)
@@ -57,7 +57,9 @@ function args(): {
         },
         middleware: {
           type: 'string',
-          default: '',
+          short: 'm',
+          multiple: true,
+          default: []
         },
         help: {
           type: 'boolean',
@@ -119,24 +121,26 @@ function args(): {
   }
 }
 
-// Load middleware
-async function loadMiddleware(middlewarePath: string) {
-  const resolvedPath = resolve(process.cwd(), middlewarePath)
-  if (existsSync(resolvedPath)) {
-    const middlewareModule = await import(resolvedPath)
-    return middlewareModule.default || middlewareModule
-  } else {
-    console.error(`Middleware file not found: ${resolvedPath}`)
-    process.exit(1)
-  }
-}
-
-const { file, port, host, static: staticArr, middleware } = args()
+const { file, port, host, static: staticArr, middleware: middlewarePaths } = args()
 
 if (!existsSync(file)) {
   console.log(chalk.red(`File ${file} not found`))
   process.exit(1)
 }
+
+// Load middlewares if specified
+const middlewareFunctions = await Promise.all(
+  middlewarePaths.map(async p => {
+    if (!existsSync(p)){
+      console.error(`Middleware file not found: ${resolvedPath}`)
+      return process.exit(1)
+    }
+    console.log(chalk.gray(`Loading middleware from ${middlewarePaths}`))
+    const resolvedPath = resolve(process.cwd(), p)
+    const middlewareModule = await import(resolvedPath)
+    return middlewareModule.default || middlewareModule
+  })
+);
 
 // Handle empty string JSON file
 if (readFileSync(file, 'utf-8').trim() === '') {
@@ -158,18 +162,11 @@ const observer = new Observer(adapter)
 const db = new Low<Data>(observer, {})
 await db.read()
 
-// Load middleware if specified
-let middlewareFunction
-if (middleware) {
-  console.log(chalk.gray(`Loading middleware from ${middleware}`))
-  middlewareFunction = await loadMiddleware(middleware)
-}
-
 // Create app
 const app = createApp(db, {
   logger: false,
   static: staticArr,
-  middleware: middlewareFunction,
+  middlewares: middlewareFunctions,
 })
 
 function logRoutes(data: Data) {
