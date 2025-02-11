@@ -184,7 +184,6 @@ function logRoutes(data: Data) {
       )
       .join('\n'),
   )
-  console.log()
 }
 
 const kaomojis = ['♡⸜(˶˃ ᵕ ˂˶)⸝♡', '♡( ◡‿◡ )', '( ˶ˆ ᗜ ˆ˵ )', '(˶ᵔ ᵕ ᵔ˶)']
