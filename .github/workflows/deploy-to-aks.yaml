@@ -22,8 +22,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Azure Login
-      uses: azure/login@14a755a4e2fd6dff25794233def4f2cf3f866955
+    - name: Log in to Azure CLI
+      uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -33,15 +33,16 @@ jobs:
         azcliversion: 2.29.1
         inlineScript: |
           az configure --defaults acr=${{ env.AZURE_CONTAINER_REGISTRY }}
-          az acr build -t -t ${{ env.REGISTRY_URL }}/${{ env.PROJECT_NAME }}:${{ github.sha }}
+          az acr build -t ${{ env.REGISTRY_URL }}/${{ env.PROJECT_NAME }}:${{ github.sha }}
 
     - name: Gets K8s context
-      uses: azure/aks-set-context@94ccc775c1997a3fcfbfbce3c459fec87e0ab188
+      uses: azure/aks-set-context@v1
       with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          resource-group: ${{ env.RESOURCE_GROUP }}
-          cluster-name: ${{ env.CLUSTER_NAME }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}  # Should already contain the entire JSON credentials
+        resource-group: ${{ env.RESOURCE_GROUP }}
+        cluster-name: ${{ env.CLUSTER_NAME }}
       id: login
+
 
     - name: Configure deployment
       uses: azure/k8s-bake@61041e8c2f75c1f01186c8f05fb8b24e1fc507d8
