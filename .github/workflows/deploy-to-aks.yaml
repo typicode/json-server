@@ -27,6 +27,9 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Check registry value
+      run: echo "Registry is ${{ secrets.AZURE_CONTAINER_REGISTRY }}"
+
     - name: Build image on ACR
       uses: azure/CLI@61bb69d64d613b52663984bf12d6bac8fd7b3cc8
       with:
