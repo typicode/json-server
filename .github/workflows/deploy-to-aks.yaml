@@ -14,10 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Set up Azure CLI
-      - name: Set up Azure CLI
-        uses: azure/setup-azure-cli@v1
-
       # Login to Azure using the service principal credentials
       - name: Azure Login
         uses: azure/login@v1
