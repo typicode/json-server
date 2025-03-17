@@ -71,5 +71,5 @@ jobs:
           git config --global user.name "fabremartin"
           git config --global user.email "lucian.clain@gmail.com"
           git add json-server.yaml
-          git diff --exit-code || git commit -m "Update Docker image tag to ${{ github.sha }}"
+          git commit -m "Update Docker image tag to ${{ github.sha }}"
           git push origin main
