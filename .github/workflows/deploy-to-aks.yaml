@@ -48,6 +48,11 @@ jobs:
           token: ${{ secrets.GITOPS_PAT }}
           path: gitops-repo
 
+      # Check the content of the GitOps file before making changes
+      - name: Check content before update
+        run: |
+          cat gitops-repo/json-server.yaml
+
       # Update GitOps manifest with new image tag
       - name: Update GitOps manifest with new image tag
         run: |
@@ -60,5 +65,5 @@ jobs:
           git config --global user.name "fabremartin"
           git config --global user.email "lucian.clain@gmail.com"
           git add json-server.yaml
-          git commit -m "Update Docker image tag to ${{ github.sha }}"
+          git diff --exit-code || git commit -m "Update Docker image tag to ${{ github.sha }}"
           git push origin main
