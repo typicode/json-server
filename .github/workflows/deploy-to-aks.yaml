@@ -1,4 +1,4 @@
-name: Build, Tag, and Deploy to AKS with FluxCD
+name: Build Docker Image, Update GitOps, and Push to ACR
 
 on:
   push:
@@ -6,49 +6,63 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-    
-    - name: Checkout source code
-      uses: actions/checkout@v4
+      # Checkout the code from the current repository
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Log in to Azure CLI
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }} 
+      # Set up Azure CLI
+      - name: Set up Azure CLI
+        uses: azure/setup-azure-cli@v1
 
-    - name: Build Docker image and tag with GitHub SHA
-      uses: azure/CLI@61bb69d64d613b52663984bf12d6bac8fd7b3cc8
-      with:
-        azcliversion: 2.29.1
-        inlineScript: |
-          az configure --defaults acr=${{ secrets.AZURE_CONTAINER_REGISTRY }} 
-          az acr build --registry ${{ secrets.AZURE_CONTAINER_REGISTRY }} \
-                       --image ${{ secrets.AZURE_CONTAINER_REGISTRY }}/json-server:${{ github.sha }} .
+      # Login to Azure using the service principal credentials
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Clone GitOps repository
-      uses: actions/checkout@v4
-      with:
-        repository: fabremartin/gitops
-        token: ${{ secrets.GITOPS_PAT }}
-        path: gitops-repo
+      # Build Docker image
+      - name: Build Docker Image
+        run: |
+          docker build -t json-server:$GITHUB_SHA .
 
-    - name: Update GitOps manifest with new image tag
-      run: |
-        sed -i "s|image: ${REGISTRY}/json-server:.*|image: ${REGISTRY}/json-server:${GITHUB_SHA}|g" gitops-repo/json-server.yaml
+      # Tag image with GitHub SHA
+      - name: Tag Docker image
+        run: |
+          docker tag json-server:$GITHUB_SHA ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/json-server:$GITHUB_SHA
 
-    - name: Commit and push updated GitOps manifest
-      run: |
-        cd gitops-repo
-        git config --global user.name "fabremartin" #
-        git config --global user.email "lucian.clain@gmail.com"  #
-        git add json-server.yaml
-        git commit -m "Update Docker image tag to ${{ github.sha }}"
-        git push origin main
+      # Log in to Azure Container Registry (ACR)
+      - name: Azure Container Registry login
+        run: |
+          az acr login --name ${{ secrets.AZURE_CONTAINER_REGISTRY }}
 
-    #- name: Reconcile with FluxCD
-    #  run: |
-    #    flux reconcile kustomization <your-kustomization-name> --namespace <flux-system-namespace>
-    #  env:
-    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Push Docker image to ACR
+      - name: Push Docker image to ACR
+        run: |
+          docker push ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/json-server:$GITHUB_SHA
+
+      # Clone the GitOps repository
+      - name: Clone GitOps repository
+        uses: actions/checkout@v4
+        with:
+          repository: fabremartin/gitops
+          token: ${{ secrets.GITOPS_PAT }}
+          path: gitops-repo
+
+      # Update GitOps manifest with new image tag
+      - name: Update GitOps manifest with new image tag
+        run: |
+          sed -i "s|image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}/json-server:.*|image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}/json-server:${GITHUB_SHA}|g" gitops-repo/json-server.yaml
+
+      # Commit and push updated GitOps manifest
+      - name: Commit and push updated GitOps manifest
+        run: |
+          cd gitops-repo
+          git config --global user.name "fabremartin"
+          git config --global user.email "lucian.clain@gmail.com"
+          git add json-server.yaml
+          git commit -m "Update Docker image tag to ${{ github.sha }}"
+          git push origin main
