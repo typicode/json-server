@@ -1,68 +1,54 @@
-# Ce workflow utilise des actions qui ne sont pas certifiées par GitHub.
-# Elles sont fournies par un tiers et régies par
-# des conditions d’utilisation du service, une politique de confidentialité et un support distincts.
-# documentation en ligne.
+name: Build, Tag, and Deploy to AKS with FluxCD
 
-# GitHub recommande d’épingler les actions à un SHA de commit.
-# Pour obtenir une version plus récente, vous devez mettre à jour le SHA.
-# Vous pouvez également référencer une balise ou une branche, mais l’action peut changer sans avertissement.
-
-name: Build and deploy to Azure Kubernetes Service
-
-env:
-  # If you bake using helm:
-  CHART_PATH: ../../k8s/deployment.yaml           # set this to the path to your helm file
-  CHART_OVERRIDE_PATH: MY_OVERRIDE_FILES     # set this to an array of override file paths
-
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    
+    - name: Checkout source code
+      uses: actions/checkout@v4
 
     - name: Log in to Azure CLI
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }} 
 
-    - name: Build image on ACR
+    - name: Build Docker image and tag with GitHub SHA
       uses: azure/CLI@61bb69d64d613b52663984bf12d6bac8fd7b3cc8
       with:
         azcliversion: 2.29.1
         inlineScript: |
-          az configure --defaults acr=${{ env.AZURE_CONTAINER_REGISTRY }}
-          az acr build --registry ${{ env.AZURE_CONTAINER_REGISTRY }} \
-                       --image ${{ env.AZURE_CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:${{ github.sha }} \
-                       .
+          az configure --defaults acr=${{ secrets.AZURE_CONTAINER_REGISTRY }} 
+          az acr build --registry ${{ secrets.AZURE_CONTAINER_REGISTRY }} \
+                       --image ${{ secrets.AZURE_CONTAINER_REGISTRY }}/json-server:${{ github.sha }} .
 
-
-    - name: Gets K8s context
-      uses: azure/aks-set-context@v1
+    - name: Clone GitOps repository
+      uses: actions/checkout@v4
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}  # Should already contain the entire JSON credentials
-        resource-group: ${{ env.RESOURCE_GROUP }}
-        cluster-name: ${{ env.CLUSTER_NAME }}
-      id: login
+        repository: fabremartin/gitops
+        token: ${{ secrets.GITOPS_PAT }}
+        path: gitops-repo
 
+    - name: Update GitOps manifest with new image tag
+      run: |
+        sed -i "s|image: ${REGISTRY}/json-server:.*|image: ${REGISTRY}/json-server:${GITHUB_SHA}|g" gitops-repo/json-server.yaml
 
-    - name: Configure deployment
-      uses: azure/k8s-bake@61041e8c2f75c1f01186c8f05fb8b24e1fc507d8
-      with:
-        renderEngine: 'helm'
-        helmChart: ${{ env.CHART_PATH }}
-        overrideFiles: ${{ env.CHART_OVERRIDE_PATH }}
-        overrides: |
-          replicas:2
-        helm-version: 'latest'
-      id: bake
+    - name: Commit and push updated GitOps manifest
+      run: |
+        cd gitops-repo
+        git config --global user.name "fabremartin" #
+        git config --global user.email "lucian.clain@gmail.com"  #
+        git add json-server.yaml
+        git commit -m "Update Docker image tag to ${{ github.sha }}"
+        git push origin main
 
-    - name: Deploys application
-      uses: Azure/k8s-deploy@dd4bbd13a5abd2fc9ca8bdcb8aee152bb718fa78
-      with:
-        manifests: ${{ steps.bake.outputs.manifestsBundle }}
-        images: |
-          ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.PROJECT_NAME }}:${{ github.sha }}
-        imagepullsecrets: |
-          ${{ env.PROJECT_NAME }}
+    #- name: Reconcile with FluxCD
+    #  run: |
+    #    flux reconcile kustomization <your-kustomization-name> --namespace <flux-system-namespace>
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
