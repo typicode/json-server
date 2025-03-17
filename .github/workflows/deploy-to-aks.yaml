@@ -56,7 +56,7 @@ jobs:
       # Update GitOps manifest with new image tag
       - name: Update GitOps manifest with new image tag
         run: |
-          sed -i "s|image: .azurecr.io/json-server:v1|image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/json-server:${GITHUB_SHA}|g" gitops-repo/json-server.yaml
+          sed -i "s|image: .*azurecr.io/json-server:v1|image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/json-server:${GITHUB_SHA}|g" gitops-repo/json-server.yaml
 
 
       # Check the content after updating
