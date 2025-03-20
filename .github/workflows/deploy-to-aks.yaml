@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - helm-release
 
 jobs:
   build:
