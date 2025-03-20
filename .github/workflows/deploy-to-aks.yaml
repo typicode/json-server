@@ -66,7 +66,7 @@ jobs:
       # Push Helm chart to helm repository
       - name: Push Helm chart to repository
         run: |
-            helm push ./helm-chart/json-server-$NEW_VERSION.tgz acr://${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/helm/
+            helm push ./helm-chart/json-server-$NEW_VERSION.tgz oci://${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/helm/
 
       # Clone the GitOps repository
       - name: Clone GitOps repository
