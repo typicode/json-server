@@ -14,21 +14,38 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Extract and increment chart version
+      - name: Update Chart version
+        id: version
+        run: |
+          # Extract current version
+          CURRENT_VERSION=$(grep 'version:' ./k8s/charts/json-server/Chart.yaml | sed 's/version: //')
+          
+          # Increment patch version (1.0.0 -> 1.0.1)
+          NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{$NF = $NF + 1;} 1' OFS=.)
+          
+          # Update Chart.yaml
+          sed -i "s/version: $CURRENT_VERSION/version: $NEW_VERSION/g" ./k8s/charts/json-server/Chart.yaml
+          
+          echo "Updated chart version from $CURRENT_VERSION to $NEW_VERSION"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
+
       # Login to Azure using the service principal credentials
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Build Docker image
+      # Build Docker image with semantic version
       - name: Build Docker Image
         run: |
-          docker build -t json-server:$GITHUB_SHA .
+          docker build -t json-server:$NEW_VERSION .
 
-      # Tag image with GitHub SHA
+      # Tag image with version
       - name: Tag Docker image
         run: |
-          docker tag json-server:$GITHUB_SHA ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/json-server:$GITHUB_SHA
+          docker tag json-server:$NEW_VERSION ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/json-server:$NEW_VERSION
 
       # Log in to Azure Container Registry (ACR)
       - name: Azure Container Registry login
@@ -38,7 +55,17 @@ jobs:
       # Push Docker image to ACR
       - name: Push Docker image to ACR
         run: |
-          docker push ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/json-server:$GITHUB_SHA
+          docker push ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/json-server:$NEW_VERSION
+
+      # Package helm chart
+      - name: Package Helm chart
+        run: |
+          helm package ./k8s/charts/json-server -d ./helm-chart
+
+      # Push Helm chart to helm repository
+      - name: Push Helm chart to repository
+        run: |
+            helm push ./helm-chart/json-server-$NEW_VERSION.tgz acr://${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/helm/
 
       # Clone the GitOps repository
       - name: Clone GitOps repository
@@ -48,21 +75,17 @@ jobs:
           token: ${{ secrets.GITOPS_PAT }}
           path: gitops-repo
 
-      # Check the content of the GitOps file before making changes
-      - name: Check content before update
+      # Update values.yaml in the GitOps repo with new image tag
+      - name: Update GitOps & HelmRelease with new image tag and chart version
         run: |
-          cat gitops-repo/json-server.yaml
-
-      # Update GitOps manifest with new image tag
-      - name: Update GitOps manifest with new image tag
-        run: |
-          sed -i "s|image: .*azurecr.io/json-server:.*|image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/json-server:${GITHUB_SHA}|g" gitops-repo/json-server.yaml
-
+          sed -i "s|tag: .*|tag: $NEW_VERSION|g" gitops-repo/services/json-server/HelmRelease.yaml
+          sed -i "s|version: $CURRENT_VERSION|version: $NEW_VERSION|g" gitops-repo/services/json-server/HelmRelease.yaml
 
       # Check the content after updating
       - name: Check content after update
         run: |
-          cat gitops-repo/json-server.yaml
+          echo "Updated HelmRelease.yaml:"
+          cat gitops-repo/services/json-server/HelmRelease.yaml
 
       # Commit and push updated GitOps manifest
       - name: Commit and push updated GitOps manifest
@@ -70,6 +93,15 @@ jobs:
           cd gitops-repo
           git config --global user.name "fabremartin"
           git config --global user.email "lucian.clain@gmail.com"
-          git add json-server.yaml
-          git commit -m "Update Docker image tag to ${{ github.sha }}"
+          git add services/json-server/HelmRelease.yaml
+          git commit -m "Update json-server to version $NEW_VERSION"
+          git push origin main
+
+      # Commit the updated Chart.yaml back to the source repo
+      - name: Commit updated Chart.yaml
+        run: |
+          git config --global user.name "fabremartin"
+          git config --global user.email "lucian.clain@gmail.com"
+          git add ./k8s/charts/json-server/Chart.yaml
+          git commit -m "Bump chart version to $NEW_VERSION [skip ci]"
           git push origin main
