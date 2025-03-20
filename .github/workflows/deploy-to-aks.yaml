@@ -80,7 +80,7 @@ jobs:
       - name: Update GitOps & HelmRelease with new image tag and chart version
         run: |
           sed -i "s|tag: .*|tag: $NEW_VERSION|g" gitops-repo/services/json-server/HelmRelease.yaml
-          sed -i "s|version: $CURRENT_VERSION|version: $NEW_VERSION|g" gitops-repo/services/json-server/HelmRelease.yaml
+          sed -i "s|version: .*|version: $NEW_VERSION|g" gitops-repo/services/json-server/HelmRelease.yaml
 
       # Check the content after updating
       - name: Check content after update
@@ -99,10 +99,10 @@ jobs:
           git push origin main
 
       # Commit the updated Chart.yaml back to the source repo
-      - name: Commit updated Chart.yaml
-        run: |
-          git config --global user.name "fabremartin"
-          git config --global user.email "lucian.clain@gmail.com"
-          git add ./k8s/charts/json-server/Chart.yaml
-          git commit -m "Bump chart version to $NEW_VERSION [skip ci]"
-          git push origin main
+      # - name: Commit updated Chart.yaml
+        #  run: |
+          # git config --global user.name "fabremartin"
+          # git config --global user.email "lucian.clain@gmail.com"
+          # git add ./k8s/charts/json-server/Chart.yaml
+          # git commit -m "Bump chart version to $NEW_VERSION [skip ci]"
+          # git push origin main
