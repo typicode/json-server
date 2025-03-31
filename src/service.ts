@@ -13,6 +13,10 @@ export function isItem(obj: unknown): obj is Item {
   return typeof obj === 'object' && obj !== null
 }
 
+export function getNestedName(name: string): string {
+  return name[name.length-1] === 's' ? `${name.substring(0, name.length-1)}Id`: `${name}Id`;
+}
+
 export function isData(obj: unknown): obj is Record<string, Item[]> {
   if (typeof obj !== 'object' || obj === null) {
     return false
