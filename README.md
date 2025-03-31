@@ -81,7 +81,7 @@ Run `json-server --help` for a list of options
 | Sponsors |
 | :---: |
 | <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="100px"></a> |
-| <a href="https://zuplo.link/json-server-gh"><img src="https://github.com/typicode/json-server/assets/5502029/928b7526-0fdf-46ae-80d9-27fa0ef5f430"></a> |
+| <a href="https://zuplo.link/json-server-gh"><img src="https://github.com/user-attachments/assets/adfee31f-a8b6-4684-9a9b-af4f03ac5b75" height="100px"></a> |
 
 | Sponsors |
 | :---: |
