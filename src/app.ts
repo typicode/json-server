@@ -8,6 +8,8 @@ import { Low } from 'lowdb'
 import { json } from 'milliparsec'
 import sirv from 'sirv'
 
+import { Subject } from 'rxjs'
+
 import { Data, isItem, Service } from './service.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -29,6 +31,8 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   // Create app
   const app = new App()
+
+  const event$ = new Subject<object>();
 
   // Static files
   app.use(sirv('public', { dev: !isProduction }))
@@ -54,6 +58,20 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
   app.get('/', (_req, res) =>
     res.send(eta.render('index.html', { data: db.data })),
   )
+
+  app.get('/events', (_req, res) => {
+    res.header('Content-Type', 'text/event-stream');
+    
+    event$.subscribe({
+      next: (data) => {
+        res.write(`data: ${JSON.stringify(data)}\n\n`);
+        res.flushHeaders();
+      },
+      complete: () => {
+        res.end();
+      },
+    });
+  })
 
   app.get('/:name', (req, res, next) => {
     const { name = '' } = req.params
@@ -86,6 +104,12 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     if (isItem(req.body)) {
       res.locals['data'] = await service.create(name, req.body)
     }
+    event$.next(
+      { 
+        type: "post", 
+        params: req.params
+      }
+    );
     next?.()
   })
 
@@ -94,6 +118,12 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     if (isItem(req.body)) {
       res.locals['data'] = await service.update(name, req.body)
     }
+    event$.next(
+      { 
+        type: "put", 
+        params: req.params
+      }
+    );
     next?.()
   })
 
@@ -102,6 +132,12 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     if (isItem(req.body)) {
       res.locals['data'] = await service.updateById(name, id, req.body)
     }
+    event$.next(
+      { 
+        type: "put", 
+        params: req.params
+      }
+    );
     next?.()
   })
 
@@ -110,6 +146,12 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     if (isItem(req.body)) {
       res.locals['data'] = await service.patch(name, req.body)
     }
+    event$.next(
+      { 
+        type: "patch", 
+        params: req.params
+      }
+    );
     next?.()
   })
 
@@ -118,6 +160,12 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     if (isItem(req.body)) {
       res.locals['data'] = await service.patchById(name, id, req.body)
     }
+    event$.next(
+      { 
+        type: "patch", 
+        params: req.params
+      }
+    );
     next?.()
   })
 
@@ -128,6 +176,12 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
       id,
       req.query['_dependent'],
     )
+    event$.next(
+      { 
+        type: "delete", 
+        params: req.params
+      }
+    );
     next?.()
   })
 
