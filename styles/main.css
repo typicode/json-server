@@ -1,0 +1,70 @@
+/* UPDATED: Added styles for search bar and column layout */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    color: white;
+    text-align: center;
+}
+
+.search-container {
+    margin: 20px;
+}
+
+input {
+    padding: 10px;
+    width: 200px;
+}
+
+button {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.forecast-container {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.forecast-list {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.weather-card {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    width: 100px;
+}
+
+/* UPDATED: Added styles for weather icons */
+.weather-card img {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+}
+
+/* UPDATED: Added styles for hourly and weekly forecasts */
+.forecast-container {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.forecast-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.weather-card img {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+}
