@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: json-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: json-server
+  template:
+    metadata:
+      labels:
+        app: json-server
+    spec:
+      containers:
+        - name: json-server
+          image: shtita09/json-server-demo:latest
+          ports:
+            - containerPort: 3000
