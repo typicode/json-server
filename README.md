@@ -34,4 +34,4 @@ This project demonstrates a **GitOps workflow using ArgoCD** to automatically de
 
 ### 🧩 ArgoCD Setup
 
-If you haven’t installed ArgoCD yet, follow the [Setup Guide](./SETUP.md).
+If you haven’t installed ArgoCD yet, follow the [Setup Guide](./setup.md).
