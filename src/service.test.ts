@@ -185,6 +185,12 @@ await test('find', async (t) => {
     {
       data: { posts: [post3, post1, post2] },
       name: POSTS,
+      params: { _sort: 'views' , _order: 'desc'},
+      res: [post3, post2, post1],
+    },
+    {
+      data: { posts: [post3, post1, post2] },
+      name: POSTS,
       params: { _sort: '-views' },
       res: [post3, post2, post1],
     },

@@ -173,6 +173,7 @@ export class Service {
       [key: string]: unknown
       _embed?: string | string[]
       _sort?: string
+      _order?: string
       _start?: number
       _end?: number
       _limit?: number
@@ -216,6 +217,7 @@ export class Service {
         [
           '_embed',
           '_sort',
+          '_order',
           '_start',
           '_end',
           '_limit',
@@ -316,6 +318,13 @@ export class Service {
     // Sort
     const sort = query._sort || ''
     const sorted = sortOn(filtered, sort.split(','))
+
+    // Order ( handling descending order )
+    if(Array.isArray(sorted) && sorted.length > 1) {
+      if(query._order === 'desc' || query._order === 'DESC' || query._order === 'descending') {
+        sorted.reverse()
+      }
+    }
 
     // Slice
     const start = query._start

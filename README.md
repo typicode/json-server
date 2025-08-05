@@ -166,6 +166,15 @@ GET /posts?_page=1&_per_page=25
 GET /posts?_sort=id,-views
 ```
 
+### Order
+
+- `_sort=f1,f2`
+- `_order=desc`
+
+```
+GET /posts?_sort=id,-views&_order=desc
+```
+
 ### Nested and array fields
 
 - `x.y.z...`
