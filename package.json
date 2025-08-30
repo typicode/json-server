@@ -30,20 +30,20 @@
     "url": "git+https://github.com/typicode/json-server.git"
   },
   "devDependencies": {
-    "@eslint/js": "^9.11.0",
-    "@sindresorhus/tsconfig": "^6.0.0",
-    "@tailwindcss/typography": "^0.5.15",
-    "@types/node": "^22.5.5",
-    "concurrently": "^9.0.1",
-    "eslint": "^9.11.0",
+    "@eslint/js": "^9.34.0",
+    "@sindresorhus/tsconfig": "^8.0.1",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^24.3.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.34.0",
     "get-port": "^7.1.0",
-    "globals": "^15.9.0",
-    "husky": "^9.1.6",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
     "tempy": "^3.1.0",
-    "tsx": "^4.19.1",
-    "type-fest": "^4.26.1",
-    "typescript": "^5.6.2",
-    "typescript-eslint": "^8.6.0"
+    "tsx": "^4.20.5",
+    "type-fest": "^4.41.0",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.41.0"
   },
   "dependencies": {
     "@tinyhttp/app": "^2.4.0",

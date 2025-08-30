@@ -24,16 +24,18 @@ export function isData(obj: unknown): obj is Record<string, Item[]> {
   )
 }
 
-enum Condition {
-  lt = 'lt',
-  lte = 'lte',
-  gt = 'gt',
-  gte = 'gte',
-  ne = 'ne',
-  default = '',
-}
+const Condition = {
+  lt: 'lt',
+  lte: 'lte',
+  gt: 'gt',
+  gte: 'gte',
+  ne: 'ne',
+  default: '',
+} as const
 
-function isCondition(value: string): value is Condition {
+type ConditionType = typeof Condition[keyof typeof Condition]
+
+function isCondition(value: string): value is ConditionType {
   return Object.values<string>(Condition).includes(value)
 }
 
@@ -199,7 +201,7 @@ export class Service {
     }
 
     // Convert query params to conditions
-    const conds: [string, Condition, string | string[]][] = []
+    const conds: [string, ConditionType, string | string[]][] = []
     for (const [key, value] of Object.entries(query)) {
       if (value === undefined || typeof value !== 'string') {
         continue
