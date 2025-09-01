@@ -1,7 +1,7 @@
 import { dirname, isAbsolute, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { App } from '@tinyhttp/app'
+import { App, type Request } from '@tinyhttp/app'
 import { cors } from '@tinyhttp/cors'
 import { Eta } from 'eta'
 import { Low } from 'lowdb'
@@ -12,6 +12,9 @@ import { Data, isItem, Service } from './service.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const isProduction = process.env['NODE_ENV'] === 'production'
+
+type QueryValue = Request['query'][string] | number
+type Query = Record<string, QueryValue>
 
 export type AppOptions = {
   logger?: boolean
@@ -57,20 +60,22 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   app.get('/:name', (req, res, next) => {
     const { name = '' } = req.params
-    const query = Object.fromEntries(
-      Object.entries(req.query)
-        .map(([key, value]) => {
-          if (
-            ['_start', '_end', '_limit', '_page', '_per_page'].includes(key) &&
-            typeof value === 'string'
-          ) {
-            return [key, parseInt(value)]
-          } else {
-            return [key, value]
-          }
-        })
-        .filter(([, value]) => !Number.isNaN(value)),
-    )
+    const query: Query = {}
+
+    Object.keys(req.query).forEach((key) => {
+      let value: QueryValue = req.query[key]
+
+      if (
+        ['_start', '_end', '_limit', '_page', '_per_page'].includes(key) &&
+        typeof value === 'string'
+      ) {
+        value = parseInt(value);
+      }
+  
+      if (!Number.isNaN(value)) {
+        query[key] = value;
+      }
+    })
     res.locals['data'] = service.find(name, query)
     next?.()
   })
