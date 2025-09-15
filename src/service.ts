@@ -305,6 +305,8 @@ export class Service {
                   return itemValue === paramValue
                 case 'boolean':
                   return itemValue === (paramValue === 'true')
+                case 'undefined':
+                  return false
               }
             }
           }
