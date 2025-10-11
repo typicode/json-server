@@ -198,6 +198,14 @@ export class Service {
       return items
     }
 
+    // Handle full-text search with q parameter
+    if (query['q'] && typeof query['q'] === 'string') {
+      const searchTerm = query['q'].toLowerCase()
+      items = items.filter((item: Item) => {
+        return this.#searchInItem(item, searchTerm)
+      })
+    }
+
     // Convert query params to conditions
     const conds: [string, Condition, string | string[]][] = []
     for (const [key, value] of Object.entries(query)) {
@@ -221,6 +229,7 @@ export class Service {
           '_limit',
           '_page',
           '_per_page',
+          'q',
         ].includes(key)
       ) {
         continue
@@ -457,5 +466,45 @@ export class Service {
 
     await this.#db.write()
     return item
+  }
+
+  #searchInItem(item: Item, searchTerm: string): boolean {
+    for (const [, value] of Object.entries(item)) {
+      if (typeof value === 'string' && value.toLowerCase().includes(searchTerm)) {
+        return true
+      }
+      if (typeof value === 'object' && value !== null) {
+        if (this.#searchInObject(value as Record<string, unknown>, searchTerm)) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  #searchInObject(obj: Record<string, unknown>, searchTerm: string): boolean {
+    for (const [, value] of Object.entries(obj)) {
+      if (typeof value === 'string' && value.toLowerCase().includes(searchTerm)) {
+        return true
+      }
+      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        if (this.#searchInObject(value as Record<string, unknown>, searchTerm)) {
+          return true
+        }
+      }
+      if (Array.isArray(value)) {
+        for (const arrayItem of value) {
+          if (typeof arrayItem === 'string' && arrayItem.toLowerCase().includes(searchTerm)) {
+            return true
+          }
+          if (typeof arrayItem === 'object' && arrayItem !== null) {
+            if (this.#searchInObject(arrayItem as Record<string, unknown>, searchTerm)) {
+              return true
+            }
+          }
+        }
+      }
+    }
+    return false
   }
 }
