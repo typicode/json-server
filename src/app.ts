@@ -19,6 +19,7 @@ type Query = Record<string, QueryValue>
 export type AppOptions = {
   logger?: boolean
   static?: string[]
+  middleware?: (req: unknown, res: unknown, next: unknown) => void
 }
 
 const eta = new Eta({
@@ -38,6 +39,11 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
   options.static
     ?.map((path) => (isAbsolute(path) ? path : join(process.cwd(), path)))
     .forEach((dir) => app.use(sirv(dir, { dev: !isProduction })))
+
+  // Use middleware if specified
+  if (options.middleware) {
+    app.use(options.middleware)
+  }
 
   // CORS
   app
