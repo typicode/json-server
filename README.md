@@ -1,11 +1,12 @@
-![RQ-Logo-all-white-to-black](https://github.com/user-attachments/assets/e449b729-6be8-40d0-8bb2-e604e6eb9cb4)![RQ-Logo-black-text](https://github.com/user-attachments/assets/ebbe2154-0326-47aa-b572-1de6b1dd3222)# json-server
+# JSON-Server
 
 [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
 > [!IMPORTANT]
 > Viewing beta v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0)
 
-👋 _Hey! Using React, Vue or Astro? Check my new project [MistCSS](https://github.com/typicode/mistcss) to write 50% less code._
+> [!NOTE]
+> Using React ⚛️ ? Check my new project [MistCSS](https://github.com/typicode/mistcss) to write type-safe styles (works with TailwindCSS)
 
 ## Install
 
@@ -90,7 +91,7 @@ Run `json-server --help` for a list of options
 
 ||
 | :---: |
-| <a href="https://requestly.com/"><img src="https://github.com/user-attachments/assets/85e1842d-b7f8-4f79-a2f8-d0b2c98a5f62" height="65px"></a> |
+| <a href="https://requestly.com/"><img src="https://github.com/user-attachments/assets/f7e7b3cf-97e2-46b8-81c8-cb3992662a1c" style="height:70px; width:auto;"></a> |
 
 ### Bronze
 
