@@ -1,4 +1,4 @@
-# json-server
+![RQ-Logo-all-white-to-black](https://github.com/user-attachments/assets/e449b729-6be8-40d0-8bb2-e604e6eb9cb4)![RQ-Logo-black-text](https://github.com/user-attachments/assets/ebbe2154-0326-47aa-b572-1de6b1dd3222)# json-server
 
 [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
@@ -78,13 +78,23 @@ Run `json-server --help` for a list of options
 
 ## Sponsors ✨
 
-| Sponsors |
+### Gold
+
+||
 | :---: |
 | <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="100px"></a> |
 | <a href="https://zuplo.link/json-server-gh"><img src="https://github.com/user-attachments/assets/adfee31f-a8b6-4684-9a9b-af4f03ac5b75" height="100px"></a> |
 | <a href="https://www.mintlify.com/"><img src="https://github.com/user-attachments/assets/8a2944b4-002f-471b-9547-9a1ebfbec0b7" height="100px"></a> |
 
-| Sponsors | |
+### Silver
+
+||
+| :---: |
+| <a href="https://requestly.com/"><img src="https://github.com/user-attachments/assets/85e1842d-b7f8-4f79-a2f8-d0b2c98a5f62" height="65px"></a> |
+
+### Bronze
+
+|||
 | :---: | :---: |
 | <a href="https://www.storyblok.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="35px"></a> | <a href="https://betterstack.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/44679f8f-9671-470d-b77e-26d90b90cbdc" height="35px"></a> |
 
