@@ -303,6 +303,42 @@ await test('find', async (t) => {
       name: OBJECT,
       res: obj,
     },
+    // Search functionality tests
+    {
+      name: POSTS,
+      params: { q: 'a' },
+      res: [post1, post2, post3],
+    },
+    {
+      name: POSTS,
+      params: { q: 'baz' },
+      res: [post3],
+    },
+    {
+      name: POSTS,
+      params: { q: 'c' },
+      res: [post3],
+    },
+    {
+      name: POSTS,
+      params: { q: 'foo' },
+      res: [post1, post3],
+    },
+    {
+      name: POSTS,
+      params: { q: 'bar' },
+      res: [post1, post2],
+    },
+    {
+      name: POSTS,
+      params: { q: 'nonexistent' },
+      res: [],
+    },
+    {
+      name: COMMENTS,
+      params: { q: 'a' },
+      res: [comment1],
+    },
   ]
   for (const tc of arr) {
     await t.test(`${tc.name} ${JSON.stringify(tc.params)}`, () => {
