@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: json-server-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/sthitajoshi/json-server'
+    targetRevision: HEAD
+    path: k8s/manifests
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
