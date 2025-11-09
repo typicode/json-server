@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/soulsniper/json-server/logs/.7e03fe1aeeb678ff2289e46cdf9e8fae752d99d9-audit.json",
+    "files": [
+        {
+            "date": 1762659219002,
+            "name": "/Users/soulsniper/json-server/logs/mcp-puppeteer-2025-11-08.log",
+            "hash": "532884ae9fdfa2585c797a641e307678373ea7c8e3001c231993c84946f1f0d7"
+        }
+    ],
+    "hashType": "sha256"
+}

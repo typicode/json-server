@@ -142,7 +142,8 @@ await db.read()
 // Create app
 const app = createApp(db, { logger: false, static: staticArr })
 
-function logRoutes(data: Data) {
+function logRoutes(data: Data, actualPort?: number) {
+  const displayPort = actualPort ?? port;
   console.log(chalk.bold('Endpoints:'))
   if (Object.keys(data).length === 0) {
     console.log(
@@ -153,7 +154,7 @@ function logRoutes(data: Data) {
   console.log(
     Object.keys(data)
       .map(
-        (key) => `${chalk.gray(`http://${host}:${port}/`)}${chalk.blue(key)}`,
+        (key) => `${chalk.gray(`http://${host}:${displayPort}/`)}${chalk.blue(key)}`,
       )
       .join('\n'),
   )
@@ -166,25 +167,45 @@ function randomItem(items: string[]): string {
   return items.at(index) ?? ''
 }
 
-app.listen(port, () => {
-  console.log(
-    [
-      chalk.bold(`JSON Server started on PORT :${port}`),
-      chalk.gray('Press CTRL-C to stop'),
-      chalk.gray(`Watching ${file}...`),
-      '',
-      chalk.magenta(randomItem(kaomojis)),
-      '',
-      chalk.bold('Index:'),
-      chalk.gray(`http://localhost:${port}/`),
-      '',
-      chalk.bold('Static files:'),
-      chalk.gray('Serving ./public directory if it exists'),
-      '',
-    ].join('\n'),
-  )
-  logRoutes(db.data)
-})
+// Create the server using tinyhttp app with retry logic
+function startAppWithPortRetry(currentPort: number) {
+  const server = app.listen(currentPort, () => {
+    // This won't be called if port is in use
+  });
+
+  server.on('listening', () => {
+    console.log(
+      [
+        chalk.bold(`JSON Server started on PORT :${currentPort}`),
+        chalk.gray('Press CTRL-C to stop'),
+        chalk.gray(`Watching ${file}...`),
+        '',
+        chalk.magenta(randomItem(kaomojis)),
+        '',
+        chalk.bold('Index:'),
+        chalk.gray(`http://${host}:${currentPort}/`),
+        '',
+        chalk.bold('Static files:'),
+        chalk.gray('Serving ./public directory if it exists'),
+        '',
+      ].join('\n'),
+    )
+    logRoutes(db.data, currentPort)
+  });
+
+  server.on('error', (err: NodeJS.ErrnoException) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(chalk.yellow(`Port ${currentPort} is in use, trying ${currentPort + 1}...`));
+      startAppWithPortRetry(currentPort + 1);
+    } else {
+      console.error(chalk.red('Failed to start server:', err.message));
+      process.exit(1);
+    }
+  });
+}
+
+// Start the server with port retry logic
+startAppWithPortRetry(port);
 
 // Watch file for changes
 if (process.env['NODE_ENV'] !== 'production') {
