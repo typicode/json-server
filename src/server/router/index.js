@@ -11,6 +11,7 @@ const plural = require('./plural')
 const nested = require('./nested')
 const singular = require('./singular')
 const mixins = require('../mixins')
+const { HttpError } = require('../errors')
 
 module.exports = (db, opts = { foreignKeySuffix: 'Id', _isFake: false }) => {
   if (typeof db === 'string') {
@@ -85,6 +86,15 @@ module.exports = (db, opts = { foreignKeySuffix: 'Id', _isFake: false }) => {
 
   router.use((err, req, res, next) => {
     console.error(err.stack)
+
+    // Handle custom HTTP errors with proper status codes
+    if (err instanceof HttpError) {
+      return res.status(err.statusCode).json({
+        error: err.message
+      })
+    }
+
+    // Generic error fallback
     res.status(500).json({
       error: 'Internal Server Error'
     })
