@@ -141,7 +141,12 @@ module.exports = (db, name, opts) => {
               } else if (isDifferent) {
                 return value !== elementValue.toString()
               } else if (isLike) {
-                return new RegExp(value, 'i').test(elementValue.toString())
+                try {
+                  return new RegExp(value, 'i').test(elementValue.toString())
+                } catch (e) {
+                  // Invalid regex, treat as no match
+                  return false
+                }
               } else {
                 return value === elementValue.toString()
               }

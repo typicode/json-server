@@ -10,6 +10,9 @@ const load = require('./utils/load')
 const jsonServer = require('../server')
 
 function prettyPrint(argv, object, rules) {
+  // Don't print if quiet mode is enabled
+  if (argv.quiet) return
+
   const root = `http://${argv.host}:${argv.port}`
 
   console.log()
@@ -87,18 +90,19 @@ module.exports = function(argv) {
     process.exit(1)
   }
 
-  // noop log fn
-  if (argv.quiet) {
-    console.log = () => {}
+  // Display welcome message
+  if (!argv.quiet) {
+    console.log()
+    console.log(chalk.cyan('  \\{^_^}/ hi!'))
   }
 
-  console.log()
-  console.log(chalk.cyan('  \\{^_^}/ hi!'))
+  // Create logger that respects quiet flag without overwriting global console
+  const log = argv.quiet ? () => {} : console.log.bind(console)
 
   function start(cb) {
-    console.log()
+    log()
 
-    console.log(chalk.gray('  Loading', source))
+    log(chalk.gray('  Loading', source))
 
     server = undefined
 
@@ -107,7 +111,7 @@ module.exports = function(argv) {
       // Load additional routes
       let routes
       if (argv.routes) {
-        console.log(chalk.gray('  Loading', argv.routes))
+        log(chalk.gray('  Loading', argv.routes))
         routes = JSON.parse(fs.readFileSync(argv.routes))
       }
 
@@ -115,13 +119,24 @@ module.exports = function(argv) {
       let middlewares
       if (argv.middlewares) {
         middlewares = argv.middlewares.map(function(m) {
-          console.log(chalk.gray('  Loading', m))
-          return require(path.resolve(m))
+          log(chalk.gray('  Loading', m))
+          const middlewarePath = path.resolve(m)
+
+          // Validate middleware file exists
+          if (!fs.existsSync(middlewarePath)) {
+            throw new Error(`Middleware file not found: ${middlewarePath}`)
+          }
+
+          try {
+            return require(middlewarePath)
+          } catch (error) {
+            throw new Error(`Failed to load middleware ${middlewarePath}: ${error.message}`)
+          }
         })
       }
 
       // Done
-      console.log(chalk.gray('  Done'))
+      log(chalk.gray('  Done'))
 
       // Create app and server
       app = createApp(db, routes, middlewares, argv)
@@ -153,7 +168,7 @@ module.exports = function(argv) {
   start()
     .then(() => {
       // Snapshot
-      console.log(
+      log(
         chalk.gray(
           '  Type s + enter at any time to create a snapshot of the database'
         )
@@ -172,7 +187,7 @@ module.exports = function(argv) {
           const file = path.join(argv.snapshots, filename)
           const state = app.db.getState()
           fs.writeFileSync(file, JSON.stringify(state, null, 2), 'utf-8')
-          console.log(
+          log(
             `  Saved snapshot to ${path.relative(process.cwd(), file)}\n`
           )
         }
@@ -180,8 +195,8 @@ module.exports = function(argv) {
 
       // Watch files
       if (argv.watch) {
-        console.log(chalk.gray('  Watching...'))
-        console.log()
+        log(chalk.gray('  Watching...'))
+        log()
         const source = argv._[0]
 
         // Can't watch URL
@@ -202,12 +217,12 @@ module.exports = function(argv) {
                 try {
                   obj = jph.parse(fs.readFileSync(watchedFile))
                   if (readError) {
-                    console.log(chalk.green(`  Read error has been fixed :)`))
+                    log(chalk.green(`  Read error has been fixed :)`))
                     readError = false
                   }
                 } catch (e) {
                   readError = true
-                  console.log(chalk.red(`  Error reading ${watchedFile}`))
+                  console.error(chalk.red(`  Error reading ${watchedFile}`))
                   console.error(e.message)
                   return
                 }
@@ -215,7 +230,7 @@ module.exports = function(argv) {
                 // Compare .json file content with in memory database
                 const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
                 if (isDatabaseDifferent) {
-                  console.log(
+                  log(
                     chalk.gray(`  ${source} has changed, reloading...`)
                   )
                   server && server.destroy(() => start())
@@ -232,7 +247,7 @@ module.exports = function(argv) {
             if (file) {
               const watchedFile = path.resolve(watchedDir, file)
               if (watchedFile === path.resolve(argv.routes)) {
-                console.log(
+                log(
                   chalk.gray(`  ${argv.routes} has changed, reloading...`)
                 )
                 server && server.destroy(() => start())
