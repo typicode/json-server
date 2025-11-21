@@ -3,20 +3,20 @@
 [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
 > [!IMPORTANT]
-> Viewing beta v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0)
+> Beta v1 dokümantasyonunu görüntülüyorsunuz – kullanılabilir ancak kırıcı değişiklikler olabilir. Kararlı sürüm için [buraya](https://github.com/typicode/json-server/tree/v0) bakın.
 
 > [!NOTE]
-> Using React ⚛️ ? Check my new project [MistCSS](https://github.com/typicode/mistcss) to write type-safe styles (works with TailwindCSS)
+> React ⚛️ mı kullanıyorsun? TailwindCSS ile çalışan, tür güvenli stiller yazmanı sağlayan yeni projem [MistCSS](https://github.com/typicode/mistcss)’e göz at.
 
-## Install
+## Kurulum
 
 ```shell
 npm install json-server
 ```
 
-## Usage
+## Kullanım
 
-Create a `db.json` or `db.json5` file
+`db.json` veya `db.json5` dosyası oluşturun
 
 ```json
 {
@@ -35,8 +35,7 @@ Create a `db.json` or `db.json5` file
 ```
 
 <details>
-
-<summary>View db.json5 example</summary>
+<summary>db.json5 örneğini görüntüle</summary>
 
 ```json5
 {
@@ -54,17 +53,17 @@ Create a `db.json` or `db.json5` file
 }
 ```
 
-You can read more about JSON5 format [here](https://github.com/json5/json5).
+JSON5 formatı hakkında daha fazlasını [buradan](https://github.com/json5/json5) okuyabilirsiniz.
 
 </details>
 
-Pass it to JSON Server CLI
+JSON Server CLI ile çalıştırın
 
 ```shell
 $ npx json-server db.json
 ```
 
-Get a REST API
+Bir REST API elde edin
 
 ```shell
 $ curl http://localhost:3000/posts/1
@@ -75,11 +74,11 @@ $ curl http://localhost:3000/posts/1
 }
 ```
 
-Run `json-server --help` for a list of options
+Seçenek listesi için `json-server --help` çalıştırın
 
-## Sponsors ✨
+## Sponsorlar ✨
 
-### Gold
+### Altın
 
 ||
 | :---: |
@@ -87,30 +86,30 @@ Run `json-server --help` for a list of options
 | <a href="https://zuplo.link/json-server-gh"><img src="https://github.com/user-attachments/assets/adfee31f-a8b6-4684-9a9b-af4f03ac5b75" height="100px"></a> |
 | <a href="https://www.mintlify.com/"><img src="https://github.com/user-attachments/assets/bcc8cc48-b2d9-4577-8939-1eb4196b7cc5" height="100px"></a> |
 
-### Silver
+### Gümüş
 
 ||
 | :---: |
 | <a href="https://requestly.com?utm_source=githubsponsor&utm_medium=jsonserver&utm_campaign=jsonserver"><img src="https://github.com/user-attachments/assets/f7e7b3cf-97e2-46b8-81c8-cb3992662a1c" style="height:70px; width:auto;"></a> |
 
-### Bronze
+### Bronz
 
 |||
 | :---: | :---: |
 | <a href="https://www.storyblok.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="35px"></a> | <a href="https://betterstack.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/44679f8f-9671-470d-b77e-26d90b90cbdc" height="35px"></a> |
 
-[Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
+[Bir sponsor olun ve şirket logonuz burada yer alsın](https://github.com/users/typicode/sponsorship)
 
 ## Sponsorware
 
 > [!NOTE]
-> This project uses the [Fair Source License](https://fair.io/). Only organizations with 3+ users are kindly asked to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. __This license helps keep the project sustainable and healthy, benefiting everyone.__
+> Bu proje [Fair Source License](https://fair.io/) kullanmaktadır. Yalnızca 3+ kullanıcılı organizasyonlardan kullanım için küçük bir sponsorluk katkısı yapmaları rica edilir. __Bu lisans, projenin sürdürülebilir ve sağlıklı kalmasına yardımcı olur, herkes faydalanır.__  
 >
-> For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
+> Daha fazla bilgi, SSS ve mantığı için şu bağlantıyı ziyaret edin: [https://fair.io/](https://fair.io/).
 
-## Routes
+## Rotalar
 
-Based on the example `db.json`, you'll get the following routes:
+Örnek `db.json` dosyasına göre aşağıdaki rotalar oluşturulur:
 
 ```
 GET    /posts
@@ -120,7 +119,7 @@ PUT    /posts/:id
 PATCH  /posts/:id
 DELETE /posts/:id
 
-# Same for comments
+# comments için de aynı
 ```
 
 ```
@@ -129,9 +128,9 @@ PUT   /profile
 PATCH /profile
 ```
 
-## Params
+## Parametreler
 
-### Conditions
+### Koşullar
 
 - ` ` → `==`
 - `lt` → `<`
@@ -144,7 +143,7 @@ PATCH /profile
 GET /posts?views_gt=9000
 ```
 
-### Range
+### Limitlendirme
 
 - `start`
 - `end`
@@ -155,16 +154,16 @@ GET /posts?_start=10&_end=20
 GET /posts?_start=10&_limit=10
 ```
 
-### Paginate
+### Sayfalama
 
 - `page`
-- `per_page` (default = 10)
+- `per_page` (varsayılan = 10)
 
 ```
 GET /posts?_page=1&_per_page=25
 ```
 
-### Sort
+### Sıralama
 
 - `_sort=f1,f2`
 
@@ -172,7 +171,7 @@ GET /posts?_page=1&_per_page=25
 GET /posts?_sort=id,-views
 ```
 
-### Nested and array fields
+### İç içe ve dizi alanlar
 
 - `x.y.z...`
 - `x.y.z[i]...`
@@ -183,33 +182,33 @@ GET /foo?x.y_lt=100
 GET /foo?arr[0]=bar
 ```
 
-### Embed
+### Gömme (Embed)
 
 ```
 GET /posts?_embed=comments
 GET /comments?_embed=post
 ```
 
-## Delete
+## Silme
 
 ```
 DELETE /posts/1
 DELETE /posts/1?_dependent=comments
 ```
 
-## Serving static files
+## Statik dosya servis etme
 
-If you create a `./public` directory, JSON Server will serve its content in addition to the REST API.
+Bir `./public` dizini oluşturursanız, JSON Server API’ye ek olarak buradaki içerikleri de servis eder.
 
-You can also add custom directories using `-s/--static` option.
+Ayrıca `-s/--static` seçeneğiyle özel dizinler ekleyebilirsiniz:
 
 ```sh
 json-server -s ./static
 json-server -s ./static -s ./node_modules
 ```
 
-## Notable differences with v0.17
+## v0.17 ile dikkat çekici farklar
 
-- `id` is always a string and will be generated for you if missing
-- use `_per_page` with `_page` instead of `_limit`for pagination
-- use Chrome's `Network tab > throtling` to delay requests instead of `--delay` CLI option
+- `id` artık her zaman string’dir ve eksikse otomatik oluşturulur
+- sayfalama için `_limit` yerine `_per_page` + `_page` kullanılır
+- istek gecikmesi için `--delay` kaldırıldı, bunun yerine Chrome `Network > throttling` kullanılabilir
