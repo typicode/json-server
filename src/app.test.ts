@@ -55,6 +55,7 @@ await test('createApp', async (t) => {
   // URLs
   const POSTS = '/posts'
   const POSTS_WITH_COMMENTS = '/posts?_embed=comments'
+  const POSTS_NESTED_WITH_COMMENTS = '/posts/1/comments'
   const POST_1 = '/posts/1'
   const POST_NOT_FOUND = '/posts/-1'
   const POST_WITH_COMMENTS = '/posts/1?_embed=comments'
@@ -76,6 +77,7 @@ await test('createApp', async (t) => {
     // API
     { method: 'GET', url: POSTS, statusCode: 200 },
     { method: 'GET', url: POSTS_WITH_COMMENTS, statusCode: 200 },
+    { method: 'GET', url: POSTS_NESTED_WITH_COMMENTS, statusCode: 200 },
     { method: 'GET', url: POST_1, statusCode: 200 },
     { method: 'GET', url: POST_NOT_FOUND, statusCode: 404 },
     { method: 'GET', url: POST_WITH_COMMENTS, statusCode: 200 },
