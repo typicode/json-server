@@ -15,6 +15,8 @@ import { createApp } from './app.js'
 import { Observer } from './observer.js'
 import { Data } from './service.js'
 
+let currentPort = 0;
+
 function help() {
   console.log(`Usage: json-server [options] <file>
 
@@ -142,7 +144,7 @@ await db.read()
 // Create app
 const app = createApp(db, { logger: false, static: staticArr })
 
-function logRoutes(data: Data) {
+function logRoutes(data: Data, port : number) {
   console.log(chalk.bold('Endpoints:'))
   if (Object.keys(data).length === 0) {
     console.log(
@@ -166,25 +168,42 @@ function randomItem(items: string[]): string {
   return items.at(index) ?? ''
 }
 
-app.listen(port, () => {
-  console.log(
-    [
-      chalk.bold(`JSON Server started on PORT :${port}`),
-      chalk.gray('Press CTRL-C to stop'),
-      chalk.gray(`Watching ${file}...`),
-      '',
-      chalk.magenta(randomItem(kaomojis)),
-      '',
-      chalk.bold('Index:'),
-      chalk.gray(`http://localhost:${port}/`),
-      '',
-      chalk.bold('Static files:'),
-      chalk.gray('Serving ./public directory if it exists'),
-      '',
-    ].join('\n'),
-  )
-  logRoutes(db.data)
-})
+function startServer (port : number) {
+  const server = app.listen(port);
+
+  server.on('listening', ()=>{
+    currentPort = port;
+    {
+      console.log(
+        [
+          chalk.bold(`JSON Server started on PORT :${port}`),
+          chalk.gray('Press CTRL-C to stop'),
+          chalk.gray(`Watching ${file}...`),
+          '',
+          chalk.magenta(randomItem(kaomojis)),
+          '',
+          chalk.bold('Index:'),
+          chalk.gray(`http://localhost:${port}/`),
+          '',
+          chalk.bold('Static files:'),
+          chalk.gray('Serving ./public directory if it exists'),
+          '',
+        ].join('\n'),
+      )
+      logRoutes(db.data, currentPort);
+    }
+  })
+  
+  server.on('error', (err: NodeJS.ErrnoException & { port?: number }) => {
+    if (err.code === 'EADDRINUSE') {
+        startServer(port+1); // recursion
+    } else {
+        console.error('Server error:', err);
+    }
+  })
+}
+
+startServer(port);
 
 // Watch file for changes
 if (process.env['NODE_ENV'] !== 'production') {
@@ -208,7 +227,7 @@ if (process.env['NODE_ENV'] !== 'production') {
     const nextEndpoints = JSON.stringify(Object.keys(data).sort())
     if (prevEndpoints !== nextEndpoints) {
       console.log()
-      logRoutes(data)
+      logRoutes(data, currentPort)
     }
   }
   watch(file).on('change', () => {
