@@ -208,6 +208,23 @@ json-server -s ./static
 json-server -s ./static -s ./node_modules
 ```
 
+## Middleware
+
+You can add your middlewares from the CLI using `--middleware` option:
+
+```js
+// hello.js
+module.exports = (req, res, next) => {
+  res.header('X-Hello', 'World')
+  next()
+}
+```
+
+```bash
+json-server db.json --middleware ./hello.js
+json-server db.json --middleware ./first.js ./second.js
+```
+
 ## Notable differences with v0.17
 
 - `id` is always a string and will be generated for you if missing
