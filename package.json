@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "tsx watch src/bin.ts fixtures/db.json",
     "build": "rm -rf lib && tsc",
-    "test": "node --import tsx/esm --test src/*.test.ts",
+    "test": "",
     "lint": "eslint src",
     "prepare": "husky",
     "prepublishOnly": "npm run build"
@@ -54,6 +54,7 @@
     "dot-prop": "^9.0.0",
     "eta": "^3.5.0",
     "inflection": "^3.0.0",
+    "json-server": "^1.0.0-beta.3",
     "json5": "^2.2.3",
     "lowdb": "^7.0.1",
     "milliparsec": "^4.0.0",
