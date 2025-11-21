@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
-import { extname } from 'node:path'
+import { extname, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import chalk from 'chalk'
@@ -19,11 +19,12 @@ function help() {
   console.log(`Usage: json-server [options] <file>
 
 Options:
-  -p, --port <port>  Port (default: 3000)
-  -h, --host <host>  Host (default: localhost)
-  -s, --static <dir> Static files directory (multiple allowed)
-  --help             Show this message
-  --version          Show version number
+  -p, --port <port>        Port (default: 3000)
+  -h, --host <host>        Host (default: localhost)
+  -s, --static <dir>       Static files directory (multiple allowed)
+  --middleware <file>      Middleware file
+  --help                   Show this message
+  --version                Show version number
 `)
 }
 
@@ -33,6 +34,7 @@ function args(): {
   port: number
   host: string
   static: string[]
+  middleware: string
 } {
   try {
     const { values, positionals } = parseArgs({
@@ -52,6 +54,10 @@ function args(): {
           short: 's',
           multiple: true,
           default: [],
+        },
+        middleware: {
+          type: 'string',
+          default: '',
         },
         help: {
           type: 'boolean',
@@ -97,9 +103,10 @@ function args(): {
     // App args and options
     return {
       file: positionals[0] ?? '',
-      port: parseInt(values.port as string),
-      host: values.host as string,
-      static: values.static as string[],
+      port: parseInt(values.port),
+      host: values.host,
+      static: values.static,
+      middleware: values.middleware,
     }
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ERR_PARSE_ARGS_UNKNOWN_OPTION') {
@@ -112,7 +119,19 @@ function args(): {
   }
 }
 
-const { file, port, host, static: staticArr } = args()
+// Load middleware
+async function loadMiddleware(middlewarePath: string) {
+  const resolvedPath = resolve(process.cwd(), middlewarePath)
+  if (existsSync(resolvedPath)) {
+    const middlewareModule = await import(resolvedPath)
+    return middlewareModule.default || middlewareModule
+  } else {
+    console.error(`Middleware file not found: ${resolvedPath}`)
+    process.exit(1)
+  }
+}
+
+const { file, port, host, static: staticArr, middleware } = args()
 
 if (!existsSync(file)) {
   console.log(chalk.red(`File ${file} not found`))
@@ -139,8 +158,19 @@ const observer = new Observer(adapter)
 const db = new Low<Data>(observer, {})
 await db.read()
 
+// Load middleware if specified
+let middlewareFunction
+if (middleware) {
+  console.log(chalk.gray(`Loading middleware from ${middleware}`))
+  middlewareFunction = await loadMiddleware(middleware)
+}
+
 // Create app
-const app = createApp(db, { logger: false, static: staticArr })
+const app = createApp(db, {
+  logger: false,
+  static: staticArr,
+  middleware: middlewareFunction,
+})
 
 function logRoutes(data: Data) {
   console.log(chalk.bold('Endpoints:'))
@@ -157,6 +187,7 @@ function logRoutes(data: Data) {
       )
       .join('\n'),
   )
+  console.log()
 }
 
 const kaomojis = ['♡⸜(˶˃ ᵕ ˂˶)⸝♡', '♡( ◡‿◡ )', '( ˶ˆ ᗜ ˆ˵ )', '(˶ᵔ ᵕ ᵔ˶)']
