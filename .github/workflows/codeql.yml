@@ -58,7 +58,7 @@ jobs:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
         # Use built-in query packs plus extended security rules
-        queries: +security-extended, +security-and-quality
+        queries: security-extended,security-and-quality
 
     - name: Build (manual)
       if: ${{ matrix.build-mode == 'manual' }}
