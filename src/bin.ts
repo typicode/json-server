@@ -120,7 +120,16 @@ if (!existsSync(file)) {
 }
 
 // Handle empty string JSON file
-if (readFileSync(file, 'utf-8').trim() === '') {
+let fileContent = readFileSync(file, 'utf-8')
+
+// Strip UTF-8 BOM if present (U+FEFF)
+// Some editors (especially on Windows) add this invisible character at the start of files
+if (fileContent.charCodeAt(0) === 0xfeff) {
+  fileContent = fileContent.slice(1)
+  writeFileSync(file, fileContent)
+}
+
+if (fileContent.trim() === '') {
   writeFileSync(file, '{}')
 }
 
