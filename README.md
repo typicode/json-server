@@ -61,8 +61,27 @@ You can read more about JSON5 format [here](https://github.com/json5/json5).
 Pass it to JSON Server CLI
 
 ```shell
-$ npx json-server db.json
+$ 
+npx json-server db.json
 ```
+> ⚠️ **CLI usage in v1 beta**
+>
+> In `json-server@1.0.0-beta.x`, the CLI is not automatically resolved by
+> `npx json-server`.
+>
+> Use one of the following instead:
+>
+> ```bash
+> npx json-server@1.0.0-beta.3 db.json
+> ```
+>
+> or
+>
+> ```bash
+> npx @json-server/cli db.json
+> ```
+>
+> This is a breaking change from `json-server@0.x`.
 
 Get a REST API
 
