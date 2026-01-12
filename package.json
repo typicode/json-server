@@ -12,7 +12,7 @@
     "views"
   ],
   "engines": {
-    "node": "^20.19.0 || >=22.12.0"
+    "node": ">=22.12.0"
   },
   "scripts": {
     "dev": "tsx watch src/bin.ts fixtures/db.json",
@@ -40,7 +40,7 @@
     "tempy": "^3.1.0",
     "tsx": "^4.19.1",
     "type-fest": "^4.26.1",
-    "typescript": "^5.6.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@tinyhttp/app": "^2.4.0",
