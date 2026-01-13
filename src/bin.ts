@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
-import { extname } from 'node:path'
+import { extname, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import chalk from 'chalk'
@@ -19,11 +19,12 @@ function help() {
   console.log(`Usage: json-server [options] <file>
 
 Options:
-  -p, --port <port>  Port (default: 3000)
-  -h, --host <host>  Host (default: localhost)
-  -s, --static <dir> Static files directory (multiple allowed)
-  --help             Show this message
-  --version          Show version number
+  -p, --port <port>        Port (default: 3000)
+  -h, --host <host>        Host (default: localhost)
+  -s, --static <dir>       Static files directory (multiple allowed)
+  --middleware, -m <file>  Paths to middleware files (multiple allowed)
+  --help                   Show this message
+  --version                Show version number
 `)
 }
 
@@ -33,6 +34,7 @@ function args(): {
   port: number
   host: string
   static: string[]
+  middleware: string
 } {
   try {
     const { values, positionals } = parseArgs({
@@ -52,6 +54,12 @@ function args(): {
           short: 's',
           multiple: true,
           default: [],
+        },
+        middleware: {
+          type: 'string',
+          short: 'm',
+          multiple: true,
+          default: []
         },
         help: {
           type: 'boolean',
@@ -100,6 +108,7 @@ function args(): {
       port: parseInt(values.port as string),
       host: values.host as string,
       static: values.static as string[],
+      middleware: values.middleware as string[],
     }
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ERR_PARSE_ARGS_UNKNOWN_OPTION') {
@@ -112,12 +121,26 @@ function args(): {
   }
 }
 
-const { file, port, host, static: staticArr } = args()
+const { file, port, host, static: staticArr, middleware: middlewarePaths } = args()
 
 if (!existsSync(file)) {
   console.log(chalk.red(`File ${file} not found`))
   process.exit(1)
 }
+
+// Load middlewares if specified
+const middlewareFunctions = await Promise.all(
+  middlewarePaths.map(async p => {
+    const resolvedPath = resolve(process.cwd(), p)
+    if (!existsSync(resolvedPath)){
+      console.error(`Middleware file not found: ${resolvedPath}`)
+      return process.exit(1)
+    }
+    console.log(chalk.gray(`Loading middleware from ${resolvedPath}`))
+    const middlewareModule = await import(resolvedPath)
+    return middlewareModule.default || middlewareModule
+  })
+);
 
 // Handle empty string JSON file
 if (readFileSync(file, 'utf-8').trim() === '') {
@@ -140,7 +163,11 @@ const db = new Low<Data>(observer, {})
 await db.read()
 
 // Create app
-const app = createApp(db, { logger: false, static: staticArr })
+const app = createApp(db, {
+  logger: false,
+  static: staticArr,
+  middlewares: middlewareFunctions,
+})
 
 function logRoutes(data: Data) {
   console.log(chalk.bold('Endpoints:'))
