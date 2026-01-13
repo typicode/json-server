@@ -8,7 +8,7 @@ import { Low } from 'lowdb'
 import { json } from 'milliparsec'
 import sirv from 'sirv'
 
-import { Data, isItem, Service } from './service.js'
+import { Data, getNestedName, isItem, Service } from './service.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const isProduction = process.env['NODE_ENV'] === 'production'
@@ -84,6 +84,13 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     const { name = '', id = '' } = req.params
     res.locals['data'] = service.findById(name, id, req.query)
     next?.()
+  })
+
+  app.get('/:name/:id/:nested_name', (req, res, next) => {
+    const { name = '', id = '', nested_name = '' } = req.params
+
+    res.locals['data'] = service.find(nested_name, { ...req.query, [getNestedName(name)]: id})
+    next()
   })
 
   app.post('/:name', async (req, res, next) => {
