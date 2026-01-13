@@ -6,7 +6,6 @@
   "bin": {
     "json-server": "lib/bin.js"
   },
-  "types": "lib",
   "files": [
     "lib",
     "views"
@@ -15,9 +14,9 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "tsx watch src/bin.ts fixtures/db.json",
+    "dev": "node --experimental-strip-types src/bin.ts fixtures/db.json",
     "build": "rm -rf lib && tsc",
-    "test": "node --import tsx/esm --test src/*.test.ts",
+    "test": "node --experimental-strip-types --test src/*.test.ts",
     "lint": "oxlint src",
     "prepare": "husky",
     "prepublishOnly": "npm run build"
@@ -30,24 +29,21 @@
     "url": "git+https://github.com/typicode/json-server.git"
   },
   "devDependencies": {
-    "@sindresorhus/tsconfig": "^6.0.0",
-    "@tailwindcss/typography": "^0.5.15",
-    "@types/node": "^22.5.5",
+    "@types/node": "^25.0.6",
     "concurrently": "^9.0.1",
     "get-port": "^7.1.0",
     "husky": "^9.1.6",
-    "oxlint": "^1.39.0",
+    "oxlint": "^1.38.0",
     "tempy": "^3.1.0",
-    "tsx": "^4.19.1",
     "type-fest": "^4.26.1",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@tinyhttp/app": "^2.4.0",
+    "@tinyhttp/app": "^3.0.1",
     "@tinyhttp/cors": "^2.0.1",
-    "@tinyhttp/logger": "^2.0.0",
+    "@tinyhttp/logger": "^2.1.0",
     "chalk": "^5.3.0",
-    "chokidar": "^4.0.1",
+    "chokidar": "^5.0.0",
     "dot-prop": "^9.0.0",
     "eta": "^3.5.0",
     "inflection": "^3.0.0",
