@@ -19,3 +19,45 @@ This project uses the Fair Source License, which is neither purely open-source n
 This doesn't apply to individuals, students, teachers, small teams, ...
 
 Got questions or need support? Feel free to reach out to typicode@gmail.com.
+
+## Development
+
+### Prerequisites
+
+- Node.js >= 22.12.0 (required for native TypeScript support)
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/typicode/json-server.git
+cd json-server
+
+# Install dependencies
+npm install
+```
+
+### Development Workflow
+
+```bash
+# Run the dev server with a test database
+npm run dev
+
+# Run tests
+npm test
+
+# Lint code
+npm run lint
+
+# Build for production
+npm run build
+```
+
+### TypeScript Support
+
+This project uses Node.js's native TypeScript support via the `--experimental-strip-types` flag (available in Node.js 22.12.0+). This means:
+
+- No separate transpilation tool (like `tsx` or `ts-node`) is needed for development
+- TypeScript files are run directly with Node.js using `node --experimental-strip-types`
+- The `build` script compiles TypeScript to JavaScript for distribution using the TypeScript compiler (`tsc`)
+- Type checking is performed by the TypeScript compiler during the build process

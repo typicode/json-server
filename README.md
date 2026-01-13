@@ -14,6 +14,8 @@
 npm install json-server
 ```
 
+> **Requirements:** Node.js >= 22.12.0
+
 ## Usage
 
 Create a `db.json` or `db.json5` file
