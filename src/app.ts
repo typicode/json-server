@@ -8,7 +8,7 @@ import { Low } from 'lowdb'
 import { json } from 'milliparsec'
 import sirv from 'sirv'
 
-import { Data, isItem, Service } from './service.js'
+import { Data, isItem, Item, Service } from './service.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const isProduction = process.env['NODE_ENV'] === 'production'
@@ -19,6 +19,7 @@ type Query = Record<string, QueryValue>
 export type AppOptions = {
   logger?: boolean
   static?: string[]
+  chunk?: number
 }
 
 const eta = new Eta({
@@ -78,6 +79,32 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     })
     res.locals['data'] = service.find(name, query)
     next?.()
+  })
+
+  app.get('/sse/:name', (req, res) => {
+    res.header('Content-Type', 'text/event-stream');
+    const { name = '' } = req.params
+
+    const interval = 200;
+
+    const data = service.find(name) as Item[];
+    if (!data.length) {
+      return res.sendStatus(404)
+    }
+
+    for (let i = 0; i < data.length; i += options.chunk!) {
+      setTimeout(() => {
+        const payload = JSON.stringify(data.slice(i, options.chunk! + i))
+        res.write(`data: ${payload}\n\n`);
+        res.flushHeaders();
+
+        if (i >= data.length) {
+          res.end();
+        }
+      }, i * interval);
+    }
+
+    return;
   })
 
   app.get('/:name/:id', (req, res, next) => {
