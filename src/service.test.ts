@@ -3,7 +3,8 @@ import test from 'node:test'
 
 import { Low, Memory } from 'lowdb'
 
-import { Data, Item, PaginatedItems, Service } from './service.js'
+import type { Data, Item, PaginatedItems } from './service.ts'
+import { Service } from './service.ts'
 
 const defaultData = { posts: [], comments: [], object: {} }
 const adapter = new Memory<Data>()

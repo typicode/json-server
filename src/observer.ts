@@ -1,4 +1,4 @@
-import { Adapter } from 'lowdb'
+import type { Adapter } from 'lowdb'
 
 // Lowdb adapter to observe read/write events
 export class Observer<T> {
