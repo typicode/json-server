@@ -14,7 +14,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "node --experimental-strip-types src/bin.ts fixtures/db.json",
+    "dev": "node --watch --experimental-strip-types src/bin.ts fixtures/db.json",
     "build": "rm -rf lib && tsc",
     "prepublishOnly": "rm -rf lib && tsc",
     "typecheck": "tsc --noEmit",
