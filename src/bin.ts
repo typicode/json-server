@@ -23,6 +23,7 @@ Options:
   -p, --port <port>  Port (default: 3000)
   -h, --host <host>  Host (default: localhost)
   -s, --static <dir> Static files directory (multiple allowed)
+  -d, --delay        Delay response in milliseconds (default: 0)
   --help             Show this message
   --version          Show version number
 `)
@@ -34,6 +35,7 @@ function args(): {
   port: number
   host: string
   static: string[]
+  delay: number
 } {
   try {
     const { values, positionals } = parseArgs({
@@ -64,6 +66,10 @@ function args(): {
         watch: {
           type: 'boolean',
           short: 'w',
+        },
+        delay: {
+          type: 'string',
+          short: 'd',
         },
       },
       allowPositionals: true,
@@ -101,6 +107,7 @@ function args(): {
       port: parseInt(values.port as string),
       host: values.host as string,
       static: values.static as string[],
+      delay: parseInt(values.delay as string)
     }
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ERR_PARSE_ARGS_UNKNOWN_OPTION') {
@@ -113,7 +120,7 @@ function args(): {
   }
 }
 
-const { file, port, host, static: staticArr } = args()
+const { file, port, host, static: staticArr, delay } = args()
 
 if (!existsSync(file)) {
   console.log(chalk.red(`File ${file} not found`))
@@ -141,7 +148,7 @@ const db = new Low<Data>(observer, {})
 await db.read()
 
 // Create app
-const app = createApp(db, { logger: false, static: staticArr })
+const app = createApp(db, { logger: false, static: staticArr, delay })
 
 function logRoutes(data: Data) {
   console.log(chalk.bold('Endpoints:'))

@@ -20,6 +20,7 @@ type Query = Record<string, QueryValue>
 export type AppOptions = {
   logger?: boolean
   static?: string[]
+  delay?: number
 }
 
 const eta = new Eta({
@@ -53,6 +54,11 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   // Body parser
   app.use(json())
+
+  // Delay middleware - optional
+  app.use((_req, _res, next) => {
+    setTimeout(next, options.delay || 0);
+  });
 
   app.get('/', (_req, res) =>
     res.send(eta.render('index.html', { data: db.data })),
