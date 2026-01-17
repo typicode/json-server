@@ -1,4 +1,4 @@
-import assert from 'node:assert/strict'
+   import assert from 'node:assert/strict'
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import test from 'node:test'
@@ -11,20 +11,12 @@ import { createApp } from './app.ts'
 import type { Data } from './service.ts'
 
 type Test = {
-   
   method: HTTPMethods
   url: string
   statusCode: number
 }
 
-type HTTPMethods =
-  | 'DELETE'
-  | 'GET'
-  | 'HEAD'
-  | 'PATCH'
-  | 'POST'
-  | 'PUT'
-  | 'OPTIONS'
+type HTTPMethods = 'DELETE' | 'GET' | 'HEAD' | 'PATCH' | 'POST' | 'PUT' | 'OPTIONS'
 
 const port = await getPort()
 

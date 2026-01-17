@@ -54,9 +54,7 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
   // Body parser
   app.use(json())
 
-  app.get('/', (_req, res) =>
-    res.send(eta.render('index.html', { data: db.data })),
-  )
+  app.get('/', (_req, res) => res.send(eta.render('index.html', { data: db.data })))
 
   app.get('/:name', (req, res, next) => {
     const { name = '' } = req.params
@@ -69,11 +67,11 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
         ['_start', '_end', '_limit', '_page', '_per_page'].includes(key) &&
         typeof value === 'string'
       ) {
-        value = parseInt(value);
+        value = parseInt(value)
       }
-  
+
       if (!Number.isNaN(value)) {
-        query[key] = value;
+        query[key] = value
       }
     })
     res.locals['data'] = service.find(name, query)
@@ -128,11 +126,7 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   app.delete('/:name/:id', async (req, res, next) => {
     const { name = '', id = '' } = req.params
-    res.locals['data'] = await service.destroyById(
-      name,
-      id,
-      req.query['_dependent'],
-    )
+    res.locals['data'] = await service.destroyById(name, id, req.query['_dependent'])
     next?.()
   })
 
