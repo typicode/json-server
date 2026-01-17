@@ -1,7 +1,14 @@
 {
-  "extends": "@sindresorhus/tsconfig",
   "exclude": ["src/**/*.test.ts"],
   "compilerOptions": {
-    "outDir": "./lib"
+    "outDir": "./lib",
+    "target": "esnext",
+    "module": "nodenext",
+    "skipLibCheck": true,
+    "strict": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true
   }
 }

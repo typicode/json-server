@@ -7,8 +7,8 @@ import getPort from 'get-port'
 import { Low, Memory } from 'lowdb'
 import { temporaryDirectory } from 'tempy'
 
-import { createApp } from './app.js'
-import { Data } from './service.js'
+import { createApp } from './app.ts'
+import type { Data } from './service.ts'
 
 type Test = {
    

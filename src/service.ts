@@ -24,14 +24,16 @@ export function isData(obj: unknown): obj is Record<string, Item[]> {
   )
 }
 
-enum Condition {
-  lt = 'lt',
-  lte = 'lte',
-  gt = 'gt',
-  gte = 'gte',
-  ne = 'ne',
-  default = '',
-}
+const Condition = {
+  lt: 'lt',
+  lte: 'lte',
+  gt: 'gt',
+  gte: 'gte',
+  ne: 'ne',
+  default: '',
+} as const
+
+type Condition = typeof Condition[keyof typeof Condition]
 
 function isCondition(value: string): value is Condition {
   return Object.values<string>(Condition).includes(value)

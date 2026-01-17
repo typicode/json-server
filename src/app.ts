@@ -8,7 +8,8 @@ import { Low } from 'lowdb'
 import { json } from 'milliparsec'
 import sirv from 'sirv'
 
-import { Data, isItem, Service } from './service.js'
+import type { Data } from './service.ts'
+import { isItem, Service } from './service.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const isProduction = process.env['NODE_ENV'] === 'production'
@@ -51,7 +52,6 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     .options('*', cors())
 
   // Body parser
-  // @ts-expect-error expected
   app.use(json())
 
   app.get('/', (_req, res) =>

@@ -6,14 +6,15 @@ import { parseArgs } from 'node:util'
 import chalk from 'chalk'
 import { watch } from 'chokidar'
 import JSON5 from 'json5'
-import { Adapter, Low } from 'lowdb'
+import { Low } from 'lowdb'
+import type { Adapter } from 'lowdb'
 import { DataFile, JSONFile } from 'lowdb/node'
-import { PackageJson } from 'type-fest'
+import type { PackageJson } from 'type-fest'
 
 import { fileURLToPath } from 'node:url'
-import { createApp } from './app.js'
-import { Observer } from './observer.js'
-import { Data } from './service.js'
+import { createApp } from './app.ts'
+import { Observer } from './observer.ts'
+import type { Data } from './service.ts'
 
 function help() {
   console.log(`Usage: json-server [options] <file>
