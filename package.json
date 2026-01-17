@@ -16,6 +16,7 @@
   "scripts": {
     "dev": "node --watch --experimental-strip-types src/bin.ts fixtures/db.json",
     "build": "rm -rf lib && tsc",
+    "postinstall": "npm run build",
     "prepublishOnly": "rm -rf lib && tsc",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test src/*.test.ts",
