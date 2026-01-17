@@ -41,15 +41,15 @@ Create a `db.json` or `db.json5` file
 ```json5
 {
   posts: [
-    { id: '1', title: 'a title', views: 100 },
-    { id: '2', title: 'another title', views: 200 },
+    { id: "1", title: "a title", views: 100 },
+    { id: "2", title: "another title", views: 200 },
   ],
   comments: [
-    { id: '1', text: 'a comment about post 1', postId: '1' },
-    { id: '2', text: 'another comment about post 1', postId: '1' },
+    { id: "1", text: "a comment about post 1", postId: "1" },
+    { id: "2", text: "another comment about post 1", postId: "1" },
   ],
   profile: {
-    name: 'typicode',
+    name: "typicode",
   },
 }
 ```
@@ -81,22 +81,22 @@ Run `json-server --help` for a list of options
 
 ### Gold
 
-||
-| :---: |
-| <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="100px"></a> |
+|                                                                                                                                                            |
+| :--------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|               <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="100px"></a>               |
 | <a href="https://zuplo.link/json-server-gh"><img src="https://github.com/user-attachments/assets/adfee31f-a8b6-4684-9a9b-af4f03ac5b75" height="100px"></a> |
-| <a href="https://www.mintlify.com/"><img src="https://github.com/user-attachments/assets/bcc8cc48-b2d9-4577-8939-1eb4196b7cc5" height="100px"></a> |
+|     <a href="https://www.mintlify.com/"><img src="https://github.com/user-attachments/assets/bcc8cc48-b2d9-4577-8939-1eb4196b7cc5" height="100px"></a>     |
 
 ### Silver
 
-||
-| :---: |
+|                                                                                                                                                                                                                                         |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | <a href="https://requestly.com?utm_source=githubsponsor&utm_medium=jsonserver&utm_campaign=jsonserver"><img src="https://github.com/user-attachments/assets/f7e7b3cf-97e2-46b8-81c8-cb3992662a1c" style="height:70px; width:auto;"></a> |
 
 ### Bronze
 
-|||
-| :---: | :---: |
+|                                                                                                                                                                                |                                                                                                                                                                              |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | <a href="https://www.storyblok.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="35px"></a> | <a href="https://betterstack.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/44679f8f-9671-470d-b77e-26d90b90cbdc" height="35px"></a> |
 
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
@@ -104,7 +104,7 @@ Run `json-server --help` for a list of options
 ## Sponsorware
 
 > [!NOTE]
-> This project uses the [Fair Source License](https://fair.io/). Only organizations with 3+ users are kindly asked to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. __This license helps keep the project sustainable and healthy, benefiting everyone.__
+> This project uses the [Fair Source License](https://fair.io/). Only organizations with 3+ users are kindly asked to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. **This license helps keep the project sustainable and healthy, benefiting everyone.**
 >
 > For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
 

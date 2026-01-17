@@ -10,8 +10,8 @@ jobs:
           version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
-          cache: 'pnpm'
+          node-version: "22.x"
+          cache: "pnpm"
       - run: pnpm install
       - run: pnpm run typecheck
       - run: pnpm test

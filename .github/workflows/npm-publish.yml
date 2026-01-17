@@ -15,8 +15,8 @@ jobs:
           version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "22.x"
+          registry-url: "https://registry.npmjs.org"
       - run: pnpm install
       - run: pnpm publish --provenance --access public
         env:
