@@ -18,6 +18,6 @@ jobs:
           node-version: "22.x"
           registry-url: "https://registry.npmjs.org"
       - run: pnpm install
-      - run: pnpm publish --provenance --access public
+      - run: pnpm publish --provenance --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
