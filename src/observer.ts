@@ -1,36 +1,36 @@
-import { Adapter } from 'lowdb'
+import type { Adapter } from "lowdb";
 
 // Lowdb adapter to observe read/write events
 export class Observer<T> {
-  #adapter
+  #adapter;
 
   onReadStart = function () {
-    return
-  }
+    return;
+  };
   onReadEnd: (data: T | null) => void = function () {
-    return
-  }
+    return;
+  };
   onWriteStart = function () {
-    return
-  }
+    return;
+  };
   onWriteEnd = function () {
-    return
-  }
+    return;
+  };
 
   constructor(adapter: Adapter<T>) {
-    this.#adapter = adapter
+    this.#adapter = adapter;
   }
 
   async read() {
-    this.onReadStart()
-    const data = await this.#adapter.read()
-    this.onReadEnd(data)
-    return data
+    this.onReadStart();
+    const data = await this.#adapter.read();
+    this.onReadEnd(data);
+    return data;
   }
 
   async write(arg: T) {
-    this.onWriteStart()
-    await this.#adapter.write(arg)
-    this.onWriteEnd()
+    this.onWriteStart();
+    await this.#adapter.write(arg);
+    this.onWriteEnd();
   }
 }

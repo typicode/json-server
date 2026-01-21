@@ -19,19 +19,19 @@ export function isData(obj: unknown): obj is Record<string, Item[]> {
   }
 
   const data = obj as Record<string, unknown>
-  return Object.values(data).every(
-    (value) => Array.isArray(value) && value.every(isItem),
-  )
+  return Object.values(data).every((value) => Array.isArray(value) && value.every(isItem))
 }
 
-enum Condition {
-  lt = 'lt',
-  lte = 'lte',
-  gt = 'gt',
-  gte = 'gte',
-  ne = 'ne',
-  default = '',
-}
+const Condition = {
+  lt: 'lt',
+  lte: 'lte',
+  gt: 'gt',
+  gte: 'gte',
+  ne: 'ne',
+  default: '',
+} as const
+
+type Condition = (typeof Condition)[keyof typeof Condition]
 
 function isCondition(value: string): value is Condition {
   return Object.values<string>(Condition).includes(value)
@@ -149,11 +149,7 @@ export class Service {
     return Object.prototype.hasOwnProperty.call(this.#db?.data, name)
   }
 
-  findById(
-    name: string,
-    id: string,
-    query: { _embed?: string[] | string },
-  ): Item | undefined {
+  findById(name: string, id: string, query: { _embed?: string[] | string }): Item | undefined {
     const value = this.#get(name)
 
     if (Array.isArray(value)) {
@@ -220,18 +216,7 @@ export class Service {
         conds.push([field, op, value])
         continue
       }
-      if (
-        [
-          '_embed',
-          '_sort',
-          '_start',
-          '_end',
-          '_limit',
-          '_page',
-          '_per_page',
-          'q',
-        ].includes(key)
-      ) {
+      if (['_embed', '_sort', '_start', '_end', '_limit', '_page', '_per_page'].includes(key)) {
         continue
       }
       conds.push([key, Condition.default, value])
@@ -247,48 +232,28 @@ export class Service {
           switch (op) {
             // item_gt=value
             case Condition.gt: {
-              if (
-                !(
-                  typeof itemValue === 'number' &&
-                  itemValue > parseInt(paramValue)
-                )
-              ) {
+              if (!(typeof itemValue === 'number' && itemValue > parseInt(paramValue))) {
                 return false
               }
               break
             }
             // item_gte=value
             case Condition.gte: {
-              if (
-                !(
-                  typeof itemValue === 'number' &&
-                  itemValue >= parseInt(paramValue)
-                )
-              ) {
+              if (!(typeof itemValue === 'number' && itemValue >= parseInt(paramValue))) {
                 return false
               }
               break
             }
             // item_lt=value
             case Condition.lt: {
-              if (
-                !(
-                  typeof itemValue === 'number' &&
-                  itemValue < parseInt(paramValue)
-                )
-              ) {
+              if (!(typeof itemValue === 'number' && itemValue < parseInt(paramValue))) {
                 return false
               }
               break
             }
             // item_lte=value
             case Condition.lte: {
-              if (
-                !(
-                  typeof itemValue === 'number' &&
-                  itemValue <= parseInt(paramValue)
-                )
-              ) {
+              if (!(typeof itemValue === 'number' && itemValue <= parseInt(paramValue))) {
                 return false
               }
               break
@@ -375,10 +340,7 @@ export class Service {
     return sorted.slice(start, end)
   }
 
-  async create(
-    name: string,
-    data: Omit<Item, 'id'> = {},
-  ): Promise<Item | undefined> {
+  async create(name: string, data: Omit<Item, 'id'> = {}): Promise<Item | undefined> {
     const items = this.#get(name)
     if (items === undefined || !Array.isArray(items)) return
 
@@ -389,15 +351,11 @@ export class Service {
     return item
   }
 
-  async #updateOrPatch(
-    name: string,
-    body: Item = {},
-    isPatch: boolean,
-  ): Promise<Item | undefined> {
+  async #updateOrPatch(name: string, body: Item = {}, isPatch: boolean): Promise<Item | undefined> {
     const item = this.#get(name)
     if (item === undefined || Array.isArray(item)) return
 
-    const nextItem = (this.#db.data[name] = isPatch ? { item, ...body } : body)
+    const nextItem = (this.#db.data[name] = isPatch ? { ...item, ...body } : body)
 
     await this.#db.write()
     return nextItem
@@ -431,19 +389,11 @@ export class Service {
     return this.#updateOrPatch(name, body, true)
   }
 
-  async updateById(
-    name: string,
-    id: string,
-    body: Item = {},
-  ): Promise<Item | undefined> {
+  async updateById(name: string, id: string, body: Item = {}): Promise<Item | undefined> {
     return this.#updateOrPatchById(name, id, body, false)
   }
 
-  async patchById(
-    name: string,
-    id: string,
-    body: Item = {},
-  ): Promise<Item | undefined> {
+  async patchById(name: string, id: string, body: Item = {}): Promise<Item | undefined> {
     return this.#updateOrPatchById(name, id, body, true)
   }
 

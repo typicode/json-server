@@ -8,7 +8,8 @@ import { Low } from 'lowdb'
 import { json } from 'milliparsec'
 import sirv from 'sirv'
 
-import { Data, isItem, Service } from './service.js'
+import type { Data } from './service.ts'
+import { isItem, Service } from './service.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const isProduction = process.env['NODE_ENV'] === 'production'
@@ -51,12 +52,9 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
     .options('*', cors())
 
   // Body parser
-  // @ts-expect-error expected
   app.use(json())
 
-  app.get('/', (_req, res) =>
-    res.send(eta.render('index.html', { data: db.data })),
-  )
+  app.get('/', (_req, res) => res.send(eta.render('index.html', { data: db.data })))
 
   app.get('/:name', (req, res, next) => {
     const { name = '' } = req.params
@@ -69,11 +67,11 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
         ['_start', '_end', '_limit', '_page', '_per_page'].includes(key) &&
         typeof value === 'string'
       ) {
-        value = parseInt(value);
+        value = parseInt(value)
       }
-  
+
       if (!Number.isNaN(value)) {
-        query[key] = value;
+        query[key] = value
       }
     })
     res.locals['data'] = service.find(name, query)
@@ -128,11 +126,7 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   app.delete('/:name/:id', async (req, res, next) => {
     const { name = '', id = '' } = req.params
-    res.locals['data'] = await service.destroyById(
-      name,
-      id,
-      req.query['_dependent'],
-    )
+    res.locals['data'] = await service.destroyById(name, id, req.query['_dependent'])
     next?.()
   })
 

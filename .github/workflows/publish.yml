@@ -1,0 +1,24 @@
+name: Publish Package to npmjs
+on:
+  release:
+    types: [published]
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24.x"
+          registry-url: "https://registry.npmjs.org"
+      - run: pnpm install
+      - run: pnpm publish --provenance --access public --no-git-checks

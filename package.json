@@ -1,63 +1,60 @@
 {
   "name": "json-server",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "",
-  "type": "module",
-  "bin": {
-    "json-server": "lib/bin.js"
-  },
-  "types": "lib",
-  "files": [
-    "lib",
-    "views"
-  ],
-  "engines": {
-    "node": ">=18.3"
-  },
-  "scripts": {
-    "dev": "tsx watch src/bin.ts fixtures/db.json",
-    "build": "rm -rf lib && tsc",
-    "test": "node --import tsx/esm --test src/*.test.ts",
-    "lint": "eslint src",
-    "prepare": "husky",
-    "prepublishOnly": "npm run build"
-  },
   "keywords": [],
-  "author": "typicode <typicode@gmail.com>",
   "license": "SEE LICENSE IN ./LICENSE",
+  "author": "typicode <typicode@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/typicode/json-server.git"
   },
-  "devDependencies": {
-    "@eslint/js": "^9.11.0",
-    "@sindresorhus/tsconfig": "^6.0.0",
-    "@tailwindcss/typography": "^0.5.15",
-    "@types/node": "^22.5.5",
-    "concurrently": "^9.0.1",
-    "eslint": "^9.11.0",
-    "get-port": "^7.1.0",
-    "globals": "^15.9.0",
-    "husky": "^9.1.6",
-    "tempy": "^3.1.0",
-    "tsx": "^4.19.1",
-    "type-fest": "^4.26.1",
-    "typescript": "^5.6.2",
-    "typescript-eslint": "^8.6.0"
+  "bin": {
+    "json-server": "lib/bin.js"
+  },
+  "files": [
+    "lib",
+    "views"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --experimental-strip-types src/bin.ts fixtures/db.json",
+    "build": "rm -rf lib && tsc",
+    "prepublishOnly": "rm -rf lib && tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test src/*.test.ts",
+    "lint": "oxlint src",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "prepare": "husky"
   },
   "dependencies": {
-    "@tinyhttp/app": "^2.4.0",
+    "@tinyhttp/app": "^3.0.1",
     "@tinyhttp/cors": "^2.0.1",
-    "@tinyhttp/logger": "^2.0.0",
-    "chalk": "^5.3.0",
-    "chokidar": "^4.0.1",
-    "dot-prop": "^9.0.0",
-    "eta": "^3.5.0",
-    "inflection": "^3.0.0",
+    "@tinyhttp/logger": "^2.1.0",
+    "chalk": "^5.6.2",
+    "chokidar": "^5.0.0",
+    "dot-prop": "^10.1.0",
+    "eta": "^4.5.0",
+    "inflection": "^3.0.2",
     "json5": "^2.2.3",
     "lowdb": "^7.0.1",
-    "milliparsec": "^4.0.0",
-    "sirv": "^2.0.4",
-    "sort-on": "^6.1.0"
+    "milliparsec": "^5.1.0",
+    "sirv": "^3.0.2",
+    "sort-on": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.8",
+    "concurrently": "^9.2.1",
+    "get-port": "^7.1.0",
+    "husky": "^9.1.7",
+    "oxfmt": "^0.24.0",
+    "oxlint": "^1.39.0",
+    "tempy": "^3.1.0",
+    "type-fest": "^5.4.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

@@ -3,7 +3,8 @@ import test from 'node:test'
 
 import { Low, Memory } from 'lowdb'
 
-import { Data, Item, PaginatedItems, Service } from './service.js'
+import type { Data, Item, PaginatedItems } from './service.ts'
+import { Service } from './service.ts'
 
 const defaultData = { posts: [], comments: [], object: {} }
 const adapter = new Memory<Data>()
@@ -76,8 +77,7 @@ await test('constructor', () => {
 
 await test('findById', () => {
   reset()
-  if (!Array.isArray(db.data?.[POSTS]))
-    throw new Error('posts should be an array')
+  if (!Array.isArray(db.data?.[POSTS])) throw new Error('posts should be an array')
   assert.deepEqual(service.findById(POSTS, '1', {}), db.data?.[POSTS]?.[0])
   assert.equal(service.findById(POSTS, UNKNOWN_ID, {}), undefined)
   assert.deepEqual(service.findById(POSTS, '1', { _embed: ['comments'] }), {
@@ -374,11 +374,21 @@ await test('update', async () => {
     undefined,
     'should ignore unknown resources',
   )
+  assert.equal(await service.update(POSTS, {}), undefined, 'should ignore arrays')
+})
+
+await test('patch', async () => {
+  reset()
+  const obj = { f2: 'bar' }
+  const res = await service.patch(OBJECT, obj)
+  assert.deepEqual(res, { f1: 'foo', ...obj })
+
   assert.equal(
-    await service.update(POSTS, {}),
+    await service.patch(UNKNOWN_RESOURCE, obj),
     undefined,
-    'should ignore arrays',
+    'should ignore unknown resources',
   )
+  assert.equal(await service.patch(POSTS, {}), undefined, 'should ignore arrays')
 })
 
 await test('updateById', async () => {
@@ -388,10 +398,7 @@ await test('updateById', async () => {
   assert.equal(res?.['id'], post1.id, 'id should not change')
   assert.equal(res?.['title'], post.title)
 
-  assert.equal(
-    await service.updateById(UNKNOWN_RESOURCE, post1.id, post),
-    undefined,
-  )
+  assert.equal(await service.updateById(UNKNOWN_RESOURCE, post1.id, post), undefined)
   assert.equal(await service.updateById(POSTS, UNKNOWN_ID, post), undefined)
 })
 
@@ -403,10 +410,7 @@ await test('patchById', async () => {
   assert.equal(res?.['id'], post1.id)
   assert.equal(res?.['title'], post.title)
 
-  assert.equal(
-    await service.patchById(UNKNOWN_RESOURCE, post1.id, post),
-    undefined,
-  )
+  assert.equal(await service.patchById(UNKNOWN_RESOURCE, post1.id, post), undefined)
   assert.equal(await service.patchById(POSTS, UNKNOWN_ID, post), undefined)
 })
 
