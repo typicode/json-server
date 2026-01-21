@@ -21,4 +21,4 @@ jobs:
           node-version: "24.x"
           registry-url: "https://registry.npmjs.org"
       - run: pnpm install
-      - run: pnpm publish --provenance --access public --no-git-checks
+      - run: pnpm publish --provenance --access public --no-git-checks --tag latest
