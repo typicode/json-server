@@ -20,6 +20,7 @@ Create a `db.json` or `db.json5` file
 
 ```json
 {
+  "$schema": "./node_modules/json-server/schema.json",
   "posts": [
     { "id": "1", "title": "a title", "views": 100 },
     { "id": "2", "title": "another title", "views": 200 }
