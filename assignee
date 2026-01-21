@@ -1,0 +1,54 @@
+{
+	"mytasks": [{
+			"tasks": "Sample",
+			"bucket": "Requirements",
+			"startDate": "01/4/2020",
+			"endDate": "16/5/2020",
+			"assignee": "John"
+		},
+		{
+			"tasks": "UI/UX",
+			"bucket": "Data",
+			"startDate": "30/4/2020",
+			"endDate": "25/5/2020",
+			"assignee": "Tim"
+		},
+		{
+			"tasks": "Task",
+			"bucket": "Requirements",
+			"startDate": "30/4/2020",
+			"endDate": "23/5/2020",
+			"assignee": "Jonas"
+		},
+		{
+			"tasks": "Testing",
+			"bucket": "Collection",
+			"startDate": "30/4/2020",
+			"endDate": "22/5/2020",
+			"assignee": "John"
+		},
+		{
+			"tasks": "Backend",
+			"bucket": "Requirements",
+			"startDate": "30/4/2020",
+			"endDate": "16/5/2020",
+			"assignee": "John"
+		},
+		{
+			"tasks": "Coding",
+			"bucket": "Data",
+			"startDate": "02/4/2020",
+			"endDate": "23/5/2020",
+			"assignee": "John"
+		},
+		{
+			"tasks": "Developing",
+			"bucket": "Requirements",
+			"startDate": "10/4/2020",
+			"endDate": "16/5/2020",
+			"assignee": "Tom"
+		}
+
+
+	]
+}
