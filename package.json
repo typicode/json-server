@@ -14,7 +14,8 @@
   },
   "files": [
     "lib",
-    "views"
+    "views",
+    "schema.json"
   ],
   "type": "module",
   "scripts": {
