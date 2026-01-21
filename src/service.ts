@@ -216,7 +216,7 @@ export class Service {
         conds.push([field, op, value])
         continue
       }
-      if (['_embed', '_sort', '_start', '_end', '_limit', '_page', '_per_page'].includes(key)) {
+      if (['_embed', '_sort', '_start', '_end', '_limit', '_page', '_per_page', 'q'].includes(key)) {
         continue
       }
       conds.push([key, Condition.default, value])
