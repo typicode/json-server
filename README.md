@@ -3,7 +3,7 @@
 [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
 > [!IMPORTANT]
-> Viewing beta v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0)
+> Viewing beta v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0.17.4)
 
 > [!NOTE]
 > Using React ⚛️ and tired of CSS-in-JS? See [MistCSS](https://github.com/typicode/mistcss) 👀
