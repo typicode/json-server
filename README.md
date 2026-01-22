@@ -6,7 +6,7 @@
 > Viewing beta v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0)
 
 > [!NOTE]
-> Using React ⚛️ ? Check my new project [MistCSS](https://github.com/typicode/mistcss) to write type-safe styles (works with TailwindCSS)
+> Using React ⚛️ and tired of CSS-in-JS? See [MistCSS](https://github.com/typicode/mistcss) 👀
 
 ## Install
 
