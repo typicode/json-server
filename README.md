@@ -213,4 +213,5 @@ json-server -s ./static -s ./node_modules
 
 - `id` is always a string and will be generated for you if missing
 - use `_per_page` with `_page` instead of `_limit`for pagination
+- use `_embed` instead of `_expand`
 - use Chrome's `Network tab > throtling` to delay requests instead of `--delay` CLI option
