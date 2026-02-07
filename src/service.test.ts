@@ -140,6 +140,31 @@ await test('find', async (t) => {
     },
     {
       name: POSTS,
+      params: { id_in: [post1.id, post3.id] },
+      res: [post1, post3],
+    },
+    {
+      name: POSTS,
+      params: { id_in: post2.id },
+      res: [post2],
+    },
+    {
+      name: POSTS,
+      params: { views_in: [post1.views.toString(), post3.views.toString()] },
+      res: [post1, post3],
+    },
+    {
+      name: POSTS,
+      params: { views_in: post2.views.toString() },
+      res: [post2],
+    },
+    {
+      name: POSTS,
+      params: { views_in: ['xxx', post2.views.toString()] },
+      res: [post2],
+    },
+    {
+      name: POSTS,
       params: { views_lt: (post1.views + 1).toString() },
       res: [post1],
     },

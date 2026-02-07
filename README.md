@@ -140,9 +140,11 @@ PATCH /profile
 - `gt` → `>`
 - `gte` → `>=`
 - `ne` → `!=`
+- 'in' → `[].includes`
 
 ```
 GET /posts?views_gt=9000
+GET /posts?id_in[]=1&id_in[]=2
 ```
 
 ### Range

@@ -28,6 +28,7 @@ const Condition = {
   gt: 'gt',
   gte: 'gte',
   ne: 'ne',
+  in: 'in',
   default: '',
 } as const
 
@@ -197,12 +198,24 @@ export class Service {
     // Convert query params to conditions
     const conds: [string, Condition, string | string[]][] = []
     for (const [key, value] of Object.entries(query)) {
-      if (value === undefined || typeof value !== 'string') {
+      if (value === undefined) {
         continue
       }
-      const re = /_(lt|lte|gt|gte|ne)$/
+      const re = /_(lt|lte|gt|gte|ne|in)$/
       const reArr = re.exec(key)
       const op = reArr?.at(1)
+
+      if (Array.isArray(value)) {
+        if (op === Condition.in && value.every((item) => typeof item === 'string')) {
+          const field = key.replace(re, '')
+          conds.push([field, op, value])
+        }
+        continue
+      }
+
+      if (typeof value !== 'string') {
+        continue
+      }
       if (op && isCondition(op)) {
         const field = key.replace(re, '')
         conds.push([field, op, value])
@@ -218,7 +231,7 @@ export class Service {
     let filtered = items
     for (const [key, op, paramValue] of conds) {
       filtered = filtered.filter((item: Item) => {
-        if (paramValue && !Array.isArray(paramValue)) {
+        if (!Array.isArray(paramValue)) {
           // https://github.com/sindresorhus/dot-prop/issues/95
           const itemValue: unknown = getProperty(item, key)
           switch (op) {
@@ -262,6 +275,16 @@ export class Service {
               }
               break
             }
+            // item_in=value
+            case Condition.in: {
+              switch (typeof itemValue) {
+                case 'number':
+                  return itemValue === parseInt(paramValue)
+                case 'string':
+                  return itemValue === paramValue
+              }
+              return false
+            }
             // item=value
             case Condition.default: {
               switch (typeof itemValue) {
@@ -277,6 +300,22 @@ export class Service {
             }
           }
         }
+
+        if (Array.isArray(paramValue)) {
+          const itemValue: unknown = getProperty(item, key)
+          switch (op) {
+            case Condition.in: {
+              switch (typeof itemValue) {
+                case 'number':
+                  return paramValue.some((pv) => itemValue === parseInt(pv))
+                case 'string':
+                  return paramValue.includes(itemValue)
+              }
+              return false
+            }
+          }
+        }
+
         return true
       })
     }
