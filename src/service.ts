@@ -198,24 +198,17 @@ export class Service {
     // Convert query params to conditions
     const conds: [string, Condition, string | string[]][] = []
     for (const [key, value] of Object.entries(query)) {
-      if (value === undefined) {
+      // Safeguard: only accept string or string[] query values
+      if (typeof value !== 'string' && !Array.isArray(value)) {
+        continue
+      }
+      if (Array.isArray(value) && !value.every((item) => typeof item === 'string')) {
         continue
       }
       const re = /_(lt|lte|gt|gte|ne|in)$/
       const reArr = re.exec(key)
       const op = reArr?.at(1)
 
-      if (Array.isArray(value)) {
-        if (op === Condition.in && value.every((item) => typeof item === 'string')) {
-          const field = key.replace(re, '')
-          conds.push([field, op, value])
-        }
-        continue
-      }
-
-      if (typeof value !== 'string') {
-        continue
-      }
       if (op && isCondition(op)) {
         const field = key.replace(re, '')
         conds.push([field, op, value])
