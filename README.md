@@ -87,6 +87,7 @@ Run `json-server --help` for a list of options
 |               <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="100px"></a>               |
 | <a href="https://zuplo.link/json-server-gh"><img src="https://github.com/user-attachments/assets/adfee31f-a8b6-4684-9a9b-af4f03ac5b75" height="100px"></a> |
 |     <a href="https://www.mintlify.com/"><img src="https://github.com/user-attachments/assets/bcc8cc48-b2d9-4577-8939-1eb4196b7cc5" height="100px"></a>     |
+| <a href="http://git-tower.com/?utm_source=husky&utm_medium=referral"><img height="100px" alt="tower-dock-icon-light" src="https://github.com/user-attachments/assets/b6b4ab20-beff-4e5c-9845-bb9d60057196" /></a>
 
 ### Silver
 
