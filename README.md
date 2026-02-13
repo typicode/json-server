@@ -1,216 +1,156 @@
-# JSON-Server
+# JSON Server v1 (Beta)
 
-[![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
+Fast mock REST API from a JSON file.
 
-> [!IMPORTANT]
-> Viewing beta v1 documentation – usable but expect breaking changes. For stable version, see [here](https://github.com/typicode/json-server/tree/v0.17.4)
+> Beta note: v1 can still change. For stable v0.17 docs, see:
+> https://github.com/typicode/json-server/tree/v0.17.4
 
-> [!NOTE]
-> Using React ⚛️ and tired of CSS-in-JS? See [MistCSS](https://github.com/typicode/mistcss) 👀
+## Quickstart (30s)
 
-## Install
+Install:
 
-```shell
+```sh
 npm install json-server
 ```
 
-## Usage
-
-Create a `db.json` or `db.json5` file
+Create `db.json`:
 
 ```json
 {
-  "$schema": "./node_modules/json-server/schema.json",
   "posts": [
-    { "id": "1", "title": "a title", "views": 100 },
-    { "id": "2", "title": "another title", "views": 200 }
+    { "id": "1", "title": "Hello", "views": 100 },
+    { "id": "2", "title": "World", "views": 200 }
   ],
-  "comments": [
-    { "id": "1", "text": "a comment about post 1", "postId": "1" },
-    { "id": "2", "text": "another comment about post 1", "postId": "1" }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  "comments": [{ "id": "1", "text": "Nice", "postId": "1" }],
+  "profile": { "name": "typicode" }
 }
 ```
 
-<details>
+Run:
 
-<summary>View db.json5 example</summary>
-
-```json5
-{
-  posts: [
-    { id: "1", title: "a title", views: 100 },
-    { id: "2", title: "another title", views: 200 },
-  ],
-  comments: [
-    { id: "1", text: "a comment about post 1", postId: "1" },
-    { id: "2", text: "another comment about post 1", postId: "1" },
-  ],
-  profile: {
-    name: "typicode",
-  },
-}
+```sh
+npx json-server db.json
 ```
 
-You can read more about JSON5 format [here](https://github.com/json5/json5).
+Try:
 
-</details>
-
-Pass it to JSON Server CLI
-
-```shell
-$ npx json-server db.json
+```sh
+curl http://localhost:3000/posts/1
 ```
 
-Get a REST API
+Response:
 
-```shell
-$ curl http://localhost:3000/posts/1
+```json
 {
   "id": "1",
-  "title": "a title",
+  "title": "Hello",
   "views": 100
 }
 ```
 
-Run `json-server --help` for a list of options
+## Query capabilities overview
 
-## Sponsors ✨
-
-### Gold
-
-|                                                                                                                                                            |
-| :--------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|               <a href="https://mockend.com/" target="_blank"><img src="https://jsonplaceholder.typicode.com/mockend.svg" height="100px"></a>               |
-| <a href="https://zuplo.link/json-server-gh"><img src="https://github.com/user-attachments/assets/adfee31f-a8b6-4684-9a9b-af4f03ac5b75" height="100px"></a> |
-|     <a href="https://www.mintlify.com/"><img src="https://github.com/user-attachments/assets/bcc8cc48-b2d9-4577-8939-1eb4196b7cc5" height="100px"></a>     |
-
-### Silver
-
-|                                                                                                                                                                                                                                         |
-| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <a href="https://requestly.com?utm_source=githubsponsor&utm_medium=jsonserver&utm_campaign=jsonserver"><img src="https://github.com/user-attachments/assets/f7e7b3cf-97e2-46b8-81c8-cb3992662a1c" style="height:70px; width:auto;"></a> |
-
-### Bronze
-
-|                                                                                                                                                                                |                                                                                                                                                                              |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <a href="https://www.storyblok.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/c6b10674-4ada-4616-91b8-59d30046b45a" height="35px"></a> | <a href="https://betterstack.com/" target="_blank"><img src="https://github.com/typicode/json-server/assets/5502029/44679f8f-9671-470d-b77e-26d90b90cbdc" height="35px"></a> |
-
-[Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
-
-## Sponsorware
-
-> [!NOTE]
-> This project uses the [Fair Source License](https://fair.io/). Only organizations with 3+ users are kindly asked to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. **This license helps keep the project sustainable and healthy, benefiting everyone.**
->
-> For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
+```http
+GET /posts?views:gt=100
+GET /posts?_sort=-views
+GET /posts?_page=1&_per_page=10
+GET /posts?_embed=comments
+GET /posts?_where={"or":[{"views":{"gt":100}},{"title":{"eq":"Hello"}}]}
+```
 
 ## Routes
 
-Based on the example `db.json`, you'll get the following routes:
+For array resources (`posts`, `comments`):
 
-```
+```text
 GET    /posts
 GET    /posts/:id
 POST   /posts
 PUT    /posts/:id
 PATCH  /posts/:id
 DELETE /posts/:id
-
-# Same for comments
 ```
 
-```
+For object resources (`profile`):
+
+```text
 GET   /profile
 PUT   /profile
 PATCH /profile
 ```
 
-## Params
+## Query params
 
 ### Conditions
 
-- ` ` → `==`
-- `lt` → `<`
-- `lte` → `<=`
-- `gt` → `>`
-- `gte` → `>=`
-- `ne` → `!=`
+Use `field:operator=value`.
 
-```
-GET /posts?views_gt=9000
-```
+Operators:
 
-### Range
+- no operator -> `eq` (equal)
+- `lt` less than, `lte` less than or equal
+- `gt` greater than, `gte` greater than or equal
+- `eq` equal, `ne` not equal
 
-- `start`
-- `end`
-- `limit`
+Examples:
 
-```
-GET /posts?_start=10&_end=20
-GET /posts?_start=10&_limit=10
-```
-
-### Paginate
-
-- `page`
-- `per_page` (default = 10)
-
-```
-GET /posts?_page=1&_per_page=25
+```http
+GET /posts?views:gt=100
+GET /posts?title:eq=Hello
+GET /posts?author.name:eq=typicode
 ```
 
 ### Sort
 
-- `_sort=f1,f2`
-
+```http
+GET /posts?_sort=title
+GET /posts?_sort=-views
+GET /posts?_sort=author.name,-views
 ```
-GET /posts?_sort=id,-views
+
+### Pagination
+
+```http
+GET /posts?_page=1&_per_page=25
 ```
 
-### Nested and array fields
-
-- `x.y.z...`
-- `x.y.z[i]...`
-
-```
-GET /foo?a.b=bar
-GET /foo?x.y_lt=100
-GET /foo?arr[0]=bar
-```
+- `_per_page` default is `10`
+- invalid page/per_page values are normalized
 
 ### Embed
 
-```
+```http
 GET /posts?_embed=comments
 GET /comments?_embed=post
 ```
 
-## Delete
+### Complex filter with `_where`
 
+`_where` accepts a JSON object and overrides normal query params when valid.
+
+```http
+GET /posts?_where={"or":[{"views":{"gt":100}},{"author":{"name":{"lt":"m"}}}]}
 ```
-DELETE /posts/1
+
+## Delete dependents
+
+```http
 DELETE /posts/1?_dependent=comments
 ```
 
-## Serving static files
+## Static files
 
-If you create a `./public` directory, JSON Server will serve its content in addition to the REST API.
+JSON Server serves `./public` automatically.
 
-You can also add custom directories using `-s/--static` option.
+Add more static dirs:
 
 ```sh
 json-server -s ./static
 json-server -s ./static -s ./node_modules
 ```
 
-## Notable differences with v0.17
+## Behavior notes
 
-- `id` is always a string and will be generated for you if missing
-- use `_per_page` with `_page` instead of `_limit`for pagination
-- use Chrome's `Network tab > throtling` to delay requests instead of `--delay` CLI option
+- `id` is always a string and is generated if missing.
+- `_where` has priority over URL filter params.
+- Unknown operators in URL/query filters are ignored.
