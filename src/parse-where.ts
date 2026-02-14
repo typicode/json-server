@@ -15,6 +15,7 @@ function splitKey(key: string): { path: string; op: WhereOperator | null } {
     return isWhereOperator(op) ? { path, op } : { path, op: null }
   }
 
+  // Compatibility with v0.17 operator style (e.g. _lt, _gt)
   const underscoreMatch = key.match(/^(.*)_([a-z]+)$/)
   if (underscoreMatch) {
     const path = underscoreMatch[1]
