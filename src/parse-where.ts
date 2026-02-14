@@ -38,8 +38,10 @@ function coerceValue(value: string): string | number | boolean | null {
   if (value === 'false') return false
   if (value === 'null') return null
 
+  if (value.trim() === '') return value
+
   const num = Number(value)
-  if (Number.isFinite(num) && value.trim() !== '') return num
+  if (Number.isFinite(num)) return num
 
   return value
 }
