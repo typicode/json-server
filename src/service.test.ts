@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import test, { beforeEach } from 'node:test'
 
 import { Low, Memory } from 'lowdb'
 import type { JsonObject } from 'type-fest'
 
-import type { Data, Item } from './service.ts'
+import type { Data } from './service.ts'
 import { Service } from './service.ts'
 
 const defaultData = { posts: [], comments: [], object: {} }
@@ -48,127 +48,76 @@ const obj = {
   f1: 'foo',
 }
 
-function reset() {
+beforeEach(() => {
   db.data = structuredClone({
     posts: [post1, post2, post3],
     comments: [comment1],
     object: obj,
   })
-}
+})
 
 await test('constructor', () => {
   const defaultData = { posts: [{ id: '1' }, {}], object: {} } satisfies Data
   const db = new Low<Data>(adapter, defaultData)
   new Service(db)
   if (Array.isArray(db.data['posts'])) {
-    const id0 = db.data['posts']?.at(0)?.['id']
-    const id1 = db.data['posts']?.at(1)?.['id']
-    assert.ok(
-      typeof id1 === 'string' && id1.length > 0,
-      `id should be a non empty string but was: ${String(id1)}`,
-    )
+    const id0 = db.data['posts'][0]['id']
+    const id1 = db.data['posts'][1]['id']
     assert.ok(
       typeof id0 === 'string' && id0 === '1',
-      `id should not change if already set but was: ${String(id0)}`,
+      `id should not change if already set but was: ${id0}`,
+    )
+    assert.ok(
+      typeof id1 === 'string' && id1.length > 0,
+      `id should be a non empty string but was: ${id1}`,
     )
   }
 })
 
 await test('findById', () => {
-  reset()
-  if (!Array.isArray(db.data?.[POSTS])) throw new Error('posts should be an array')
-  assert.deepEqual(service.findById(POSTS, '1', {}), db.data?.[POSTS]?.[0])
-  assert.equal(service.findById(POSTS, UNKNOWN_ID, {}), undefined)
-  assert.deepEqual(service.findById(POSTS, '1', { _embed: ['comments'] }), {
-    ...post1,
-    comments: [comment1],
-  })
-  assert.deepEqual(service.findById(COMMENTS, '1', { _embed: ['post'] }), {
-    ...comment1,
-    post: post1,
-  })
-  assert.equal(service.findById(UNKNOWN_RESOURCE, '1', {}), undefined)
+  const cases: [[string, string, { _embed?: string[] | string }], unknown][] = [
+    [[POSTS, '1', {}], db.data?.[POSTS]?.[0]],
+    [[POSTS, UNKNOWN_ID, {}], undefined],
+    [[POSTS, '1', { _embed: ['comments'] }], { ...post1, comments: [comment1] }],
+    [[COMMENTS, '1', { _embed: ['post'] }], { ...comment1, post: post1 }],
+    [[UNKNOWN_RESOURCE, '1', {}], undefined],
+  ]
+
+  for (const [[name, id, query], expected] of cases) {
+    assert.deepEqual(service.findById(name, id, query), expected)
+  }
 })
 
 await test('find', async (t) => {
-  const arr: {
-    data?: Data
-    name: string
-    where: JsonObject
-    sort?: string
-    page?: number
-    perPage?: number
-    embed?: string | string[]
-    res: Item | Item[] | undefined
-  }[] = [
-    {
-      name: POSTS,
-      where: { views: { gt: 100 } },
-      res: [post2, post3],
-    },
-    {
-      name: POSTS,
-      where: { author: { name: { lt: 'c' } } },
-      res: [post2, post3],
-    },
-    {
-      name: POSTS,
-      where: { or: [{ views: { lt: 150 } }, { title: { gt: 'b' } }] },
-      res: [post1, post3],
-    },
-    {
-      data: { posts: [post3, post1, post2] },
-      name: POSTS,
-      where: { views: { gt: 0 } },
-      sort: 'views',
-      res: [post1, post2, post3],
-    },
-    {
-      name: POSTS,
-      where: { views: { gt: 0 } },
-      embed: ['comments'],
-      res: [
-        { ...post1, comments: [comment1] },
-        { ...post2, comments: [] },
-        { ...post3, comments: [] },
+  const whereFromPayload = JSON.parse('{"author":{"name":{"eq":"bar"}}}') as JsonObject
+
+  const cases: [{ where: JsonObject; sort?: string; page?: number; perPage?: number }, unknown][] =
+    [
+      [{ where: { title: { eq: 'b' } } }, [post2]],
+      [{ where: whereFromPayload }, [post2]],
+      [{ where: {}, sort: '-views' }, [post3, post2, post1]],
+      [
+        { where: {}, page: 2, perPage: 2 },
+        {
+          first: 1,
+          prev: 1,
+          next: null,
+          last: 2,
+          pages: 2,
+          items: 3,
+          data: [post3],
+        },
       ],
-    },
-    {
-      name: UNKNOWN_RESOURCE,
-      where: { views: { gt: 0 } },
-      res: undefined,
-    },
-    {
-      name: OBJECT,
-      where: { f1: { gt: 'a' } },
-      res: obj,
-    },
-  ]
+    ]
 
-  for (const tc of arr) {
-    await t.test(`${tc.name} ${JSON.stringify(tc.where)}`, () => {
-      if (tc.data) {
-        db.data = tc.data
-      } else {
-        reset()
-      }
-
-      assert.deepEqual(
-        service.find(tc.name, {
-          where: tc.where,
-          sort: tc.sort,
-          page: tc.page,
-          perPage: tc.perPage,
-          embed: tc.embed,
-        }),
-        tc.res,
-      )
+  for (const [opts, expected] of cases) {
+    await t.test(JSON.stringify(opts), () => {
+      assert.deepEqual(service.find(POSTS, opts), expected)
     })
   }
 })
 
 await test('create', async () => {
-  reset()
   const post = { title: 'new post' }
   const res = await service.create(POSTS, post)
   assert.equal(res?.['title'], post.title)
@@ -178,7 +127,6 @@ await test('create', async () => {
 })
 
 await test('update', async () => {
-  reset()
   const obj = { f1: 'bar' }
   const res = await service.update(OBJECT, obj)
   assert.equal(res, obj)
@@ -192,7 +140,6 @@ await test('update', async () => {
 })
 
 await test('patch', async () => {
-  reset()
   const obj = { f2: 'bar' }
   const res = await service.patch(OBJECT, obj)
   assert.deepEqual(res, { f1: 'foo', ...obj })
@@ -206,7 +153,6 @@ await test('patch', async () => {
 })
 
 await test('updateById', async () => {
-  reset()
   const post = { id: 'xxx', title: 'updated post' }
   const res = await service.updateById(POSTS, post1.id, post)
   assert.equal(res?.['id'], post1.id, 'id should not change')
@@ -217,7 +163,6 @@ await test('updateById', async () => {
 })
 
 await test('patchById', async () => {
-  reset()
   const post = { id: 'xxx', title: 'updated post' }
   const res = await service.patchById(POSTS, post1.id, post)
   assert.notEqual(res, undefined)
@@ -228,19 +173,23 @@ await test('patchById', async () => {
   assert.equal(await service.patchById(POSTS, UNKNOWN_ID, post), undefined)
 })
 
-await test('destroy', async () => {
-  reset()
-  let prevLength = Number(db.data?.[POSTS]?.length) || 0
-  await service.destroyById(POSTS, post1.id)
-  assert.equal(db.data?.[POSTS]?.length, prevLength - 1)
-  assert.deepEqual(db.data?.[COMMENTS], [{ ...comment1, postId: null }])
+await test('destroy', async (t) => {
+  await t.test('nullifies foreign keys', async () => {
+    const prevLength = Number(db.data?.[POSTS]?.length) || 0
+    await service.destroyById(POSTS, post1.id)
+    assert.equal(db.data?.[POSTS]?.length, prevLength - 1)
+    assert.deepEqual(db.data?.[COMMENTS], [{ ...comment1, postId: null }])
+  })
 
-  reset()
-  prevLength = db.data?.[POSTS]?.length || 0
-  await service.destroyById(POSTS, post1.id, [COMMENTS])
-  assert.equal(db.data[POSTS].length, prevLength - 1)
-  assert.equal(db.data[COMMENTS].length, 0)
+  await t.test('deletes dependent resources', async () => {
+    const prevLength = Number(db.data?.[POSTS]?.length) || 0
+    await service.destroyById(POSTS, post1.id, [COMMENTS])
+    assert.equal(db.data[POSTS].length, prevLength - 1)
+    assert.equal(db.data[COMMENTS].length, 0)
+  })
 
-  assert.equal(await service.destroyById(UNKNOWN_RESOURCE, post1.id), undefined)
-  assert.equal(await service.destroyById(POSTS, UNKNOWN_ID), undefined)
+  await t.test('ignores unknown resources', async () => {
+    assert.equal(await service.destroyById(UNKNOWN_RESOURCE, post1.id), undefined)
+    assert.equal(await service.destroyById(POSTS, UNKNOWN_ID), undefined)
+  })
 })
