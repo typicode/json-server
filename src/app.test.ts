@@ -118,4 +118,28 @@ await test('createApp', async (t) => {
       )
     })
   }
+
+  await t.test('GET /posts?_where=... uses JSON query', async () => {
+    // Reset data since previous tests may have modified it
+    db.data = {
+      posts: [{ id: '1', title: 'foo' }],
+      comments: [{ id: '1', postId: '1' }],
+      object: { f1: 'foo' },
+    }
+    const where = encodeURIComponent(JSON.stringify({ title: { eq: 'foo' } }))
+    const response = await fetch(`http://localhost:${port}/posts?_where=${where}`)
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.deepEqual(data, [{ id: '1', title: 'foo' }])
+  })
+
+  await t.test('GET /posts?_where=... overrides query params', async () => {
+    const where = encodeURIComponent(JSON.stringify({ title: { eq: 'foo' } }))
+    const response = await fetch(
+      `http://localhost:${port}/posts?title:eq=bar&_where=${where}`,
+    )
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.deepEqual(data, [{ id: '1', title: 'foo' }])
+  })
 })

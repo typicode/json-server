@@ -110,107 +110,108 @@ Run `json-server --help` for a list of options
 >
 > For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
 
+## Query capabilities overview
+
+```http
+GET /posts?views:gt=100
+GET /posts?_sort=-views
+GET /posts?_page=1&_per_page=10
+GET /posts?_embed=comments
+GET /posts?_where={"or":[{"views":{"gt":100}},{"title":{"eq":"Hello"}}]}
+```
+
 ## Routes
 
-Based on the example `db.json`, you'll get the following routes:
+For array resources (`posts`, `comments`):
 
-```
+```text
 GET    /posts
 GET    /posts/:id
 POST   /posts
 PUT    /posts/:id
 PATCH  /posts/:id
 DELETE /posts/:id
-
-# Same for comments
 ```
 
-```
+For object resources (`profile`):
+
+```text
 GET   /profile
 PUT   /profile
 PATCH /profile
 ```
 
-## Params
+## Query params
 
 ### Conditions
 
-- ` ` → `==`
-- `lt` → `<`
-- `lte` → `<=`
-- `gt` → `>`
-- `gte` → `>=`
-- `ne` → `!=`
+Use `field:operator=value`.
 
-```
-GET /posts?views_gt=9000
-```
+Operators:
 
-### Range
+- no operator -> `eq` (equal)
+- `lt` less than, `lte` less than or equal
+- `gt` greater than, `gte` greater than or equal
+- `eq` equal, `ne` not equal
 
-- `start`
-- `end`
-- `limit`
+Examples:
 
-```
-GET /posts?_start=10&_end=20
-GET /posts?_start=10&_limit=10
-```
-
-### Paginate
-
-- `page`
-- `per_page` (default = 10)
-
-```
-GET /posts?_page=1&_per_page=25
+```http
+GET /posts?views:gt=100
+GET /posts?title:eq=Hello
+GET /posts?author.name:eq=typicode
 ```
 
 ### Sort
 
-- `_sort=f1,f2`
-
+```http
+GET /posts?_sort=title
+GET /posts?_sort=-views
+GET /posts?_sort=author.name,-views
 ```
-GET /posts?_sort=id,-views
+
+### Pagination
+
+```http
+GET /posts?_page=1&_per_page=25
 ```
 
-### Nested and array fields
-
-- `x.y.z...`
-- `x.y.z[i]...`
-
-```
-GET /foo?a.b=bar
-GET /foo?x.y_lt=100
-GET /foo?arr[0]=bar
-```
+- `_per_page` default is `10`
+- invalid page/per_page values are normalized
 
 ### Embed
 
-```
+```http
 GET /posts?_embed=comments
 GET /comments?_embed=post
 ```
 
-## Delete
+### Complex filter with `_where`
 
+`_where` accepts a JSON object and overrides normal query params when valid.
+
+```http
+GET /posts?_where={"or":[{"views":{"gt":100}},{"author":{"name":{"lt":"m"}}}]}
 ```
-DELETE /posts/1
+
+## Delete dependents
+
+```http
 DELETE /posts/1?_dependent=comments
 ```
 
-## Serving static files
+## Static files
 
-If you create a `./public` directory, JSON Server will serve its content in addition to the REST API.
+JSON Server serves `./public` automatically.
 
-You can also add custom directories using `-s/--static` option.
+Add more static dirs:
 
 ```sh
 json-server -s ./static
 json-server -s ./static -s ./node_modules
 ```
 
-## Notable differences with v0.17
+## Behavior notes
 
 - `id` is always a string and will be generated for you if missing
 - use `_per_page` with `_page` instead of `_limit`for pagination

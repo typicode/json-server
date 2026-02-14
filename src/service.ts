@@ -1,51 +1,32 @@
 import { randomBytes } from 'node:crypto'
 
-import { getProperty } from 'dot-prop'
 import inflection from 'inflection'
 import { Low } from 'lowdb'
 import sortOn from 'sort-on'
+import type { JsonObject } from 'type-fest'
 
+import { matchesWhere } from './matches-where.ts'
+import { paginate, type PaginationResult } from './paginate.ts'
 export type Item = Record<string, unknown>
 
 export type Data = Record<string, Item[] | Item>
 
 export function isItem(obj: unknown): obj is Item {
-  return typeof obj === 'object' && obj !== null
+  return typeof obj === 'object' && obj !== null && !Array.isArray(obj)
 }
 
-export function isData(obj: unknown): obj is Record<string, Item[]> {
+export function isData(obj: unknown): obj is Data {
   if (typeof obj !== 'object' || obj === null) {
     return false
   }
 
   const data = obj as Record<string, unknown>
-  return Object.values(data).every((value) => Array.isArray(value) && value.every(isItem))
+  return Object.values(data).every((value) =>
+    Array.isArray(value) ? value.every(isItem) : isItem(value),
+  )
 }
 
-const Condition = {
-  lt: 'lt',
-  lte: 'lte',
-  gt: 'gt',
-  gte: 'gte',
-  ne: 'ne',
-  default: '',
-} as const
-
-type Condition = (typeof Condition)[keyof typeof Condition]
-
-function isCondition(value: string): value is Condition {
-  return Object.values<string>(Condition).includes(value)
-}
-
-export type PaginatedItems = {
-  first: number
-  prev: number | null
-  next: number | null
-  last: number
-  pages: number
-  items: number
-  data: Item[]
-}
+export type PaginatedItems = PaginationResult<Item>
 
 function ensureArray(arg: string | string[] = []): string[] {
   return Array.isArray(arg) ? arg : [arg]
@@ -165,171 +146,37 @@ export class Service {
 
   find(
     name: string,
-    query: {
-      [key: string]: unknown
-      _embed?: string | string[]
-      _sort?: string
-      _start?: number
-      _end?: number
-      _limit?: number
-      _page?: number
-      _per_page?: number
-    } = {},
+    opts: {
+      where: JsonObject
+      sort?: string
+      page?: number
+      perPage?: number
+      embed?: string | string[]
+    },
   ): Item[] | PaginatedItems | Item | undefined {
-    let items = this.#get(name)
+    const items = this.#get(name)
 
     if (!Array.isArray(items)) {
       return items
     }
 
+    let results = items
+
     // Include
-    ensureArray(query._embed).forEach((related) => {
-      if (items !== undefined && Array.isArray(items)) {
-        items = items.map((item) => embed(this.#db, name, item, related))
-      }
+    ensureArray(opts.embed).forEach((related) => {
+      results = results.map((item) => embed(this.#db, name, item, related))
     })
 
-    // Return list if no query params
-    if (Object.keys(query).length === 0) {
-      return items
+    results = results.filter((item) => matchesWhere(item as JsonObject, opts.where))
+    if (opts.sort) {
+      results = sortOn(results, opts.sort.split(','))
     }
 
-    // Convert query params to conditions
-    const conds: [string, Condition, string | string[]][] = []
-    for (const [key, value] of Object.entries(query)) {
-      if (value === undefined || typeof value !== 'string') {
-        continue
-      }
-      const re = /_(lt|lte|gt|gte|ne)$/
-      const reArr = re.exec(key)
-      const op = reArr?.at(1)
-      if (op && isCondition(op)) {
-        const field = key.replace(re, '')
-        conds.push([field, op, value])
-        continue
-      }
-      if (['_embed', '_sort', '_start', '_end', '_limit', '_page', '_per_page'].includes(key)) {
-        continue
-      }
-      conds.push([key, Condition.default, value])
+    if (opts.page !== undefined) {
+      return paginate(results, opts.page, opts.perPage ?? 10)
     }
 
-    // Loop through conditions and filter items
-    let filtered = items
-    for (const [key, op, paramValue] of conds) {
-      filtered = filtered.filter((item: Item) => {
-        if (paramValue && !Array.isArray(paramValue)) {
-          // https://github.com/sindresorhus/dot-prop/issues/95
-          const itemValue: unknown = getProperty(item, key)
-          switch (op) {
-            // item_gt=value
-            case Condition.gt: {
-              if (!(typeof itemValue === 'number' && itemValue > parseInt(paramValue))) {
-                return false
-              }
-              break
-            }
-            // item_gte=value
-            case Condition.gte: {
-              if (!(typeof itemValue === 'number' && itemValue >= parseInt(paramValue))) {
-                return false
-              }
-              break
-            }
-            // item_lt=value
-            case Condition.lt: {
-              if (!(typeof itemValue === 'number' && itemValue < parseInt(paramValue))) {
-                return false
-              }
-              break
-            }
-            // item_lte=value
-            case Condition.lte: {
-              if (!(typeof itemValue === 'number' && itemValue <= parseInt(paramValue))) {
-                return false
-              }
-              break
-            }
-            // item_ne=value
-            case Condition.ne: {
-              switch (typeof itemValue) {
-                case 'number':
-                  return itemValue !== parseInt(paramValue)
-                case 'string':
-                  return itemValue !== paramValue
-                case 'boolean':
-                  return itemValue !== (paramValue === 'true')
-              }
-              break
-            }
-            // item=value
-            case Condition.default: {
-              switch (typeof itemValue) {
-                case 'number':
-                  return itemValue === parseInt(paramValue)
-                case 'string':
-                  return itemValue === paramValue
-                case 'boolean':
-                  return itemValue === (paramValue === 'true')
-                case 'undefined':
-                  return false
-              }
-            }
-          }
-        }
-        return true
-      })
-    }
-
-    // Sort
-    const sort = query._sort || ''
-    const sorted = sortOn(filtered, sort.split(','))
-
-    // Slice
-    const start = query._start
-    const end = query._end
-    const limit = query._limit
-    if (start !== undefined) {
-      if (end !== undefined) {
-        return sorted.slice(start, end)
-      }
-      return sorted.slice(start, start + (limit || 0))
-    }
-    if (limit !== undefined) {
-      return sorted.slice(0, limit)
-    }
-
-    // Paginate
-    let page = query._page
-    const perPage = query._per_page || 10
-    if (page) {
-      const items = sorted.length
-      const pages = Math.ceil(items / perPage)
-
-      // Ensure page is within the valid range
-      page = Math.max(1, Math.min(page, pages))
-
-      const first = 1
-      const prev = page > 1 ? page - 1 : null
-      const next = page < pages ? page + 1 : null
-      const last = pages
-
-      const start = (page - 1) * perPage
-      const end = start + perPage
-      const data = sorted.slice(start, end)
-
-      return {
-        first,
-        prev,
-        next,
-        last,
-        pages,
-        items,
-        data,
-      }
-    }
-
-    return sorted.slice(start, end)
+    return results
   }
 
   async create(name: string, data: Omit<Item, 'id'> = {}): Promise<Item | undefined> {
