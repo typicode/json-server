@@ -1,4 +1,4 @@
-export const WHERE_OPERATORS = ['lt', 'lte', 'gt', 'gte', 'eq', 'ne'] as const
+export const WHERE_OPERATORS = ['lt', 'lte', 'gt', 'gte', 'eq', 'ne', 'in'] as const
 
 export type WhereOperator = (typeof WHERE_OPERATORS)[number]
 
