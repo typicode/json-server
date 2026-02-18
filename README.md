@@ -59,16 +59,26 @@ You can read more about JSON5 format [here](https://github.com/json5/json5).
 
 </details>
 
-Pass it to JSON Server CLI
+Start JSON Server
 
-```shell
-$ npx json-server db.json
+```bash
+npx json-server db.json
 ```
 
-Get a REST API
+This starts the server at `http://localhost:3000`. You should see:
+```
+JSON Server started on PORT :3000
+http://localhost:3000
+```
 
-```shell
-$ curl http://localhost:3000/posts/1
+Access your REST API:
+
+```bash
+curl http://localhost:3000/posts/1
+```
+
+**Response:**
+```json
 {
   "id": "1",
   "title": "a title",
@@ -110,21 +120,27 @@ Run `json-server --help` for a list of options
 >
 > For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
 
-## Query capabilities overview
+## Query Capabilities
+
+JSON Server supports advanced querying out of the box:
 
 ```http
-GET /posts?views:gt=100
-GET /posts?_sort=-views
-GET /posts?_page=1&_per_page=10
-GET /posts?_embed=comments
-GET /posts?_where={"or":[{"views":{"gt":100}},{"title":{"eq":"Hello"}}]}
+GET /posts?views:gt=100                   # Filter by condition
+GET /posts?_sort=-views                   # Sort by field (descending)
+GET /posts?_page=1&_per_page=10          # Pagination
+GET /posts?_embed=comments               # Include relations
+GET /posts?_where={"or":[...]}           # Complex queries
 ```
+
+See detailed documentation below for each feature.
 
 ## Routes
 
-For array resources (`posts`, `comments`):
+### Array Resources
 
-```text
+For array resources like `posts` and `comments`:
+
+```http
 GET    /posts
 GET    /posts/:id
 POST   /posts
@@ -133,9 +149,11 @@ PATCH  /posts/:id
 DELETE /posts/:id
 ```
 
-For object resources (`profile`):
+### Object Resources
 
-```text
+For singular object resources like `profile`:
+
+```http
 GET   /profile
 PUT   /profile
 PATCH /profile
@@ -176,8 +194,25 @@ GET /posts?_sort=author.name,-views
 GET /posts?_page=1&_per_page=25
 ```
 
-- `_per_page` default is `10`
-- invalid page/per_page values are normalized
+**Response:**
+```json
+{
+  "first": 1,
+  "prev": null,
+  "next": 2,
+  "last": 4,
+  "pages": 4,
+  "items": 100,
+  "data": [
+    { "id": "1", "title": "...", "views": 100 },
+    { "id": "2", "title": "...", "views": 200 }
+  ]
+}
+```
+
+**Notes:**
+- `_per_page` defaults to `10` if not specified
+- Invalid `_page` or `_per_page` values are automatically normalized to valid ranges
 
 ### Embed
 
@@ -200,20 +235,26 @@ GET /posts?_where={"or":[{"views":{"gt":100}},{"author":{"name":{"lt":"m"}}}]}
 DELETE /posts/1?_dependent=comments
 ```
 
-## Static files
+## Static Files
 
-JSON Server serves `./public` automatically.
+JSON Server automatically serves files from the `./public` directory.
 
-Add more static dirs:
+To serve additional static directories:
 
-```sh
-json-server -s ./static
-json-server -s ./static -s ./node_modules
+```bash
+json-server db.json -s ./static
+json-server db.json -s ./static -s ./node_modules
 ```
 
-## Behavior notes
+Static files are served with standard MIME types and can include HTML, CSS, JavaScript, images, and other assets.
 
-- `id` is always a string and will be generated for you if missing
-- use `_per_page` with `_page` instead of `_limit`for pagination
-- use `_embed` instead of `_expand`
-- use Chrome's `Network tab > throtling` to delay requests instead of `--delay` CLI option
+## Migration Notes (v0 → v1)
+
+If you are upgrading from json-server v0.x, note these behavioral changes:
+
+- **ID handling:** `id` is always a string and will be auto-generated if not provided
+- **Pagination:** Use `_per_page` with `_page` instead of the deprecated `_limit` parameter
+- **Relationships:** Use `_embed` instead of `_expand` for including related resources
+- **Request delays:** Use browser DevTools (Network tab > throttling) instead of the removed `--delay` CLI option
+
+> **New to json-server?** These notes are for users migrating from v0. If this is your first time using json-server, you can ignore this section.
