@@ -162,6 +162,8 @@ GET /posts?title:eq=Hello
 GET /posts?author.name:eq=typicode
 ```
 
+The total count of the items is available via `X-Total-Count` in the response.
+
 ### Sort
 
 ```http
