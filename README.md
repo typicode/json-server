@@ -11,7 +11,9 @@
 ## Install
 
 ```shell
-npm install json-server
+npm install json-server    # NPM
+yarn add json-server       # Yarn
+pnpm add json-server       # PNPM
 ```
 
 ## Usage
