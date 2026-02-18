@@ -171,12 +171,14 @@ Operators:
 - `lt` less than, `lte` less than or equal
 - `gt` greater than, `gte` greater than or equal
 - `eq` equal, `ne` not equal
+- `in` included in comma-separated list
 
 Examples:
 
 ```http
 GET /posts?views:gt=100
 GET /posts?title:eq=Hello
+GET /posts?id:in=1,2,3
 GET /posts?author.name:eq=typicode
 ```
 
