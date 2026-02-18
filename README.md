@@ -125,8 +125,8 @@ Run `json-server --help` for a list of options
 JSON Server supports advanced querying out of the box:
 
 ```http
-GET /posts?views:gt=100                   # Filter by condition
-GET /posts?_sort=-views                   # Sort by field (descending)
+GET /posts?views:gt=100                  # Filter by condition
+GET /posts?_sort=-views                  # Sort by field (descending)
 GET /posts?_page=1&_per_page=10          # Pagination
 GET /posts?_embed=comments               # Include relations
 GET /posts?_where={"or":[...]}           # Complex queries
