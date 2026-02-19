@@ -113,13 +113,6 @@ Run `json-server --help` for a list of options
 
 [Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
 
-## Sponsorware
-
-> [!NOTE]
-> This project uses the [Fair Source License](https://fair.io/). Only organizations with 3+ users are kindly asked to contribute a small amount through sponsorship [sponsor](https://github.com/sponsors/typicode) for usage. **This license helps keep the project sustainable and healthy, benefiting everyone.**
->
-> For more information, FAQs, and the rationale behind this, visit [https://fair.io/](https://fair.io/).
-
 ## Query Capabilities
 
 JSON Server supports advanced querying out of the box:
