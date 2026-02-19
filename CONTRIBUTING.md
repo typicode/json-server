@@ -4,7 +4,7 @@ Thanks for your interest in contributing!
 
 By contributing to this project, you agree to the following:
 
-1. **Relicensing:** to support the project's sustainability and ensure it's longevity, your contributions can be relicensed to any license.
+1. **Relicensing:** To support the project's sustainability and ensure its longevity, your contributions may be relicensed to any license.
 
 2. **Ownership Rights:** You confirm you own the rights to your contributed code.
 

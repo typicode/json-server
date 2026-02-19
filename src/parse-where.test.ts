@@ -83,6 +83,18 @@ await test('parseWhere', async (t) => {
         views: { gt: 100, lt: 300 },
       },
     ],
+    [
+      'id:in=1,3',
+      {
+        id: { in: [1, 3] },
+      },
+    ],
+    [
+      'title_in=hello,world',
+      {
+        title: { in: ['hello', 'world'] },
+      },
+    ],
   ]
 
   for (const [query, expected] of cases) {

@@ -53,6 +53,10 @@ export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
         if (knownOps.includes('gte') && !((field as any) >= (op.gte as any))) return false
         if (knownOps.includes('eq') && !((field as any) === (op.eq as any))) return false
         if (knownOps.includes('ne') && !((field as any) !== (op.ne as any))) return false
+        if (knownOps.includes('in')) {
+          const inValues = Array.isArray(op.in) ? op.in : [op.in]
+          if (!inValues.some((v) => (field as any) === (v as any))) return false
+        }
         continue
       }
 
