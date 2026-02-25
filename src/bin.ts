@@ -183,6 +183,7 @@ app.listen(port, () => {
 // Watch file for changes
 if (process.env["NODE_ENV"] !== "production") {
   let writing = false; // true if the file is being written to by the app
+  let hadReadError = false;
   let prevEndpoints = "";
 
   observer.onWriteStart = () => {
@@ -200,16 +201,18 @@ if (process.env["NODE_ENV"] !== "production") {
     }
 
     const nextEndpoints = JSON.stringify(Object.keys(data).sort());
-    if (prevEndpoints !== nextEndpoints) {
+    if (hadReadError || prevEndpoints !== nextEndpoints) {
       console.log();
       logRoutes(data);
     }
+    hadReadError = false;
   };
   watch(file).on("change", () => {
     // Do no reload if the file is being written to by the app
     if (!writing) {
       db.read().catch((e) => {
         if (e instanceof SyntaxError) {
+          hadReadError = true;
           return console.log(chalk.red(["", `Error parsing ${file}`, e.message].join("\n")));
         }
         console.log(e);
