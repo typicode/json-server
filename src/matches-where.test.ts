@@ -40,16 +40,19 @@ await test('matchesWhere', async (t) => {
     [{ c: { contains: 'X' } }, true],
     [{ c: { contains: 'z' } }, false],
     [{ a: { contains: '1' } }, false],
+    [{ c: { contains: 1 } }, false],
     // startsWith
     [{ c: { startsWith: 'x' } }, true],
     [{ c: { startsWith: 'X' } }, true],
     [{ c: { startsWith: 'z' } }, false],
     [{ a: { startsWith: '1' } }, false],
+    [{ c: { startsWith: 1 } }, false],
     // endsWith
     [{ c: { endsWith: 'x' } }, true],
     [{ c: { endsWith: 'X' } }, true],
     [{ c: { endsWith: 'z' } }, false],
     [{ a: { endsWith: '1' } }, false],
+    [{ c: { endsWith: 1 } }, false],
   ]
 
   for (const [query, expected] of cases) {
