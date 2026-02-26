@@ -95,6 +95,24 @@ await test('parseWhere', async (t) => {
         title: { in: ['hello', 'world'] },
       },
     ],
+    [
+      'title:contains=ello',
+      {
+        title: { contains: 'ello' },
+      },
+    ],
+    [
+      'title:startsWith=hel',
+      {
+        title: { startsWith: 'hel' },
+      },
+    ],
+    [
+      'title:endsWith=rld',
+      {
+        title: { endsWith: 'rld' },
+      },
+    ],
   ]
 
   for (const [query, expected] of cases) {

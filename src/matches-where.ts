@@ -57,6 +57,18 @@ export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
           const inValues = Array.isArray(op.in) ? op.in : [op.in]
           if (!inValues.some((v) => (field as any) === (v as any))) return false
         }
+        if (knownOps.includes('contains')) {
+          if (typeof field !== 'string') return false
+          if (!field.toLowerCase().includes(String(op.contains).toLowerCase())) return false
+        }
+        if (knownOps.includes('startsWith')) {
+          if (typeof field !== 'string') return false
+          if (!field.toLowerCase().startsWith(String(op.startsWith).toLowerCase())) return false
+        }
+        if (knownOps.includes('endsWith')) {
+          if (typeof field !== 'string') return false
+          if (!field.toLowerCase().endsWith(String(op.endsWith).toLowerCase())) return false
+        }
         continue
       }
 
