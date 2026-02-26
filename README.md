@@ -167,6 +167,9 @@ Operators:
 - `gt` greater than, `gte` greater than or equal
 - `eq` equal, `ne` not equal
 - `in` included in comma-separated list
+- `contains` string contains (case-insensitive)
+- `startsWith` string starts with (case-insensitive)
+- `endsWith` string ends with (case-insensitive)
 
 Examples:
 
@@ -175,6 +178,9 @@ GET /posts?views:gt=100
 GET /posts?title:eq=Hello
 GET /posts?id:in=1,2,3
 GET /posts?author.name:eq=typicode
+GET /posts?title:contains=hello
+GET /posts?title:startsWith=Hello
+GET /posts?title:endsWith=world
 ```
 
 ### Sort
