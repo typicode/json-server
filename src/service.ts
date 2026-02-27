@@ -114,10 +114,19 @@ function fixAllItemsIds(data: Data) {
   })
 }
 
+// Ensure $schema is set
+function fixSchema(data: Data) {
+  if (data['$schema'] === undefined) {
+    (data as Record<string, unknown>)['$schema'] =
+      './node_modules/json-server/schema.json'
+  }
+}
+
 export class Service {
   #db: Low<Data>
 
   constructor(db: Low<Data>) {
+    fixSchema(db.data)
     fixAllItemsIds(db.data)
     this.#db = db
   }

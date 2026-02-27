@@ -72,6 +72,24 @@ await test('constructor', () => {
       `id should be a non empty string but was: ${id1}`,
     )
   }
+  assert.equal(
+    (db.data as Record<string, unknown>)['$schema'],
+    './node_modules/json-server/schema.json',
+    '$schema should be set when missing',
+  )
+})
+
+await test('constructor: $schema not overwritten if present', () => {
+  const defaultData = { posts: [] } satisfies Data
+  const db = new Low<Data>(adapter, defaultData)
+  const data = db.data as Record<string, unknown>
+  data['$schema'] = './custom/schema.json'
+  new Service(db)
+  assert.equal(
+    data['$schema'],
+    './custom/schema.json',
+    '$schema should not be overwritten when already set',
+  )
 })
 
 await test('findById', () => {
