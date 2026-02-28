@@ -1,7 +1,7 @@
 import type { Adapter } from 'lowdb'
 
-import { randomId } from './random-id.ts'
-import type { Data, Item } from './service.ts'
+import { randomId } from '../random-id.ts'
+import type { Data, Item } from '../service.ts'
 
 export const DEFAULT_SCHEMA_PATH = './node_modules/json-server/schema.json'
 export type RawData = Record<string, Item[] | Item | string | undefined> & {

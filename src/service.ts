@@ -4,7 +4,6 @@ import sortOn from 'sort-on'
 import type { JsonObject } from 'type-fest'
 
 import { matchesWhere } from './matches-where.ts'
-import { DEFAULT_SCHEMA_PATH } from './normalized-adapter.ts'
 import { paginate, type PaginationResult } from './paginate.ts'
 import { randomId } from './random-id.ts'
 export type Item = Record<string, unknown>
@@ -19,31 +18,6 @@ export type PaginatedItems = PaginationResult<Item>
 
 function ensureArray(arg: string | string[] = []): string[] {
   return Array.isArray(arg) ? arg : [arg]
-}
-
-function fixItemsIds(items: Item[]) {
-  items.forEach((item) => {
-    if (typeof item['id'] === 'number') {
-      item['id'] = item['id'].toString()
-    }
-    if (item['id'] === undefined) {
-      item['id'] = randomId()
-    }
-  })
-}
-
-function fixAllItemsIds(data: Data) {
-  Object.values(data).forEach((value) => {
-    if (Array.isArray(value)) {
-      fixItemsIds(value)
-    }
-  })
-}
-
-function fixSchema(data: Data) {
-  if (data['$schema'] === undefined) {
-    ;(data as Record<string, unknown>)['$schema'] = DEFAULT_SCHEMA_PATH
-  }
 }
 
 function embed(db: Low<Data>, name: string, item: Item, related: string): Item {
@@ -108,8 +82,6 @@ export class Service {
   #db: Low<Data>
 
   constructor(db: Low<Data>) {
-    fixSchema(db.data)
-    fixAllItemsIds(db.data)
     this.#db = db
   }
 

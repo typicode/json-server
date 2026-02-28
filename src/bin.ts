@@ -12,10 +12,10 @@ import { DataFile, JSONFile } from "lowdb/node";
 import type { PackageJson } from "type-fest";
 
 import { fileURLToPath } from "node:url";
+import { NormalizedAdapter } from "./adapters/normalized-adapter.ts";
+import type { RawData } from "./adapters/normalized-adapter.ts";
+import { Observer } from "./adapters/observer.ts";
 import { createApp } from "./app.ts";
-import { NormalizedAdapter } from "./normalized-adapter.ts";
-import type { RawData } from "./normalized-adapter.ts";
-import { Observer } from "./observer.ts";
 import type { Data } from "./service.ts";
 
 function help() {

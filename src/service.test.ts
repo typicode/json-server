@@ -56,42 +56,6 @@ beforeEach(() => {
   })
 })
 
-await test('constructor', () => {
-  const defaultData = { posts: [{ id: '1' }, {}], object: {} } satisfies Data
-  const db = new Low<Data>(adapter, defaultData)
-  new Service(db)
-  if (Array.isArray(db.data['posts'])) {
-    const id0 = db.data['posts'][0]['id']
-    const id1 = db.data['posts'][1]['id']
-    assert.ok(
-      typeof id0 === 'string' && id0 === '1',
-      `id should not change if already set but was: ${id0}`,
-    )
-    assert.ok(
-      typeof id1 === 'string' && id1.length > 0,
-      `id should be a non empty string but was: ${id1}`,
-    )
-  }
-  assert.equal(
-    (db.data as Record<string, unknown>)['$schema'],
-    './node_modules/json-server/schema.json',
-    '$schema should be set when missing',
-  )
-})
-
-await test('constructor: $schema not overwritten if present', () => {
-  const defaultData = { posts: [] } satisfies Data
-  const db = new Low<Data>(adapter, defaultData)
-  const data = db.data as Record<string, unknown>
-  data['$schema'] = './custom/schema.json'
-  new Service(db)
-  assert.equal(
-    data['$schema'],
-    './custom/schema.json',
-    '$schema should not be overwritten when already set',
-  )
-})
-
 await test('findById', () => {
   const cases: [[string, string, { _embed?: string[] | string }], unknown][] = [
     [[POSTS, '1', {}], db.data?.[POSTS]?.[0]],
