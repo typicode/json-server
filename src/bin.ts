@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { extname } from "node:path";
 import { parseArgs } from "node:util";
 
-import chalk from "chalk";
+import pc from "picocolors";
 import { watch } from "chokidar";
 import JSON5 from "json5";
 import { Low } from "lowdb";
@@ -83,7 +83,7 @@ function args(): {
     // Handle --watch
     if (values.watch) {
       console.log(
-        chalk.yellow(
+        pc.yellow(
           "--watch/-w can be omitted, JSON Server 1+ watches for file changes by default",
         ),
       );
@@ -103,7 +103,7 @@ function args(): {
     };
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === "ERR_PARSE_ARGS_UNKNOWN_OPTION") {
-      console.log(chalk.red((e as NodeJS.ErrnoException).message.split(".")[0]));
+      console.log(pc.red((e as NodeJS.ErrnoException).message.split(".")[0]));
       help();
       process.exit(1);
     } else {
@@ -115,7 +115,7 @@ function args(): {
 const { file, port, host, static: staticArr } = args();
 
 if (!existsSync(file)) {
-  console.log(chalk.red(`File ${file} not found`));
+  console.log(pc.red(`File ${file} not found`));
   process.exit(1);
 }
 
@@ -143,14 +143,14 @@ await db.read();
 const app = createApp(db, { logger: false, static: staticArr });
 
 function logRoutes(data: Data) {
-  console.log(chalk.bold("Endpoints:"));
+  console.log(pc.bold("Endpoints:"));
   if (Object.keys(data).length === 0) {
-    console.log(chalk.gray(`No endpoints found, try adding some data to ${file}`));
+    console.log(pc.gray(`No endpoints found, try adding some data to ${file}`));
     return;
   }
   console.log(
     Object.keys(data)
-      .map((key) => `${chalk.gray(`http://${host}:${port}/`)}${chalk.blue(key)}`)
+      .map((key) => `${pc.gray(`http://${host}:${port}/`)}${pc.blue(key)}`)
       .join("\n"),
   );
 }
@@ -165,17 +165,17 @@ function randomItem(items: string[]): string {
 app.listen(port, () => {
   console.log(
     [
-      chalk.bold(`JSON Server started on PORT :${port}`),
-      chalk.gray("Press CTRL-C to stop"),
-      chalk.gray(`Watching ${file}...`),
+      pc.bold(`JSON Server started on PORT :${port}`),
+      pc.gray("Press CTRL-C to stop"),
+      pc.gray(`Watching ${file}...`),
       "",
-      chalk.magenta(randomItem(kaomojis)),
+      pc.magenta(randomItem(kaomojis)),
       "",
-      chalk.bold("Index:"),
-      chalk.gray(`http://localhost:${port}/`),
+      pc.bold("Index:"),
+      pc.gray(`http://localhost:${port}/`),
       "",
-      chalk.bold("Static files:"),
-      chalk.gray("Serving ./public directory if it exists"),
+      pc.bold("Static files:"),
+      pc.gray("Serving ./public directory if it exists"),
       "",
     ].join("\n"),
   );
@@ -215,7 +215,7 @@ if (process.env["NODE_ENV"] !== "production") {
       db.read().catch((e) => {
         if (e instanceof SyntaxError) {
           hadReadError = true;
-          return console.log(chalk.red(["", `Error parsing ${file}`, e.message].join("\n")));
+          return console.log(pc.red(["", `Error parsing ${file}`, e.message].join("\n")));
         }
         console.log(e);
       });
