@@ -1,12 +1,12 @@
-import { randomBytes } from 'node:crypto'
-
 import inflection from 'inflection'
 import { Low } from 'lowdb'
 import sortOn from 'sort-on'
 import type { JsonObject } from 'type-fest'
 
 import { matchesWhere } from './matches-where.ts'
+import { DEFAULT_SCHEMA_PATH } from './normalized-adapter.ts'
 import { paginate, type PaginationResult } from './paginate.ts'
+import { randomId } from './random-id.ts'
 export type Item = Record<string, unknown>
 
 export type Data = Record<string, Item[] | Item>
@@ -15,21 +15,35 @@ export function isItem(obj: unknown): obj is Item {
   return typeof obj === 'object' && obj !== null && !Array.isArray(obj)
 }
 
-export function isData(obj: unknown): obj is Data {
-  if (typeof obj !== 'object' || obj === null) {
-    return false
-  }
-
-  const data = obj as Record<string, unknown>
-  return Object.values(data).every((value) =>
-    Array.isArray(value) ? value.every(isItem) : isItem(value),
-  )
-}
-
 export type PaginatedItems = PaginationResult<Item>
 
 function ensureArray(arg: string | string[] = []): string[] {
   return Array.isArray(arg) ? arg : [arg]
+}
+
+function fixItemsIds(items: Item[]) {
+  items.forEach((item) => {
+    if (typeof item['id'] === 'number') {
+      item['id'] = item['id'].toString()
+    }
+    if (item['id'] === undefined) {
+      item['id'] = randomId()
+    }
+  })
+}
+
+function fixAllItemsIds(data: Data) {
+  Object.values(data).forEach((value) => {
+    if (Array.isArray(value)) {
+      fixItemsIds(value)
+    }
+  })
+}
+
+function fixSchema(data: Data) {
+  if (data['$schema'] === undefined) {
+    ;(data as Record<string, unknown>)['$schema'] = DEFAULT_SCHEMA_PATH
+  }
 }
 
 function embed(db: Low<Data>, name: string, item: Item, related: string): Item {
@@ -88,38 +102,6 @@ function deleteDependents(db: Low<Data>, name: string, dependents: string[]) {
       db.data[key] = items.filter((item) => item[foreignKey] !== null)
     }
   })
-}
-
-function randomId(): string {
-  return randomBytes(2).toString('hex')
-}
-
-function fixItemsIds(items: Item[]) {
-  items.forEach((item) => {
-    if (typeof item['id'] === 'number') {
-      item['id'] = item['id'].toString()
-    }
-    if (item['id'] === undefined) {
-      item['id'] = randomId()
-    }
-  })
-}
-
-// Ensure all items have an id
-function fixAllItemsIds(data: Data) {
-  Object.values(data).forEach((value) => {
-    if (Array.isArray(value)) {
-      fixItemsIds(value)
-    }
-  })
-}
-
-// Ensure $schema is set
-function fixSchema(data: Data) {
-  if (data['$schema'] === undefined) {
-    (data as Record<string, unknown>)['$schema'] =
-      './node_modules/json-server/schema.json'
-  }
 }
 
 export class Service {
