@@ -24,9 +24,18 @@ export class NormalizedAdapter implements Adapter<Data> {
 
     delete data['$schema']
 
-    for (const value of Object.values(data)) {
+    for (const [key, value] of Object.entries(data)) {
       if (Array.isArray(value)) {
         for (const item of value) {
+          if (typeof item !== 'object' || item === null) {
+            throw new Error(
+              `json-server expects arrays of objects so it can generate IDs.\n` +
+                `Received an array of primitive values for '${key}'.\n` +
+                `Example valid format:\n` +
+                `{ "${key}": [{ "id": 1, "name": "${String(item)}" }] }`,
+            )
+          }
+
           if (typeof item['id'] === 'number') {
             item['id'] = item['id'].toString()
           }
