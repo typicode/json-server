@@ -68,9 +68,11 @@ function parseListParams(req: any) {
 function withBody(action: (name: string, body: Record<string, unknown>) => Promise<unknown>) {
   return async (req: any, res: any, next: any) => {
     const { name = '' } = req.params
-    if (isItem(req.body)) {
-      res.locals['data'] = await action(name, req.body)
+    if (!isItem(req.body)) {
+      res.status(400).json({ error: 'Body must be a JSON object' })
+      return
     }
+    res.locals['data'] = await action(name, req.body)
     next?.()
   }
 }
@@ -80,9 +82,11 @@ function withIdAndBody(
 ) {
   return async (req: any, res: any, next: any) => {
     const { name = '', id = '' } = req.params
-    if (isItem(req.body)) {
-      res.locals['data'] = await action(name, id, req.body)
+    if (!isItem(req.body)) {
+      res.status(400).json({ error: 'Body must be a JSON object' })
+      return
     }
+    res.locals['data'] = await action(name, id, req.body)
     next?.()
   }
 }
