@@ -8,6 +8,20 @@
 > [!NOTE]
 > Using React ⚛️ and tired of CSS-in-JS? See [MistCSS](https://github.com/typicode/mistcss) 👀
 
+## Prerequisites
+
+Before installing, make sure you have:
+
+- **Node.js** `>= 22.12.0` — [Download here](https://nodejs.org/)
+- **npm** `>= 10` (bundled with Node.js)
+
+Verify your version:
+
+```bash
+node --version   # should print v22.12.0 or higher
+npm --version
+```
+
 ## Install
 
 ```shell
@@ -86,7 +100,29 @@ curl http://localhost:3000/posts/1
 }
 ```
 
-Run `json-server --help` for a list of options
+## CLI Options
+
+Run `json-server --help` for a full list of options. Commonly used flags:
+
+| Flag | Default | Description |
+| --- | --- | --- |
+| `--port`, `-p` | `3000` | Set the port the server listens on |
+| `--host`, `-H` | `localhost` | Set the host address |
+| `--static`, `-s` | — | Serve additional static files directory (repeatable) |
+| `--watch`, `-w` | `false` | Watch the db file and reload on changes |
+
+**Examples:**
+
+```bash
+# Run on a custom port
+json-server db.json --port 4000
+
+# Run on all network interfaces (accessible on LAN)
+json-server db.json --host 0.0.0.0
+
+# Serve static files alongside the API
+json-server db.json --static ./public
+```
 
 ## Sponsors ✨
 
@@ -260,4 +296,52 @@ If you are upgrading from json-server v0.x, note these behavioral changes:
 - **Relationships:** Use `_embed` instead of `_expand` for including related resources
 - **Request delays:** Use browser DevTools (Network tab > throttling) instead of the removed `--delay` CLI option
 
+Quick reference for common query changes:
+
+| v0 syntax | v1 equivalent |
+| --- | --- |
+| `GET /posts?_limit=5&_start=10` | `GET /posts?_page=3&_per_page=5` |
+| `GET /comments?_expand=post` | `GET /comments?_embed=post` |
+| `GET /posts?id=1&id=2` | `GET /posts?id:in=1,2` |
+| `json-server --delay 500 db.json` | Use DevTools network throttling |
+
 > **New to json-server?** These notes are for users migrating from v0. If this is your first time using json-server, you can ignore this section.
+
+## Local Development
+
+Follow these steps to run and test json-server locally:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/typicode/json-server.git
+cd json-server
+
+# 2. Install dependencies (requires Node.js >= 22.12.0)
+npm install
+
+# 3. Start the dev server with the included fixture
+npm run dev
+
+# 4. Run the test suite
+npm test
+```
+
+The dev server reloads automatically when source files change. All tests use Node.js's built-in test runner — no additional test framework needed.
+
+### Project structure
+
+```
+src/
+  app.ts              # Express-like app factory and route definitions
+  service.ts          # CRUD operations and query logic
+  bin.ts              # CLI entry point
+  parse-where.ts      # Query string → filter object parser
+  matches-where.ts    # Filter predicate applied to items
+  paginate.ts         # Pagination helper
+  random-id.ts        # Generates random string IDs
+  *.test.ts           # Unit and integration tests
+fixtures/
+  db.json             # Sample database used during development
+public/
+  test.html           # Default static page served at /
+```
