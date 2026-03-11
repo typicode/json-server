@@ -142,4 +142,37 @@ await test('createApp', async (t) => {
     const data = await response.json()
     assert.deepEqual(data, [{ id: '1', title: 'foo' }])
   })
+
+  await t.test('POST /posts with array body returns 400', async () => {
+    const response = await fetch(`http://localhost:${port}/posts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify([{ title: 'foo' }]),
+    })
+    assert.equal(response.status, 400)
+    const data = await response.json()
+    assert.deepEqual(data, { error: 'Body must be a JSON object' })
+  })
+
+  await t.test('PATCH /posts/1 with string body returns 400', async () => {
+    const response = await fetch(`http://localhost:${port}/posts/1`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify('hello'),
+    })
+    assert.equal(response.status, 400)
+    const data = await response.json()
+    assert.deepEqual(data, { error: 'Body must be a JSON object' })
+  })
+
+  await t.test('PUT /posts/1 with null body returns 400', async () => {
+    const response = await fetch(`http://localhost:${port}/posts/1`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(null),
+    })
+    assert.equal(response.status, 400)
+    const data = await response.json()
+    assert.deepEqual(data, { error: 'Body must be a JSON object' })
+  })
 })
