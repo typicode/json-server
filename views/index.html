@@ -1,95 +1,137 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Server</title>
     <style>
-      html {
-        font-size: 16px;
-        line-height: 1.5;
-        background-color: #fff;
-        color: #000;
+      :root {
+        --fg: #111;
+        --muted: #999;
+        --line: #e5e5e5;
       }
-
       body {
-        margin: 0 auto;
-        max-width: 720px;
-        padding: 0 16px;
-        font-family: sans-serif;
+        margin: 40px auto;
+        max-width: 400px;
+        padding: 0 24px;
+        font-family:
+          ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        background-color: #fff;
+        color: var(--fg);
+        line-height: 1.5;
+        font-size: 14px;
       }
-
       a {
-        color: #db2777;
-        text-decoration: none;
+        color: inherit;
       }
-
       header {
-        margin-bottom: 32px;
-        padding: 16px 0;
+        margin-bottom: 40px;
+        color: var(--muted);
       }
-
-      nav {
+      .topbar {
         display: flex;
         justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
       }
-
-      nav div a {
-        margin-left: 16px;
+      .topbar a {
+        text-decoration: none;
+        transition: color 0.1s ease;
       }
-
-      ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+      .topbar a:first-child {
+        color: var(--fg);
       }
-
-      li {
+      .topbar a:hover {
+        color: #6366f1;
+      }
+      .section-title {
         margin-bottom: 8px;
+        color: var(--muted);
       }
-
-      /* Dark mode styles */
-      @media (prefers-color-scheme: dark) {
-        html {
-          background-color: #1e293b;
-          color: #fff;
-        }
-
-        a {
-        }
+      .list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .list a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        text-decoration: none;
+        transition: color 0.1s ease;
+      }
+      .list a:hover {
+        color: #6366f1;
+      }
+      .meta {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .empty {
+        color: var(--muted);
+      }
+      footer {
+        margin-top: 48px;
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .heart {
+        position: fixed;
+        bottom: 20px;
+        right: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        color: #fff;
+        background-color: #111;
+        text-decoration: none;
+        transition: transform 0.15s ease;
+      }
+      .heart:hover {
+        transform: scale(1.1);
       }
     </style>
   </head>
 
   <body>
+    <% const resources = Object.entries(it.data ?? {}); %>
+
     <header>
-      <nav>
-        <strong>JSON Server</strong>
-        <div>
-          <a href="https://github.com/typicode/json-server">Docs</a>
-          <a href="https://github.com/sponsors/typicode">♡ Sponsor</a>
-        </div>
-      </nav>
+      <div class="topbar">
+        <a href="https://github.com/typicode/json-server" target="_blank">json-server</a>
+        <a href="https://github.com/typicode/json-server" target="_blank">README</a>
+      </div>
+      <div class="intro">Available REST resources from db.json.</div>
     </header>
-    <main class="my-12">
-      <p
-        class="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-transparent bg-clip-text"
-      >
-        ✧*｡٩(ˊᗜˋ*)و✧*｡
-      </p>
-      <% if (Object.keys(it.data).length===0) { %>
-      <p>No resources found in JSON file</p>
-      <% } %> <% Object.entries(it.data).forEach(function([name]) { %>
-      <ul>
-        <li>
-          <a href="<%= name %>">/<%= name %></a>
-          <span>
-            <% if (Array.isArray(it.data[name])) { %> - <%= it.data[name].length %> <%=
-            it.data[name].length> 1 ? 'items' : 'item' %>
-          </span>
-          <% } %>
-        </li>
-      </ul>
-      <% }) %>
-    </main>
+
+    <div class="section-title">Resources</div>
+
+    <div class="list">
+      <% if (resources.length === 0) { %>
+      <span class="empty">No resources in db.json.</span>
+      <% } else { %> <% resources.forEach(function([name, value]) { const isCollection =
+      Array.isArray(value); %>
+      <a href="/<%= name %>">
+        <span>/<%= name %></span>
+        <span class="meta">
+          <% if (isCollection) { %> <%= value.length %> items <% } else { %> object <% } %>
+        </span>
+      </a>
+      <% }) %> <% } %>
+    </div>
+
+    <footer>
+      <span>To replace this page, create public/index.html.</span>
+    </footer>
+
+    <a href="https://github.com/sponsors/typicode" target="_blank" class="heart">❤</a>
   </body>
 </html>
