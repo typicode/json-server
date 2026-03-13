@@ -6,9 +6,14 @@
     <title>JSON Server</title>
     <style>
       :root {
-        --fg: #111;
-        --muted: #999;
-        --line: #e5e5e5;
+        color-scheme: light dark;
+        --fg: light-dark(#111, #e8e8e8);
+        --bg: light-dark(#fff, #111214);
+        --muted: light-dark(#999, #9aa0a6);
+        --line: light-dark(#e5e5e5, #2c2f34);
+        --accent: light-dark(#6366f1, #8b90ff);
+        --chip-bg: light-dark(#111, #f5f5f5);
+        --chip-fg: light-dark(#fff, #111214);
       }
       body {
         margin: 40px auto;
@@ -16,10 +21,14 @@
         padding: 0 24px;
         font-family:
           ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-        background-color: #fff;
+        background-color: var(--bg);
         color: var(--fg);
         line-height: 1.5;
         font-size: 14px;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease,
+          border-color 0.2s ease;
       }
       a {
         color: inherit;
@@ -44,7 +53,7 @@
         color: var(--fg);
       }
       .topbar a:hover {
-        color: #6366f1;
+        color: var(--accent);
       }
       .section-title {
         margin-bottom: 8px;
@@ -64,7 +73,7 @@
         transition: color 0.1s ease;
       }
       .list a:hover {
-        color: #6366f1;
+        color: var(--accent);
       }
       .meta {
         color: var(--muted);
@@ -90,8 +99,8 @@
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        color: #fff;
-        background-color: #111;
+        color: var(--chip-fg);
+        background-color: var(--chip-bg);
         text-decoration: none;
         transition: transform 0.15s ease;
       }
@@ -133,5 +142,6 @@
     </footer>
 
     <a href="https://github.com/sponsors/typicode" target="_blank" class="heart">❤</a>
+
   </body>
 </html>
