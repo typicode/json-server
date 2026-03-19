@@ -142,11 +142,18 @@ export class Service {
     return results
   }
 
-  async create(name: string, data: Omit<Item, 'id'> = {}): Promise<Item | undefined> {
+  async create(name: string, data: Item = {}): Promise<Item | undefined> {
     const items = this.#get(name)
     if (items === undefined || !Array.isArray(items)) return
 
-    const item = { id: randomId(), ...data }
+    const { id: _, ...clientData } = data
+
+    let newId = randomId()
+    while (items.some((item) => item['id'] === newId)) {
+      newId = randomId()
+    }
+
+    const item = { id: newId, ...clientData }
     items.push(item)
 
     await this.#db.write()

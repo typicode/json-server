@@ -99,13 +99,35 @@ await test('find', async (t) => {
   }
 })
 
-await test('create', async () => {
-  const post = { title: 'new post' }
-  const res = await service.create(POSTS, post)
-  assert.equal(res?.['title'], post.title)
-  assert.equal(typeof res?.['id'], 'string', 'id should be a string')
+await test('create', async (t) => {
+  await t.test('generates random id', async () => {
+    const post = { title: 'new post' }
+    const res = await service.create(POSTS, post)
+    assert.equal(res?.['title'], post.title)
+    assert.equal(typeof res?.['id'], 'string')
+    assert.ok(res?.['id'].length > 0)
+  })
 
-  assert.equal(await service.create(UNKNOWN_RESOURCE, post), undefined)
+  await t.test('rejects client-supplied id', async () => {
+    const post = { id: 'client-id', title: 'test' }
+    const res = await service.create(POSTS, post)
+    assert.notEqual(res?.['id'], 'client-id')
+    assert.equal(res?.['title'], 'test')
+  })
+
+  await t.test('prevents duplicate ids', async () => {
+    const existingId = db.data?.[POSTS]?.[0]?.['id']
+    assert.ok(existingId !== undefined)
+
+    const post = { id: existingId, title: 'duplicate test' }
+    const res = await service.create(POSTS, post)
+    assert.notEqual(res?.['id'], existingId)
+    assert.equal(res?.['title'], 'duplicate test')
+  })
+
+  await t.test('returns undefined for unknown resource', async () => {
+    assert.equal(await service.create(UNKNOWN_RESOURCE, {}), undefined)
+  })
 })
 
 await test('update', async () => {
