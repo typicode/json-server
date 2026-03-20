@@ -146,7 +146,7 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined || !Array.isArray(items)) return
 
-    const item = { id: randomId(), ...data }
+    const item = { ...data, id: randomId() }
     items.push(item)
 
     await this.#db.write()
