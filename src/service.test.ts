@@ -101,9 +101,12 @@ await test('find', async (t) => {
 
 await test('create', async () => {
   const post = { title: 'new post' }
-  const res = await service.create(POSTS, post)
+  let res = await service.create(POSTS, post)
   assert.equal(res?.['title'], post.title)
   assert.equal(typeof res?.['id'], 'string', 'id should be a string')
+
+  res = await service.create(POSTS, { ...post, id: 'foo' })
+  assert.notEqual(res?.['id'], 'foo', 'user should not be able to set id')
 
   assert.equal(await service.create(UNKNOWN_RESOURCE, post), undefined)
 })
