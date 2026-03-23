@@ -116,6 +116,10 @@ await test('createApp', async (t) => {
         tc.statusCode,
         `${response.status} !== ${tc.statusCode} ${tc.method} ${tc.url} failed`,
       )
+      if (tc.statusCode === 404) {
+        const body = await response.json()
+        assert.deepEqual(body, { error: 'Not Found' })
+      }
     })
   }
 
