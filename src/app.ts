@@ -159,7 +159,7 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
   app.use('/:name', (req, res) => {
     const { data } = res.locals
     if (data === undefined) {
-      res.sendStatus(404)
+      res.status(404).json({ error: 'Not Found' })
     } else {
       if (req.method === 'POST') res.status(201)
       res.json(data)
