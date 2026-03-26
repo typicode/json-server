@@ -147,6 +147,22 @@ await test('createApp', async (t) => {
     assert.deepEqual(data, [{ id: '1', title: 'foo' }])
   })
 
+  await t.test('invalid _where falls back to query params', async () => {
+    const response = await fetch(`http://localhost:${port}/posts?title=foo&_where={invalid}`
+    )
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.deepEqual(data, [{ id: '1', title: 'foo' }])
+  })
+
+  await t.test('invalid _where returns all data when no query params', async () => {
+    const response = await fetch(`http://localhost:${port}/posts?_where={invalid}`
+    )
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.deepEqual(data, [{ id: '1', title: 'foo' }])
+  })
+
   await t.test('POST /posts with array body returns 400', async () => {
     const response = await fetch(`http://localhost:${port}/posts`, {
       method: 'POST',
