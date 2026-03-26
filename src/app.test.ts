@@ -179,4 +179,12 @@ await test('createApp', async (t) => {
     const data = await response.json()
     assert.deepEqual(data, { error: 'Body must be a JSON object' })
   })
+
+  await t.test('invalid pagination query params are handled gracefully', async () => {
+    const response = await fetch(`http://localhost:${port}/posts?_page=-10&_per_page=0`
+     )
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.ok(data)
+  })
 })
