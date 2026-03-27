@@ -53,6 +53,11 @@ await test('matchesWhere', async (t) => {
     [{ c: { endsWith: 'z' } }, false],
     [{ a: { endsWith: '1' } }, false],
     [{ c: { endsWith: 1 } }, false],
+    // Regression tests for issue #1731: nested _where fail-open
+    // When intermediate field is not an object, nested predicates should fail (return false)
+    [{ a: { nested: { eq: 'zzz' } } }, false], // a is a number, not an object
+    [{ c: { nested: { eq: 'zzz' } } }, false], // c is a string, not an object
+    [{ or: [{ a: { nested: { eq: 'zzz' } } }] }, false],
   ]
 
   for (const [query, expected] of cases) {
