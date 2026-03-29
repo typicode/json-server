@@ -183,6 +183,8 @@ GET /posts?title:startsWith=Hello
 GET /posts?title:endsWith=world
 ```
 
+The total count of the items is available via `X-Total-Count` in the response.
+
 ### Sort
 
 ```http
