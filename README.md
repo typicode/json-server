@@ -215,7 +215,7 @@ GET /posts?_page=1&_per_page=25
 
 **Notes:**
 - `_per_page` defaults to `10` if not specified
-- Invalid `_page` or `_per_page` values are automatically normalized to valid ranges
+- Invalid _page or _per_page values are automatically normalized to valid positive integers. _page is    clamped between 1 and the total number of pages, and _per_page defaults to 1 when invalid.
 
 ### Embed
 
