@@ -18,6 +18,7 @@ const isProduction = process.env['NODE_ENV'] === 'production'
 export type AppOptions = {
   logger?: boolean
   static?: string[]
+  auth?: string
 }
 
 const eta = new Eta({
@@ -114,6 +115,24 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
       })(req, res, next)
     })
     .options('*', cors())
+
+  // Authentication
+  if (options.auth) {
+    const apiKey = options.auth
+    app.use((req, res, next) => {
+      // Allow CORS pre-flight through without credentials
+      if (req.method === 'OPTIONS') {
+        next?.()
+        return
+      }
+      const authHeader = req.headers['authorization']
+      if (authHeader === `Bearer ${apiKey}`) {
+        next?.()
+        return
+      }
+      res.status(401).json({ error: 'Unauthorized' })
+    })
+  }
 
   // Body parser
   app.use(json())

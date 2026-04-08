@@ -140,7 +140,7 @@ const db = new Low<Data>(observer, {});
 await db.read();
 
 // Create app
-const app = createApp(db, { logger: false, static: staticArr });
+const app = createApp(db, { logger: false, static: staticArr, auth: process.env['JSON_SERVER_AUTH'] });
 
 function logRoutes(data: Data) {
   console.log(chalk.bold("Endpoints:"));
