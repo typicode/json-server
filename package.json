@@ -37,13 +37,14 @@
     "build": "rm -rf lib && tsc",
     "prepublishOnly": "rm -rf lib && tsc",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test src/*.test.ts",
+    "test": "node --experimental-strip-types --test \"src/**/*.test.ts\"",
     "lint": "oxlint src",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "prepare": "husky"
   },
   "dependencies": {
+    "@tinyhttp/url": "^2.1.1",
     "@tinyhttp/app": "^3.0.1",
     "@tinyhttp/cors": "^2.0.1",
     "@tinyhttp/logger": "^2.1.0",
