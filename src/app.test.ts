@@ -180,3 +180,49 @@ await test('createApp', async (t) => {
     assert.deepEqual(data, { error: 'Body must be a JSON object' })
   })
 })
+
+await test('createApp query route rewrites run before API routing', async (t) => {
+  const rewritePort = await getPort()
+  const rewriteDb = new Low<Data>(new Memory<Data>(), {})
+  rewriteDb.data = {
+    posts: [
+      { id: 1, title: 'foo', group: 'a' },
+      { id: 2, title: 'bar', group: 'b' },
+    ],
+  }
+
+  const rewriteApp = createApp(rewriteDb, {
+    routes: {
+      '/blog?customNamedId=:id': '/posts?id=:id',
+    },
+  })
+
+  await new Promise<void>((resolve, reject) => {
+    try {
+      const server = rewriteApp.listen(rewritePort, () => resolve())
+      t.after(() => server.close())
+    } catch (err) {
+      reject(err)
+    }
+  })
+
+  await t.test('rewrites /blog?customNamedId=1 to /posts?id=1', async () => {
+    const response = await fetch(`http://localhost:${rewritePort}/blog?customNamedId=1`)
+    assert.equal(response.status, 200)
+    assert.deepEqual(await response.json(), [{ id: 1, title: 'foo', group: 'a' }])
+  })
+
+  await t.test('preserves unrelated query params after rewrite', async () => {
+    const response = await fetch(
+      `http://localhost:${rewritePort}/blog?customNamedId=1&group=a`,
+    )
+    assert.equal(response.status, 200)
+    assert.deepEqual(await response.json(), [{ id: 1, title: 'foo', group: 'a' }])
+  })
+
+  await t.test('does not break existing routes', async () => {
+    const response = await fetch(`http://localhost:${rewritePort}/posts?title=bar`)
+    assert.equal(response.status, 200)
+    assert.deepEqual(await response.json(), [{ id: 2, title: 'bar', group: 'b' }])
+  })
+})

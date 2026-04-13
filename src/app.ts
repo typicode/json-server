@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs'
 import { dirname, isAbsolute, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -9,6 +10,12 @@ import { json } from 'milliparsec'
 import sirv from 'sirv'
 
 import { parseWhere } from './parse-where.ts'
+import {
+  compileRewriteRules,
+  createQueryRewriteMiddleware,
+  loadRoutesFile,
+  type RoutesConfig,
+} from './rewrite/rewrite-middleware.ts'
 import type { Data } from './service.ts'
 import { isItem, Service } from './service.ts'
 
@@ -18,6 +25,18 @@ const isProduction = process.env['NODE_ENV'] === 'production'
 export type AppOptions = {
   logger?: boolean
   static?: string[]
+  /** Query-based rewrites; overrides same keys from `routes.json` when both exist. */
+  routes?: RoutesConfig
+  /** Defaults to `<cwd>/routes.json` when that file exists. */
+  routesFile?: string
+  /** Log query rewrites to stdout, or set env `JSON_SERVER_REWRITE_DEBUG=1`. */
+  rewriteDebug?: boolean
+}
+
+function resolveRoutesConfig(options: AppOptions): RoutesConfig {
+  const path = options.routesFile ?? join(process.cwd(), 'routes.json')
+  const fromFile = existsSync(path) ? (loadRoutesFile(path) ?? {}) : {}
+  return { ...fromFile, ...options.routes }
 }
 
 const eta = new Eta({
@@ -117,6 +136,15 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
 
   // Body parser
   app.use(json())
+
+  const rewriteRules = compileRewriteRules(resolveRoutesConfig(options))
+  if (rewriteRules.length > 0) {
+    app.use(
+      createQueryRewriteMiddleware(rewriteRules, {
+        debug: options.rewriteDebug,
+      }),
+    )
+  }
 
   app.get('/', (_req, res) => res.send(eta.render('index.html', { data: db.data })))
 
