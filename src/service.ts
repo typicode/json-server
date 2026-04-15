@@ -22,7 +22,13 @@ function ensureArray(arg: string | string[] = []): string[] {
 
 function embed(db: Low<Data>, name: string, item: Item, related: string): Item {
   if (inflection.singularize(related) === related) {
-    const relatedData = db.data[inflection.pluralize(related)] as Item[]
+    const pluralized = db.data[inflection.pluralize(related)]
+    const suffixed = db.data[`${related}s`]
+    const relatedData = Array.isArray(pluralized)
+      ? pluralized
+      : Array.isArray(suffixed)
+        ? suffixed
+        : undefined
     if (!relatedData) {
       return item
     }

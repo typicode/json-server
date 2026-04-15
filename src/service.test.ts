@@ -99,6 +99,23 @@ await test('find', async (t) => {
   }
 })
 
+await test('find supports _embed=person when the resource key is persons', () => {
+  const db = new Low<Data>(new Memory<Data>(), {
+    feedbacks: [{ id: '1', text: 'a', personId: '1' }],
+    persons: [{ id: '1', name: 'Tim' }],
+  })
+  const service = new Service(db)
+
+  assert.deepEqual(service.find('feedbacks', { where: {}, embed: 'person' }), [
+    {
+      id: '1',
+      text: 'a',
+      personId: '1',
+      person: { id: '1', name: 'Tim' },
+    },
+  ])
+})
+
 await test('create', async () => {
   const post = { title: 'new post' }
   let res = await service.create(POSTS, post)

@@ -88,6 +88,26 @@ curl http://localhost:3000/posts/1
 
 Run `json-server --help` for a list of options
 
+## Run with Docker
+
+Build the image:
+
+```shell
+docker build -t json-server .
+```
+
+Run the container:
+
+```shell
+docker run --rm -p 3000:3000 json-server
+```
+
+API URL:
+
+```text
+http://localhost:3000
+```
+
 ## Sponsors ✨
 
 ### Gold
