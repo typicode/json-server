@@ -126,13 +126,18 @@ if (readFileSync(file, "utf-8").trim() === "") {
 
 // Set up database
 let adapter: Adapter<RawData>;
+const stripBom = (text: string) => text.replace(/^\uFEFF/, '')
+
 if (extname(file) === ".json5") {
   adapter = new DataFile<RawData>(file, {
-    parse: JSON5.parse,
+    parse: (text) => JSON5.parse(stripBom(text)),
     stringify: JSON5.stringify,
-  });
+  })
 } else {
-  adapter = new JSONFile<RawData>(file);
+  adapter = new DataFile<RawData>(file, {
+    parse: (text) => JSON.parse(stripBom(text)) as RawData,
+    stringify: (data) => JSON.stringify(data, null, 2),
+  })
 }
 const observer = new Observer(new NormalizedAdapter(adapter));
 
