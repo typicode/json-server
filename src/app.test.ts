@@ -1,4 +1,4 @@
-   import assert from 'node:assert/strict'
+import assert from 'node:assert/strict'
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import test from 'node:test'
@@ -139,12 +139,28 @@ await test('createApp', async (t) => {
 
   await t.test('GET /posts?_where=... overrides query params', async () => {
     const where = encodeURIComponent(JSON.stringify({ title: { eq: 'foo' } }))
-    const response = await fetch(
-      `http://localhost:${port}/posts?title:eq=bar&_where=${where}`,
-    )
+    const response = await fetch(`http://localhost:${port}/posts?title:eq=bar&_where=${where}`)
     assert.equal(response.status, 200)
     const data = await response.json()
     assert.deepEqual(data, [{ id: '1', title: 'foo' }])
+  })
+
+  await t.test('GET /posts?_where=... rejects missing nested fields', async () => {
+    db.data = {
+      posts: [
+        { id: '1', title: 'a' },
+        { id: '2', title: 'b' },
+      ],
+      comments: [{ id: '1', postId: '1' }],
+      object: { f1: 'foo' },
+    }
+
+    const where = encodeURIComponent(JSON.stringify({ title: { nested: { eq: 'zzz' } } }))
+    const response = await fetch(`http://localhost:${port}/posts?_where=${where}`)
+
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.deepEqual(data, [])
   })
 
   await t.test('POST /posts with array body returns 400', async () => {
