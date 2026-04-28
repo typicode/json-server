@@ -21,6 +21,13 @@ function getKnownOperators(value: unknown): WhereOperator[] {
   return ops
 }
 
+function hasKnownOperator(value: unknown): boolean {
+  if (!isJSONObject(value)) return false
+  if (getKnownOperators(value).length > 0) return true
+
+  return Object.values(value).some((item) => hasKnownOperator(item))
+}
+
 export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
   for (const [key, value] of Object.entries(where)) {
     if (key === 'or') {
@@ -72,9 +79,11 @@ export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
         continue
       }
 
-      if (isJSONObject(field)) {
-        if (!matchesWhere(field, value)) return false
+      if (!isJSONObject(field)) {
+        if (hasKnownOperator(value)) return false
+        continue
       }
+      if (!matchesWhere(field, value)) return false
 
       continue
     }
