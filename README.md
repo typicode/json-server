@@ -156,6 +156,15 @@ PATCH /profile
 
 ## Query params
 
+Reserved query params start with `_` and are handled by JSON Server:
+
+- `_sort` for sorting
+- `_page` and `_per_page` for pagination
+- `_embed` for related resources
+- `_where` for complex filters
+
+Other query params are treated as filters.
+
 ### Conditions
 
 Use `field:operator=value`.
@@ -183,6 +192,12 @@ GET /posts?title:startsWith=Hello
 GET /posts?title:endsWith=world
 ```
 
+Multiple conditions are combined with AND:
+
+```http
+GET /posts?views:gte=100&views:lte=200
+```
+
 ### Sort
 
 ```http
@@ -195,6 +210,7 @@ GET /posts?_sort=author.name,-views
 
 ```http
 GET /posts?_page=1&_per_page=25
+GET /posts?_page=2
 ```
 
 **Response:**
@@ -215,13 +231,48 @@ GET /posts?_page=1&_per_page=25
 
 **Notes:**
 - `_per_page` defaults to `10` if not specified
+- `_page` is required to paginate; without it, the full filtered list is returned
 - Invalid `_page` or `_per_page` values are automatically normalized to valid ranges
 
 ### Embed
 
+Use `_embed` to include related resources. Children are included as an array:
+
 ```http
 GET /posts?_embed=comments
+GET /posts/1?_embed=comments
+```
+
+```json
+{
+  "id": "1",
+  "title": "a title",
+  "views": 100,
+  "comments": [
+    { "id": "1", "text": "a comment about post 1", "postId": "1" },
+    { "id": "2", "text": "another comment about post 1", "postId": "1" }
+  ]
+}
+```
+
+Parents are included as an object:
+
+```http
 GET /comments?_embed=post
+GET /comments/1?_embed=post
+```
+
+```json
+{
+  "id": "1",
+  "text": "a comment about post 1",
+  "postId": "1",
+  "post": {
+    "id": "1",
+    "title": "a title",
+    "views": 100
+  }
+}
 ```
 
 ### Complex filter with `_where`
