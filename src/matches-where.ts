@@ -79,9 +79,7 @@ export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
       continue
     }
 
-    if (field === undefined) return false
-
-    return false
+    if (field === undefined || field !== value) return false
   }
 
   return true

@@ -8,6 +8,12 @@ import { matchesWhere } from './matches-where.ts'
 await test('matchesWhere', async (t) => {
   const obj: JsonObject = { a: 10, b: 20, c: 'x', nested: { a: 10, b: 20 } }
   const cases: [JsonObject, boolean][] = [
+    [{ a: 10 }, true],
+    [{ a: 11 }, false],
+    [{ c: 'x' }, true],
+    [{ c: 'z' }, false],
+    [{ a: 10, c: 'x' }, true],
+    [{ a: 10, c: 'z' }, false],
     [{ a: { eq: 10 } }, true],
     [{ a: { eq: 11 } }, false],
     [{ c: { ne: 'y' } }, true],
