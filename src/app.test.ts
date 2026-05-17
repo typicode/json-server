@@ -67,6 +67,8 @@ await test('createApp', async (t) => {
   const arr: Test[] = [
     // Static
     { method: 'GET', url: '/', statusCode: 200 },
+    { method: 'GET', url: '/docs', statusCode: 200 },
+    { method: 'GET', url: '/openapi.json', statusCode: 200 },
     { method: 'GET', url: '/test.html', statusCode: 200 },
     { method: 'GET', url: `/${file}`, statusCode: 200 },
 
@@ -126,4 +128,25 @@ await test('createApp', async (t) => {
       )
     })
   }
+})
+
+await test('createApp with swagger disabled', async () => {
+  const noSwaggerPort = await getPort()
+  const noSwaggerDb = new Low<Data>(new Memory<Data>(), {})
+  noSwaggerDb.data = { posts: [{ id: '1', title: 'foo' }] }
+  const noSwaggerApp = createApp(noSwaggerDb, { swagger: false })
+
+  await new Promise<void>((resolve, reject) => {
+    try {
+      const server = noSwaggerApp.listen(noSwaggerPort, () => resolve())
+      test.after(() => server.close())
+    } catch (err) {
+      reject(err)
+    }
+  })
+
+  const docs = await fetch(`http://localhost:${noSwaggerPort}/docs`)
+  const spec = await fetch(`http://localhost:${noSwaggerPort}/openapi.json`)
+  assert.equal(docs.status, 404)
+  assert.equal(spec.status, 404)
 })

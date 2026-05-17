@@ -8,6 +8,7 @@ import { Low } from 'lowdb'
 import { json } from 'milliparsec'
 import sirv from 'sirv'
 
+import { generateOpenAPISpec } from './openapi.js'
 import { Data, isItem, Service } from './service.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -16,6 +17,7 @@ const isProduction = process.env['NODE_ENV'] === 'production'
 export type AppOptions = {
   logger?: boolean
   static?: string[]
+  swagger?: boolean
 }
 
 const eta = new Eta({
@@ -51,9 +53,21 @@ export function createApp(db: Low<Data>, options: AppOptions = {}) {
   // @ts-expect-error expected
   app.use(json())
 
+  const swaggerEnabled = options.swagger !== false
+
   app.get('/', (_req, res) =>
-    res.send(eta.render('index.html', { data: db.data })),
+    res.send(
+      eta.render('index.html', { data: db.data, swagger: swaggerEnabled }),
+    ),
   )
+
+  if (swaggerEnabled) {
+    app.get('/docs', (_req, res) => res.send(eta.render('swagger.html', {})))
+
+    app.get('/openapi.json', (_req, res) => {
+      res.json(generateOpenAPISpec(db.data))
+    })
+  }
 
   app.get('/:name', (req, res, next) => {
     const { name = '' } = req.params

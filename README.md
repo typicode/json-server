@@ -76,6 +76,17 @@ $ curl http://localhost:3000/posts/1
 
 Run `json-server --help` for a list of options
 
+## API documentation (Swagger)
+
+When the server is running, open [http://localhost:3000/docs](http://localhost:3000/docs) for interactive Swagger UI documentation.
+
+The OpenAPI specification is generated dynamically from your `db.json` and updates when resources change:
+
+- `GET /docs` — Swagger UI
+- `GET /openapi.json` — OpenAPI 3.0 spec
+
+Disable with `--no-swagger` on the CLI, or pass `{ swagger: false }` to `createApp`.
+
 ## Sponsors ✨
 
 | Sponsors |
