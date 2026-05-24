@@ -21,6 +21,14 @@ function getKnownOperators(value: unknown): WhereOperator[] {
   return ops
 }
 
+function hasNestedKnownOperator(value: JsonObject): boolean {
+  return Object.values(value).some(
+    (subValue) =>
+      isJSONObject(subValue) &&
+      (getKnownOperators(subValue).length > 0 || hasNestedKnownOperator(subValue)),
+  )
+}
+
 export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
   for (const [key, value] of Object.entries(where)) {
     if (key === 'or') {
@@ -74,6 +82,8 @@ export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
 
       if (isJSONObject(field)) {
         if (!matchesWhere(field, value)) return false
+      } else if (hasNestedKnownOperator(value)) {
+        return false
       }
 
       continue

@@ -26,6 +26,8 @@ await test('matchesWhere', async (t) => {
     [{ or: [{ a: { lt: 0 } }, { b: { gt: 20 } }] }, false],
     [{ nested: { a: { eq: 10 } } }, true],
     [{ nested: { b: { lt: 20 } } }, false],
+    [{ missing: { nested: { eq: 'value' } } }, false],
+    [{ c: { nested: { eq: 'value' } } }, false],
     [{ a: { in: [10, 11] } }, true],
     [{ a: { in: [1, 2] } }, false],
     [{ c: { in: ['x', 'y'] } }, true],
