@@ -136,6 +136,20 @@ await test('createApp', async (t) => {
     const data = await response.json()
     assert.deepEqual(data, [{ id: '1', title: 'foo' }])
   })
+  await t.test('GET /posts?_where=... supports plain equality shorthand', async () => {
+  db.data = {
+    posts: [{ id: '1', title: 'foo' }],
+    comments: [{ id: '1', postId: '1' }],
+    object: { f1: 'foo' },
+  }
+
+  const where = encodeURIComponent(JSON.stringify({ title: 'foo' }))
+  const response = await fetch(`http://localhost:${port}/posts?_where=${where}`)
+
+  assert.equal(response.status, 200)
+  const data = await response.json()
+  assert.deepEqual(data, [{ id: '1', title: 'foo' }])
+})
 
   await t.test('GET /posts?_where=... overrides query params', async () => {
     const where = encodeURIComponent(JSON.stringify({ title: { eq: 'foo' } }))
