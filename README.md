@@ -126,6 +126,9 @@ GET /posts?_page=1&_per_page=10          # Pagination
 GET /posts?_embed=comments               # Include relations
 GET /posts?_where={"or":[...]}           # Complex queries
 ```
+Invalid `_page` or `_per_page` values are normalized to valid ranges.
+
+For example, `_per_page=0` is treated as invalid and normalized instead of returning zero items.
 
 See detailed documentation below for each feature.
 
