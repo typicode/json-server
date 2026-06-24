@@ -51,6 +51,16 @@ await test('read removes $schema and normalizes ids', async () => {
   assert.notEqual(posts[1]?.['id'], '')
 })
 
+await test('read preserves primitive array items', async () => {
+  const adapter = new StubAdapter({
+    roles: ['admin', 'user'],
+  })
+
+  const normalized = await new NormalizedAdapter(adapter).read()
+
+  assert.deepEqual(normalized?.['roles'], ['admin', 'user'])
+})
+
 await test('write always overwrites $schema', async () => {
   const adapter = new StubAdapter(null)
   const normalizedAdapter = new NormalizedAdapter(adapter)

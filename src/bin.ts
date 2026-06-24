@@ -16,6 +16,7 @@ import { NormalizedAdapter } from "./adapters/normalized-adapter.ts";
 import type { RawData } from "./adapters/normalized-adapter.ts";
 import { Observer } from "./adapters/observer.ts";
 import { createApp } from "./app.ts";
+import { formatPrimitiveArrayWarning, primitiveArrayResourceNames } from "./primitive-array-warning.ts";
 import type { Data } from "./service.ts";
 
 function help() {
@@ -138,6 +139,10 @@ const observer = new Observer(new NormalizedAdapter(adapter));
 
 const db = new Low<Data>(observer, {});
 await db.read();
+
+for (const name of primitiveArrayResourceNames(db.data)) {
+  console.log(chalk.yellow(formatPrimitiveArrayWarning(name)));
+}
 
 // Create app
 const app = createApp(db, { logger: false, static: staticArr });
