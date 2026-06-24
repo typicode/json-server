@@ -1,10 +1,10 @@
 import type { Adapter } from 'lowdb'
 
 import { randomId } from '../random-id.ts'
-import type { Data, Item } from '../service.ts'
+import { isItem, type Data, type Item } from '../service.ts'
 
 export const DEFAULT_SCHEMA_PATH = './node_modules/json-server/schema.json'
-export type RawData = Record<string, Item[] | Item | string | undefined> & {
+export type RawData = Record<string, Item[] | Item | string | unknown[] | undefined> & {
   $schema?: string
 }
 
@@ -27,6 +27,10 @@ export class NormalizedAdapter implements Adapter<Data> {
     for (const value of Object.values(data)) {
       if (Array.isArray(value)) {
         for (const item of value) {
+          if (!isItem(item)) {
+            continue
+          }
+
           if (typeof item['id'] === 'number') {
             item['id'] = item['id'].toString()
           }
