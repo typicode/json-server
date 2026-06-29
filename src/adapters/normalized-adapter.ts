@@ -27,6 +27,10 @@ export class NormalizedAdapter implements Adapter<Data> {
     for (const value of Object.values(data)) {
       if (Array.isArray(value)) {
         for (const item of value) {
+          // Bug #1709: primitive array items (strings, numbers, booleans) are
+          // not objects — skip them to avoid "Cannot create property 'id' on ..."
+          if (item === null || typeof item !== 'object') continue
+
           if (typeof item['id'] === 'number') {
             item['id'] = item['id'].toString()
           }

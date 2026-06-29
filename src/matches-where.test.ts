@@ -32,9 +32,13 @@ await test('matchesWhere', async (t) => {
     [{ c: { in: ['y', 'z'] } }, false],
     [{ a: { in: [10, 11], gt: 9 } }, true],
     [{ a: { in: [10, 11], gt: 10 } }, false],
-    [{ a: { foo: 10 } }, true],
+    // { a: { foo: 10 } } — 'foo' is not a known operator; 'a' is a number (not
+    // a nested object), so the nested predicate cannot match → false (#1731 fix)
+    [{ a: { foo: 10 } }, false],
+    // 'eq' IS a known operator, so this is evaluated correctly
     [{ a: { foo: 10, eq: 10 } }, true],
-    [{ missing: { foo: 1 } }, true],
+    // missing field with unknown-op object → fail-closed (#1731 fix)
+    [{ missing: { foo: 1 } }, false],
     // contains
     [{ c: { contains: 'x' } }, true],
     [{ c: { contains: 'X' } }, true],
@@ -53,6 +57,17 @@ await test('matchesWhere', async (t) => {
     [{ c: { endsWith: 'z' } }, false],
     [{ a: { endsWith: '1' } }, false],
     [{ c: { endsWith: 1 } }, false],
+
+    // Bug #1757: plain primitive value acts as equality (like query param title=foo)
+    [{ a: 10 }, true],
+    [{ a: 99 }, false],
+    [{ c: 'x' }, true],
+    [{ c: 'z' }, false],
+    [{ missing: 'anything' }, false],
+
+    // Bug #1731: nested object on missing field must NOT match (fail-closed)
+    [{ missing: { nested: { eq: 'zzz' } } }, false],
+    [{ a: { nonExistentNested: { eq: 'zzz' } } }, false],
   ]
 
   for (const [query, expected] of cases) {

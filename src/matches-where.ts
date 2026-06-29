@@ -72,16 +72,17 @@ export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
         continue
       }
 
-      if (isJSONObject(field)) {
-        if (!matchesWhere(field, value)) return false
-      }
-
+      // Bug #1731: if the field is missing or not an object, the nested
+      // predicate must FAIL, not silently pass.
+      if (!isJSONObject(field)) return false
+      if (!matchesWhere(field, value)) return false
       continue
     }
 
+    // Bug #1757: plain primitive value in _where acts as equality filter,
+    // matching how query params behave (title=foo == { title: "foo" }).
     if (field === undefined) return false
-
-    return false
+    if (field !== value) return false
   }
 
   return true
