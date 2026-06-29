@@ -3,9 +3,9 @@ import test from 'node:test'
 
 import type { Adapter } from 'lowdb'
 
-import { DEFAULT_SCHEMA_PATH, NormalizedAdapter } from './adapters/normalized-adapter.ts'
-import type { RawData } from './adapters/normalized-adapter.ts'
-import type { Data } from './service.ts'
+import { DEFAULT_SCHEMA_PATH, NormalizedAdapter } from './normalized-adapter.ts'
+import type { RawData } from './normalized-adapter.ts'
+import type { Data } from '../service.ts'
 
 class StubAdapter implements Adapter<RawData> {
   #data: RawData | null
@@ -49,6 +49,21 @@ await test('read removes $schema and normalizes ids', async () => {
   assert.equal(posts[0]?.['id'], '1')
   assert.equal(typeof posts[1]?.['id'], 'string')
   assert.notEqual(posts[1]?.['id'], '')
+})
+
+// Bug #1709: db with arrays of primitive values (strings, numbers) must not throw
+// "TypeError: Cannot create property 'id' on string '...'"
+await test('read tolerates arrays of primitive values', async () => {
+  const adapter = new StubAdapter({
+    roles: ['role-1', 'role-2'] as unknown as any,
+    counts: [1, 2, 3] as unknown as any,
+  })
+
+  const normalized = await new NormalizedAdapter(adapter).read()
+  assert.notEqual(normalized, null)
+  // Primitives are passed through as-is (no id injection attempted)
+  assert.deepEqual(normalized!['roles'], ['role-1', 'role-2'])
+  assert.deepEqual(normalized!['counts'], [1, 2, 3])
 })
 
 await test('write always overwrites $schema', async () => {
