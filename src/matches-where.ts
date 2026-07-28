@@ -72,6 +72,13 @@ export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
         continue
       }
 
+      // An array matches if at least one of its items matches
+      if (Array.isArray(field)) {
+        const matched = field.some((item) => isJSONObject(item) && matchesWhere(item, value))
+        if (!matched) return false
+        continue
+      }
+
       if (isJSONObject(field)) {
         if (!matchesWhere(field, value)) return false
       }
