@@ -6,7 +6,17 @@ import type { JsonObject } from 'type-fest'
 import { matchesWhere } from './matches-where.ts'
 
 await test('matchesWhere', async (t) => {
-  const obj: JsonObject = { a: 10, b: 20, c: 'x', nested: { a: 10, b: 20 } }
+  const obj: JsonObject = {
+    a: 10,
+    b: 20,
+    c: 'x',
+    nested: { a: 10, b: 20 },
+    items: [
+      { id: 1, name: 'foo' },
+      { id: 2, name: 'bar' },
+    ],
+    tags: ['red', 'blue'],
+  }
   const cases: [JsonObject, boolean][] = [
     [{ a: { eq: 10 } }, true],
     [{ a: { eq: 11 } }, false],
@@ -53,6 +63,21 @@ await test('matchesWhere', async (t) => {
     [{ c: { endsWith: 'z' } }, false],
     [{ a: { endsWith: '1' } }, false],
     [{ c: { endsWith: 1 } }, false],
+    // Array fields match when at least one item matches
+    [{ items: { id: { eq: 1 } } }, true],
+    [{ items: { id: { eq: 2 } } }, true],
+    [{ items: { id: { eq: 10 } } }, false],
+    [{ items: { id: { gt: 1 } } }, true],
+    [{ items: { id: { gt: 2 } } }, false],
+    [{ items: { name: { contains: 'BA' } } }, true],
+    [{ items: { name: { contains: 'baz' } } }, false],
+    // All conditions must be met by the same item
+    [{ items: { id: { eq: 1 }, name: { eq: 'foo' } } }, true],
+    [{ items: { id: { eq: 1 }, name: { eq: 'bar' } } }, false],
+    // Arrays of primitives have no properties to match
+    [{ tags: { id: { eq: 1 } } }, false],
+    [{ or: [{ items: { id: { eq: 10 } } }, { a: { eq: 10 } }] }, true],
+    [{ or: [{ items: { id: { eq: 10 } } }, { a: { eq: 11 } }] }, false],
   ]
 
   for (const [query, expected] of cases) {

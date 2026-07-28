@@ -169,6 +169,20 @@ await test('createApp', async (t) => {
     assert.deepEqual(data, { error: 'Body must be a JSON object' })
   })
 
+  await t.test('GET /businesses?categories.id=... filters on array fields', async () => {
+    const business1 = { id: '1', categories: [{ id: 1 }, { id: 2 }] }
+    const business2 = { id: '2', categories: [{ id: 3 }] }
+    db.data = { businesses: [business1, business2] }
+
+    const matching = await fetch(`http://localhost:${port}/businesses?categories.id=2`)
+    assert.equal(matching.status, 200)
+    assert.deepEqual(await matching.json(), [business1])
+
+    const empty = await fetch(`http://localhost:${port}/businesses?categories.id=10`)
+    assert.equal(empty.status, 200)
+    assert.deepEqual(await empty.json(), [])
+  })
+
   await t.test('PUT /posts/1 with null body returns 400', async () => {
     const response = await fetch(`http://localhost:${port}/posts/1`, {
       method: 'PUT',
