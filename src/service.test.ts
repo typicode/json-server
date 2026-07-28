@@ -173,6 +173,65 @@ await test('destroy', async (t) => {
     assert.equal(db.data[COMMENTS].length, 0)
   })
 
+  await t.test('keeps items whose foreign key was already null', async () => {
+    db.data = {
+      posts: [post1, post2],
+      comments: [
+        { id: '1', postId: post1.id },
+        { id: '2', postId: null },
+        { id: '3', postId: post2.id },
+      ],
+    }
+
+    await service.destroyById(POSTS, post1.id, [COMMENTS])
+
+    assert.deepEqual(db.data[COMMENTS], [
+      { id: '2', postId: null },
+      { id: '3', postId: post2.id },
+    ])
+  })
+
+  await t.test('deletes dependents of dependents', async () => {
+    const remaining = {
+      villages: [{ id: '2' }],
+      houses: [{ id: '2', villageId: '2' }],
+      citizens: [{ id: '2', houseId: '2' }],
+    }
+
+    for (const dependents of [
+      ['houses', 'citizens'],
+      ['citizens', 'houses'],
+    ]) {
+      db.data = {
+        villages: [{ id: '1' }, { id: '2' }],
+        houses: [
+          { id: '1', villageId: '1' },
+          { id: '2', villageId: '2' },
+        ],
+        citizens: [
+          { id: '1', houseId: '1' },
+          { id: '2', houseId: '2' },
+        ],
+      }
+
+      await service.destroyById('villages', '1', dependents)
+
+      assert.deepEqual(db.data, remaining, `dependents listed as ${dependents.join(',')}`)
+    }
+  })
+
+  await t.test('nullifies foreign keys pointing at deleted dependents', async () => {
+    db.data = {
+      villages: [{ id: '1' }],
+      houses: [{ id: '1', villageId: '1' }],
+      pets: [{ id: '1', houseId: '1' }],
+    }
+
+    await service.destroyById('villages', '1', ['houses'])
+
+    assert.deepEqual(db.data['pets'], [{ id: '1', houseId: null }])
+  })
+
   await t.test('ignores unknown resources', async () => {
     assert.equal(await service.destroyById(UNKNOWN_RESOURCE, post1.id), undefined)
     assert.equal(await service.destroyById(POSTS, UNKNOWN_ID), undefined)
