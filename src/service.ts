@@ -46,17 +46,36 @@ function embed(db: Low<Data>, name: string, item: Item, related: string): Item {
   return { ...item, [related]: relatedItems }
 }
 
-function nullifyForeignKey(db: Low<Data>, name: string, id: string) {
-  const foreignKey = `${inflection.singularize(name)}Id`
+function foreignKeyOf(name: string): string {
+  return `${inflection.singularize(name)}Id`
+}
 
+// Ids removed from each resource, so that a dependent can be matched against
+// every resource deleted so far and not just against the requested one
+type DeletedIds = Map<string, Set<string>>
+
+function isDependentOf(item: Item, deleted: DeletedIds): boolean {
+  for (const [name, ids] of deleted) {
+    const value = item[foreignKeyOf(name)]
+    if (typeof value === 'string' && ids.has(value)) return true
+  }
+
+  return false
+}
+
+function nullifyForeignKeys(db: Low<Data>, deleted: DeletedIds) {
   Object.entries(db.data).forEach(([key, items]) => {
-    // Skip
-    if (key === name) return
+    if (!Array.isArray(items)) return
 
-    // Nullify
-    if (Array.isArray(items)) {
+    for (const [name, ids] of deleted) {
+      // Skip
+      if (key === name) continue
+
+      // Nullify
+      const foreignKey = foreignKeyOf(name)
       items.forEach((item) => {
-        if (item[foreignKey] === id) {
+        const value = item[foreignKey]
+        if (typeof value === 'string' && ids.has(value)) {
           item[foreignKey] = null
         }
       })
@@ -64,18 +83,34 @@ function nullifyForeignKey(db: Low<Data>, name: string, id: string) {
   })
 }
 
-function deleteDependents(db: Low<Data>, name: string, dependents: string[]) {
-  const foreignKey = `${inflection.singularize(name)}Id`
+function deleteDependents(db: Low<Data>, name: string, deleted: DeletedIds, dependents: string[]) {
+  // A dependent can itself be the parent of another one, so keep going until
+  // nothing new is deleted. A chain can be at most as deep as the number of
+  // dependents, and this makes the result independent of the order they are
+  // listed in.
+  for (let pass = 0; pass < dependents.length; pass++) {
+    let deletedAny = false
 
-  Object.entries(db.data).forEach(([key, items]) => {
-    // Skip
-    if (key === name || !dependents.includes(key)) return
+    for (const dependent of dependents) {
+      const items = db.data[dependent]
 
-    // Delete if foreign key is null
-    if (Array.isArray(items)) {
-      db.data[key] = items.filter((item) => item[foreignKey] !== null)
+      // Skip
+      if (dependent === name || !Array.isArray(items)) continue
+
+      // Delete items related to an already deleted one
+      const ids = deleted.get(dependent) ?? new Set<string>()
+      db.data[dependent] = items.filter((item) => {
+        if (!isDependentOf(item, deleted)) return true
+
+        deletedAny = true
+        if (typeof item['id'] === 'string') ids.add(item['id'])
+        return false
+      })
+      deleted.set(dependent, ids)
     }
-  })
+
+    if (!deletedAny) break
+  }
 }
 
 export class Service {
@@ -212,9 +247,9 @@ export class Service {
     const index = items.indexOf(item)
     items.splice(index, 1)
 
-    nullifyForeignKey(this.#db, name, id)
-    const dependents = ensureArray(dependent)
-    deleteDependents(this.#db, name, dependents)
+    const deleted: DeletedIds = new Map([[name, new Set([id])]])
+    deleteDependents(this.#db, name, deleted, ensureArray(dependent))
+    nullifyForeignKeys(this.#db, deleted)
 
     await this.#db.write()
     return item
