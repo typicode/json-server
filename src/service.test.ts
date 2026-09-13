@@ -178,3 +178,75 @@ await test('destroy', async (t) => {
     assert.equal(await service.destroyById(POSTS, UNKNOWN_ID), undefined)
   })
 })
+
+// Resources with a custom id field (per-resource mapping)
+const customIdData: Data = {
+  posts: [
+    { post_id: 'p1', title: 'a' },
+    { post_id: 'p2', title: 'b' },
+  ],
+  comments: [{ id: 'c1', text: 'hi', post_id: 'p1' }],
+}
+const customIdService = new Service(new Low(new Memory<Data>(), customIdData), {
+  posts: 'post_id',
+})
+
+await test('custom id field (per-resource mapping)', async (t) => {
+  await t.test('findById uses the custom id field', () => {
+    const item = customIdService.findById('posts', 'p1', {})
+    assert.equal(item?.['post_id'], 'p1')
+    assert.equal(item?.['title'], 'a')
+
+    // Resource without a mapping keeps using "id"
+    const comment = customIdService.findById('comments', 'c1', {})
+    assert.equal(comment?.['id'], 'c1')
+  })
+
+  await t.test('create generates a custom id field', async () => {
+    const res = await customIdService.create('posts', { title: 'c' })
+    assert.equal(typeof res?.['post_id'], 'string')
+    assert.equal(res?.['id'], undefined, 'should not create a default "id"')
+  })
+
+  await t.test('updateById keeps the custom id field', async () => {
+    const res = await customIdService.updateById('posts', 'p2', {
+      post_id: 'xxx',
+      title: 'updated',
+    })
+    assert.equal(res?.['post_id'], 'p2', 'id should not change')
+    assert.equal(res?.['title'], 'updated')
+  })
+
+  await t.test('patchById keeps the custom id field', async () => {
+    const res = await customIdService.patchById('posts', 'p2', { title: 'patched' })
+    assert.equal(res?.['post_id'], 'p2')
+    assert.equal(res?.['title'], 'patched')
+  })
+
+  await t.test('destroyById uses the custom id field', async () => {
+    const prevLength = (customIdService.find('posts', { where: {} }) as Item[]).length
+    await customIdService.destroyById('posts', 'p2')
+    assert.equal((customIdService.find('posts', { where: {} }) as Item[]).length, prevLength - 1)
+    assert.equal(customIdService.findById('posts', 'p2', {}), undefined)
+  })
+})
+
+// Global custom id field
+const globalIdService = new Service(
+  new Low(new Memory<Data>(), {
+    posts: [{ post_id: '1', title: 'a' }],
+  }),
+  'post_id',
+)
+
+await test('custom id field (global)', async (t) => {
+  await t.test('findById uses the custom id field', () => {
+    assert.equal(globalIdService.findById('posts', '1', {})?.['title'], 'a')
+  })
+
+  await t.test('create generates the custom id field', async () => {
+    const res = await globalIdService.create('posts', { title: 'b' })
+    assert.equal(typeof res?.['post_id'], 'string')
+    assert.equal(res?.['id'], undefined)
+  })
+})

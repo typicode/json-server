@@ -9,7 +9,7 @@ import { json } from 'milliparsec'
 import sirv from 'sirv'
 
 import { parseWhere } from './parse-where.ts'
-import type { Data } from './service.ts'
+import type { Data, IdOption } from './service.ts'
 import { isItem, Service } from './service.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -18,6 +18,7 @@ const isProduction = process.env['NODE_ENV'] === 'production'
 export type AppOptions = {
   logger?: boolean
   static?: string[]
+  id?: IdOption
 }
 
 const eta = new Eta({
@@ -93,7 +94,7 @@ function withIdAndBody(
 
 export function createApp(db: Low<Data>, options: AppOptions = {}) {
   // Create service
-  const service = new Service(db)
+  const service = new Service(db, options.id)
 
   // Create app
   const app = new App()

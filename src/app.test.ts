@@ -1,4 +1,4 @@
-   import assert from 'node:assert/strict'
+import assert from 'node:assert/strict'
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import test from 'node:test'
@@ -139,9 +139,7 @@ await test('createApp', async (t) => {
 
   await t.test('GET /posts?_where=... overrides query params', async () => {
     const where = encodeURIComponent(JSON.stringify({ title: { eq: 'foo' } }))
-    const response = await fetch(
-      `http://localhost:${port}/posts?title:eq=bar&_where=${where}`,
-    )
+    const response = await fetch(`http://localhost:${port}/posts?title:eq=bar&_where=${where}`)
     assert.equal(response.status, 200)
     const data = await response.json()
     assert.deepEqual(data, [{ id: '1', title: 'foo' }])
@@ -178,5 +176,60 @@ await test('createApp', async (t) => {
     assert.equal(response.status, 400)
     const data = await response.json()
     assert.deepEqual(data, { error: 'Body must be a JSON object' })
+  })
+})
+
+// App with a custom id field (per-resource mapping)
+const customIdPort = await getPort()
+const customIdDb = new Low<Data>(new Memory<Data>(), {})
+customIdDb.data = {
+  posts: [{ post_id: '1', title: 'foo' }],
+  comments: [{ id: '1', text: 'hi', post_id: '1' }],
+}
+const customIdApp = createApp(customIdDb, { id: { posts: 'post_id' } })
+
+await new Promise<void>((resolve, reject) => {
+  try {
+    const server = customIdApp.listen(customIdPort, () => resolve())
+    test.after(() => server.close())
+  } catch (err) {
+    reject(err)
+  }
+})
+
+await test('createApp with custom id field', async (t) => {
+  await t.test('GET /posts/1 finds by post_id', async () => {
+    const response = await fetch(`http://localhost:${customIdPort}/posts/1`)
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.deepEqual(data, { post_id: '1', title: 'foo' })
+  })
+
+  await t.test('GET /comments/1 still uses id', async () => {
+    const response = await fetch(`http://localhost:${customIdPort}/comments/1`)
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.deepEqual(data, { id: '1', text: 'hi', post_id: '1' })
+  })
+
+  await t.test('POST /posts generates post_id', async () => {
+    const response = await fetch(`http://localhost:${customIdPort}/posts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: 'bar' }),
+    })
+    assert.equal(response.status, 201)
+    const data = await response.json()
+    assert.equal(typeof data['post_id'], 'string')
+    assert.equal(data['id'], undefined)
+  })
+
+  await t.test('DELETE /posts/1 deletes by post_id', async () => {
+    const response = await fetch(`http://localhost:${customIdPort}/posts/1`, {
+      method: 'DELETE',
+    })
+    assert.equal(response.status, 200)
+    const notFound = await fetch(`http://localhost:${customIdPort}/posts/1`)
+    assert.equal(notFound.status, 404)
   })
 })

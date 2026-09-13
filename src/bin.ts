@@ -16,7 +16,7 @@ import { NormalizedAdapter } from "./adapters/normalized-adapter.ts";
 import type { RawData } from "./adapters/normalized-adapter.ts";
 import { Observer } from "./adapters/observer.ts";
 import { createApp } from "./app.ts";
-import type { Data } from "./service.ts";
+import type { Data, IdOption } from "./service.ts";
 
 function help() {
   console.log(`Usage: json-server [options] <file>
@@ -25,6 +25,8 @@ Options:
   -p, --port <port>  Port (default: 3000)
   -h, --host <host>  Host (default: localhost)
   -s, --static <dir> Static files directory (multiple allowed)
+  --id <field|file>  Id field name, or a JSON file mapping resource names to
+                     id field names (default: id)
   --help             Show this message
   --version          Show version number
 `);
@@ -36,6 +38,7 @@ function args(): {
   port: number;
   host: string;
   static: string[];
+  id: IdOption;
 } {
   try {
     const { values, positionals } = parseArgs({
@@ -55,6 +58,9 @@ function args(): {
           short: "s",
           multiple: true,
           default: [],
+        },
+        id: {
+          type: "string",
         },
         help: {
           type: "boolean",
@@ -94,12 +100,24 @@ function args(): {
       process.exit();
     }
 
+    // Resolve --id: a field name, or a JSON file mapping resource names to
+    // id field names.
+    let id: IdOption = "id";
+    if (typeof values.id === "string" && values.id !== "") {
+      if (existsSync(values.id)) {
+        id = JSON.parse(readFileSync(values.id, "utf-8")) as Record<string, string>;
+      } else {
+        id = values.id;
+      }
+    }
+
     // App args and options
     return {
       file: positionals[0] ?? "",
       port: parseInt(values.port as string),
       host: values.host as string,
       static: values.static as string[],
+      id,
     };
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === "ERR_PARSE_ARGS_UNKNOWN_OPTION") {
@@ -112,7 +130,7 @@ function args(): {
   }
 }
 
-const { file, port, host, static: staticArr } = args();
+const { file, port, host, static: staticArr, id } = args();
 
 if (!existsSync(file)) {
   console.log(chalk.red(`File ${file} not found`));
@@ -134,13 +152,13 @@ if (extname(file) === ".json5") {
 } else {
   adapter = new JSONFile<RawData>(file);
 }
-const observer = new Observer(new NormalizedAdapter(adapter));
+const observer = new Observer(new NormalizedAdapter(adapter, id));
 
 const db = new Low<Data>(observer, {});
 await db.read();
 
 // Create app
-const app = createApp(db, { logger: false, static: staticArr });
+const app = createApp(db, { logger: false, static: staticArr, id });
 
 function logRoutes(data: Data) {
   console.log(chalk.bold("Endpoints:"));

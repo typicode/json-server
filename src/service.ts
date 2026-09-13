@@ -10,6 +10,14 @@ export type Item = Record<string, unknown>
 
 export type Data = Record<string, Item[] | Item>
 
+/**
+ * The name of the field used as the id of an item.
+ *
+ * Can be a string, in which case every resource uses the same id field, or an
+ * object mapping resource names to the id field to use for that resource.
+ */
+export type IdOption = string | Record<string, string>
+
 export function isItem(obj: unknown): obj is Item {
   return typeof obj === 'object' && obj !== null && !Array.isArray(obj)
 }
@@ -80,9 +88,25 @@ function deleteDependents(db: Low<Data>, name: string, dependents: string[]) {
 
 export class Service {
   #db: Low<Data>
+  #id: string
+  #ids: Record<string, string>
 
-  constructor(db: Low<Data>) {
+  constructor(db: Low<Data>, id: IdOption = 'id') {
     this.#db = db
+    if (typeof id === 'string') {
+      this.#id = id
+      this.#ids = {}
+    } else {
+      this.#id = 'id'
+      this.#ids = id
+    }
+  }
+
+  /**
+   * The name of the id field for the given resource.
+   */
+  #idFor(name: string): string {
+    return this.#ids[name] ?? this.#id
   }
 
   #get(name: string): Item[] | Item | undefined {
@@ -95,9 +119,10 @@ export class Service {
 
   findById(name: string, id: string, query: { _embed?: string[] | string }): Item | undefined {
     const value = this.#get(name)
+    const idField = this.#idFor(name)
 
     if (Array.isArray(value)) {
-      let item = value.find((item) => item['id'] === id)
+      let item = value.find((item) => item[idField] === id)
       ensureArray(query._embed).forEach((related) => {
         if (item !== undefined) item = embed(this.#db, name, item, related)
       })
@@ -146,7 +171,7 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined || !Array.isArray(items)) return
 
-    const item = { ...data, id: randomId() }
+    const item = { ...data, [this.#idFor(name)]: randomId() }
     items.push(item)
 
     await this.#db.write()
@@ -172,10 +197,11 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined || !Array.isArray(items)) return
 
-    const item = items.find((item) => item['id'] === id)
+    const idField = this.#idFor(name)
+    const item = items.find((item) => item[idField] === id)
     if (!item) return
 
-    const nextItem = isPatch ? { ...item, ...body, id } : { ...body, id }
+    const nextItem = isPatch ? { ...item, ...body, [idField]: id } : { ...body, [idField]: id }
     const index = items.indexOf(item)
     items.splice(index, 1, nextItem)
 
@@ -207,7 +233,7 @@ export class Service {
     const items = this.#get(name)
     if (items === undefined || !Array.isArray(items)) return
 
-    const item = items.find((item) => item['id'] === id)
+    const item = items.find((item) => item[this.#idFor(name)] === id)
     if (item === undefined) return
     const index = items.indexOf(item)
     items.splice(index, 1)

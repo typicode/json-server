@@ -255,9 +255,43 @@ Static files are served with standard MIME types and can include HTML, CSS, Java
 
 If you are upgrading from json-server v0.x, note these behavioral changes:
 
-- **ID handling:** `id` is always a string and will be auto-generated if not provided
+- **ID handling:** `id` is always a string and will be auto-generated if not provided. Use the `--id` option to use a different field name (see below)
 - **Pagination:** Use `_per_page` with `_page` instead of the deprecated `_limit` parameter
 - **Relationships:** Use `_embed` instead of `_expand` for including related resources
 - **Request delays:** Use browser DevTools (Network tab > throttling) instead of the removed `--delay` CLI option
 
 > **New to json-server?** These notes are for users migrating from v0. If this is your first time using json-server, you can ignore this section.
+
+## Custom ID field
+
+By default, json-server uses the `id` field as the unique identifier of each item. If your data uses a different field, you can tell json-server which field to use with the `--id` option:
+
+```bash
+json-server db.json --id post_id
+```
+
+For resources with different id fields, pass a JSON file mapping resource names to their id field:
+
+```json
+// ids.json
+{
+  "posts": "post_id",
+  "comments": "comment_id"
+}
+```
+
+```bash
+json-server db.json --id ids.json
+```
+
+The same option is available through the JavaScript API:
+
+```js
+import { createApp } from 'json-server'
+import { Low } from 'lowdb'
+import { Memory } from 'lowdb/node'
+
+const db = new Low(new Memory(), {})
+await db.read()
+const app = createApp(db, { id: { posts: 'post_id' } })
+```
