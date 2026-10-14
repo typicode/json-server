@@ -147,6 +147,20 @@ await test('createApp', async (t) => {
     assert.deepEqual(data, [{ id: '1', title: 'foo' }])
   })
 
+  await t.test('GET /posts?_where=... nested filter fails closed', async () => {
+    db.data = {
+      posts: [
+        { id: '1', title: 'foo', author: { name: 'alice' } },
+        { id: '2', title: 'bar' },
+      ],
+    }
+    const where = encodeURIComponent(JSON.stringify({ author: { name: { lt: 'm' } } }))
+    const response = await fetch(`http://localhost:${port}/posts?_where=${where}`)
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.deepEqual(data, [{ id: '1', title: 'foo', author: { name: 'alice' } }])
+  })
+
   await t.test('POST /posts with array body returns 400', async () => {
     const response = await fetch(`http://localhost:${port}/posts`, {
       method: 'POST',

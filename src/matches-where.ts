@@ -72,9 +72,8 @@ export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
         continue
       }
 
-      if (isJSONObject(field)) {
-        if (!matchesWhere(field, value)) return false
-      }
+      if (!isJSONObject(field)) return false
+      if (!matchesWhere(field, value)) return false
 
       continue
     }

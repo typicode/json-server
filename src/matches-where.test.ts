@@ -32,9 +32,11 @@ await test('matchesWhere', async (t) => {
     [{ c: { in: ['y', 'z'] } }, false],
     [{ a: { in: [10, 11], gt: 9 } }, true],
     [{ a: { in: [10, 11], gt: 10 } }, false],
-    [{ a: { foo: 10 } }, true],
+    [{ a: { foo: 10 } }, false],
+    [{ c: { foo: 10 } }, false],
     [{ a: { foo: 10, eq: 10 } }, true],
-    [{ missing: { foo: 1 } }, true],
+    [{ missing: { foo: 1 } }, false],
+    [{ nested: { missing: { foo: 1 } } }, false],
     // contains
     [{ c: { contains: 'x' } }, true],
     [{ c: { contains: 'X' } }, true],
