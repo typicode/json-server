@@ -86,7 +86,8 @@ export class Service {
   }
 
   #get(name: string): Item[] | Item | undefined {
-    return this.#db.data[name]
+    // Only own keys are resources: `constructor`, `toString`, etc. are inherited
+    return this.has(name) ? this.#db.data[name] : undefined
   }
 
   has(name: string): boolean {

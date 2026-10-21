@@ -123,6 +123,20 @@ await test('createApp', async (t) => {
     })
   }
 
+  await t.test('names inherited from Object.prototype are not resources', async () => {
+    for (const name of ['constructor', 'toString', 'hasOwnProperty']) {
+      for (const method of ['GET', 'PUT', 'PATCH', 'DELETE'] as const) {
+        const response = await fetch(`http://localhost:${port}/${name}`, {
+          method,
+          headers: { 'content-type': 'application/json' },
+          body: method === 'GET' || method === 'DELETE' ? undefined : '{"a":1}',
+        })
+        assert.equal(response.status, 404, `${method} /${name}`)
+      }
+      assert.equal(Object.hasOwn(db.data, name), false, `db.data.${name} was created`)
+    }
+  })
+
   await t.test('GET /posts?_where=... uses JSON query', async () => {
     // Reset data since previous tests may have modified it
     db.data = {
