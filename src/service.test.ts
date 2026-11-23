@@ -173,6 +173,23 @@ await test('destroy', async (t) => {
     assert.equal(db.data[COMMENTS].length, 0)
   })
 
+  await t.test('keeps records whose foreign key was already null', async () => {
+    db.data = {
+      posts: [{ id: '1' }, { id: '2' }],
+      comments: [
+        { id: 'a', postId: '1' },
+        { id: 'b', postId: '2' },
+        { id: 'c', postId: null },
+      ],
+    }
+    await service.destroyById('posts', '1', ['comments'])
+    assert.deepEqual(db.data['posts'], [{ id: '2' }])
+    assert.deepEqual(db.data['comments'], [
+      { id: 'b', postId: '2' },
+      { id: 'c', postId: null },
+    ])
+  })
+
   await t.test('ignores unknown resources', async () => {
     assert.equal(await service.destroyById(UNKNOWN_RESOURCE, post1.id), undefined)
     assert.equal(await service.destroyById(POSTS, UNKNOWN_ID), undefined)

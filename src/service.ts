@@ -64,16 +64,16 @@ function nullifyForeignKey(db: Low<Data>, name: string, id: string) {
   })
 }
 
-function deleteDependents(db: Low<Data>, name: string, dependents: string[]) {
+function deleteDependents(db: Low<Data>, name: string, id: string, dependents: string[]) {
   const foreignKey = `${inflection.singularize(name)}Id`
 
   Object.entries(db.data).forEach(([key, items]) => {
     // Skip
     if (key === name || !dependents.includes(key)) return
 
-    // Delete if foreign key is null
+    // Delete only the items that reference the deleted item
     if (Array.isArray(items)) {
-      db.data[key] = items.filter((item) => item[foreignKey] !== null)
+      db.data[key] = items.filter((item) => item[foreignKey] !== id)
     }
   })
 }
@@ -212,9 +212,9 @@ export class Service {
     const index = items.indexOf(item)
     items.splice(index, 1)
 
-    nullifyForeignKey(this.#db, name, id)
     const dependents = ensureArray(dependent)
-    deleteDependents(this.#db, name, dependents)
+    deleteDependents(this.#db, name, id, dependents)
+    nullifyForeignKey(this.#db, name, id)
 
     await this.#db.write()
     return item
