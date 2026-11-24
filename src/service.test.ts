@@ -57,6 +57,8 @@ beforeEach(() => {
 })
 
 await test('findById', () => {
+  assert.deepEqual(service.findById(POSTS, '1'), db.data?.[POSTS]?.[0])
+
   const cases: [[string, string, { _embed?: string[] | string }], unknown][] = [
     [[POSTS, '1', {}], db.data?.[POSTS]?.[0]],
     [[POSTS, UNKNOWN_ID, {}], undefined],
@@ -88,6 +90,18 @@ await test('find', async (t) => {
           pages: 2,
           items: 3,
           data: [post3],
+        },
+      ],
+      [
+        { where: {}, perPage: 2 },
+        {
+          first: 1,
+          prev: null,
+          next: 2,
+          last: 2,
+          pages: 2,
+          items: 3,
+          data: [post1, post2],
         },
       ],
     ]

@@ -93,12 +93,12 @@ export class Service {
     return Object.prototype.hasOwnProperty.call(this.#db?.data, name)
   }
 
-  findById(name: string, id: string, query: { _embed?: string[] | string }): Item | undefined {
+  findById(name: string, id: string, query: { _embed?: string[] | string } = {}): Item | undefined {
     const value = this.#get(name)
 
     if (Array.isArray(value)) {
       let item = value.find((item) => item['id'] === id)
-      ensureArray(query._embed).forEach((related) => {
+      ensureArray(query?._embed).forEach((related) => {
         if (item !== undefined) item = embed(this.#db, name, item, related)
       })
       return item
@@ -135,8 +135,8 @@ export class Service {
       results = sortOn(results, opts.sort.split(','))
     }
 
-    if (opts.page !== undefined) {
-      return paginate(results, opts.page, opts.perPage ?? 10)
+    if (opts.page !== undefined || opts.perPage !== undefined) {
+      return paginate(results, opts.page ?? 1, opts.perPage ?? 10)
     }
 
     return results
