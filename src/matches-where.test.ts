@@ -6,7 +6,7 @@ import type { JsonObject } from 'type-fest'
 import { matchesWhere } from './matches-where.ts'
 
 await test('matchesWhere', async (t) => {
-  const obj: JsonObject = { a: 10, b: 20, c: 'x', nested: { a: 10, b: 20 } }
+  const obj: JsonObject = { id: '1', a: 10, b: 20, c: 'x', nested: { a: 10, b: 20 } }
   const cases: [JsonObject, boolean][] = [
     [{ a: { eq: 10 } }, true],
     [{ a: { eq: 11 } }, false],
@@ -53,6 +53,14 @@ await test('matchesWhere', async (t) => {
     [{ c: { endsWith: 'z' } }, false],
     [{ a: { endsWith: '1' } }, false],
     [{ c: { endsWith: 1 } }, false],
+    // string/number equality
+    [{ id: { eq: 1 } }, true],
+    [{ id: { eq: '1' } }, true],
+    [{ id: { eq: 2 } }, false],
+    [{ id: { ne: 1 } }, false],
+    [{ id: { ne: 2 } }, true],
+    [{ id: { in: [1, 3] } }, true],
+    [{ id: { in: [2, 3] } }, false],
   ]
 
   for (const [query, expected] of cases) {
