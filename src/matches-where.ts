@@ -4,6 +4,17 @@ import { WHERE_OPERATORS, type WhereOperator } from './where-operators.ts'
 
 type OperatorObject = Partial<Record<WhereOperator, unknown>>
 
+function isEqual(a: unknown, b: unknown): boolean {
+  if (a === b) return true
+  if (typeof a === 'string' && typeof b === 'number') {
+    return a === String(b)
+  }
+  if (typeof a === 'number' && typeof b === 'string') {
+    return String(a) === b
+  }
+  return false
+}
+
 function isJSONObject(value: unknown): value is JsonObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
@@ -51,11 +62,11 @@ export function matchesWhere(obj: JsonObject, where: JsonObject): boolean {
         if (knownOps.includes('lte') && !((field as any) <= (op.lte as any))) return false
         if (knownOps.includes('gt') && !((field as any) > (op.gt as any))) return false
         if (knownOps.includes('gte') && !((field as any) >= (op.gte as any))) return false
-        if (knownOps.includes('eq') && !((field as any) === (op.eq as any))) return false
-        if (knownOps.includes('ne') && !((field as any) !== (op.ne as any))) return false
+        if (knownOps.includes('eq') && !isEqual(field, op.eq)) return false
+        if (knownOps.includes('ne') && isEqual(field, op.ne)) return false
         if (knownOps.includes('in')) {
           const inValues = Array.isArray(op.in) ? op.in : [op.in]
-          if (!inValues.some((v) => (field as any) === (v as any))) return false
+          if (!inValues.some((v) => isEqual(field, v))) return false
         }
         if (knownOps.includes('contains')) {
           if (typeof field !== 'string') return false

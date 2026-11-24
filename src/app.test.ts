@@ -1,4 +1,4 @@
-   import assert from 'node:assert/strict'
+import assert from 'node:assert/strict'
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import test from 'node:test'
@@ -139,12 +139,25 @@ await test('createApp', async (t) => {
 
   await t.test('GET /posts?_where=... overrides query params', async () => {
     const where = encodeURIComponent(JSON.stringify({ title: { eq: 'foo' } }))
-    const response = await fetch(
-      `http://localhost:${port}/posts?title:eq=bar&_where=${where}`,
-    )
+    const response = await fetch(`http://localhost:${port}/posts?title:eq=bar&_where=${where}`)
     assert.equal(response.status, 200)
     const data = await response.json()
     assert.deepEqual(data, [{ id: '1', title: 'foo' }])
+  })
+
+  await t.test('GET /comments?postId=1 matches string foreign key with numeric query', async () => {
+    db.data = {
+      posts: [{ id: '1', title: 'foo' }],
+      comments: [
+        { id: '1', postId: '1', body: 'first' },
+        { id: '2', postId: '2', body: 'second' },
+      ],
+      object: { f1: 'foo' },
+    }
+    const response = await fetch(`http://localhost:${port}/comments?postId=1`)
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.deepEqual(data, [{ id: '1', postId: '1', body: 'first' }])
   })
 
   await t.test('POST /posts with array body returns 400', async () => {
