@@ -70,6 +70,37 @@ await test('findById', () => {
   }
 })
 
+await test('findById with _embed resolves a table whose name is not the inflection plural', () => {
+  // pluralize('person') is 'people', but the table is 'persons' (issue #1634)
+  db.data = structuredClone({
+    persons: [{ id: '0', name: 'Tim' }],
+    feedbacks: [{ id: '0', personId: '0', text: 'Great dev' }],
+  })
+  assert.deepEqual(service.findById('feedbacks', '0', { _embed: ['person'] }), {
+    id: '0',
+    personId: '0',
+    text: 'Great dev',
+    person: { id: '0', name: 'Tim' },
+  })
+  assert.deepEqual(service.find('feedbacks', { where: {}, embed: ['person'] }), [
+    { id: '0', personId: '0', text: 'Great dev', person: { id: '0', name: 'Tim' } },
+  ])
+})
+
+await test('findById with _embed prefers the inflection plural when both tables exist', () => {
+  db.data = structuredClone({
+    persons: [{ id: '0', name: 'Wrong Tim' }],
+    people: [{ id: '0', name: 'Tim' }],
+    feedbacks: [{ id: '0', personId: '0', text: 'Great dev' }],
+  })
+  assert.deepEqual(service.findById('feedbacks', '0', { _embed: ['person'] }), {
+    id: '0',
+    personId: '0',
+    text: 'Great dev',
+    person: { id: '0', name: 'Tim' },
+  })
+})
+
 await test('find', async (t) => {
   const whereFromPayload = JSON.parse('{"author":{"name":{"eq":"bar"}}}') as JsonObject
 

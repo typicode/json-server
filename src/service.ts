@@ -22,7 +22,16 @@ function ensureArray(arg: string | string[] = []): string[] {
 
 function embed(db: Low<Data>, name: string, item: Item, related: string): Item {
   if (inflection.singularize(related) === related) {
-    const relatedData = db.data[inflection.pluralize(related)] as Item[]
+    let relatedData = db.data[inflection.pluralize(related)] as Item[]
+    if (!relatedData) {
+      // The inflection plural is not always the table name: pluralize('person')
+      // is 'people', but nothing stops a database from using 'persons'.
+      // Fall back to the table whose singular form is the requested relation.
+      const tableName = Object.keys(db.data).find(
+        (key) => Array.isArray(db.data[key]) && inflection.singularize(key) === related,
+      )
+      relatedData = (tableName === undefined ? undefined : db.data[tableName]) as Item[]
+    }
     if (!relatedData) {
       return item
     }
