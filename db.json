@@ -1,0 +1,17 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Hello",
+      "draft": false,
+      "tags": ["intro"]
+    }
+  ],
+  "comments": [
+    {
+      "id": 10,
+      "postId": 1,
+      "body": "Nice"
+    }
+  ]
+}

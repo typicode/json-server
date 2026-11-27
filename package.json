@@ -1,0 +1,54 @@
+{
+  "name": "json-server",
+  "version": "2.0.0",
+  "description": "Turn a JSON file into a REST API backed by SQLite.",
+  "keywords": [
+    "json",
+    "server",
+    "rest",
+    "api",
+    "sqlite",
+    "hono",
+    "prototype",
+    "backend"
+  ],
+  "homepage": "https://github.com/typicode/json-server",
+  "bugs": "https://github.com/typicode/json-server/issues",
+  "license": "MIT",
+  "author": "typicode",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/typicode/json-server.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "json-server": "./dist/bin.js"
+  },
+  "exports": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/bin.ts db.json",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "prepack": "node --run build",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint src",
+    "fmt": "oxfmt src",
+    "fmt:check": "oxfmt --check src",
+    "test": "node --test --test-reporter=dot --test-randomize"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.0",
+    "hono": "^4.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "oxfmt": "^0.62.0",
+    "oxlint": "^1.77.0",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=26.10"
+  }
+}

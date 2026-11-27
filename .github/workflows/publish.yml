@@ -1,0 +1,28 @@
+name: Publish
+
+# Push a tag matching package.json's version (git tag v2.0.0 && git push --tags).
+# npm trusted publishing: no token, provenance attached. Configure this workflow as the
+# package's trusted publisher on npmjs.com first.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: node --run typecheck
+      - run: node --run lint
+      - run: node --run test
+      - run: test "v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
+      - run: npm publish # prepack builds dist/
